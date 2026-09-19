@@ -15,6 +15,64 @@ importers:
         specifier: ^4.21.0
         version: 4.21.0
 
+  apps/the-nrvnaverse:
+    dependencies:
+      '@dimforge/rapier3d':
+        specifier: 0.11.2
+        version: 0.11.2
+      '@nrvnaverse/manifest':
+        specifier: workspace:*
+        version: link:../../packages/nrvna-manifest
+      '@oncyberio/engine':
+        specifier: workspace:*
+        version: link:../../packages/engine
+      '@oncyberio/engine-edit':
+        specifier: workspace:*
+        version: link:../../packages/engine-edit
+      '@oncyberio/studio':
+        specifier: workspace:*
+        version: link:../../packages/studio
+      next:
+        specifier: 16.1.6
+        version: 16.1.6(@opentelemetry/api@1.9.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(sass@1.97.3)
+      react:
+        specifier: 19.2.4
+        version: 19.2.4
+      react-dom:
+        specifier: 19.2.4
+        version: 19.2.4(react@19.2.4)
+      three:
+        specifier: ^0.170.0
+        version: 0.170.0
+    devDependencies:
+      '@tailwindcss/postcss':
+        specifier: ^4
+        version: 4.1.18
+      '@types/node':
+        specifier: ^20
+        version: 20.19.32
+      '@types/react':
+        specifier: ^19
+        version: 19.2.14
+      '@types/react-dom':
+        specifier: ^19
+        version: 19.2.3(@types/react@19.2.14)
+      '@types/three':
+        specifier: ^0.170.0
+        version: 0.170.0
+      sass:
+        specifier: ^1.69.5
+        version: 1.97.3
+      tailwindcss:
+        specifier: ^4
+        version: 4.1.18
+      typescript:
+        specifier: ^5
+        version: 5.9.3
+      vitest:
+        specifier: ^4.0.18
+        version: 4.0.18(@opentelemetry/api@1.9.0)(@types/node@20.19.32)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.3)(tsx@4.21.0)(yaml@2.8.2)
+
   examples/auth-multiplayer:
     dependencies:
       '@colyseus/schema':
@@ -409,6 +467,21 @@ importers:
       '@types/three':
         specifier: ^0.170.0
         version: 0.170.0
+      vitest:
+        specifier: ^4.0.18
+        version: 4.0.18(@opentelemetry/api@1.9.0)(@types/node@20.19.32)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.3)(tsx@4.21.0)(yaml@2.8.2)
+
+  packages/nrvna-manifest:
+    devDependencies:
+      '@types/node':
+        specifier: ^20
+        version: 20.19.32
+      tsx:
+        specifier: ^4.21.0
+        version: 4.21.0
+      typescript:
+        specifier: ^5
+        version: 5.9.3
       vitest:
         specifier: ^4.0.18
         version: 4.0.18(@opentelemetry/api@1.9.0)(@types/node@20.19.32)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.3)(tsx@4.21.0)(yaml@2.8.2)
