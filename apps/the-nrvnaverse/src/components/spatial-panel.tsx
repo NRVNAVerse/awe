@@ -1,36 +1,54 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import type { PlacementResult } from "@nrvnaverse/manifest";
-import { PlannedSpatialAdapter } from "@/lib/spatial/planned-spatial-adapter";
+import { useStore } from "@/hooks/use-store";
+import type { AppState } from "@/lib/app-state";
+import { spatialDiagnostics } from "@/lib/app-store";
+import { onPerfMeasurement, perfMeasurements, type PerfMeasurement } from "@/lib/perf";
 
-/** The spatial adapter is the only object allowed to know where a destination physically is. */
-const spatialAdapter = new PlannedSpatialAdapter();
+/**
+ * Diagnostics for the spatial layer. Shows the adapter's coordinate-free placement handle, its
+ * last reported phase and the lightweight performance measurements. Never shows a coordinate.
+ */
+export function SpatialPanel({ state }: { state: AppState }) {
+  const diagnostics = useStore(spatialDiagnostics);
+  const [measures, setMeasures] = useState<readonly PerfMeasurement[]>(() => perfMeasurements());
 
-export function SpatialPanel({ destinationId }: { destinationId: string }) {
-  const [placement, setPlacement] = useState<PlacementResult | null>(null);
+  useEffect(() => onPerfMeasurement(() => setMeasures([...perfMeasurements()])), []);
 
-  useEffect(() => {
-    let cancelled = false;
-    setPlacement(null);
-    void spatialAdapter.resolvePlacement(destinationId).then((result) => {
-      if (!cancelled) setPlacement(result);
-    });
-    return () => {
-      cancelled = true;
-    };
-  }, [destinationId]);
+  const placement = "placement" in state ? state.placement : null;
 
   return (
     <section className="rounded border border-dashed border-neutral-700 p-4 text-sm text-neutral-400">
       <h3 className="font-semibold text-neutral-300">Spatial travel</h3>
       <p className="mt-1">
-        adapter: <code>{spatialAdapter.name}</code> · canTravel: <code>{String(spatialAdapter.canTravel)}</code>
+        adapter: <code>{diagnostics.adapterName ?? "—"}</code> · runtime ready: <code>{String(diagnostics.runtimeReady)}</code>
       </p>
       <p className="mt-1">
-        placement: <code>{placement ? placement.status : "…"}</code>
-        {placement && "reason" in placement ? ` — ${placement.reason}` : null}
+        adapter phase: <code>{diagnostics.phase}</code>
+        {diagnostics.destinationId ? (
+          <>
+            {" "}
+            · <code>{diagnostics.destinationId}</code>
+          </>
+        ) : null}
       </p>
+      <p className="mt-1">
+        placement: <code>{placement ? `${placement.worldId} / ${placement.placementRef ?? "—"}` : "—"}</code>
+      </p>
+      {measures.length > 0 && (
+        <details className="mt-2">
+          <summary className="cursor-pointer text-neutral-300">performance ({measures.length})</summary>
+          <ul className="mt-1 flex flex-col gap-0.5 text-xs">
+            {measures.slice(-12).map((m, i) => (
+              <li key={`${m.name}-${i}`}>
+                <code>{m.name}</code> {m.durationMs} ms
+                {Object.keys(m.detail).length > 0 ? <span className="text-neutral-500"> {JSON.stringify(m.detail)}</span> : null}
+              </li>
+            ))}
+          </ul>
+        </details>
+      )}
     </section>
   );
 }

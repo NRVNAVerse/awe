@@ -12,5 +12,5 @@ export const APP_IDENTITY = {
   spatialRoot: NRVNAVERSE_SPATIAL_ROOT,
   webRoot: NRVNAVERSE_WEB_ROOT,
   /** Honest milestone label shown in the prototype UI. */
-  milestone: "M0 Step 1 — application foundation (no spatial runtime yet)",
+  milestone: "M0 Step 2A — official AWE runtime + stable-id spatial adapter (single-scene prototype)",
 } as const;

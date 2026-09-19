@@ -1,0 +1,10 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "strict": true,
+    "strictNullChecks": true,
+    "incremental": false
+  },
+  "include": ["src/lib/**/*.ts", "src/hooks/**/*.ts", "test/**/*.ts"],
+  "exclude": ["node_modules", "src/lib/spatial/awe-spatial-runtime.ts", "src/lib/app-store.ts"]
+}

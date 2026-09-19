@@ -6,7 +6,7 @@ interface DestinationViewProps {
   index: DestinationIndex;
 }
 
-/** Current destination card. Shows manifest data as-is; gates are displayed, not enforced (M0 Step 1). */
+/** Current destination card. Shows manifest data as-is; gates are displayed and refused at the spatial boundary, not verified (M0 Step 2A). */
 export function DestinationView({ destination, entry, index }: DestinationViewProps) {
   const district = destination.primaryDistrictId ? index.byId.get(destination.primaryDistrictId) : null;
 
@@ -37,7 +37,7 @@ export function DestinationView({ destination, entry, index }: DestinationViewPr
         <dd>
           {destination.gates.length === 0
             ? "none"
-            : destination.gates.map((g) => `${g.kind} (declared, not enforced in M0 Step 1)`).join(", ")}
+            : destination.gates.map((g) => `${g.kind} (declared; spatial entry refused; verification not implemented)`).join(", ")}
         </dd>
         <dt className="text-neutral-500">web</dt>
         <dd>

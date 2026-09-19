@@ -100,21 +100,26 @@ Determinism: no timestamps, stable id ordering, deep-sorted keys, fixed serializ
 
 ## 9. Application state (app)
 
-Implemented phases: `boot → resolvingDestination → ready | error` (`apps/the-nrvnaverse/src/lib/app-state.ts`, pure and unit-tested).
-Reserved, **not implemented**: `loadingGlobals`, `loadingChunk`, `traveling`, `arrived`, `gateRequired` (`PLANNED_PHASES`). They correspond to `SpatialTravelPhase` in the adapter interface.
+Step 1 implemented `boot → resolvingDestination → ready | error` (`apps/the-nrvnaverse/src/lib/app-state.ts`, pure and unit-tested).
+
+> **Superseded by M0 Step 2A** — see [`NRVNAVERSE_SPATIAL_RUNTIME.md`](./NRVNAVERSE_SPATIAL_RUNTIME.md) §7. Implemented now: `boot → resolvingDestination → loadingGlobals → ready | gateRequired | error`, `traveling → arrived | gateRequired`. Still reserved: `loadingChunk`.
 
 ## 10. What M0 Step 1 does NOT implement
 
-- No 3D runtime is mounted; the app does not instantiate the AWE engine yet (the dependencies are declared so Step 2 can, but no engine code runs).
-- No chunk streaming, no portals, no travel, no spawn/placement data — `PlannedSpatialAdapter` reports `unavailable` for every destination.
+> Items marked "(done in Step 2A)" were delivered by M0 Step 2A ([`NRVNAVERSE_SPATIAL_RUNTIME.md`](./NRVNAVERSE_SPATIAL_RUNTIME.md)); the rest still hold.
+
+- (done in Step 2A) The official AWE engine is mounted in a single prototype scene.
+- (done in Step 2A) Same-scene travel and a stable-id placement registry exist (`apps/the-nrvnaverse/src/lib/spatial/`); still no chunk streaming and no portals.
 - No gate enforcement, no age verification, no jurisdiction logic, no cannabis checkout, no commerce.
-- No `portals-index.json`, no physical placement registry.
+- No `portals-index.json` (still true). (done in Step 2A) A physical placement registry exists in the app's spatial layer, not in the manifests.
 - No slug-based routing in the app (slug helpers exist in the package for the web interface).
 - No auth/identity system; `auth.roles` are data only.
 - No web interface (www.nrvnaverse.com) code; it will consume the same generated data.
 - Legacy `?chunk=` is ignored, not supported.
 
 ## 11. Exact boundary for M0 Step 2 (spatial integration)
+
+> **Implemented in M0 Step 2A** as `AweSpatialAdapter` (`apps/the-nrvnaverse/src/lib/spatial/awe-spatial-adapter.ts`); `canTravel` became a per-destination method returning `TravelEligibility`. All five constraints below were honoured and are tested. Step 2B extends the same seam with chunk keys.
 
 Step 2 implements `SpatialTravelAdapter` (`packages/nrvna-manifest/src/spatial-adapter.ts`) inside `apps/the-nrvnaverse/src/lib/spatial/` and swaps it for `PlannedSpatialAdapter` in `spatial-panel.tsx` / the store:
 

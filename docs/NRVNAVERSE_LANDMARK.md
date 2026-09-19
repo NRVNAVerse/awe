@@ -257,6 +257,24 @@ Branch `feat/m0-app-foundation` (from `nrvna/integration`). Full description: [`
 | Ghost boundary | No Ghost code inspected beyond the already-documented interfaces, copied, cherry-picked or depended on (D-013). |
 | Dependencies | No new third-party packages; every declared dependency already exists in `pnpm-lock.yaml` at the same version. The two new workspace packages still need `importers` entries in `pnpm-lock.yaml` — a separately approved lockfile change (D-014) that has **not** been made; until then `pnpm install --frozen-lockfile` reports the lockfile out of date for the new packages. |
 
+### NRVNAVerse implementation state — M0 Step 2A  [VERIFIED 2026-09-19]
+
+Branch `feat/m0-spatial-runtime` (from `feat/m0-app-foundation`). Full description: [`NRVNAVERSE_SPATIAL_RUNTIME.md`](./NRVNAVERSE_SPATIAL_RUNTIME.md).
+
+| Item | State |
+|---|---|
+| Official AWE runtime | Mounted in `apps/the-nrvnaverse` via the upstream starter lifecycle (`createSpace → controls/camera/mover → reveal → start → dispose`); desktop controls verified; official touch joystick/jump path preserved (not exercised on a device). |
+| Prototype scene | One minimal static scene (`public/data/static-scene.json`): Hub, Music District + Placeholder Artist, Fashion / Culture District + Placeholder Brand, and a walled, labelled 21+ enclosure. No new binaries, no Ghost assets. |
+| Placement registry | `src/lib/spatial/placements.m0.ts`, keyed by stable destination id, separate from the manifests (which remain coordinate-free — tested). `portals-index.json` not created. |
+| Spatial adapter | `AweSpatialAdapter` implements `canTravel(id)`, `resolvePlacement`, `travelTo` (same-scene teleport via `Mover.teleport`), `onPhase`; only the adapter/registry know coordinates. |
+| Gates | Any manifest `gates[]` → `gate-required`, no teleport, `gateRequired` phase; deep link to a gated id places the visitor at the Hub. No verification, policy or bypass exists. |
+| State / URL | Phases `loadingGlobals`, `ready`, `traveling`, `arrived`, `gateRequired` implemented; `loadingChunk` reserved. URL stays `?destination=<id>`; `?chunk=` never written. |
+| Instrumentation | `performance.mark/measure` (`nrvna:*`), dev console + panel only. Baseline (dev server, warm): boot→engine-ready ≈ 2 s, boot→revealed ≈ 4.7 s, same-scene travel ≈ 1–20 ms. |
+| Checks | 35 app vitest tests, 49 manifest tests, `check`, the strict tsconfig and `next build` pass; browser checklist A–L executed. |
+| Not implemented | Chunk streaming, portals, generated spatial index, age verification, compliance policy, commerce, auth, web interface (Step 2B+). |
+| Ghost boundary | No Ghost code read, copied, cherry-picked or depended on. |
+| Dependencies | None added; `package.json` dependency ranges and `pnpm-lock.yaml` unchanged. |
+
 ### Development machine (informational)
 
 Windows 10 Home; Node v24.19.0; Git 2.46.2; Corepack 0.35.0; **pnpm 10.10.0 via Corepack** (shims in `%USERPROFILE%\.local\bin` because `C:\Program Files\nodejs` is not writable without elevation — see D-014). Local clone: `D:\NRVNAVerse\awe` on an **NTFS mechanical HDD**; pnpm content-addressable store at `D:\.pnpm-store`. Git HTTPS requires `http.sslbackend=schannel` on this machine (set repo-locally) because a local antivirus TLS proxy (Avast) breaks the OpenSSL backend. The same antivirus's real-time scanning plus the HDD make pnpm's link phase very slow (≈16 packages/min on first install; package downloads themselves complete in about a minute). An antivirus exclusion for `D:\NRVNAVerse` and `D:\.pnpm-store` would remove most of that cost but is a machine-level change for the machine owner to make, not a coding session.
@@ -274,7 +292,9 @@ Windows 10 Home; Node v24.19.0; Git 2.46.2; Corepack 0.35.0; **pnpm 10.10.0 via 
 | Repo runtime lacks built-in auth/persistence | Open — must be provided at application layer |
 | Slow dependency installs on the development machine | Known — HDD + antivirus real-time scanning make pnpm's link phase ≈25 min on first install (downloads ≈1 min). Mitigation is a machine-level AV exclusion by the owner; CI/other machines unaffected |
 | Cannabis compliance | Open — policy layer not designed beyond principles; M0 Step 1 models the `age21` gate as placeholder data only (not enforced) |
-| New workspace packages not yet in `pnpm-lock.yaml` | Open — `packages/nrvna-manifest` and `apps/the-nrvnaverse` need lockfile `importers` entries (no new third-party packages); requires separate approval under D-014 before `pnpm install --frozen-lockfile` passes again |
+| New workspace packages not yet in `pnpm-lock.yaml` | Closed — `importers` entries added in `44992f3`; `pnpm install --frozen-lockfile --offline` is up to date |
+| Engine load in a background tab | Known — no `requestAnimationFrame` in a hidden tab stalls the upstream intro and trips the engine's 60 s `LOAD_TIMEOUT`; the app shows its error phase and a foreground reload recovers. Upstream behaviour; a resume-on-visibility strategy is a later decision |
+| Placement registry is hand-kept | Open — `placements.m0.ts` and `static-scene.json` are kept in sync by hand for M0; a generated spatial index (never coordinate-keyed identity) is a Step 2B candidate |
 | awe.box and open-source AWE are different runtimes | Confirmed — hosted awe.box worlds are not portable to this repo's runtime |
 | Ghost's PR #11 was closed unmerged upstream | Confirmed — future upstream contributions must be small, topical PRs |
 | ~200 MB of binaries in Ghost's history | Mitigated by decision (D-013) — `ghost/experimental` is **not** pushed to `origin`; preserved by reference at `a5880dd…` via the `ghost` remote. Any archive / Git LFS / mirror strategy is a separate future decision |
