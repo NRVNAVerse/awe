@@ -7,7 +7,7 @@
 | **Current milestone** | M0 — Foundation |
 | **Landmark date** | 2026-09-19 |
 | **Canonical repository** | https://github.com/NRVNAVerse/awe (fork of https://github.com/oncyberio/awe) |
-| **Companion documents** | [DECISIONS.md](./DECISIONS.md) · [CLAUDE.md](../CLAUDE.md) (developer/agent governance) |
+| **Companion documents** | [DECISIONS.md](./DECISIONS.md) · [NRVNAVERSE_GOVERNANCE.md](./NRVNAVERSE_GOVERNANCE.md) (developer/agent governance) · [CLAUDE.md](../CLAUDE.md) (entry point) |
 
 This file is the canonical high-level benchmark for the NRVNAVerse project. It states what is **locked**, what is **verified**, what is **experimental**, and what is only **planned or aspirational**. Read it before substantial NRVNAVerse work.
 
@@ -174,6 +174,16 @@ None of the following exists today. They are future possibilities that inform ar
 - Ghost opened upstream PR **oncyberio/awe#11** ("Update water-object.js", head `Gh0sTtD3v:main@a5880dd`, all 6 commits, 181 files, +21 345/−1 127). It was **closed unmerged on 2026-08-29**.
 - Ghost's 6 commits add ≈ **200 MB** of Git objects (mostly binary assets under `apps/ghostt/public/assets/`).
 
+### Ghost preservation point  [VERIFIED 2026-09-19 · D-013]
+
+| Item | Value |
+|---|---|
+| Verified experimental baseline | `a5880dd463e105275c251c61b6bfa951c2431af1` — Ghost's current public `main`, independently confirmed |
+| Local preservation | branch `ghost/experimental` = remote-tracking `ghost/main` = `a5880dd…` (identical) |
+| Pushed to `origin`? | **No.** A local / remote-tracking reference is sufficient for now; the full history and its binaries are not imported into the canonical repository merely for preservation |
+| History rewrites | None. Not split, not rebased, not republished |
+| Re-fetch | `git fetch ghost` (remote `ghost` → `https://github.com/Gh0sTtD3v/awe`, push disabled) |
+
 ### Ghost's commits (faithful list, oldest first)
 
 | SHA | Date | Subject |
@@ -219,27 +229,40 @@ None of the following exists today. They are future possibilities that inform ar
 
 `engine:check`, `engine:test`, `engine-edit:check`, `tools:check`, `tools:test`, `studio:check`, plus asset CLI scripts (`inspect-gltf`, `validate-scene`, `optimize-model`, `optimize-vrm`, `add-model`, `add-avatar`, `bake-anim`, `upload-asset`, `run-space`).
 
-**Not yet run** as of v0.1: `pnpm install` has not been executed in this clone (pnpm is not installed on the development machine; Corepack 0.35.0 is available). No checks have been executed. See "Current Risks".
+### Install and checks executed  [VERIFIED 2026-09-19 · M0 Step 0]
+
+| Step | Result |
+|---|---|
+| `corepack enable --install-directory %USERPROFILE%\.local\bin` | pnpm resolved from `package.json#packageManager` → **10.10.0** |
+| `pnpm install --frozen-lockfile` | **Success** — 976 packages resolved, `Done in 24m 58.6s using pnpm v10.10.0` (the first run was killed by the AI coding session while it was diagnosing the very slow link phase — the process was slow, not hung — and the install was resumed from the store: `reused 968, downloaded 0`). `pnpm-lock.yaml` and `package.json` SHA-256 unchanged before/after. Frozen re-run: "Lockfile is up to date… Already up to date" in 6 s. |
+| pnpm warning | `Ignored build scripts: msgpackr-extract` — pnpm 10 blocks lifecycle scripts by default; `msgpackr-extract` is an optional native accelerator for `msgpackr` (Colyseus dependency) with a pure-JS fallback. Not approved; revisit only if multiplayer performance work needs it. |
+| Workspaces | 11 packages: root `awe`, `@oncyberio/engine`, `@oncyberio/engine-edit`, `@oncyberio/studio`, `@oncyberio/tools`, `create-oncyber-app@0.1.4`, examples `starter`, `multiplayer`, `auth-multiplayer`, `football-demo`, `zombie-survival` |
+| `pnpm engine:check` (`tsc --noEmit`) | **Pass** (16 s) |
+| `pnpm engine-edit:check` | **Pass** |
+| `pnpm tools:check` | **Pass** |
+| `pnpm engine:test` (vitest) | **Pass** — 27 test files, 126 tests |
+| Not run | `studio:check`, `tools:test`, any Next.js `dev`/`build`, any example app. These remain unverified at v0.1. |
 
 ### Development machine (informational)
 
-Windows 10 Home; Node v24.19.0; Git 2.46.2; pnpm **not installed**; Corepack available. Local clone: `D:\NRVNAVerse\awe`. Git HTTPS requires `http.sslbackend=schannel` on this machine (set repo-locally) because a local antivirus TLS proxy breaks the OpenSSL backend.
+Windows 10 Home; Node v24.19.0; Git 2.46.2; Corepack 0.35.0; **pnpm 10.10.0 via Corepack** (shims in `%USERPROFILE%\.local\bin` because `C:\Program Files\nodejs` is not writable without elevation — see D-014). Local clone: `D:\NRVNAVerse\awe` on an **NTFS mechanical HDD**; pnpm content-addressable store at `D:\.pnpm-store`. Git HTTPS requires `http.sslbackend=schannel` on this machine (set repo-locally) because a local antivirus TLS proxy (Avast) breaks the OpenSSL backend. The same antivirus's real-time scanning plus the HDD make pnpm's link phase very slow (≈16 packages/min on first install; package downloads themselves complete in about a minute). An antivirus exclusion for `D:\NRVNAVerse` and `D:\.pnpm-store` would remove most of that cost but is a machine-level change for the machine owner to make, not a coding session.
 
 ## 13. Current Risks
 
 | Risk | Status |
 |---|---|
-| Ghost experimental code requires review/testing | Open — commit message itself says "AI makes mistakes"; no tests for chunk/portal systems |
+| Ghost experimental code requires review/testing | Open — commit message itself says "AI makes mistakes"; no tests for chunk/portal systems. Ghost's review is required before splitting/reworking, publishing refactors, or upstream contributions based on his work (D-013) |
 | Chunk transition behavior | Open — unload-then-load, no prefetch/overlap/cancellation; visible pop expected |
 | Mobile performance | Open — no adaptive quality tier in engine yet; budgets undefined |
 | Asset budgets | Open — no validator thresholds; KTX2 disabled |
 | Upstream/fork divergence | Low now (Ghost 6 ahead / 0 behind; NRVNAVerse identical) — grows with every engine change |
 | Multiplayer hosting | Open — Colyseus URL hardcoded to `ws://localhost:2567`; needs a WebSocket-capable host |
 | Repo runtime lacks built-in auth/persistence | Open — must be provided at application layer |
+| Slow dependency installs on the development machine | Known — HDD + antivirus real-time scanning make pnpm's link phase ≈25 min on first install (downloads ≈1 min). Mitigation is a machine-level AV exclusion by the owner; CI/other machines unaffected |
 | Cannabis compliance | Open — policy layer not designed beyond principles |
 | awe.box and open-source AWE are different runtimes | Confirmed — hosted awe.box worlds are not portable to this repo's runtime |
 | Ghost's PR #11 was closed unmerged upstream | Confirmed — future upstream contributions must be small, topical PRs |
-| ~200 MB of binaries in Ghost's history | Confirmed — pushing `ghost/experimental` bloats the NRVNAVerse repo; consider Git LFS or an archive strategy before pushing |
+| ~200 MB of binaries in Ghost's history | Mitigated by decision (D-013) — `ghost/experimental` is **not** pushed to `origin`; preserved by reference at `a5880dd…` via the `ghost` remote. Any archive / Git LFS / mirror strategy is a separate future decision |
 
 ## 14. Do Not Accidentally Change  [LOCKED]
 
