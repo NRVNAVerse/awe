@@ -243,6 +243,20 @@ None of the following exists today. They are future possibilities that inform ar
 | `pnpm engine:test` (vitest) | **Pass** — 27 test files, 126 tests |
 | Not run | `studio:check`, `tools:test`, any Next.js `dev`/`build`, any example app. These remain unverified at v0.1. |
 
+### NRVNAVerse implementation state — M0 Step 1  [VERIFIED 2026-09-19]
+
+Branch `feat/m0-app-foundation` (from `nrvna/integration`). Full description: [`NRVNAVERSE_DESTINATION_MANIFEST.md`](./NRVNAVERSE_DESTINATION_MANIFEST.md).
+
+| Item | State |
+|---|---|
+| `packages/nrvna-manifest` (`@nrvnaverse/manifest`) | Destination manifest contract **schema v1**; validator with stable error codes; stable-id resolver (hub fallback); deep-link contract (`?destination=<id>`, allow-listed `from`/`ref`/`return`, `return` is a token resolved through manifest data — never a URL); deterministic generator; `SpatialTravelAdapter` interface. Zero runtime dependencies. 49 vitest tests pass; `tsc` clean. |
+| Seven placeholder manifests | Hub, Music, Fashion / Culture, 21+ Cannabis districts, Placeholder Artist (→ Music), Placeholder Fashion / Culture Brand (→ Fashion / Culture), NRVNA Farms Placeholder (→ Cannabis). Stable ids generated once and committed. `age21` gate + `ageRestriction` modelled (placeholder config, `enforced: false`, jurisdictions `placeholder`) on the Cannabis district and NRVNA Farms. |
+| Generated views | `generated/destinations.json`, `generated/directory.json` — derived; `generate:check` and a test fail if stale; two runs produce no diff. `portals-index.json` is **not** canonical and not generated. |
+| `apps/the-nrvnaverse` | Next.js 16 app shell adapted from `examples/starter`: identity, runtime load of `destinations.json` via `/api/destinations`, URL parsing, resolution with non-fatal notices, state model `boot → resolvingDestination → ready \| error` (planned phases `loadingGlobals`, `loadingChunk`, `traveling`, `arrived`, `gateRequired` reserved, not implemented), `PlannedSpatialAdapter` reporting travel unavailable. 9 vitest tests pass; `tsc` clean; `next build --turbopack` succeeds; smoke-tested in a browser (deep link, hub fallback, unsafe `return` rejected, `?chunk=` ignored, in-app navigation). |
+| Not implemented | No engine mounted, no chunk streaming, portals, travel, placement data, gate enforcement, compliance policy, commerce, auth system, web interface. |
+| Ghost boundary | No Ghost code inspected beyond the already-documented interfaces, copied, cherry-picked or depended on (D-013). |
+| Dependencies | No new third-party packages; every declared dependency already exists in `pnpm-lock.yaml` at the same version. The two new workspace packages still need `importers` entries in `pnpm-lock.yaml` — a separately approved lockfile change (D-014) that has **not** been made; until then `pnpm install --frozen-lockfile` reports the lockfile out of date for the new packages. |
+
 ### Development machine (informational)
 
 Windows 10 Home; Node v24.19.0; Git 2.46.2; Corepack 0.35.0; **pnpm 10.10.0 via Corepack** (shims in `%USERPROFILE%\.local\bin` because `C:\Program Files\nodejs` is not writable without elevation — see D-014). Local clone: `D:\NRVNAVerse\awe` on an **NTFS mechanical HDD**; pnpm content-addressable store at `D:\.pnpm-store`. Git HTTPS requires `http.sslbackend=schannel` on this machine (set repo-locally) because a local antivirus TLS proxy (Avast) breaks the OpenSSL backend. The same antivirus's real-time scanning plus the HDD make pnpm's link phase very slow (≈16 packages/min on first install; package downloads themselves complete in about a minute). An antivirus exclusion for `D:\NRVNAVerse` and `D:\.pnpm-store` would remove most of that cost but is a machine-level change for the machine owner to make, not a coding session.
@@ -259,7 +273,8 @@ Windows 10 Home; Node v24.19.0; Git 2.46.2; Corepack 0.35.0; **pnpm 10.10.0 via 
 | Multiplayer hosting | Open — Colyseus URL hardcoded to `ws://localhost:2567`; needs a WebSocket-capable host |
 | Repo runtime lacks built-in auth/persistence | Open — must be provided at application layer |
 | Slow dependency installs on the development machine | Known — HDD + antivirus real-time scanning make pnpm's link phase ≈25 min on first install (downloads ≈1 min). Mitigation is a machine-level AV exclusion by the owner; CI/other machines unaffected |
-| Cannabis compliance | Open — policy layer not designed beyond principles |
+| Cannabis compliance | Open — policy layer not designed beyond principles; M0 Step 1 models the `age21` gate as placeholder data only (not enforced) |
+| New workspace packages not yet in `pnpm-lock.yaml` | Open — `packages/nrvna-manifest` and `apps/the-nrvnaverse` need lockfile `importers` entries (no new third-party packages); requires separate approval under D-014 before `pnpm install --frozen-lockfile` passes again |
 | awe.box and open-source AWE are different runtimes | Confirmed — hosted awe.box worlds are not portable to this repo's runtime |
 | Ghost's PR #11 was closed unmerged upstream | Confirmed — future upstream contributions must be small, topical PRs |
 | ~200 MB of binaries in Ghost's history | Mitigated by decision (D-013) — `ghost/experimental` is **not** pushed to `origin`; preserved by reference at `a5880dd…` via the `ghost` remote. Any archive / Git LFS / mirror strategy is a separate future decision |

@@ -1,0 +1,61 @@
+{
+  "schemaVersion": 1,
+  "id": "dst_7g19n1vm9ackw8a0",
+  "slug": "hub",
+  "previousSlugs": [],
+  "kind": "hub",
+  "name": "THE NRVNAVerse Hub",
+  "owner": {
+    "name": "NRVNAVerse",
+    "organizationId": null,
+    "webUrl": "https://www.nrvnaverse.com/"
+  },
+  "primaryDistrictId": null,
+  "categories": [
+    "hub"
+  ],
+  "tags": [
+    "m0",
+    "placeholder"
+  ],
+  "relatedDestinationIds": [
+    "dst_gm3xs4a3tws7bgh3",
+    "dst_9c4wxtpec8awsx1q",
+    "dst_441dtdafq3e3ehjn"
+  ],
+  "description": "M0 placeholder. Arrival point of THE NRVNAVerse and the navigation root for the districts.",
+  "webUrl": "https://www.nrvnaverse.com/worlds/hub",
+  "spatialDestination": {
+    "platform": "the-nrvnaverse",
+    "worldId": "the-nrvnaverse"
+  },
+  "media": {
+    "thumbnailUrl": null,
+    "heroUrl": null,
+    "logoUrl": null
+  },
+  "status": "active",
+  "ageRestriction": null,
+  "jurisdictions": {
+    "policy": "unrestricted",
+    "regions": [],
+    "note": null
+  },
+  "capabilities": [
+    "discovery",
+    "entertainment",
+    "education"
+  ],
+  "devices": [
+    "desktop",
+    "mobile",
+    "tablet"
+  ],
+  "commerceRefs": [],
+  "analyticsId": "dst_7g19n1vm9ackw8a0",
+  "updatedAt": "2026-09-19T00:00:00Z",
+  "auth": {
+    "roles": []
+  },
+  "gates": []
+}

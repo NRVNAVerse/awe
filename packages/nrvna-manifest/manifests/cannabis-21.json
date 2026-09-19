@@ -1,0 +1,73 @@
+{
+  "schemaVersion": 1,
+  "id": "dst_441dtdafq3e3ehjn",
+  "slug": "cannabis-21",
+  "previousSlugs": [],
+  "kind": "district",
+  "name": "21+ Cannabis District",
+  "owner": {
+    "name": "NRVNAVerse",
+    "organizationId": null,
+    "webUrl": "https://www.nrvnaverse.com/"
+  },
+  "primaryDistrictId": null,
+  "categories": [
+    "cannabis"
+  ],
+  "tags": [
+    "m0",
+    "placeholder",
+    "district",
+    "age-21"
+  ],
+  "relatedDestinationIds": [
+    "dst_7g19n1vm9ackw8a0"
+  ],
+  "description": "M0 placeholder. Separately gated 21+ spatial district. NRVNAVerse does not sell or distribute cannabis; the gate configuration below is a placeholder, not legal policy.",
+  "webUrl": "https://www.nrvnaverse.com/worlds/cannabis-21",
+  "spatialDestination": {
+    "platform": "the-nrvnaverse",
+    "worldId": "the-nrvnaverse"
+  },
+  "media": {
+    "thumbnailUrl": null,
+    "heroUrl": null,
+    "logoUrl": null
+  },
+  "status": "active",
+  "ageRestriction": {
+    "minimumAge": 21
+  },
+  "jurisdictions": {
+    "policy": "placeholder",
+    "regions": [],
+    "note": "M0 placeholder. Jurisdiction policy is configured at the application/content layer and is not asserted here (Landmark section 9)."
+  },
+  "capabilities": [
+    "discovery",
+    "education",
+    "entertainment"
+  ],
+  "devices": [
+    "desktop",
+    "mobile",
+    "tablet"
+  ],
+  "commerceRefs": [],
+  "analyticsId": "dst_441dtdafq3e3ehjn",
+  "updatedAt": "2026-09-19T00:00:00Z",
+  "auth": {
+    "roles": []
+  },
+  "gates": [
+    {
+      "kind": "age21",
+      "config": {
+        "minimumAge": 21,
+        "verification": "placeholder",
+        "policyRef": "nrvna-age21-placeholder",
+        "enforced": false
+      }
+    }
+  ]
+}

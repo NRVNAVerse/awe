@@ -1,0 +1,68 @@
+{
+  "schemaVersion": 1,
+  "id": "dst_tgfh5h5jvm3wj0w7",
+  "slug": "placeholder-fashion-culture-brand",
+  "previousSlugs": [],
+  "kind": "brand",
+  "name": "Placeholder Fashion / Culture Brand",
+  "owner": {
+    "name": "Placeholder Brand",
+    "organizationId": null,
+    "webUrl": null
+  },
+  "primaryDistrictId": "dst_9c4wxtpec8awsx1q",
+  "categories": [
+    "fashion",
+    "culture",
+    "brand"
+  ],
+  "tags": [
+    "m0",
+    "placeholder"
+  ],
+  "relatedDestinationIds": [
+    "dst_9c4wxtpec8awsx1q"
+  ],
+  "description": "M0 placeholder brand destination inside the Fashion / Culture District.",
+  "webUrl": "https://www.nrvnaverse.com/worlds/placeholder-fashion-culture-brand",
+  "spatialDestination": {
+    "platform": "the-nrvnaverse",
+    "worldId": "the-nrvnaverse"
+  },
+  "media": {
+    "thumbnailUrl": null,
+    "heroUrl": null,
+    "logoUrl": null
+  },
+  "status": "active",
+  "ageRestriction": null,
+  "jurisdictions": {
+    "policy": "unrestricted",
+    "regions": [],
+    "note": null
+  },
+  "capabilities": [
+    "entertainment",
+    "education",
+    "info-cards",
+    "commerce-redirect"
+  ],
+  "devices": [
+    "desktop",
+    "mobile",
+    "tablet"
+  ],
+  "commerceRefs": [
+    {
+      "provider": "placeholder",
+      "kind": "storefront",
+      "ref": "placeholder-storefront"
+    }
+  ],
+  "analyticsId": "dst_tgfh5h5jvm3wj0w7",
+  "updatedAt": "2026-09-19T00:00:00Z",
+  "auth": {
+    "roles": []
+  },
+  "gates": []
+}

@@ -1,0 +1,60 @@
+{
+  "schemaVersion": 1,
+  "id": "dst_1qtfn9qjg9kf6jyd",
+  "slug": "placeholder-artist",
+  "previousSlugs": [],
+  "kind": "artist",
+  "name": "Placeholder Artist",
+  "owner": {
+    "name": "Placeholder Artist",
+    "organizationId": null,
+    "webUrl": null
+  },
+  "primaryDistrictId": "dst_gm3xs4a3tws7bgh3",
+  "categories": [
+    "music",
+    "artist"
+  ],
+  "tags": [
+    "m0",
+    "placeholder"
+  ],
+  "relatedDestinationIds": [
+    "dst_gm3xs4a3tws7bgh3"
+  ],
+  "description": "M0 placeholder artist destination inside the Music District.",
+  "webUrl": "https://www.nrvnaverse.com/worlds/placeholder-artist",
+  "spatialDestination": {
+    "platform": "the-nrvnaverse",
+    "worldId": "the-nrvnaverse"
+  },
+  "media": {
+    "thumbnailUrl": null,
+    "heroUrl": null,
+    "logoUrl": null
+  },
+  "status": "active",
+  "ageRestriction": null,
+  "jurisdictions": {
+    "policy": "unrestricted",
+    "regions": [],
+    "note": null
+  },
+  "capabilities": [
+    "entertainment",
+    "info-cards",
+    "audio"
+  ],
+  "devices": [
+    "desktop",
+    "mobile",
+    "tablet"
+  ],
+  "commerceRefs": [],
+  "analyticsId": "dst_1qtfn9qjg9kf6jyd",
+  "updatedAt": "2026-09-19T00:00:00Z",
+  "auth": {
+    "roles": []
+  },
+  "gates": []
+}

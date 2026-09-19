@@ -1,0 +1,26 @@
+{
+  "name": "@nrvnaverse/manifest",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "NRVNAVerse canonical destination manifest contract, placeholder manifests, validation and deterministic generated views.",
+  "main": "src/index.ts",
+  "exports": {
+    ".": "./src/index.ts",
+    "./node": "./src/node/index.ts",
+    "./generated/*": "./generated/*"
+  },
+  "scripts": {
+    "check": "tsc --noEmit",
+    "test": "vitest run",
+    "validate": "tsx src/node/cli.ts validate",
+    "generate": "tsx src/node/cli.ts generate",
+    "generate:check": "tsx src/node/cli.ts check"
+  },
+  "devDependencies": {
+    "@types/node": "^20",
+    "tsx": "^4.21.0",
+    "typescript": "^5",
+    "vitest": "^4.0.18"
+  }
+}

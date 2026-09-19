@@ -1,0 +1,61 @@
+{
+  "schemaVersion": 1,
+  "id": "dst_gm3xs4a3tws7bgh3",
+  "slug": "music",
+  "previousSlugs": [],
+  "kind": "district",
+  "name": "Music District",
+  "owner": {
+    "name": "NRVNAVerse",
+    "organizationId": null,
+    "webUrl": "https://www.nrvnaverse.com/"
+  },
+  "primaryDistrictId": null,
+  "categories": [
+    "music"
+  ],
+  "tags": [
+    "m0",
+    "placeholder",
+    "district"
+  ],
+  "relatedDestinationIds": [
+    "dst_7g19n1vm9ackw8a0"
+  ],
+  "description": "M0 placeholder. Spatial district for artists, venues and music experiences.",
+  "webUrl": "https://www.nrvnaverse.com/worlds/music",
+  "spatialDestination": {
+    "platform": "the-nrvnaverse",
+    "worldId": "the-nrvnaverse"
+  },
+  "media": {
+    "thumbnailUrl": null,
+    "heroUrl": null,
+    "logoUrl": null
+  },
+  "status": "active",
+  "ageRestriction": null,
+  "jurisdictions": {
+    "policy": "unrestricted",
+    "regions": [],
+    "note": null
+  },
+  "capabilities": [
+    "discovery",
+    "entertainment",
+    "education",
+    "commerce"
+  ],
+  "devices": [
+    "desktop",
+    "mobile",
+    "tablet"
+  ],
+  "commerceRefs": [],
+  "analyticsId": "dst_gm3xs4a3tws7bgh3",
+  "updatedAt": "2026-09-19T00:00:00Z",
+  "auth": {
+    "roles": []
+  },
+  "gates": []
+}

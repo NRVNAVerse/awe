@@ -1,0 +1,152 @@
+{
+  "districts": [
+    {
+      "categories": [
+        "cannabis"
+      ],
+      "description": "M0 placeholder. Separately gated 21+ spatial district. NRVNAVerse does not sell or distribute cannabis; the gate configuration below is a placeholder, not legal policy.",
+      "destinations": [
+        {
+          "categories": [
+            "cannabis",
+            "brand"
+          ],
+          "description": "M0 placeholder brand destination inside the 21+ Cannabis District. Education and discovery only; no cannabis checkout exists or is planned here.",
+          "gates": [
+            "age21"
+          ],
+          "id": "dst_vfkz626za0vra89j",
+          "kind": "brand",
+          "minimumAge": 21,
+          "name": "NRVNA Farms Placeholder",
+          "slug": "nrvna-farms-placeholder",
+          "spatialUrl": "https://worlds.nrvnaverse.com/?destination=dst_vfkz626za0vra89j",
+          "tags": [
+            "m0",
+            "placeholder",
+            "age-21"
+          ],
+          "webUrl": "https://www.nrvnaverse.com/worlds/nrvna-farms-placeholder"
+        }
+      ],
+      "gates": [
+        "age21"
+      ],
+      "id": "dst_441dtdafq3e3ehjn",
+      "kind": "district",
+      "minimumAge": 21,
+      "name": "21+ Cannabis District",
+      "slug": "cannabis-21",
+      "spatialUrl": "https://worlds.nrvnaverse.com/?destination=dst_441dtdafq3e3ehjn",
+      "tags": [
+        "m0",
+        "placeholder",
+        "district",
+        "age-21"
+      ],
+      "webUrl": "https://www.nrvnaverse.com/worlds/cannabis-21"
+    },
+    {
+      "categories": [
+        "fashion",
+        "culture"
+      ],
+      "description": "M0 placeholder. Spatial district for fashion and culture brands and experiences.",
+      "destinations": [
+        {
+          "categories": [
+            "fashion",
+            "culture",
+            "brand"
+          ],
+          "description": "M0 placeholder brand destination inside the Fashion / Culture District.",
+          "gates": [],
+          "id": "dst_tgfh5h5jvm3wj0w7",
+          "kind": "brand",
+          "minimumAge": null,
+          "name": "Placeholder Fashion / Culture Brand",
+          "slug": "placeholder-fashion-culture-brand",
+          "spatialUrl": "https://worlds.nrvnaverse.com/?destination=dst_tgfh5h5jvm3wj0w7",
+          "tags": [
+            "m0",
+            "placeholder"
+          ],
+          "webUrl": "https://www.nrvnaverse.com/worlds/placeholder-fashion-culture-brand"
+        }
+      ],
+      "gates": [],
+      "id": "dst_9c4wxtpec8awsx1q",
+      "kind": "district",
+      "minimumAge": null,
+      "name": "Fashion / Culture District",
+      "slug": "fashion-culture",
+      "spatialUrl": "https://worlds.nrvnaverse.com/?destination=dst_9c4wxtpec8awsx1q",
+      "tags": [
+        "m0",
+        "placeholder",
+        "district"
+      ],
+      "webUrl": "https://www.nrvnaverse.com/worlds/fashion-culture"
+    },
+    {
+      "categories": [
+        "music"
+      ],
+      "description": "M0 placeholder. Spatial district for artists, venues and music experiences.",
+      "destinations": [
+        {
+          "categories": [
+            "music",
+            "artist"
+          ],
+          "description": "M0 placeholder artist destination inside the Music District.",
+          "gates": [],
+          "id": "dst_1qtfn9qjg9kf6jyd",
+          "kind": "artist",
+          "minimumAge": null,
+          "name": "Placeholder Artist",
+          "slug": "placeholder-artist",
+          "spatialUrl": "https://worlds.nrvnaverse.com/?destination=dst_1qtfn9qjg9kf6jyd",
+          "tags": [
+            "m0",
+            "placeholder"
+          ],
+          "webUrl": "https://www.nrvnaverse.com/worlds/placeholder-artist"
+        }
+      ],
+      "gates": [],
+      "id": "dst_gm3xs4a3tws7bgh3",
+      "kind": "district",
+      "minimumAge": null,
+      "name": "Music District",
+      "slug": "music",
+      "spatialUrl": "https://worlds.nrvnaverse.com/?destination=dst_gm3xs4a3tws7bgh3",
+      "tags": [
+        "m0",
+        "placeholder",
+        "district"
+      ],
+      "webUrl": "https://www.nrvnaverse.com/worlds/music"
+    }
+  ],
+  "hub": {
+    "categories": [
+      "hub"
+    ],
+    "description": "M0 placeholder. Arrival point of THE NRVNAVerse and the navigation root for the districts.",
+    "gates": [],
+    "id": "dst_7g19n1vm9ackw8a0",
+    "kind": "hub",
+    "minimumAge": null,
+    "name": "THE NRVNAVerse Hub",
+    "slug": "hub",
+    "spatialUrl": "https://worlds.nrvnaverse.com/?destination=dst_7g19n1vm9ackw8a0",
+    "tags": [
+      "m0",
+      "placeholder"
+    ],
+    "webUrl": "https://www.nrvnaverse.com/worlds/hub"
+  },
+  "schemaVersion": 1,
+  "unassigned": []
+}

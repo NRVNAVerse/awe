@@ -1,0 +1,44 @@
+{
+  "compilerOptions": {
+    "target": "ES2017",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "allowJs": true,
+    "allowImportingTsExtensions": true,
+    "skipLibCheck": true,
+    "experimentalDecorators": true,
+    "strict": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "react-jsx",
+    "incremental": true,
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
+    "paths": {
+      "@/*": ["./src/*"],
+      "@nrvnaverse/manifest": ["../../packages/nrvna-manifest/src/index.ts"],
+      "@nrvnaverse/manifest/*": ["../../packages/nrvna-manifest/*"],
+      "@oncyberio/engine": ["../../packages/engine/src/index.ts"],
+      "@oncyberio/engine/*": ["../../packages/engine/src/*"],
+      "@oncyberio/engine-edit": ["../../packages/engine-edit/src/index.ts"],
+      "@oncyberio/engine-edit/*": ["../../packages/engine-edit/src/*"],
+      "@oncyberio/studio": ["../../packages/studio/src/index.ts"],
+      "@oncyberio/studio/*": ["../../packages/studio/src/*"]
+    }
+  },
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    ".next/dev/types/**/*.ts",
+    "**/*.mts"
+  ],
+  "exclude": ["node_modules"]
+}

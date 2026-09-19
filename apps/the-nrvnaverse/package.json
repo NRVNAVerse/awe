@@ -1,0 +1,35 @@
+{
+  "name": "the-nrvnaverse",
+  "version": "0.1.0",
+  "private": true,
+  "description": "THE NRVNAVerse — spatial interface application shell (worlds.nrvnaverse.com).",
+  "scripts": {
+    "dev": "next dev --turbopack",
+    "build": "next build --turbopack",
+    "start": "next start",
+    "check": "tsc --noEmit",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@dimforge/rapier3d": "0.11.2",
+    "@nrvnaverse/manifest": "workspace:*",
+    "@oncyberio/engine": "workspace:*",
+    "@oncyberio/engine-edit": "workspace:*",
+    "@oncyberio/studio": "workspace:*",
+    "next": "16.1.6",
+    "react": "19.2.4",
+    "react-dom": "19.2.4",
+    "three": "^0.170.0"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "@types/three": "^0.170.0",
+    "sass": "^1.69.5",
+    "tailwindcss": "^4",
+    "typescript": "^5",
+    "vitest": "^4.0.18"
+  }
+}

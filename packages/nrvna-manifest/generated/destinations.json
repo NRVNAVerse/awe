@@ -1,0 +1,492 @@
+{
+  "destinations": [
+    {
+      "ageRestriction": null,
+      "analyticsId": "dst_1qtfn9qjg9kf6jyd",
+      "auth": {
+        "roles": []
+      },
+      "capabilities": [
+        "entertainment",
+        "info-cards",
+        "audio"
+      ],
+      "categories": [
+        "music",
+        "artist"
+      ],
+      "commerceRefs": [],
+      "description": "M0 placeholder artist destination inside the Music District.",
+      "devices": [
+        "desktop",
+        "mobile",
+        "tablet"
+      ],
+      "gates": [],
+      "id": "dst_1qtfn9qjg9kf6jyd",
+      "jurisdictions": {
+        "note": null,
+        "policy": "unrestricted",
+        "regions": []
+      },
+      "kind": "artist",
+      "media": {
+        "heroUrl": null,
+        "logoUrl": null,
+        "thumbnailUrl": null
+      },
+      "name": "Placeholder Artist",
+      "owner": {
+        "name": "Placeholder Artist",
+        "organizationId": null,
+        "webUrl": null
+      },
+      "previousSlugs": [],
+      "primaryDistrictId": "dst_gm3xs4a3tws7bgh3",
+      "relatedDestinationIds": [
+        "dst_gm3xs4a3tws7bgh3"
+      ],
+      "schemaVersion": 1,
+      "slug": "placeholder-artist",
+      "spatialDestination": {
+        "platform": "the-nrvnaverse",
+        "worldId": "the-nrvnaverse"
+      },
+      "spatialUrl": "https://worlds.nrvnaverse.com/?destination=dst_1qtfn9qjg9kf6jyd",
+      "status": "active",
+      "tags": [
+        "m0",
+        "placeholder"
+      ],
+      "updatedAt": "2026-09-19T00:00:00Z",
+      "webUrl": "https://www.nrvnaverse.com/worlds/placeholder-artist"
+    },
+    {
+      "ageRestriction": {
+        "minimumAge": 21
+      },
+      "analyticsId": "dst_441dtdafq3e3ehjn",
+      "auth": {
+        "roles": []
+      },
+      "capabilities": [
+        "discovery",
+        "education",
+        "entertainment"
+      ],
+      "categories": [
+        "cannabis"
+      ],
+      "commerceRefs": [],
+      "description": "M0 placeholder. Separately gated 21+ spatial district. NRVNAVerse does not sell or distribute cannabis; the gate configuration below is a placeholder, not legal policy.",
+      "devices": [
+        "desktop",
+        "mobile",
+        "tablet"
+      ],
+      "gates": [
+        {
+          "config": {
+            "enforced": false,
+            "minimumAge": 21,
+            "policyRef": "nrvna-age21-placeholder",
+            "verification": "placeholder"
+          },
+          "kind": "age21"
+        }
+      ],
+      "id": "dst_441dtdafq3e3ehjn",
+      "jurisdictions": {
+        "note": "M0 placeholder. Jurisdiction policy is configured at the application/content layer and is not asserted here (Landmark section 9).",
+        "policy": "placeholder",
+        "regions": []
+      },
+      "kind": "district",
+      "media": {
+        "heroUrl": null,
+        "logoUrl": null,
+        "thumbnailUrl": null
+      },
+      "name": "21+ Cannabis District",
+      "owner": {
+        "name": "NRVNAVerse",
+        "organizationId": null,
+        "webUrl": "https://www.nrvnaverse.com/"
+      },
+      "previousSlugs": [],
+      "primaryDistrictId": null,
+      "relatedDestinationIds": [
+        "dst_7g19n1vm9ackw8a0"
+      ],
+      "schemaVersion": 1,
+      "slug": "cannabis-21",
+      "spatialDestination": {
+        "platform": "the-nrvnaverse",
+        "worldId": "the-nrvnaverse"
+      },
+      "spatialUrl": "https://worlds.nrvnaverse.com/?destination=dst_441dtdafq3e3ehjn",
+      "status": "active",
+      "tags": [
+        "m0",
+        "placeholder",
+        "district",
+        "age-21"
+      ],
+      "updatedAt": "2026-09-19T00:00:00Z",
+      "webUrl": "https://www.nrvnaverse.com/worlds/cannabis-21"
+    },
+    {
+      "ageRestriction": null,
+      "analyticsId": "dst_7g19n1vm9ackw8a0",
+      "auth": {
+        "roles": []
+      },
+      "capabilities": [
+        "discovery",
+        "entertainment",
+        "education"
+      ],
+      "categories": [
+        "hub"
+      ],
+      "commerceRefs": [],
+      "description": "M0 placeholder. Arrival point of THE NRVNAVerse and the navigation root for the districts.",
+      "devices": [
+        "desktop",
+        "mobile",
+        "tablet"
+      ],
+      "gates": [],
+      "id": "dst_7g19n1vm9ackw8a0",
+      "jurisdictions": {
+        "note": null,
+        "policy": "unrestricted",
+        "regions": []
+      },
+      "kind": "hub",
+      "media": {
+        "heroUrl": null,
+        "logoUrl": null,
+        "thumbnailUrl": null
+      },
+      "name": "THE NRVNAVerse Hub",
+      "owner": {
+        "name": "NRVNAVerse",
+        "organizationId": null,
+        "webUrl": "https://www.nrvnaverse.com/"
+      },
+      "previousSlugs": [],
+      "primaryDistrictId": null,
+      "relatedDestinationIds": [
+        "dst_gm3xs4a3tws7bgh3",
+        "dst_9c4wxtpec8awsx1q",
+        "dst_441dtdafq3e3ehjn"
+      ],
+      "schemaVersion": 1,
+      "slug": "hub",
+      "spatialDestination": {
+        "platform": "the-nrvnaverse",
+        "worldId": "the-nrvnaverse"
+      },
+      "spatialUrl": "https://worlds.nrvnaverse.com/?destination=dst_7g19n1vm9ackw8a0",
+      "status": "active",
+      "tags": [
+        "m0",
+        "placeholder"
+      ],
+      "updatedAt": "2026-09-19T00:00:00Z",
+      "webUrl": "https://www.nrvnaverse.com/worlds/hub"
+    },
+    {
+      "ageRestriction": null,
+      "analyticsId": "dst_9c4wxtpec8awsx1q",
+      "auth": {
+        "roles": []
+      },
+      "capabilities": [
+        "discovery",
+        "entertainment",
+        "education",
+        "commerce"
+      ],
+      "categories": [
+        "fashion",
+        "culture"
+      ],
+      "commerceRefs": [],
+      "description": "M0 placeholder. Spatial district for fashion and culture brands and experiences.",
+      "devices": [
+        "desktop",
+        "mobile",
+        "tablet"
+      ],
+      "gates": [],
+      "id": "dst_9c4wxtpec8awsx1q",
+      "jurisdictions": {
+        "note": null,
+        "policy": "unrestricted",
+        "regions": []
+      },
+      "kind": "district",
+      "media": {
+        "heroUrl": null,
+        "logoUrl": null,
+        "thumbnailUrl": null
+      },
+      "name": "Fashion / Culture District",
+      "owner": {
+        "name": "NRVNAVerse",
+        "organizationId": null,
+        "webUrl": "https://www.nrvnaverse.com/"
+      },
+      "previousSlugs": [],
+      "primaryDistrictId": null,
+      "relatedDestinationIds": [
+        "dst_7g19n1vm9ackw8a0"
+      ],
+      "schemaVersion": 1,
+      "slug": "fashion-culture",
+      "spatialDestination": {
+        "platform": "the-nrvnaverse",
+        "worldId": "the-nrvnaverse"
+      },
+      "spatialUrl": "https://worlds.nrvnaverse.com/?destination=dst_9c4wxtpec8awsx1q",
+      "status": "active",
+      "tags": [
+        "m0",
+        "placeholder",
+        "district"
+      ],
+      "updatedAt": "2026-09-19T00:00:00Z",
+      "webUrl": "https://www.nrvnaverse.com/worlds/fashion-culture"
+    },
+    {
+      "ageRestriction": null,
+      "analyticsId": "dst_gm3xs4a3tws7bgh3",
+      "auth": {
+        "roles": []
+      },
+      "capabilities": [
+        "discovery",
+        "entertainment",
+        "education",
+        "commerce"
+      ],
+      "categories": [
+        "music"
+      ],
+      "commerceRefs": [],
+      "description": "M0 placeholder. Spatial district for artists, venues and music experiences.",
+      "devices": [
+        "desktop",
+        "mobile",
+        "tablet"
+      ],
+      "gates": [],
+      "id": "dst_gm3xs4a3tws7bgh3",
+      "jurisdictions": {
+        "note": null,
+        "policy": "unrestricted",
+        "regions": []
+      },
+      "kind": "district",
+      "media": {
+        "heroUrl": null,
+        "logoUrl": null,
+        "thumbnailUrl": null
+      },
+      "name": "Music District",
+      "owner": {
+        "name": "NRVNAVerse",
+        "organizationId": null,
+        "webUrl": "https://www.nrvnaverse.com/"
+      },
+      "previousSlugs": [],
+      "primaryDistrictId": null,
+      "relatedDestinationIds": [
+        "dst_7g19n1vm9ackw8a0"
+      ],
+      "schemaVersion": 1,
+      "slug": "music",
+      "spatialDestination": {
+        "platform": "the-nrvnaverse",
+        "worldId": "the-nrvnaverse"
+      },
+      "spatialUrl": "https://worlds.nrvnaverse.com/?destination=dst_gm3xs4a3tws7bgh3",
+      "status": "active",
+      "tags": [
+        "m0",
+        "placeholder",
+        "district"
+      ],
+      "updatedAt": "2026-09-19T00:00:00Z",
+      "webUrl": "https://www.nrvnaverse.com/worlds/music"
+    },
+    {
+      "ageRestriction": null,
+      "analyticsId": "dst_tgfh5h5jvm3wj0w7",
+      "auth": {
+        "roles": []
+      },
+      "capabilities": [
+        "entertainment",
+        "education",
+        "info-cards",
+        "commerce-redirect"
+      ],
+      "categories": [
+        "fashion",
+        "culture",
+        "brand"
+      ],
+      "commerceRefs": [
+        {
+          "kind": "storefront",
+          "provider": "placeholder",
+          "ref": "placeholder-storefront"
+        }
+      ],
+      "description": "M0 placeholder brand destination inside the Fashion / Culture District.",
+      "devices": [
+        "desktop",
+        "mobile",
+        "tablet"
+      ],
+      "gates": [],
+      "id": "dst_tgfh5h5jvm3wj0w7",
+      "jurisdictions": {
+        "note": null,
+        "policy": "unrestricted",
+        "regions": []
+      },
+      "kind": "brand",
+      "media": {
+        "heroUrl": null,
+        "logoUrl": null,
+        "thumbnailUrl": null
+      },
+      "name": "Placeholder Fashion / Culture Brand",
+      "owner": {
+        "name": "Placeholder Brand",
+        "organizationId": null,
+        "webUrl": null
+      },
+      "previousSlugs": [],
+      "primaryDistrictId": "dst_9c4wxtpec8awsx1q",
+      "relatedDestinationIds": [
+        "dst_9c4wxtpec8awsx1q"
+      ],
+      "schemaVersion": 1,
+      "slug": "placeholder-fashion-culture-brand",
+      "spatialDestination": {
+        "platform": "the-nrvnaverse",
+        "worldId": "the-nrvnaverse"
+      },
+      "spatialUrl": "https://worlds.nrvnaverse.com/?destination=dst_tgfh5h5jvm3wj0w7",
+      "status": "active",
+      "tags": [
+        "m0",
+        "placeholder"
+      ],
+      "updatedAt": "2026-09-19T00:00:00Z",
+      "webUrl": "https://www.nrvnaverse.com/worlds/placeholder-fashion-culture-brand"
+    },
+    {
+      "ageRestriction": {
+        "minimumAge": 21
+      },
+      "analyticsId": "dst_vfkz626za0vra89j",
+      "auth": {
+        "roles": []
+      },
+      "capabilities": [
+        "education",
+        "info-cards",
+        "video"
+      ],
+      "categories": [
+        "cannabis",
+        "brand"
+      ],
+      "commerceRefs": [],
+      "description": "M0 placeholder brand destination inside the 21+ Cannabis District. Education and discovery only; no cannabis checkout exists or is planned here.",
+      "devices": [
+        "desktop",
+        "mobile",
+        "tablet"
+      ],
+      "gates": [
+        {
+          "config": {
+            "enforced": false,
+            "minimumAge": 21,
+            "policyRef": "nrvna-age21-placeholder",
+            "verification": "placeholder"
+          },
+          "kind": "age21"
+        }
+      ],
+      "id": "dst_vfkz626za0vra89j",
+      "jurisdictions": {
+        "note": "M0 placeholder. Jurisdiction policy is configured at the application/content layer and is not asserted here (Landmark section 9).",
+        "policy": "placeholder",
+        "regions": []
+      },
+      "kind": "brand",
+      "media": {
+        "heroUrl": null,
+        "logoUrl": null,
+        "thumbnailUrl": null
+      },
+      "name": "NRVNA Farms Placeholder",
+      "owner": {
+        "name": "NRVNA Farms (placeholder)",
+        "organizationId": null,
+        "webUrl": null
+      },
+      "previousSlugs": [],
+      "primaryDistrictId": "dst_441dtdafq3e3ehjn",
+      "relatedDestinationIds": [
+        "dst_441dtdafq3e3ehjn"
+      ],
+      "schemaVersion": 1,
+      "slug": "nrvna-farms-placeholder",
+      "spatialDestination": {
+        "platform": "the-nrvnaverse",
+        "worldId": "the-nrvnaverse"
+      },
+      "spatialUrl": "https://worlds.nrvnaverse.com/?destination=dst_vfkz626za0vra89j",
+      "status": "active",
+      "tags": [
+        "m0",
+        "placeholder",
+        "age-21"
+      ],
+      "updatedAt": "2026-09-19T00:00:00Z",
+      "webUrl": "https://www.nrvnaverse.com/worlds/nrvna-farms-placeholder"
+    }
+  ],
+  "hubId": "dst_7g19n1vm9ackw8a0",
+  "index": {
+    "byAnalyticsId": {
+      "dst_1qtfn9qjg9kf6jyd": "dst_1qtfn9qjg9kf6jyd",
+      "dst_441dtdafq3e3ehjn": "dst_441dtdafq3e3ehjn",
+      "dst_7g19n1vm9ackw8a0": "dst_7g19n1vm9ackw8a0",
+      "dst_9c4wxtpec8awsx1q": "dst_9c4wxtpec8awsx1q",
+      "dst_gm3xs4a3tws7bgh3": "dst_gm3xs4a3tws7bgh3",
+      "dst_tgfh5h5jvm3wj0w7": "dst_tgfh5h5jvm3wj0w7",
+      "dst_vfkz626za0vra89j": "dst_vfkz626za0vra89j"
+    },
+    "byPreviousSlug": {},
+    "bySlug": {
+      "cannabis-21": "dst_441dtdafq3e3ehjn",
+      "fashion-culture": "dst_9c4wxtpec8awsx1q",
+      "hub": "dst_7g19n1vm9ackw8a0",
+      "music": "dst_gm3xs4a3tws7bgh3",
+      "nrvna-farms-placeholder": "dst_vfkz626za0vra89j",
+      "placeholder-artist": "dst_1qtfn9qjg9kf6jyd",
+      "placeholder-fashion-culture-brand": "dst_tgfh5h5jvm3wj0w7"
+    }
+  },
+  "schemaVersion": 1
+}
