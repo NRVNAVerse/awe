@@ -6,7 +6,8 @@
  *     public/data/static-scene.json            (compatibility full scene, what Step 2A loads today)
  *     public/data/spatial/global-scene.json    (components that exist independent of any chunk)
  *     public/data/spatial/chunks/<key>.json    (one file per logical M0 chunk)
- *     public/data/spatial/spatial-index.json   (derived physical lookup: destinationId → chunkKey → spawn)
+ *     public/data/spatial/spatial-index.json   (derived physical lookup: destinationId → chunkKey → spawn,
+ *                                               plus physical portal sensor → destinationId bindings since 2B.3)
  *
  * Ownership rules (D-004, D-006, D-016):
  * - The destination manifest (`packages/nrvna-manifest`) is canonical for destination IDENTITY
@@ -18,6 +19,12 @@
  *   implementation detail and never identifies a destination.
  * - Gates are deliberately NOT representable here (`unexpected-field` rejects any extra key), so
  *   gate truth can only come from the manifest.
+ * - Portals (M0 Step 2B.3) are an OPTIONAL, additive part of schema v1: `portals[]` binds a
+ *   physical sensor component (owned by exactly one chunk) to the stable destination id it
+ *   navigates to. A binding is a reference only — no coordinates, spawn, URL, gate or metadata;
+ *   the validator checks that the referenced component, chunk and destination exist and that the
+ *   component is an enabled sensor, and never copies gate truth. A source without `portals` is
+ *   still valid and yields an empty portal set.
  *
  * This module has no I/O and no dependencies. `cli.mjs` wires it to the file system; the vitest
  * suite imports it directly. Determinism: no timestamps, no random values, no machine paths,
@@ -48,10 +55,11 @@ export const OUTPUT = Object.freeze({
   chunksDir: "spatial/chunks",
 });
 
-const CONFIG_KEYS = ["schemaVersion", "worldId", "scene", "global", "chunks", "placements"];
+const CONFIG_KEYS = ["schemaVersion", "worldId", "scene", "global", "chunks", "placements", "portals"];
 const GLOBAL_KEYS = ["componentIds"];
 const CHUNK_KEYS = ["key", "label", "componentIds"];
 const PLACEMENT_KEYS = ["destinationId", "chunkKey", "spawn"];
+const PORTAL_KEYS = ["componentId", "chunkKey", "destinationId"];
 const SPAWN_KEYS = ["position", "yaw"];
 const POSITION_KEYS = ["x", "y", "z"];
 
@@ -60,6 +68,7 @@ const POSITION_KEYS = ["x", "y", "z"];
  * @typedef {{ position: Position; yaw: number }} Spawn
  * @typedef {{ key: string; label: string; componentIds: string[] }} ChunkConfig
  * @typedef {{ destinationId: string; chunkKey: string; spawn: Spawn }} PlacementConfig
+ * @typedef {{ componentId: string; chunkKey: string; destinationId: string }} PortalConfig
  * @typedef {{
  *   schemaVersion: number;
  *   worldId: string;
@@ -67,6 +76,7 @@ const POSITION_KEYS = ["x", "y", "z"];
  *   global: { componentIds: string[] };
  *   chunks: ChunkConfig[];
  *   placements: PlacementConfig[];
+ *   portals?: PortalConfig[];
  * }} SpatialConfig
  * @typedef {{ components: Record<string, Record<string, unknown>>; [key: string]: unknown }} SceneFile
  * @typedef {{ id: string; status: string; spatialDestination: { platform: string; worldId?: string } | null }} DestinationRecord
@@ -74,7 +84,7 @@ const POSITION_KEYS = ["x", "y", "z"];
  * @typedef {{ config: unknown; scene: unknown; destinations: unknown }} SpatialSourceInput
  * @typedef {{ code: string; path: string; message: string }} SpatialValidationError
  * @typedef {{ ok: true; errors: [] } | { ok: false; errors: SpatialValidationError[] }} SpatialValidationResult
- * @typedef {{ files: Record<string, string>; chunkKeys: string[]; destinationIds: string[] }} SpatialArtifacts
+ * @typedef {{ files: Record<string, string>; chunkKeys: string[]; destinationIds: string[]; portalComponentIds: string[] }} SpatialArtifacts
  */
 
 /**
@@ -269,6 +279,61 @@ export function validateSpatialSource(input) {
     });
   }
 
+  // --- portals (optional, additive; M0 Step 2B.3) ---
+  // physical sensor component → stable destination id. References only: the component must be
+  // authored, owned by the declared chunk (never global) and configured as an enabled sensor; the
+  // destination must be a THE NRVNAVerse destination of this world. Several portals may target
+  // the same destination, a portal may target a destination in its own chunk, and a portal may
+  // target a gated destination — the gate is the manifest's truth and is evaluated at travel time.
+  if (config.portals !== undefined) {
+    if (!Array.isArray(config.portals)) {
+      fail("invalid-portals", "config.portals", "portals must be an array of { componentId, chunkKey, destinationId }");
+    } else {
+      /** @type {Set<string>} */
+      const portalIds = new Set();
+      config.portals.forEach((portal, i) => {
+        const path = `config.portals[${i}]`;
+        if (!isRecord(portal)) return fail("invalid-portal", path, "portal must be an object { componentId, chunkKey, destinationId }");
+        for (const key of Object.keys(portal)) {
+          if (!PORTAL_KEYS.includes(key)) fail("unexpected-field", `${path}.${key}`, `unexpected field "${key}" — a portal is componentId → chunkKey → destinationId only (no coordinates, spawns, URLs, gates or metadata)`);
+        }
+        const { componentId, chunkKey, destinationId } = portal;
+        if (!isNonEmptyString(componentId)) {
+          fail("invalid-component-ref", `${path}.componentId`, "portal componentId must be a non-empty string");
+        } else if (portalIds.has(componentId)) {
+          fail("duplicate-portal", `${path}.componentId`, `portal component "${componentId}" is bound more than once`);
+        } else {
+          portalIds.add(componentId);
+          const component = sceneComponents[componentId];
+          const owner = owners.get(componentId);
+          if (!component) {
+            fail("unknown-component", `${path}.componentId`, `portal component "${componentId}" does not exist in the scene`);
+          } else {
+            if (owner === "global") fail("global-portal-component", `${path}.componentId`, `portal component "${componentId}" is global; a portal must belong to the chunk in which it is encountered`);
+            if (!isEnabledSensor(component)) fail("portal-not-sensor", `${path}.componentId`, `portal component "${componentId}" must have an enabled collider with isSensor: true`);
+          }
+          if (!isNonEmptyString(chunkKey) || !chunkKeys.has(chunkKey)) {
+            fail("unknown-chunk", `${path}.chunkKey`, `chunk ${JSON.stringify(chunkKey)} is not declared in config.chunks`);
+          } else if (component && owner !== undefined && owner !== "global" && owner !== `chunk:${chunkKey}`) {
+            fail("portal-chunk-mismatch", `${path}.chunkKey`, `portal component "${componentId}" is owned by ${owner}, not by chunk "${chunkKey}"`);
+          }
+        }
+        if (!isNonEmptyString(destinationId) || !DESTINATION_ID_PATTERN.test(destinationId)) {
+          fail("invalid-destination-id", `${path}.destinationId`, `destinationId ${JSON.stringify(destinationId)} is not a stable destination id`);
+        } else {
+          const destination = destinationById.get(destinationId);
+          if (!destination) {
+            fail("unknown-destination", `${path}.destinationId`, `portal destination "${destinationId}" does not exist in the canonical destination set`);
+          } else if (!destination.spatialDestination || destination.spatialDestination.platform !== THE_NRVNAVERSE_PLATFORM) {
+            fail("portal-not-the-nrvnaverse", `${path}.destinationId`, `portal destination "${destinationId}" is not a THE NRVNAVerse spatial destination`);
+          } else if (worldId !== null && destination.spatialDestination.worldId !== worldId) {
+            fail("world-id-mismatch", `${path}.destinationId`, `portal destination "${destinationId}" belongs to world ${JSON.stringify(destination.spatialDestination.worldId)}, config world is "${worldId}"`);
+          }
+        }
+      });
+    }
+  }
+
   // Every active THE NRVNAVerse destination in this world must have exactly one placement.
   let worldDestinations = 0;
   for (const destination of destinationById.values()) {
@@ -309,6 +374,16 @@ function validateSpawn(spawn, path, fail) {
     }
   }
   if (!isFiniteNumber(yaw)) fail("invalid-orientation", `${path}.yaw`, "spawn.yaw (orientation around Y, radians) must be a finite number");
+}
+
+/**
+ * A portal trigger must be an official sensor collider: enabled, `isSensor: true`. The rigid body
+ * type and collider shape are left to the engine factories (any enabled sensor shape works).
+ * @param {Record<string, unknown>} component
+ */
+function isEnabledSensor(component) {
+  const collider = component.collider;
+  return isRecord(collider) && collider.enabled === true && collider.isSensor === true;
 }
 
 /**
@@ -379,15 +454,26 @@ export function generateSpatialArtifacts(input) {
       spawn: { position: { x: p.spawn.position.x, y: p.spawn.position.y, z: p.spawn.position.z }, yaw: p.spawn.yaw },
     };
   }
+  // E. Portal bindings — physical sensor component → stable destination id, keyed by the physical
+  //    component id (never identity) and sorted for determinism. No coordinates, gates or metadata:
+  //    the sensor geometry lives in the chunk payload, gate truth in the manifest.
+  const portals = [...(config.portals ?? [])].sort((a, b) => compareStrings(a.componentId, b.componentId));
+  /** @type {Record<string, { chunkKey: string; destinationId: string }>} */
+  const portalIndex = {};
+  for (const portal of portals) {
+    portalIndex[portal.componentId] = { chunkKey: portal.chunkKey, destinationId: portal.destinationId };
+  }
+
   files[OUTPUT.spatialIndex] = serializeArtifact({
     schemaVersion: SPATIAL_SCHEMA_VERSION,
     worldId: config.worldId,
     globalSceneUrl: `${DATA_URL_PREFIX}/${OUTPUT.globalScene}`,
     chunks: chunkIndex,
     destinations: destinationIndex,
+    portals: portalIndex,
   });
 
-  return { files, chunkKeys: chunks.map((c) => c.key), destinationIds: placements.map((p) => p.destinationId) };
+  return { files, chunkKeys: chunks.map((c) => c.key), destinationIds: placements.map((p) => p.destinationId), portalComponentIds: portals.map((p) => p.componentId) };
 }
 
 /**

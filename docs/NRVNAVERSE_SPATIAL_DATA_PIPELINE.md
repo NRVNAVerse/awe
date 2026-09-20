@@ -1,14 +1,14 @@
-# NRVNAVerse Spatial Data Pipeline — M0 Step 2B.1
+# NRVNAVerse Spatial Data Pipeline — M0 Step 2B.1 + 2B.3
 
 | Field | Value |
 |---|---|
-| **Status** | VERIFIED (2026-09-19) — authoritative spatial source, validator, deterministic generator, generated global scene + 4 chunks + spatial index, placement registry migrated to generated data, tests, browser smoke. **Since M0 Step 2B.2 the runtime boots from the generated global scene and loads exactly one chunk selectively** (see [`NRVNAVERSE_SPATIAL_RUNTIME.md`](./NRVNAVERSE_SPATIAL_RUNTIME.md)); the compatibility full scene is no longer requested by the runtime. |
+| **Status** | VERIFIED (2026-09-19) — authoritative spatial source, validator, deterministic generator, generated global scene + 4 chunks + spatial index, placement registry migrated to generated data, tests, browser smoke. **Since M0 Step 2B.2 the runtime boots from the generated global scene and loads exactly one chunk selectively** (see [`NRVNAVERSE_SPATIAL_RUNTIME.md`](./NRVNAVERSE_SPATIAL_RUNTIME.md)); the compatibility full scene is no longer requested by the runtime. **Since M0 Step 2B.3 the source may declare physical portal bindings (`portals[]`, optional, additive) and the index carries a generated `portals` section** (§14). |
 | **App** | `apps/the-nrvnaverse` (THE NRVNAVerse, spatial interface) |
 | **Builds on** | [`NRVNAVERSE_SPATIAL_RUNTIME.md`](./NRVNAVERSE_SPATIAL_RUNTIME.md) (M0 Step 2A) · [`NRVNAVERSE_DESTINATION_MANIFEST.md`](./NRVNAVERSE_DESTINATION_MANIFEST.md) (M0 Step 1) |
 | **Governing decisions** | D-004 (stable ids are identity), D-006 (auth ≠ gates), D-013 (Ghost boundary), D-014 (no dependency changes), D-016 (application-layer chunk orchestration); Landmark §6, §7, §9 |
-| **Not in scope here** | runtime chunk loading/unloading and `loadingChunk` (done in **2B.2**, documented in the runtime doc), portal sensors (2B.3), prefetch/cache (2B.4), age verification, gate persistence, jurisdiction policy |
+| **Not in scope here** | runtime chunk loading/unloading and `loadingChunk` (done in **2B.2**) and the portal controller / sensor seam (done in **2B.3**) — both documented in the runtime doc; prefetch/cache (2B.4), age verification, gate persistence, jurisdiction policy |
 
-M0 is **not** complete after Step 2B.1/2B.2; the Landmark stays at v0.1. No new architectural decision was needed — D-004, D-006 and D-016 govern this work.
+M0 is **not** complete after Step 2B.1/2B.2/2B.3; the Landmark stays at v0.1. No new architectural decision was needed — D-004, D-006, D-013 and D-016 govern this work.
 
 ---
 
@@ -16,8 +16,8 @@ M0 is **not** complete after Step 2B.1/2B.2; the Landmark stays at v0.1. No new 
 
 ```
 AUTHORITATIVE PHYSICAL SOURCE (hand-edited, committed)
-  apps/the-nrvnaverse/spatial/source/scene.m0.json            complete authored M0 scene (all 33 components)
-  apps/the-nrvnaverse/spatial/source/spatial-config.m0.json   world id · global membership · chunks · placements
+  apps/the-nrvnaverse/spatial/source/scene.m0.json            complete authored M0 scene (all 40 components: 33 + 7 portal sensors)
+  apps/the-nrvnaverse/spatial/source/spatial-config.m0.json   world id · global membership · chunks · placements · portals (2B.3)
         │
         ▼  validate  (reads packages/nrvna-manifest/generated/destinations.json — canonical, read-only)
         ▼  generate  (deterministic; node scripts/spatial/cli.mjs)
@@ -25,7 +25,7 @@ GENERATED RUNTIME ARTIFACTS (derived, committed, never hand-edited)
   apps/the-nrvnaverse/public/data/static-scene.json               compatibility FULL scene  ← validation/debugging only since 2B.2
   apps/the-nrvnaverse/public/data/spatial/global-scene.json       components independent of any chunk  ← runtime boot source (2B.2)
   apps/the-nrvnaverse/public/data/spatial/chunks/<key>.json       one file per logical M0 chunk (4)     ← fetched one at a time, after the gate (2B.2)
-  apps/the-nrvnaverse/public/data/spatial/spatial-index.json      destinationId → chunkKey → spawn · chunk data URLs · globalSceneUrl
+  apps/the-nrvnaverse/public/data/spatial/spatial-index.json      destinationId → chunkKey → spawn · chunk data URLs · globalSceneUrl · portals: componentId → { chunkKey, destinationId } (2B.3)
         │
         ▼
 RUNTIME (2B.1, historical): index → placement registry → same-scene teleport in the full compatibility scene
@@ -49,7 +49,7 @@ No CMS, no generalized world-authoring platform, no automatic spatial-grid parti
 |---|---|---|---|
 | Destination **identity** and metadata: `id`, `slug`, `name`, `webUrl`, `kind`, `primaryDistrictId`, `categories`, `tags`, `gates`, `ageRestriction`, `auth.roles`, `analyticsId`, relationships, status | `packages/nrvna-manifest/manifests/*.json` | **yes** | never coordinates, chunk keys, spawns (validator rejects extra fields; tested) |
 | `destinations.json`, `directory.json` | `packages/nrvna-manifest/generated/` | no (derived) | — |
-| **Physical organisation**: which authored components are global, which chunk owns which components, where each destination spawns | `apps/the-nrvnaverse/spatial/source/spatial-config.m0.json` | **authoritative for physical placement only** | never names, URLs, categories, tags, analytics ids, gates, age policy, business relationships (`unexpected-field` rejects any extra key; tested) |
+| **Physical organisation**: which authored components are global, which chunk owns which components, where each destination spawns, **which physical sensor component navigates to which stable id** (2B.3) | `apps/the-nrvnaverse/spatial/source/spatial-config.m0.json` | **authoritative for physical placement and portal bindings only** | never names, URLs, categories, tags, analytics ids, gates, age policy, business relationships (`unexpected-field` rejects any extra key; tested) |
 | Authored scene geometry | `apps/the-nrvnaverse/spatial/source/scene.m0.json` | authoritative for geometry | scene components only |
 | Compatibility scene, global scene, chunk files, spatial index | `apps/the-nrvnaverse/public/data/` | no (derived) | physical data only |
 
@@ -58,7 +58,9 @@ Direction of resolution (D-004):
 ```
 destinationId ──manifest──▶ identity, gates, worldId
 destinationId ──spatial config / index──▶ chunkKey ──▶ spawn      ALLOWED
+portal componentId ──spatial config / index──▶ destinationId       ALLOWED (a sensor handle referencing identity; 2B.3)
 chunkKey ──▶ destination identity                                  NEVER
+portal componentId / position ──▶ destination identity             NEVER (the component id is not identity; the binding is a reference)
 ```
 
 Chunk keys (`hub`, `music`, `fashion-culture`, `cannabis-21`) are replaceable implementation details. They are never written to a URL (`?chunk=` is never emitted — tested since Step 1), never used as identity, and Ghost's 10 000-unit spatial-grid convention was not adopted. `portals-index.json` does not exist and is not generated.
@@ -78,22 +80,26 @@ Chunk keys (`hub`, `music`, `fashion-culture`, `cannabis-21`) are replaceable im
   "placements": [
     { "destinationId": "dst_…", "chunkKey": "hub", "spawn": { "position": { "x": 0, "y": 1, "z": 6 }, "yaw": 0 } },
     …
+  ],
+  "portals": [                                   // OPTIONAL, additive (2B.3): omit for an empty portal set
+    { "componentId": "portal-hub-music", "chunkKey": "hub", "destinationId": "dst_…" },
+    …
   ]
 }
 ```
 
-`yaw` is the orientation around the world Y axis in radians (`0` faces −Z, the engine's avatar forward) — the same spawn shape `AweSpatialRuntime.placeVisitor` has used since Step 2A. Every key outside this shape is rejected.
+`yaw` is the orientation around the world Y axis in radians (`0` faces −Z, the engine's avatar forward) — the same spawn shape `AweSpatialRuntime.placeVisitor` has used since Step 2A. Every key outside this shape is rejected. A portal is `componentId → chunkKey → destinationId` and nothing else (no coordinates, spawn, URL, gate, name or category — `unexpected-field`); the schema version stays **1** because the field is optional and every committed consumer parses an index without it (tested).
 
 ## 4. Global component model (derived from the actual Step 2A scene, not from Ghost's sets)
 
-The 33 authored components are accounted for exactly once:
+The 40 authored components (33 + 7 portal sensors since 2B.3) are accounted for exactly once:
 
 | Owner | Components | Reason |
 |---|---|---|
 | **global** (7) | `Player` (avatar), `vrm-anims`, `lighting`, `background`, `envmap`, `fog`, `ground` (terrain) | needed before/independent of any destination chunk: the visitor's avatar and animation set, world-wide environment singletons, and the single shared 420 m ground plane every chunk stands on |
-| `hub` (5) | `platform-hub`, `marker-hub`, `label-hub`, `path-west`, `path-east` | the Hub platform and the two paths radiating from it |
-| `music` (7) | `platform-music`, `marker-music`, `label-music`, `platform-music-artist`, `marker-music-artist`, `label-music-artist`, `path-music-north` | Music District + Placeholder Artist + the path between them |
-| `fashion-culture` (7) | `platform-fashion-culture`, `marker-fashion-culture`, `label-fashion-culture`, `platform-fashion-culture-brand`, `marker-fashion-culture-brand`, `label-fashion-culture-brand`, `path-fashion-north` | Fashion / Culture District + Placeholder Brand + path |
+| `hub` (8) | `platform-hub`, `marker-hub`, `label-hub`, `path-west`, `path-east`, **`portal-hub-music`, `portal-hub-fashion`, `portal-hub-cannabis`** (2B.3) | the Hub platform, the two paths radiating from it and its three portal sensors |
+| `music` (9) | `platform-music`, `marker-music`, `label-music`, `platform-music-artist`, `marker-music-artist`, `label-music-artist`, `path-music-north`, **`portal-music-hub`, `portal-music-artist`** | Music District + Placeholder Artist + the path between them + two portal sensors |
+| `fashion-culture` (9) | `platform-fashion-culture`, `marker-fashion-culture`, `label-fashion-culture`, `platform-fashion-culture-brand`, `marker-fashion-culture-brand`, `label-fashion-culture-brand`, `path-fashion-north`, **`portal-fashion-hub`, `portal-fashion-brand`** | Fashion / Culture District + Placeholder Brand + path + two portal sensors |
 | `cannabis-21` (7) | `platform-cannabis-21`, `gate-wall-north/south/west/east`, `label-cannabis-21`, `label-cannabis-21-closed` | the walled 21+ enclosure |
 
 Connecting paths are owned by the chunk they originate from (Hub for the east/west paths, the district for the northern paths). A test asserts `global ∪ chunks == scene` and pairwise disjointness.
@@ -113,13 +119,13 @@ Seven placements, migrated verbatim from the Step 2A `placements.m0.ts` coordina
 
 | Artifact | Shape | Size (bytes, LF) |
 |---|---|---|
-| `public/data/static-scene.json` (compatibility full scene — not requested by the runtime since 2B.2) | exactly the authored scene (33 components) | 36 954 |
-| `public/data/spatial/global-scene.json` | same scene envelope, 7 global components | 9 763 |
-| `public/data/spatial/chunks/hub.json` | `{ schemaVersion, worldId, chunkKey, components }` | 5 375 |
-| `public/data/spatial/chunks/music.json` | 〃 | 7 321 |
-| `public/data/spatial/chunks/fashion-culture.json` | 〃 | 7 578 |
-| `public/data/spatial/chunks/cannabis-21.json` | 〃 | 7 335 |
-| `public/data/spatial/spatial-index.json` | `{ schemaVersion, worldId, globalSceneUrl, chunks: { key: { dataUrl } }, destinations: { id: { chunkKey, spawn } } }` | 1 863 |
+| `public/data/static-scene.json` (compatibility full scene — not requested by the runtime since 2B.2) | exactly the authored scene (40 components) | 46 113 (2B.1: 36 954) |
+| `public/data/spatial/global-scene.json` | same scene envelope, 7 global components | 9 763 (unchanged) |
+| `public/data/spatial/chunks/hub.json` | `{ schemaVersion, worldId, chunkKey, components }` | 9 288 (5 375) |
+| `public/data/spatial/chunks/music.json` | 〃 | 9 929 (7 321) |
+| `public/data/spatial/chunks/fashion-culture.json` | 〃 | 10 216 (7 578) |
+| `public/data/spatial/chunks/cannabis-21.json` | 〃 | 7 335 (unchanged) |
+| `public/data/spatial/spatial-index.json` | `{ schemaVersion, worldId, globalSceneUrl, chunks: { key: { dataUrl } }, destinations: { id: { chunkKey, spawn } }, portals: { componentId: { chunkKey, destinationId } } }` | 2 652 (1 863) |
 
 Data-size baseline only (text JSON, no binaries); no asset optimisation or budgets were attempted. Chunk files carry no destination ids, names, URLs, gates or roles (tested). The index reveals which chunk a destination maps to — that small mapping is not the gated content.
 
@@ -127,7 +133,9 @@ Determinism: no timestamps, no random ids, no machine paths, index keys sorted b
 
 ## 7. Validation rules (`validateSpatialSource`, stable codes)
 
-`unsupported-schema-version` · `invalid-world-id` · `world-id-mismatch` (config world has no destinations, or a placed destination declares a different `worldId`) · `invalid-scene-ref` · `invalid-scene` / `component-id-mismatch` · `unexpected-field` (any key outside the schema — the structural guard that keeps gates and metadata out) · `duplicate-chunk-key` · `invalid-chunk-key` (unsafe file name) · `invalid-chunk-label` · `empty-chunk` · `unknown-component` · `duplicate-component-ref` · `global-component-in-chunk` · `component-in-multiple-chunks` · `unassigned-component` (authored component neither global nor owned) · `invalid-destination-id` · `unknown-destination` · `placement-not-the-nrvnaverse` (manifest platform ≠ `the-nrvnaverse`) · `duplicate-placement` · `unknown-chunk` · `invalid-spawn` (non-finite / malformed position) · `invalid-orientation` (non-finite `yaw`) · `missing-placement` (active THE NRVNAVerse destination without a placement). Stale output is caught by `spatial:check` and by the test suite.
+`unsupported-schema-version` · `invalid-world-id` · `world-id-mismatch` (config world has no destinations, or a placed destination / portal target declares a different `worldId`) · `invalid-scene-ref` · `invalid-scene` / `component-id-mismatch` · `unexpected-field` (any key outside the schema — the structural guard that keeps gates and metadata out) · `duplicate-chunk-key` · `invalid-chunk-key` (unsafe file name) · `invalid-chunk-label` · `empty-chunk` · `unknown-component` · `duplicate-component-ref` · `global-component-in-chunk` · `component-in-multiple-chunks` · `unassigned-component` (authored component neither global nor owned) · `invalid-destination-id` · `unknown-destination` · `placement-not-the-nrvnaverse` (manifest platform ≠ `the-nrvnaverse`) · `duplicate-placement` · `unknown-chunk` · `invalid-spawn` (non-finite / malformed position) · `invalid-orientation` (non-finite `yaw`) · `missing-placement` (active THE NRVNAVerse destination without a placement).
+
+Portal codes (2B.3, references only — the validator never copies gate truth): `invalid-portals` (present but not an array) · `invalid-portal` (entry not an object) · `unexpected-field` (any key beyond `componentId`, `chunkKey`, `destinationId`) · `invalid-component-ref` (missing / non-string componentId) · `duplicate-portal` (same component bound twice) · `unknown-component` · `global-portal-component` (a global component cannot be a portal) · `portal-chunk-mismatch` (component owned by another chunk than declared) · `unknown-chunk` · `portal-not-sensor` (collider not `enabled: true` + `isSensor: true`) · `invalid-destination-id` · `unknown-destination` · `portal-not-the-nrvnaverse` · `world-id-mismatch`. Multiple portals to one destination, same-chunk targets and gated targets are valid. Stale output is caught by `spatial:check` and by the test suite.
 
 The validator reads the canonical generated destination set only to verify references; it never copies gates or metadata into the spatial source.
 
@@ -140,6 +148,8 @@ The validator reads the canonical generated destination set only to verify refer
 **Add a chunk.** Append `{ key, label, componentIds }` (kebab-case key) → regenerate → a new `public/data/spatial/chunks/<key>.json` appears and the index gains its `dataUrl`. Removing a chunk requires deleting its file too (`spatial:check` reports the leftover).
 
 **Add a destination.** First add the manifest (Manifest doc §7) and regenerate `destinations.json`; then add its placement here. An active THE NRVNAVerse destination without a placement fails `spatial:check` and the test suite.
+
+**Add a portal (2B.3).** Author a mesh with `collider: { enabled: true, rigidbodyType: "FIXED", colliderType: "CUBE", isSensor: true }` in `scene.m0.json`, list its id in the `componentIds` of the chunk where the visitor encounters it, append `{ componentId, chunkKey, destinationId }` to `portals` → regenerate → commit the source, `static-scene.json`, the chunk file and `spatial-index.json`. Keep it clear of every spawn of that chunk (a test checks this) so an arrival never re-triggers it. The runtime binds it automatically whenever its chunk is active.
 
 **Regenerate / check.** `pnpm --filter the-nrvnaverse spatial:validate` · `spatial:generate` · `spatial:check` (CI-style staleness check). The vitest suite (`pnpm --filter the-nrvnaverse test`) repeats the staleness check.
 
@@ -164,10 +174,26 @@ Order per travel (D-006, implemented): `canTravel(id)` (manifest gates) → only
 - No age verification, gate persistence, jurisdiction policy or bypass exists or is designed here. The manifest's placeholder `enforced: false` remains deliberately unconsulted: a declared gate stops spatial entry.
 - Known limitation (non-M0): files under `public/` are statically served, so "not fetched by the runtime" is an application-layer guarantee, not a hosting-layer one. A real gate will need server-side enforcement of gated chunk URLs — a later decision.
 
-## 12. Tests (`pnpm --filter the-nrvnaverse test` — 69 tests, was 35)
+## 12. Tests (`pnpm --filter the-nrvnaverse test` — 69 tests at 2B.1, 177 at 2B.3)
 
-`test/spatial-pipeline.test.ts` (valid M0 source; seven ids exactly once; four chunks with the expected grouping; complete component accounting; compatibility scene == source; no metadata in chunk files/index; cannabis boundary; rejection of unsupported schema, duplicate/invalid chunk keys, unknown component, multiple ownership, global-in-chunk, unassigned component, empty chunk, unknown/invalid destination, unknown chunk, non-finite spawn/orientation, wrong world id, duplicate placement, missing placement, non-THE-NRVNAVerse destination, smuggled gates/metadata; determinism incl. reordered source; committed outputs match; manifests remain coordinate/chunk-free), `test/spatial-index.test.ts` (index parsing, registry from generated data, malformed index rejected, source abstraction, **no hard-coded ids/coordinates in `src/`**, store uses `registryFromSpatialIndex`). The existing adapter/URL tests now build their registry from the committed index (`placementRef` is `chunk:<key>`). No existing test was weakened.
+`test/spatial-pipeline.test.ts` (valid M0 source; seven ids exactly once; four chunks with the expected grouping; complete component accounting; compatibility scene == source; no metadata in chunk files/index; cannabis boundary; rejection of unsupported schema, duplicate/invalid chunk keys, unknown component, multiple ownership, global-in-chunk, unassigned component, empty chunk, unknown/invalid destination, unknown chunk, non-finite spawn/orientation, wrong world id, duplicate placement, missing placement, non-THE-NRVNAVerse destination, smuggled gates/metadata; determinism incl. reordered source; committed outputs match; manifests remain coordinate/chunk-free; **2B.3:** seven portal bindings, deterministic sorted `portals`, ownership by declared chunk, identity-free chunk payloads, coordinate/gate-free bindings, gated / same-chunk / shared targets allowed, no spawn overlap, optional-additive, and every portal rejection code above), `test/spatial-index.test.ts` (index parsing, registry from generated data, malformed index rejected, source abstraction, **no hard-coded ids/coordinates in `src/`**, store uses `registryFromSpatialIndex`; **2B.3:** seven bindings parsed, missing `portals` → empty set, malformed bindings rejected, store wiring). The existing adapter/URL tests build their registry from the committed index (`placementRef` is `chunk:<key>`). No existing test was weakened (two assertions became data-derived when the Music chunk grew to 9 components and the Hub became a portal target).
 
 ## 13. Ghost boundary
 
-No Ghost code was read, copied, cherry-picked or depended on for this task; `packages/engine`, `packages/engine-edit`, `packages/studio` are untouched; no `contrib/*` branch created; `ghost/experimental` not pushed. The chunk file format, index model and membership model were derived from the Step 2A scene and the official runtime's needs, not from Ghost's chunk-manager or `portals-index.json` (D-013).
+No Ghost code was read, copied, cherry-picked or depended on for this task; `packages/engine`, `packages/engine-edit`, `packages/studio` are untouched; no `contrib/*` branch created; `ghost/experimental` not pushed. The chunk file format, index model and membership model were derived from the Step 2A scene and the official runtime's needs, not from Ghost's chunk-manager or `portals-index.json` (D-013). The 2B.3 portal binding model likewise: no `portals-index.json` is generated, the old coordinate-keyed model stays unused, and the sensor components are official mesh + `isSensor` colliders rather than Ghost's engine-level `portal` component.
+
+## 14. Physical portal bindings (M0 Step 2B.3)
+
+```
+spatial-config.m0.json  portals[]: { componentId, chunkKey, destinationId }        (authoritative; references only)
+        │  validate: component authored · owned by the declared chunk (never global) · enabled sensor collider
+        │            · stable-id shape · destination exists · THE NRVNAVerse · same world
+        ▼  generate
+spatial-index.json      "portals": { "<componentId>": { "chunkKey", "destinationId" } }   (sorted by component id)
+chunks/<key>.json       the sensor mesh as plain scene geometry — NO destination id, URL, gate or metadata
+manifest                identity + gate truth (unchanged; evaluated at travel time by the adapter)
+```
+
+Separation kept: **chunk payload = physical world data · index portal entry = physical sensor → stable destination reference · manifest = destination identity / gate truth.** The generated key is the physical component id (a sensor handle, never identity); the value carries the owning chunk (so the runtime can bind exactly the active chunk's portals) and the canonical target. `parseSpatialIndex()` (`src/lib/spatial/spatial-index.ts`) returns `portals: Record<string, { chunkKey, destinationId }>` and treats a missing field as an empty set (schema version 1 unchanged); it checks the chunk reference and the stable-id shape. Consumption (controller, sensor seam, trigger semantics, browser proof) is documented in the runtime doc §13.
+
+The seven committed bindings and their owners are listed in the runtime doc §13; `pnpm --filter the-nrvnaverse spatial:generate` run twice writes nothing the second time, and the test suite asserts the committed index matches a fresh generation and that authoring order does not change the output.

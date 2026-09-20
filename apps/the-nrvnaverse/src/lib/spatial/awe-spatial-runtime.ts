@@ -21,10 +21,12 @@ import { Quaternion, Vector3 } from "three";
 import type { ChunkPayload } from "@/lib/spatial/chunk-payload";
 import { createComponentBatch } from "@/lib/spatial/component-batch";
 import type { SpawnPoint } from "@/lib/spatial/placement-registry";
-import type { ChunkBatch, ChunkRuntime } from "@/lib/spatial/spatial-runtime";
+import { subscribePlayerEnterSensor, type SensorHost } from "@/lib/spatial/sensor-subscription";
+import type { ChunkBatch, ChunkRuntime, SensorRuntime } from "@/lib/spatial/spatial-runtime";
 
 /**
- * Official AWE runtime mount for THE NRVNAVerse (M0 Step 2A; chunk operations added in 2B.2).
+ * Official AWE runtime mount for THE NRVNAVerse (M0 Step 2A; chunk operations added in 2B.2;
+ * generic player-enters-sensor seam added in 2B.3).
  *
  * Adapted from `examples/starter/src/lib/game-script.ts` + `utils.ts` (upstream lifecycle:
  * create space → player/controls → camera/mover → reveal → start → dispose). Deviations from the
@@ -42,9 +44,13 @@ import type { ChunkBatch, ChunkRuntime } from "@/lib/spatial/spatial-runtime";
  * - Adds `stageChunk` / `retireChunk` — thin wrappers over the official
  *   `space.components.create(data, { abort })` and `space.components.destroy(component)`. The
  *   engine `Component3D` handles never leave this file: callers hold an opaque `ChunkBatch`.
+ * - Adds `onPlayerEnterSensor(componentId, cb)` — the official `Component3D.onSensorEnter` on a
+ *   staged component whose collider is a sensor, filtered to the player's avatar (`event.other`).
+ *   Portal-neutral: it knows component ids, not destinations (the `PortalController` does).
  *
  * This file is the only application module that imports `@oncyberio/engine`. It knows nothing
- * about destination ids, gates or chunk selection; the adapter and orchestrator own those.
+ * about destination ids, gates or chunk selection; the adapter, orchestrator and portal
+ * controller own those.
  */
 
 // --- Input definitions (identical to the official starter) ---
@@ -135,7 +141,7 @@ export interface AweSpatialRuntimeInitOptions {
   assetsBaseUrl?: string;
 }
 
-export class AweSpatialRuntime implements ChunkRuntime {
+export class AweSpatialRuntime implements ChunkRuntime, SensorRuntime {
   private space: Space | null = null;
   /** Engine components per staged batch. Private: the opaque handle is all callers get. */
   private readonly batches = new Map<ChunkBatch, Component3D[]>();
@@ -306,6 +312,27 @@ export class AweSpatialRuntime implements ChunkRuntime {
       }
     }
     if (failures > 0) throw new Error(`${failures} of ${components.length} components of chunk "${batch.chunkKey}" could not be destroyed`);
+  }
+
+  /**
+   * Player-enters-sensor subscription over the official APIs: `ComponentManager.byInternalId`
+   * resolves the staged component by its data id, `Collider.isSensor` confirms the sensor, and
+   * `Component3D.onSensorEnter` delivers the intersection whose `other` must be the player avatar.
+   * The unsubscribe is idempotent and safe after the component was retired with its chunk.
+   */
+  onPlayerEnterSensor(componentId: string, callback: () => void): () => void {
+    const space = this.space;
+    const player = this.player;
+    if (!space || !player) throw new Error("runtime is not ready");
+    const host: SensorHost<Component3D> = {
+      resolve: (id) => {
+        const component = space.components.byInternalId(id) as Component3D | undefined;
+        return component && !component.wasDisposed ? component : undefined;
+      },
+      isSensor: (component) => component.collider?.isSensor === true,
+      onSensorEnter: (component, listener) => component.onSensorEnter((event) => listener(event.other)),
+    };
+    return subscribePlayerEnterSensor(host, componentId, player as Component3D, callback);
   }
 
   /** Diagnostics/tests: number of chunk batches this runtime currently holds. */

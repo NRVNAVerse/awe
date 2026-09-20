@@ -88,3 +88,51 @@ describe("no independently hard-coded placement table remains in application cod
     expect(store).toMatch(/FetchSpatialIndexSource/);
   });
 });
+
+describe("generated spatial index → portal bindings (M0 Step 2B.3, additive)", () => {
+  it("parses the seven committed portal bindings keyed by physical component id", () => {
+    const index = parseSpatialIndex(spatialIndexJson);
+    expect(Object.keys(index.portals)).toEqual([
+      "portal-fashion-brand",
+      "portal-fashion-hub",
+      "portal-hub-cannabis",
+      "portal-hub-fashion",
+      "portal-hub-music",
+      "portal-music-artist",
+      "portal-music-hub",
+    ]);
+    for (const [componentId, binding] of Object.entries(index.portals)) {
+      expect(Object.keys(binding)).toEqual(["chunkKey", "destinationId"]);
+      expect(index.chunks[binding.chunkKey], componentId).toBeDefined();
+      expect(activeWorldIds).toContain(binding.destinationId);
+    }
+    expect(index.portals["portal-hub-music"]).toEqual({ chunkKey: "hub", destinationId: data.index.bySlug["music"] });
+    expect(index.portals["portal-hub-cannabis"]).toEqual({ chunkKey: "hub", destinationId: data.index.bySlug["cannabis-21"] });
+    expect(index.portals["portal-music-hub"]).toEqual({ chunkKey: "music", destinationId: data.hubId });
+    expect(index.portals["portal-fashion-hub"]).toEqual({ chunkKey: "fashion-culture", destinationId: data.hubId });
+  });
+
+  it("parses an index without a portals field as an empty portal set (schema version unchanged)", () => {
+    const index = parseSpatialIndex(mutated((d) => delete d.portals));
+    expect(index.schemaVersion).toBe(SPATIAL_SCHEMA_VERSION);
+    expect(index.portals).toEqual({});
+    expect(parseSpatialIndex(mutated((d) => (d.portals = {}))).portals).toEqual({});
+  });
+
+  it("rejects malformed portal bindings: not an object, unknown chunk, malformed destination id", () => {
+    expect(() => parseSpatialIndex(mutated((d) => (d.portals = [])))).toThrow(/portals must be an object/);
+    expect(() => parseSpatialIndex(mutated((d) => (d.portals["portal-hub-music"] = "music")))).toThrow(/portal "portal-hub-music"/);
+    expect(() => parseSpatialIndex(mutated((d) => (d.portals["portal-hub-music"].chunkKey = "nowhere")))).toThrow(/unknown chunk "nowhere"/);
+    expect(() => parseSpatialIndex(mutated((d) => delete d.portals["portal-hub-music"].chunkKey))).toThrow(/unknown chunk/);
+    expect(() => parseSpatialIndex(mutated((d) => (d.portals["portal-hub-music"].destinationId = "music")))).toThrow(/not a stable destination id/);
+    expect(() => parseSpatialIndex(mutated((d) => delete d.portals["portal-hub-music"].destinationId))).toThrow(/not a stable destination id/);
+  });
+
+  it("the store hands the parsed portal bindings to the portal controller and never a coordinate", () => {
+    const store = readFileSync(join(APP_ROOT, "src/lib/app-store.ts"), "utf8");
+    expect(store).toMatch(/new PortalController\(\{ portals: spatialIndex\.portals/);
+    expect(store).toMatch(/onPortalEntered: \(destinationId\) => travelToDestination\(destinationId\)/);
+    const controller = readFileSync(join(APP_ROOT, "src/lib/spatial/portal-controller.ts"), "utf8");
+    expect(controller).not.toMatch(/placeVisitor\(|\.spawn\b|position:|window\.|history\.|location\.|fetch\(|\.gates\b|canTravel|transitionTo/);
+  });
+});

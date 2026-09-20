@@ -8,8 +8,9 @@ import { onPerfMeasurement, perfMeasurements, type PerfMeasurement } from "@/lib
 
 /**
  * Diagnostics for the spatial layer. Shows the adapter's coordinate-free placement handle, the
- * active chunk key, its last reported phase and the lightweight performance measurements. Never
- * shows a coordinate. The chunk key is diagnostics only — never identity, never in a URL.
+ * active chunk key, the bound portal sensors (and the last one entered), its last reported phase
+ * and the lightweight performance measurements. Never shows a coordinate. Chunk keys and portal
+ * component ids are diagnostics only — never identity, never in a URL.
  */
 export function SpatialPanel({ state }: { state: AppState }) {
   const diagnostics = useStore(spatialDiagnostics);
@@ -39,6 +40,15 @@ export function SpatialPanel({ state }: { state: AppState }) {
       </p>
       <p className="mt-1">
         active chunk: <code data-active-chunk={diagnostics.activeChunkKey ?? ""}>{diagnostics.activeChunkKey ?? "—"}</code>
+      </p>
+      <p className="mt-1">
+        bound portals: <code data-bound-portals={diagnostics.boundPortals}>{diagnostics.boundPortals}</code>
+        {diagnostics.lastPortal ? (
+          <>
+            {" "}
+            · last portal: <code>{diagnostics.lastPortal.componentId}</code> → <code>{diagnostics.lastPortal.destinationId}</code>
+          </>
+        ) : null}
       </p>
       {measures.length > 0 && (
         <details className="mt-2">

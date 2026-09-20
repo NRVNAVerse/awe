@@ -22,7 +22,10 @@
         "marker-hub",
         "label-hub",
         "path-west",
-        "path-east"
+        "path-east",
+        "portal-hub-music",
+        "portal-hub-fashion",
+        "portal-hub-cannabis"
       ]
     },
     {
@@ -35,7 +38,9 @@
         "platform-music-artist",
         "marker-music-artist",
         "label-music-artist",
-        "path-music-north"
+        "path-music-north",
+        "portal-music-hub",
+        "portal-music-artist"
       ]
     },
     {
@@ -48,7 +53,9 @@
         "platform-fashion-culture-brand",
         "marker-fashion-culture-brand",
         "label-fashion-culture-brand",
-        "path-fashion-north"
+        "path-fashion-north",
+        "portal-fashion-hub",
+        "portal-fashion-brand"
       ]
     },
     {
@@ -101,5 +108,14 @@
       "chunkKey": "cannabis-21",
       "spawn": { "position": { "x": 0, "y": 1, "z": -154 }, "yaw": 0 }
     }
+  ],
+  "portals": [
+    { "componentId": "portal-hub-music", "chunkKey": "hub", "destinationId": "dst_gm3xs4a3tws7bgh3" },
+    { "componentId": "portal-hub-fashion", "chunkKey": "hub", "destinationId": "dst_9c4wxtpec8awsx1q" },
+    { "componentId": "portal-hub-cannabis", "chunkKey": "hub", "destinationId": "dst_441dtdafq3e3ehjn" },
+    { "componentId": "portal-music-hub", "chunkKey": "music", "destinationId": "dst_7g19n1vm9ackw8a0" },
+    { "componentId": "portal-music-artist", "chunkKey": "music", "destinationId": "dst_1qtfn9qjg9kf6jyd" },
+    { "componentId": "portal-fashion-hub", "chunkKey": "fashion-culture", "destinationId": "dst_7g19n1vm9ackw8a0" },
+    { "componentId": "portal-fashion-brand", "chunkKey": "fashion-culture", "destinationId": "dst_tgfh5h5jvm3wj0w7" }
   ]
 }

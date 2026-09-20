@@ -3,7 +3,7 @@ import { join } from "node:path";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import type { DestinationsFile } from "@nrvnaverse/manifest";
 import destinationsJson from "../../../packages/nrvna-manifest/generated/destinations.json";
-import { appStore, bootApp, disposeApp, resetAppForTests, spatialDiagnostics, travelToDestination, type BootableRuntime } from "@/lib/app-store";
+import { appStore, bootApp, currentPortals, disposeApp, resetAppForTests, spatialDiagnostics, travelToDestination, type BootableRuntime } from "@/lib/app-store";
 import type { AppState } from "@/lib/app-state";
 import { StaticChunkDataSource, type StaticChunkEntry } from "@/lib/spatial/chunk-data-source";
 import { StaticSpatialIndexSource } from "@/lib/spatial/spatial-index-source";
@@ -37,6 +37,7 @@ class FakeBootRuntime extends FakeChunkRuntime implements BootableRuntime {
   }
   async reveal() {
     this.revealed++;
+    this.log.push("reveal");
   }
   dispose() {
     this.disposed++;
@@ -316,5 +317,209 @@ describe("app store — disposal", () => {
     expect(runtime.world.size).toBe(0);
     expect(runtime.batches.size).toBe(0);
     expect(spatialDiagnostics.state.activeChunkKey).toBeNull();
+  });
+});
+
+/**
+ * M0 Step 2B.3 — physical portals drive the SAME `travelToDestination` path as the directory:
+ * the fake runtime simulates the player entering a staged sensor component; everything after
+ * that (adapter, gate, orchestrator, state, URL) is the unchanged travel machinery.
+ */
+describe("app store — physical portals use the existing travel path", () => {
+  const enter = async (componentId: string) => {
+    runtime.enterSensor(componentId);
+    await flush(); // the controller defers the request to a microtask; travel then settles through the usual awaits
+    await flush();
+  };
+  const bound = () => spatialDiagnostics.state.boundPortals;
+
+  it("binds the Hub portals after the initial placement and before reveal", async () => {
+    const state = await boot("");
+    expect(state.phase).toBe("ready");
+    expect(bound()).toBe(3);
+    expect(currentPortals()?.boundComponentIds).toEqual(["portal-hub-cannabis", "portal-hub-fashion", "portal-hub-music"]);
+    const sensorOn = runtime.log.map((e, i) => (e.startsWith("sensor-on:") ? i : -1)).filter((i) => i >= 0);
+    expect(sensorOn).toHaveLength(3);
+    expect(runtime.log.indexOf("reveal")).toBeGreaterThan(Math.max(...sensorOn)); // committed → portals bound → reveal
+    expect(runtime.revealed).toBe(1);
+    expect(spatialDiagnostics.state.lastPortal).toBeNull();
+  });
+
+  it("Hub → Music portal: cross-chunk arrival, Hub retired, Music portals bound, URL names Music", async () => {
+    await boot("");
+    await enter("portal-hub-music");
+    const state = appStore.state;
+    expect(state.phase).toBe("arrived");
+    expect(placed(state)).toBe(musicId);
+    expect(requested()).toEqual(["hub", "music"]);
+    expect(runtime.world.has("platform-hub")).toBe(false);
+    expect(runtime.world.has("portal-hub-music")).toBe(false);
+    expect(runtime.world.has("portal-music-hub")).toBe(true);
+    expect(win.location.search).toBe(`?destination=${musicId}&from=spatial`);
+    expect(win.history.entries).toHaveLength(2);
+    expect(spatialDiagnostics.state.activeChunkKey).toBe("music");
+    expect(currentPortals()?.boundComponentIds).toEqual(["portal-music-artist", "portal-music-hub"]);
+    expect(spatialDiagnostics.state.lastPortal).toEqual({ componentId: "portal-hub-music", destinationId: musicId });
+    // Portal travel produced exactly the directory's state: the same arrival shape, no portal-specific fields.
+    if (state.phase !== "arrived") throw new Error("unreachable");
+    expect(state.arrival.destinationId).toBe(musicId);
+  });
+
+  it("Music → Artist portal: same-chunk arrival, no second music fetch, sensors not rebound, URL names the Artist", async () => {
+    await boot(`?destination=${musicId}`);
+    const onCount = runtime.log.filter((e) => e.startsWith("sensor-on:")).length;
+    await enter("portal-music-artist");
+    const state = appStore.state;
+    expect(state.phase).toBe("arrived");
+    expect(placed(state)).toBe(artistId);
+    expect(requested()).toEqual(["music"]);
+    expect(runtime.placed.at(-1)).toEqual(spatialIndexJson.destinations[artistId].spawn);
+    expect(runtime.log.filter((e) => e.startsWith("sensor-on:")).length).toBe(onCount); // no rebind
+    expect(runtime.log.filter((e) => e.startsWith("sensor-off:"))).toEqual([]);
+    expect(win.location.search).toBe(`?destination=${artistId}&from=spatial`);
+    expect(bound()).toBe(2);
+  });
+
+  it("Music → Hub portal: cross-chunk arrival back at the Hub", async () => {
+    await boot(`?destination=${musicId}`);
+    await enter("portal-music-hub");
+    expect(placed(appStore.state)).toBe(hubId);
+    expect(appStore.state.phase).toBe("arrived");
+    expect(requested()).toEqual(["music", "hub"]);
+    expect(runtime.world.has("platform-music")).toBe(false);
+    expect(win.location.search).toBe(`?destination=${hubId}&from=spatial`);
+    expect(currentPortals()?.boundComponentIds).toEqual(["portal-hub-cannabis", "portal-hub-fashion", "portal-hub-music"]);
+  });
+
+  it("Hub → Fashion, Fashion → Brand (same chunk), Fashion → Hub portals", async () => {
+    await boot("");
+    await enter("portal-hub-fashion");
+    expect(placed(appStore.state)).toBe(fashionId);
+    expect(requested()).toEqual(["hub", "fashion-culture"]);
+    expect(currentPortals()?.boundComponentIds).toEqual(["portal-fashion-brand", "portal-fashion-hub"]);
+
+    await enter("portal-fashion-brand");
+    expect(placed(appStore.state)).toBe(brandId);
+    expect(requested()).toEqual(["hub", "fashion-culture"]); // no refetch, no rebuild
+    expect(runtime.world.has("platform-fashion-culture")).toBe(true);
+    expect(win.location.search).toBe(`?destination=${brandId}&from=spatial`);
+
+    await enter("portal-fashion-hub");
+    expect(placed(appStore.state)).toBe(hubId);
+    expect(requested()).toEqual(["hub", "fashion-culture", "hub"]);
+    expect(runtime.world.has("platform-fashion-culture")).toBe(false);
+    expect(win.location.search).toBe(`?destination=${hubId}&from=spatial`);
+    expect(win.history.entries).toEqual(["", `?destination=${fashionId}&from=spatial`, `?destination=${brandId}&from=spatial`, `?destination=${hubId}&from=spatial`]);
+  });
+
+  it("Hub → Cannabis portal: gateRequired, NO cannabis request, visitor stays in the Hub, URL untouched, portals stay bound", async () => {
+    await boot("");
+    await enter("portal-hub-cannabis");
+    const state = appStore.state;
+    expect(state.phase).toBe("gateRequired");
+    if (state.phase !== "gateRequired") throw new Error("unreachable");
+    expect(state.gate).toEqual({ destinationId: cannabisId, gates: ["age21"] });
+    expect(state.current.id).toBe(hubId);
+    expect(requested()).toEqual(["hub"]);
+    expect(runtime.world.has("platform-cannabis-21")).toBe(false);
+    expect(runtime.placed).toHaveLength(1); // only the initial placement — no teleport
+    expect(win.location.search).toBe("");
+    expect(win.history.entries).toEqual([""]);
+    expect(spatialDiagnostics.state.activeChunkKey).toBe("hub");
+    expect(bound()).toBe(3);
+    expect(spatialDiagnostics.state.lastPortal).toEqual({ componentId: "portal-hub-cannabis", destinationId: cannabisId });
+  });
+
+  it("after a gated refusal the app remains usable: another portal still travels, and the gated portal can be re-entered", async () => {
+    await boot("");
+    await enter("portal-hub-cannabis");
+    expect(appStore.state.phase).toBe("gateRequired");
+    await enter("portal-hub-cannabis"); // walked out and back in: one more request, same refusal
+    expect(appStore.state.phase).toBe("gateRequired");
+    expect(requested()).toEqual(["hub"]);
+    await enter("portal-hub-music");
+    expect(appStore.state.phase).toBe("arrived");
+    expect(placed(appStore.state)).toBe(musicId);
+    expect(requested()).toEqual(["hub", "music"]);
+    expect(win.location.search).toBe(`?destination=${musicId}&from=spatial`);
+  });
+
+  it("gated initial deep link: Hub fallback binds the Hub portals while the app stays gateRequired", async () => {
+    const state = await boot(`?destination=${cannabisId}`);
+    expect(state.phase).toBe("gateRequired");
+    expect(bound()).toBe(3);
+    expect(currentPortals()?.activeChunkKey).toBe("hub");
+    await enter("portal-hub-fashion");
+    expect(placed(appStore.state)).toBe(fashionId);
+    expect(requested()).toEqual(["hub", "fashion-culture"]);
+  });
+
+  it("directory navigation and browser history keep working after portal travel, and portals follow them", async () => {
+    await boot("");
+    await enter("portal-hub-music");
+    await travelToDestination(fashionId); // directory click
+    expect(placed(appStore.state)).toBe(fashionId);
+    expect(currentPortals()?.boundComponentIds).toEqual(["portal-fashion-brand", "portal-fashion-hub"]);
+    win.navigate(`?destination=${musicId}&from=spatial`); // back
+    await flush();
+    await flush();
+    expect(placed(appStore.state)).toBe(musicId);
+    expect(currentPortals()?.boundComponentIds).toEqual(["portal-music-artist", "portal-music-hub"]);
+    await enter("portal-music-artist");
+    expect(placed(appStore.state)).toBe(artistId);
+  });
+
+  it("a portal entry during an in-flight cross-chunk travel supersedes it through the existing mechanism", async () => {
+    await boot(`?destination=${musicId}`);
+    runtime.holdStage = true;
+    const pending = travelToDestination(fashionId); // directory click, staging held
+    await flush();
+    runtime.enterSensor("portal-music-hub"); // the visitor is still in Music: its portals are still bound
+    await flush();
+    runtime.holdStage = false;
+    runtime.releaseStage();
+    await pending;
+    await flush(5);
+    expect(placed(appStore.state)).toBe(hubId);
+    expect(runtime.world.has("platform-fashion-culture")).toBe(false);
+    expect(runtime.batches.size).toBe(1);
+    expect(win.location.search).toBe(`?destination=${hubId}&from=spatial`);
+  });
+
+  it("failed portal travel keeps the current destination and its portal bindings", async () => {
+    await boot("", { hub: hubJson, "fashion-culture": fashionJson }); // no music payload → 404
+    await enter("portal-hub-music");
+    expect(appStore.state.phase).toBe("ready");
+    expect(placed(appStore.state)).toBe(hubId);
+    expect(appStore.state.notices.map((n) => n.code)).toEqual(["travel-failed"]);
+    expect(bound()).toBe(3);
+    await enter("portal-hub-fashion");
+    expect(placed(appStore.state)).toBe(fashionId);
+  });
+
+  it("never writes a portal, chunk or component id to the URL", async () => {
+    await boot("");
+    await enter("portal-hub-music");
+    await enter("portal-music-artist");
+    await enter("portal-music-hub");
+    await enter("portal-hub-cannabis");
+    for (const entry of win.history.entries) {
+      expect(entry).not.toMatch(/portal|chunk|component|position|[?&]x=/);
+      if (entry) expect(entry).toMatch(/^\?destination=dst_[0-9abcdefghjkmnpqrstvwxyz]{16}&from=spatial$/);
+    }
+  });
+
+  it("disposal releases portal subscriptions before the runtime is destroyed", async () => {
+    await boot("");
+    const portals = currentPortals()!;
+    disposeApp();
+    expect(portals.boundPortalCount).toBe(0);
+    expect(runtime.sensorListeners.size).toBe(0);
+    expect(currentPortals()).toBeNull();
+    expect(spatialDiagnostics.state.boundPortals).toBe(0);
+    // Order: sensor-off entries precede the retire of the active chunk (portal controller disposed first).
+    const lastOff = runtime.log.map((e, i) => (e.startsWith("sensor-off:") ? i : -1)).filter((i) => i >= 0).at(-1) ?? -1;
+    expect(lastOff).toBeGreaterThanOrEqual(0);
+    expect(runtime.log.indexOf("retire:hub")).toBeGreaterThan(lastOff);
   });
 });

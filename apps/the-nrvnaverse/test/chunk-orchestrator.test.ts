@@ -180,9 +180,10 @@ describe("chunk orchestrator — failure keeps the current chunk (rollback state
     expect(runtime.liveOf(MUSIC)).toEqual([]);
     expect(runtime.liveOf(HUB)).toEqual(Object.keys(HUB.components));
     expect(runtime.placed).toEqual([]);
-    // The other six music components were created and then destroyed again.
-    expect(runtime.log.filter((e) => e.startsWith("create:")).length).toBe(6);
-    expect(runtime.log.filter((e) => e.startsWith("destroy:")).length).toBe(6);
+    // Every other music component was created and then destroyed again.
+    const others = Object.keys(MUSIC.components).length - 1;
+    expect(runtime.log.filter((e) => e.startsWith("create:")).length).toBe(others);
+    expect(runtime.log.filter((e) => e.startsWith("destroy:")).length).toBe(others);
     expect(runtime.log).not.toContain("retire:hub");
   });
 

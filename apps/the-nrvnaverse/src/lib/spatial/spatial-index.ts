@@ -1,3 +1,4 @@
+import { isDestinationId } from "@nrvnaverse/manifest";
 import type { PhysicalPlacement, PlacementRegistry, SpawnPoint } from "@/lib/spatial/placement-registry";
 
 /**
@@ -11,6 +12,13 @@ import type { PhysicalPlacement, PlacementRegistry, SpawnPoint } from "@/lib/spa
  * The index is generated, never hand-edited, and never coordinate-keyed. It carries no gates and
  * no destination metadata: gate truth stays in the manifest and is evaluated by the adapter
  * before any placement is used (D-006).
+ *
+ * Since M0 Step 2B.3 the index may carry an additive, optional `portals` section:
+ *
+ *   physical sensor componentId → { chunkKey (owner), destinationId (canonical target) }
+ *
+ * Keyed by the physical component id — a sensor handle, never identity. An index without
+ * `portals` parses as an empty portal set (schema version unchanged).
  */
 export const SPATIAL_SCHEMA_VERSION = 1;
 
@@ -24,12 +32,22 @@ export interface SpatialIndexDestination {
   spawn: SpawnPoint;
 }
 
+/** Physical portal sensor → stable destination reference. No coordinates, no gates, no metadata. */
+export interface SpatialIndexPortal {
+  /** The chunk that owns the sensor component (it is staged and retired with that chunk). */
+  chunkKey: string;
+  /** Canonical navigation target; resolved through the manifest and the placement registry at travel time. */
+  destinationId: string;
+}
+
 export interface SpatialIndexFile {
   schemaVersion: typeof SPATIAL_SCHEMA_VERSION;
   worldId: string;
   globalSceneUrl: string;
   chunks: Record<string, SpatialIndexChunk>;
   destinations: Record<string, SpatialIndexDestination>;
+  /** Keyed by physical sensor component id. Empty when the index declares none. */
+  portals: Record<string, SpatialIndexPortal>;
 }
 
 const CHUNK_KEY_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
@@ -78,7 +96,23 @@ export function parseSpatialIndex(input: unknown): SpatialIndexFile {
     };
   }
 
-  return { schemaVersion: SPATIAL_SCHEMA_VERSION, worldId: input.worldId, globalSceneUrl: input.globalSceneUrl, chunks, destinations };
+  // Additive since 2B.3: a missing `portals` field is an empty portal set.
+  const portals: Record<string, SpatialIndexPortal> = {};
+  if (input.portals !== undefined) {
+    if (!isRecord(input.portals)) throw new Error("spatial index is malformed: portals must be an object keyed by component id");
+    for (const [componentId, entry] of Object.entries(input.portals)) {
+      if (componentId.length === 0 || !isRecord(entry)) throw new Error(`spatial index is malformed: portal "${componentId}"`);
+      if (typeof entry.chunkKey !== "string" || !(entry.chunkKey in chunks)) {
+        throw new Error(`spatial index is malformed: portal "${componentId}" references unknown chunk "${String(entry.chunkKey)}"`);
+      }
+      if (typeof entry.destinationId !== "string" || !isDestinationId(entry.destinationId)) {
+        throw new Error(`spatial index is malformed: portal "${componentId}" destinationId is not a stable destination id`);
+      }
+      portals[componentId] = { chunkKey: entry.chunkKey, destinationId: entry.destinationId };
+    }
+  }
+
+  return { schemaVersion: SPATIAL_SCHEMA_VERSION, worldId: input.worldId, globalSceneUrl: input.globalSceneUrl, chunks, destinations, portals };
 }
 
 /** Diagnostics handle derived from the chunk key. Not identity; never written to a URL. */

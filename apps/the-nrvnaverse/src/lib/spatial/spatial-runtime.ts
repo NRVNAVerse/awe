@@ -37,3 +37,18 @@ export interface ChunkRuntime extends SpatialRuntime {
   /** Destroy every component of a previously staged batch. Idempotent per batch. */
   retireChunk(batch: ChunkBatch): void;
 }
+
+/**
+ * Generic physical-sensor seam (M0 Step 2B.3). Portal-neutral: the runtime knows component ids
+ * and the player, never destination ids. Implemented over the official `Component3D.onSensorEnter`
+ * (see `awe-spatial-runtime.ts`); the `PortalController` is its only consumer.
+ */
+export interface SensorRuntime {
+  /**
+   * Invoke `callback` each time the player's avatar ENTERS the sensor collider of the currently
+   * staged component `componentId` (sensor enter only — never stay). Non-player intersections
+   * are ignored. Throws if the component is not staged or is not configured as a sensor.
+   * Returns an idempotent unsubscribe that is safe to call after the component was disposed.
+   */
+  onPlayerEnterSensor(componentId: string, callback: () => void): () => void;
+}

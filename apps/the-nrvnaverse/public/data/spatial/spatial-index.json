@@ -94,5 +94,35 @@
         "yaw": 0
       }
     }
+  },
+  "portals": {
+    "portal-fashion-brand": {
+      "chunkKey": "fashion-culture",
+      "destinationId": "dst_tgfh5h5jvm3wj0w7"
+    },
+    "portal-fashion-hub": {
+      "chunkKey": "fashion-culture",
+      "destinationId": "dst_7g19n1vm9ackw8a0"
+    },
+    "portal-hub-cannabis": {
+      "chunkKey": "hub",
+      "destinationId": "dst_441dtdafq3e3ehjn"
+    },
+    "portal-hub-fashion": {
+      "chunkKey": "hub",
+      "destinationId": "dst_9c4wxtpec8awsx1q"
+    },
+    "portal-hub-music": {
+      "chunkKey": "hub",
+      "destinationId": "dst_gm3xs4a3tws7bgh3"
+    },
+    "portal-music-artist": {
+      "chunkKey": "music",
+      "destinationId": "dst_1qtfn9qjg9kf6jyd"
+    },
+    "portal-music-hub": {
+      "chunkKey": "music",
+      "destinationId": "dst_7g19n1vm9ackw8a0"
+    }
   }
 }

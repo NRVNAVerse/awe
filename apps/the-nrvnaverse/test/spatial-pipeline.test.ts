@@ -217,14 +217,15 @@ describe("spatial source — validation rejects", () => {
         target.spatialDestination = { platform: "external", url: "https://example.com/" };
       }),
     );
-    expect(codes).toEqual(["placement-not-the-nrvnaverse"]);
+    // placements[0] is the Hub, which two M0 portals target: the portal check reports it too.
+    expect(codes).toEqual(["placement-not-the-nrvnaverse", "portal-not-the-nrvnaverse", "portal-not-the-nrvnaverse"]);
     const nullCodes = codesOf(
       source((d) => {
         const target = d.destinations.destinations.find((x: Mutable) => x.id === d.config.placements[0].destinationId);
         target.spatialDestination = null;
       }),
     );
-    expect(nullCodes).toEqual(["placement-not-the-nrvnaverse"]);
+    expect(nullCodes).toEqual(["placement-not-the-nrvnaverse", "portal-not-the-nrvnaverse", "portal-not-the-nrvnaverse"]);
   });
 
   it("gates or destination metadata smuggled into the spatial source", () => {
@@ -284,5 +285,197 @@ describe("canonical destination manifests stay coordinate- and chunk-free", () =
       expect(text, name).not.toMatch(/"(chunkKey|chunk|spawn|position|yaw|coordinates|placementRef)"/);
     }
     expect(JSON.stringify(destinations)).not.toMatch(/"(chunkKey|chunk|spawn|position|yaw|coordinates|placementRef)"/);
+  });
+});
+
+/**
+ * M0 Step 2B.3 — physical portal bindings: `portals[]` in the authoritative source, `portals` in
+ * the generated index, sensor components in the chunk payloads, and nothing else anywhere.
+ */
+const PORTAL_BINDINGS: Record<string, { chunkKey: string; slug: string }> = {
+  "portal-hub-music": { chunkKey: "hub", slug: "music" },
+  "portal-hub-fashion": { chunkKey: "hub", slug: "fashion-culture" },
+  "portal-hub-cannabis": { chunkKey: "hub", slug: "cannabis-21" },
+  "portal-music-hub": { chunkKey: "music", slug: "hub" },
+  "portal-music-artist": { chunkKey: "music", slug: "placeholder-artist" },
+  "portal-fashion-hub": { chunkKey: "fashion-culture", slug: "hub" },
+  "portal-fashion-brand": { chunkKey: "fashion-culture", slug: "placeholder-fashion-culture-brand" },
+};
+const PORTAL_IDS = Object.keys(PORTAL_BINDINGS).sort();
+const portalCodes = (mutate: (portal: Mutable, d: { config: Mutable; scene: Mutable; destinations: Mutable }) => void, i = 0) =>
+  codesOf(source((d) => mutate(d.config.portals[i], d)));
+
+describe("spatial source — physical portal bindings (M0 Step 2B.3)", () => {
+  it("the committed source declares exactly the seven M0 portals and validates", () => {
+    expect(validateSpatialSource(source())).toEqual({ ok: true, errors: [] });
+    expect(sourceConfig.portals.map((p: Mutable) => p.componentId).sort()).toEqual(PORTAL_IDS);
+    for (const p of sourceConfig.portals) {
+      expect(Object.keys(p).sort()).toEqual(["chunkKey", "componentId", "destinationId"]);
+      expect(p.chunkKey).toBe(PORTAL_BINDINGS[p.componentId].chunkKey);
+      expect(p.destinationId).toBe(destinations.index.bySlug[PORTAL_BINDINGS[p.componentId].slug]);
+    }
+  });
+
+  it("generates exactly seven deterministic portal bindings keyed by physical component id", () => {
+    const artifacts = generateSpatialArtifacts(source());
+    const index = JSON.parse(artifacts.files[OUTPUT.spatialIndex]);
+    expect(Object.keys(index)).toEqual(["schemaVersion", "worldId", "globalSceneUrl", "chunks", "destinations", "portals"]);
+    expect(Object.keys(index.portals)).toEqual(PORTAL_IDS); // sorted, code-unit order
+    expect(artifacts.portalComponentIds).toEqual(PORTAL_IDS);
+    for (const [componentId, binding] of Object.entries<Mutable>(index.portals)) {
+      expect(Object.keys(binding)).toEqual(["chunkKey", "destinationId"]);
+      expect(binding.chunkKey).toBe(PORTAL_BINDINGS[componentId].chunkKey);
+      expect(binding.destinationId).toBe(destinations.index.bySlug[PORTAL_BINDINGS[componentId].slug]);
+      expect(index.chunks[binding.chunkKey]).toBeDefined();
+      expect(index.destinations[binding.destinationId]).toBeDefined();
+    }
+    // Order of authoring does not matter.
+    const reversed = generateSpatialArtifacts(source((d) => d.config.portals.reverse())).files[OUTPUT.spatialIndex];
+    expect(reversed).toBe(artifacts.files[OUTPUT.spatialIndex]);
+  });
+
+  it("owns every portal sensor by exactly its declared chunk, and no chunk payload carries a destination id or target data", () => {
+    const artifacts = generateSpatialArtifacts(source());
+    const index = JSON.parse(artifacts.files[OUTPUT.spatialIndex]);
+    for (const key of EXPECTED_CHUNKS) {
+      const text = artifacts.files[`${OUTPUT.chunksDir}/${key}.json`];
+      const chunk = JSON.parse(text);
+      const owned = Object.keys(chunk.components).filter((id) => id in PORTAL_BINDINGS);
+      expect(owned.sort()).toEqual(PORTAL_IDS.filter((id) => PORTAL_BINDINGS[id].chunkKey === key));
+      for (const id of owned) {
+        expect(index.portals[id].chunkKey).toBe(key);
+        const c = chunk.components[id];
+        expect(c.type).toBe("mesh");
+        expect(c.collider).toEqual({ enabled: true, rigidbodyType: "FIXED", colliderType: "CUBE", isSensor: true });
+        expect(Object.keys(c)).not.toContain("destinationId");
+      }
+      // Physical world data only: no stable id, target URL, gate or destination metadata.
+      expect(text).not.toMatch(/dst_[0-9a-z]{16}|"destinationId"|"targetUrl"|"webUrl"|"gates"|"age21"|"portalTarget"/);
+      expect(text.match(/"chunkKey"/g)).toHaveLength(1); // the envelope only
+    }
+    expect(Object.keys(JSON.parse(artifacts.files[`${OUTPUT.chunksDir}/cannabis-21.json`]).components).filter((id) => id.startsWith("portal-"))).toEqual([]);
+    expect(Object.keys(JSON.parse(artifacts.files[OUTPUT.globalScene]).components).filter((id) => id.startsWith("portal-"))).toEqual([]);
+  });
+
+  it("keeps coordinates, gates and destination metadata out of the portal bindings", () => {
+    const index = JSON.parse(generateSpatialArtifacts(source()).files[OUTPUT.spatialIndex]);
+    const text = JSON.stringify(index.portals);
+    expect(text).not.toMatch(/"(position|spawn|x|y|z|yaw|gates|gate|age21|name|slug|webUrl|url|categories|analyticsId|auth)"/);
+    // The old coordinate-keyed model is not generated.
+    expect(generateSpatialArtifacts(source()).files["spatial/portals-index.json"]).toBeUndefined();
+    expect(existsSync(join(OUTPUT_DIR, "spatial", "portals-index.json"))).toBe(false);
+    expect(existsSync(join(OUTPUT_DIR, "portals-index.json"))).toBe(false);
+  });
+
+  it("allows a gated target, a same-chunk target and several portals to one destination (references only, no gate truth copied)", () => {
+    const index = JSON.parse(generateSpatialArtifacts(source()).files[OUTPUT.spatialIndex]);
+    const bySlug = destinations.index.bySlug;
+    const cannabis = destinations.destinations.find((d) => d.id === bySlug["cannabis-21"])!;
+    expect(cannabis.gates.length).toBeGreaterThan(0);
+    expect(index.portals["portal-hub-cannabis"].destinationId).toBe(cannabis.id); // gated target is a valid binding
+    expect(index.destinations[bySlug["placeholder-artist"]].chunkKey).toBe(index.portals["portal-music-artist"].chunkKey); // same-chunk
+    expect(index.destinations[bySlug["placeholder-fashion-culture-brand"]].chunkKey).toBe(index.portals["portal-fashion-brand"].chunkKey);
+    expect(index.portals["portal-music-hub"].destinationId).toBe(index.portals["portal-fashion-hub"].destinationId); // two portals → Hub
+    expect(JSON.stringify(index)).not.toMatch(/"(gates|gate|age21|ageRestriction|enforced|jurisdictions)"/);
+  });
+
+  it("places every portal sensor away from every spawn of its chunk (no immediate retrigger after a teleport)", () => {
+    const index = JSON.parse(generateSpatialArtifacts(source()).files[OUTPUT.spatialIndex]);
+    for (const [componentId, binding] of Object.entries<Mutable>(index.portals)) {
+      const c = sourceScene.components[componentId];
+      const half = { x: c.geometry.boxParams.width / 2, y: c.geometry.boxParams.height / 2, z: c.geometry.boxParams.depth / 2 };
+      for (const [destinationId, placement] of Object.entries<Mutable>(index.destinations)) {
+        if (placement.chunkKey !== binding.chunkKey) continue;
+        const p = placement.spawn.position;
+        const margin = 2; // generous player capsule + landing wobble
+        const overlaps = Math.abs(p.x - c.position.x) < half.x + margin && Math.abs(p.y - c.position.y) < half.y + margin && Math.abs(p.z - c.position.z) < half.z + margin;
+        expect(overlaps, `${componentId} overlaps the spawn of ${destinationId}`).toBe(false);
+      }
+    }
+  });
+
+  it("is optional and additive: a source without portals validates, generates an empty portal set, and the schema version is unchanged", () => {
+    const artifacts = generateSpatialArtifacts(source((d) => delete d.config.portals));
+    const index = JSON.parse(artifacts.files[OUTPUT.spatialIndex]);
+    expect(index.schemaVersion).toBe(SPATIAL_SCHEMA_VERSION);
+    expect(index.portals).toEqual({});
+    expect(artifacts.portalComponentIds).toEqual([]);
+    expect(SPATIAL_SCHEMA_VERSION).toBe(1);
+    expect(codesOf(source((d) => (d.config.portals = [])))).toEqual([]);
+  });
+});
+
+describe("spatial source — portal validation rejects", () => {
+  it("portals that are not an array, and malformed entries", () => {
+    expect(codesOf(source((d) => (d.config.portals = {})))).toEqual(["invalid-portals"]);
+    expect(codesOf(source((d) => (d.config.portals = "portal-hub-music")))).toEqual(["invalid-portals"]);
+    expect(codesOf(source((d) => (d.config.portals[0] = null)))).toEqual(["invalid-portal"]);
+    expect(codesOf(source((d) => (d.config.portals[0] = "portal-hub-music")))).toEqual(["invalid-portal"]);
+  });
+
+  it("unknown fields in a portal entry (no coordinates, spawns, URLs, gates or metadata)", () => {
+    expect(portalCodes((p) => (p.position = { x: 0, y: 0, z: 0 }))).toEqual(["unexpected-field"]);
+    expect(portalCodes((p) => (p.spawn = { position: { x: 0, y: 1, z: 0 }, yaw: 0 }))).toEqual(["unexpected-field"]);
+    expect(portalCodes((p) => (p.targetUrl = "/?destination=x"))).toEqual(["unexpected-field"]);
+    expect(portalCodes((p) => (p.gates = ["age21"]))).toEqual(["unexpected-field"]);
+    expect(portalCodes((p) => (p.name = "Music"))).toEqual(["unexpected-field"]);
+  });
+
+  it("a missing, invalid or duplicate portal componentId", () => {
+    expect(portalCodes((p) => delete p.componentId)).toEqual(["invalid-component-ref"]);
+    expect(portalCodes((p) => (p.componentId = ""))).toEqual(["invalid-component-ref"]);
+    expect(portalCodes((p) => (p.componentId = 42))).toEqual(["invalid-component-ref"]);
+    expect(codesOf(source((d) => d.config.portals.push(structuredClone(d.config.portals[0]))))).toEqual(["duplicate-portal"]);
+  });
+
+  it("a portal component that does not exist in the authored scene", () => {
+    expect(portalCodes((p) => (p.componentId = "portal-nowhere"))).toEqual(["unknown-component"]);
+  });
+
+  it("a global component used as a portal", () => {
+    expect(
+      portalCodes((p, d) => {
+        p.componentId = "ground";
+        d.scene.components.ground.collider = { enabled: true, rigidbodyType: "FIXED", colliderType: "MESH", isSensor: true };
+      }),
+    ).toEqual(["global-portal-component"]);
+  });
+
+  it("a portal declared under a different chunk than the one owning its component, or an unknown chunk", () => {
+    expect(portalCodes((p) => (p.chunkKey = "music"))).toEqual(["portal-chunk-mismatch"]); // portal-hub-music is owned by hub
+    expect(portalCodes((p) => (p.chunkKey = "nowhere"))).toEqual(["unknown-chunk"]);
+    expect(portalCodes((p) => delete p.chunkKey)).toEqual(["unknown-chunk"]);
+  });
+
+  it("a portal component that is not configured as an enabled sensor", () => {
+    expect(portalCodes((p, d) => (d.scene.components[p.componentId].collider.isSensor = false))).toEqual(["portal-not-sensor"]);
+    expect(portalCodes((p, d) => delete d.scene.components[p.componentId].collider.isSensor)).toEqual(["portal-not-sensor"]);
+    expect(portalCodes((p, d) => (d.scene.components[p.componentId].collider.enabled = false))).toEqual(["portal-not-sensor"]);
+    expect(portalCodes((p, d) => delete d.scene.components[p.componentId].collider)).toEqual(["portal-not-sensor"]);
+    expect(portalCodes((p) => (p.componentId = "platform-hub"))).toEqual(["portal-not-sensor"]); // a solid platform is not a trigger
+    expect(portalCodes((p) => (p.componentId = "label-hub"))).toEqual(["portal-not-sensor"]); // a text label has no collider
+  });
+
+  it("a malformed, unknown, non-THE-NRVNAVerse or wrong-world destination", () => {
+    expect(portalCodes((p) => (p.destinationId = "music"))).toEqual(["invalid-destination-id"]);
+    expect(portalCodes((p) => delete p.destinationId)).toEqual(["invalid-destination-id"]);
+    expect(portalCodes((p) => (p.destinationId = "dst_0000000000000000"))).toEqual(["unknown-destination"]);
+    // portal-hub-fashion → Fashion / Culture District; its placement trips too (same canonical record).
+    expect(
+      portalCodes((p, d) => {
+        const target = d.destinations.destinations.find((x: Mutable) => x.id === p.destinationId);
+        target.spatialDestination = { platform: "external", url: "https://example.com/" };
+      }, 1),
+    ).toEqual(["placement-not-the-nrvnaverse", "portal-not-the-nrvnaverse"]);
+    expect(
+      portalCodes((p, d) => {
+        const target = d.destinations.destinations.find((x: Mutable) => x.id === p.destinationId);
+        target.spatialDestination = { platform: "the-nrvnaverse", worldId: "another-world" };
+      }, 1),
+    ).toEqual(["world-id-mismatch", "world-id-mismatch"]); // the placement and the portal both name the wrong world
+  });
+
+  it("does not generate anything from an invalid portal set", () => {
+    expect(() => generateSpatialArtifacts(source((d) => (d.config.portals[0].componentId = "nope")))).toThrow(/unknown-component/);
   });
 });

@@ -1,7 +1,8 @@
 import type { ChunkPayload } from "@/lib/spatial/chunk-payload";
 import { createComponentBatch } from "@/lib/spatial/component-batch";
 import type { SpawnPoint } from "@/lib/spatial/placement-registry";
-import type { ChunkBatch, ChunkRuntime } from "@/lib/spatial/spatial-runtime";
+import { subscribePlayerEnterSensor, type SensorHost } from "@/lib/spatial/sensor-subscription";
+import type { ChunkBatch, ChunkRuntime, SensorRuntime } from "@/lib/spatial/spatial-runtime";
 
 /**
  * Deterministic in-memory stand-in for `AweSpatialRuntime`. It keeps a "world" of live component
@@ -16,12 +17,20 @@ import type { ChunkBatch, ChunkRuntime } from "@/lib/spatial/spatial-runtime";
  * - `failRetire`: retiring throws AFTER removing the components (cleanup-failure path).
  *
  * Staging goes through the same `createComponentBatch` helper the real runtime uses, so the
- * all-or-nothing contract is the real one, not a re-implementation.
+ * all-or-nothing contract is the real one, not a re-implementation. Likewise the sensor seam
+ * (`onPlayerEnterSensor`) goes through the real `subscribePlayerEnterSensor` helper over an
+ * in-memory emitter per live component; `enterSensor(id, other)` simulates an intersection.
  */
-export class FakeChunkRuntime implements ChunkRuntime {
+export class FakeChunkRuntime implements ChunkRuntime, SensorRuntime {
   isReady = true;
   /** Live component ids ("the world"). Global scene components are not modelled. */
   readonly world = new Set<string>();
+  /** Live component records (to read collider configuration). */
+  readonly records = new Map<string, Record<string, unknown>>();
+  /** Sensor-enter listeners per live component id (`other` = the intersecting component id). */
+  readonly sensorListeners = new Map<string, Set<(other: string) => void>>();
+  /** The id the sensor seam treats as the player avatar. */
+  readonly playerId = "Player";
   /** Ordered operation log: `stage:<key>`, `create:<id>`, `destroy:<id>`, `place:<x,y,z>`, `retire:<key>`. */
   readonly log: string[] = [];
   readonly placed: SpawnPoint[] = [];
@@ -66,11 +75,12 @@ export class FakeChunkRuntime implements ChunkRuntime {
           if (record.id in this.failCreate) throw new Error(this.failCreate[record.id]);
           if (this.world.has(record.id)) throw new Error(`duplicate component id "${record.id}"`);
           this.world.add(record.id);
+          this.records.set(record.id, record);
           this.log.push(`create:${record.id}`);
           return record.id;
         },
         destroy: (id) => {
-          this.world.delete(id);
+          this.disposeComponent(id);
           this.log.push(`destroy:${id}`);
         },
       },
@@ -88,7 +98,7 @@ export class FakeChunkRuntime implements ChunkRuntime {
     this.batches.delete(batch);
     this.log.push(`retire:${batch.chunkKey}`);
     for (const id of ids) {
-      this.world.delete(id);
+      this.disposeComponent(id);
       this.log.push(`destroy:${id}`);
     }
     if (this.failRetire) {
@@ -96,6 +106,48 @@ export class FakeChunkRuntime implements ChunkRuntime {
       this.failRetire = null;
       throw new Error(reason);
     }
+  }
+
+  /** Real subscription helper over the in-memory world (see `sensor-subscription.ts`). */
+  onPlayerEnterSensor(componentId: string, callback: () => void): () => void {
+    if (!this.isReady) throw new Error("runtime is not ready");
+    const host: SensorHost<string> = {
+      resolve: (id) => (this.world.has(id) ? id : undefined),
+      isSensor: (id) => {
+        const collider = this.records.get(id)?.collider as Record<string, unknown> | undefined;
+        return collider?.enabled === true && collider?.isSensor === true;
+      },
+      onSensorEnter: (id, listener) => {
+        if (!this.sensorListeners.has(id)) this.sensorListeners.set(id, new Set());
+        this.sensorListeners.get(id)!.add(listener);
+        this.log.push(`sensor-on:${id}`);
+        return () => {
+          // Mirrors an engine emitter that is gone once the component was disposed.
+          if (!this.world.has(id)) throw new Error(`component "${id}" is disposed`);
+          this.sensorListeners.get(id)?.delete(listener);
+          this.log.push(`sensor-off:${id}`);
+        };
+      },
+    };
+    return subscribePlayerEnterSensor(host, componentId, this.playerId, callback);
+  }
+
+  /** Simulate `other` entering the sensor of a live component (the player by default). */
+  enterSensor(componentId: string, other: string = this.playerId): void {
+    if (!this.world.has(componentId)) throw new Error(`component "${componentId}" is not live`);
+    this.log.push(`enter:${componentId}:${other}`);
+    for (const listener of this.sensorListeners.get(componentId) ?? []) listener(other);
+  }
+
+  /** Number of sensor listeners on a component (0 once it is disposed). */
+  sensorListenerCount(componentId: string): number {
+    return this.sensorListeners.get(componentId)?.size ?? 0;
+  }
+
+  private disposeComponent(id: string): void {
+    this.world.delete(id);
+    this.records.delete(id);
+    this.sensorListeners.delete(id);
   }
 
   /** Let every held stage proceed. */

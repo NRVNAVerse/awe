@@ -1,16 +1,16 @@
-# NRVNAVerse Spatial Runtime — M0 Step 2A + 2B.2
+# NRVNAVerse Spatial Runtime — M0 Step 2A + 2B.2 + 2B.3
 
 | Field | Value |
 |---|---|
-| **Status** | VERIFIED (2026-09-19) — official AWE runtime booted from the generated **global scene**, stable-id → placement adapter, **one selectively loaded chunk** with safe transitions / rollback / latest-request-wins, gate-before-fetch, tests, browser validation |
+| **Status** | VERIFIED (2026-09-19) — official AWE runtime booted from the generated **global scene**, stable-id → placement adapter, **one selectively loaded chunk** with safe transitions / rollback / latest-request-wins, gate-before-fetch, **physical portal sensors → stable-id travel (2B.3)**, tests, browser validation incl. the real avatar entering real sensor colliders |
 | **App** | `apps/the-nrvnaverse` (THE NRVNAVerse, spatial interface) |
 | **Builds on** | [`NRVNAVERSE_SPATIAL_DATA_PIPELINE.md`](./NRVNAVERSE_SPATIAL_DATA_PIPELINE.md) (M0 Step 2B.1) · [`NRVNAVERSE_DESTINATION_MANIFEST.md`](./NRVNAVERSE_DESTINATION_MANIFEST.md) (M0 Step 1) |
 | **Governing decisions** | D-002, D-004, D-006, D-010, D-013, D-014, D-016; Landmark §3, §6, §7, §9 |
-| **Not in scope (M0 Step 2B.3+)** | 3D portals, prefetch / chunk cache / neighbour warming (2B.4), age verification / compliance policy, hosting-level protection of gated chunk URLs |
+| **Not in scope (M0 Step 2B.4+)** | prefetch / chunk cache / neighbour warming, budgets, mobile/adaptive quality, async mutation-queue shutdown hardening (2B.4); age verification / compliance policy; hosting-level protection of gated chunk URLs; portal art |
 
-M0 is **not** complete after Step 2B.2; the Landmark stays at v0.1. No new architectural decision was needed — D-004, D-006 and D-016 govern this work.
+M0 is **not** complete after Step 2B.3; the Landmark stays at v0.1. No new architectural decision was needed — D-004, D-006, D-013 and D-016 govern this work.
 
-History: Step 2A (branch `feat/m0-spatial-runtime`) mounted the official runtime on the full compatibility scene with same-scene teleports. Step 2B.1 generated the global scene, chunk files and spatial index. **Step 2B.2 (branch `feat/m0-chunk-runtime`) replaced the full-scene runtime with global scene + one active chunk.** Sections marked *(2A, unchanged)* still describe the current code.
+History: Step 2A (branch `feat/m0-spatial-runtime`) mounted the official runtime on the full compatibility scene with same-scene teleports. Step 2B.1 generated the global scene, chunk files and spatial index. Step 2B.2 (branch `feat/m0-chunk-runtime`) replaced the full-scene runtime with global scene + one active chunk. **Step 2B.3 (branch `feat/m0-portals`) added physical portal sensors that route a stable destination id into the same `travelToDestination()` path** (§13). Sections marked *(2A, unchanged)* still describe the current code.
 
 ---
 
@@ -23,11 +23,16 @@ boot ─ load destinations.json ─▶ resolvingDestination ─ parse ?destinati
    ─▶ loadingChunk(initial): fetch + validate + stage the ONE required chunk → teleport
    ─▶ reveal ─▶ ready | gateRequired(at Hub) | error
 
-ready | arrived | gateRequired ─ directory click / back-forward ─▶ traveling
+ready | arrived | gateRequired ─ directory click / back-forward / PHYSICAL PORTAL ENTER ─▶ traveling
    ─ same chunk ────────────────────────────────────────────────▶ arrived
    ─ other chunk ─▶ loadingChunk(travel) ─ stage target while old chunk lives ─ teleport ─ retire old ─▶ arrived
    ─ gate / failure / unavailable ──────────────────────────────▶ gateRequired | ready(+notice)
    ─ newer request ─▶ superseded (state untouched; the newer request owns the outcome)
+
+committed arrival (initial, directory, history, portal) ─▶ PortalController.activate(activeChunkKey)
+   ─ same chunk ─▶ no-op            ─ other chunk ─▶ unbind old sensors, bind the new chunk's portals
+player enters a bound sensor (official Component3D.onSensorEnter, other === avatar)
+   ─▶ componentId → destinationId ─▶ travelToDestination(destinationId)   (the very same path as above)
 ```
 
 The runtime **never requests `/data/static-scene.json`** any more (tested by source scan and by a fake-runtime boot test); that file remains a generated artifact for validation/debugging only.
@@ -40,6 +45,8 @@ The runtime **never requests `/data/static-scene.json`** any more (tested by sou
 | Chunk payload validation | `src/lib/spatial/chunk-payload.ts` (`parseChunkPayload`) | scene geometry passes through | no |
 | Chunk data source | `src/lib/spatial/chunk-data-source.ts` (`ChunkDataSource`, `FetchChunkDataSource`, `StaticChunkDataSource`) | no | no |
 | **Chunk orchestrator** | `src/lib/spatial/chunk-orchestrator.ts` (`ChunkOrchestrator`) | chunk keys + spawns | opaque batches only |
+| Pure player-enters-sensor helper (2B.3) | `src/lib/spatial/sensor-subscription.ts` (`subscribePlayerEnterSensor`) | no | generic `C` |
+| **Portal controller** (2B.3) | `src/lib/spatial/portal-controller.ts` (`PortalController`) | no — `componentId → { chunkKey, destinationId }` only | no (`SensorRuntime` seam) |
 | **Spatial adapter** (gates, destination → placement) | `src/lib/spatial/awe-spatial-adapter.ts` (`AweSpatialAdapter`) | reads the registry; exposes only `{ worldId, placementRef }` outward | no |
 | Placement registry (from the generated index) | `src/lib/spatial/placement-registry.ts`, `spatial-index.ts`, `spatial-index-source.ts` | **yes** | no |
 | Application state (pure) | `src/lib/app-state.ts` | no | no |
@@ -61,6 +68,7 @@ Deliberate deviations from the starter (documented in the file header):
 5. **(2B.2)** `stageChunk(payload, signal)` / `retireChunk(batch)` — thin wrappers over the official `space.components.create(data, { abort })` and `space.components.destroy(component)`. Staging is all-or-nothing through `createComponentBatch`; the runtime keeps a private `Map<ChunkBatch, Component3D[]>` and callers only ever hold the opaque `ChunkBatch { chunkKey, componentIds }`. `retireChunk` is idempotent per batch and throws only after attempting every component. `dispose()` drops the batch handles (the space destroys the components).
 6. Canvas resize also listens to a `ResizeObserver` on the container.
 7. `tsconfig.json` keeps the starter's `strict: false`; NRVNAVerse-owned pure modules are strict via `tsconfig.strict.json` (part of `pnpm --filter the-nrvnaverse check`). `awe-spatial-runtime.ts`, `app-store.ts` and `test/app-store.test.ts` are excluded from the strict pass because they (transitively) pull engine sources in; the base `tsc --noEmit` still checks them.
+8. **(2B.3)** `onPlayerEnterSensor(componentId, cb)` — resolves the staged component through the official `ComponentManager.byInternalId`, requires `component.collider.isSensor === true`, subscribes with the official `Component3D.onSensorEnter`, and invokes `cb` only when `event.other` is the player's `AvatarComponent`. Returns an idempotent unsubscribe that is safe after the component was destroyed with its chunk. Portal-neutral: it knows component ids, never destination ids.
 
 Assets: the 17 starter animation clips (`public/assets/anims/*.json`) and upstream CDN assets. No new binaries, no Ghost assets.
 
@@ -197,10 +205,78 @@ Requests were read from the page's own `performance.getEntriesByType("resource")
 
 Note on the tool: the Claude-in-Chrome tab used for A–K went to the background mid-session (the user's Chrome window switched tabs), which stalls `requestAnimationFrame` and trips the upstream 60 s `LOAD_TIMEOUT` (known Step 2A behaviour). B, C, H, I and L were therefore executed in a throw-away **headless Chrome** (`--headless=new`, SwiftShader) driven over raw CDP from a dependency-free Node script (`Runtime.evaluate` probes, trusted `Input.dispatchKeyEvent` for WASD) against the same dev server; rAF runs there, so the engine boots normally (≈41–48 s cold in software rendering).
 
-## 12. What remains for M0 Step 2B.3+
+## 12. What remains for M0 Step 2B.4+
 
-- **2B.3 — 3D portals**: portal components targeting destination ids (never positions), sensor → `travelToDestination(id)`; the transition path above is the one they must use.
-- **2B.4 — performance hardening**: neighbour prefetch / cache policy over the orchestrator, budgets, mobile/adaptive quality.
+- **2B.4 — hardening / performance / mobile / disposal**: neighbour prefetch / cache policy over the orchestrator, budgets, mobile/adaptive quality, and the carried shutdown note: `disposeApp` still does not await the orchestrator's mutation queue before `runtime.dispose()` destroys the Space (a transition inside `stageChunk` at unmount observes the abort/bumped generation when it settles; not expanded here because portals exposed no new reproducible regression).
 - Real gate flow design (verification provider seam, jurisdiction policy at the content layer, server-side protection of gated chunk URLs) — still no compliance claims.
-- Decide how (or whether) Ghost's experimental chunk manager / portal component inform the design — read-only until his review (D-013).
-- Replace prototype geometry only when a world-layout decision is made (human review, governance rule 9).
+- Decide how (or whether) Ghost's experimental chunk manager / portal component inform a later generic primitive — read-only until his review (D-013).
+- Replace prototype geometry and portal visuals only when a world-layout decision is made (human review, governance rule 9).
+
+## 13. Physical portals (M0 Step 2B.3)
+
+**Architecture — one contract only:**
+
+```
+physical sensor component (mesh, collider { enabled, FIXED, CUBE, isSensor: true }, owned by ONE chunk)
+   ─ official Component3D.onSensorEnter, other === player avatar ─▶ AweSpatialRuntime.onPlayerEnterSensor
+   ─▶ PortalController: componentId ──generated index `portals`──▶ destinationId
+   ─▶ travelToDestination(destinationId)          ← the existing entry point; nothing portal-specific after this
+```
+
+A portal never fetches a chunk, knows a spawn, teleports, mutates the URL, evaluates a gate or creates/destroys components — those responsibilities already exist downstream. Component ids, positions, chunk keys and colliders are not identity (D-004); the target is always the canonical stable id, resolved through the manifest (gates, D-006) and the placement registry at travel time. No engine-level `portal` component was needed; Ghost's experimental portal component, `PORTAL_OPEN` event, coordinate-keyed `portals-index.json` and portal directory were not read, copied or adapted (D-013). `packages/engine`, `engine-edit`, `studio` are untouched.
+
+**The exact seven M0 portal bindings** (authoritative: `spatial/source/spatial-config.m0.json` `portals[]`; generated: `public/data/spatial/spatial-index.json` `portals`):
+
+| Physical component id (owner chunk) | Trigger | Target stable id |
+|---|---|---|
+| `portal-hub-music` (hub) | Hub → Music District | `dst_gm3xs4a3tws7bgh3` |
+| `portal-hub-fashion` (hub) | Hub → Fashion / Culture District | `dst_9c4wxtpec8awsx1q` |
+| `portal-hub-cannabis` (hub) | Hub → 21+ Cannabis District (gated) | `dst_441dtdafq3e3ehjn` |
+| `portal-music-hub` (music) | Music District → Hub | `dst_7g19n1vm9ackw8a0` |
+| `portal-music-artist` (music) | Music District → Placeholder Artist (same chunk) | `dst_1qtfn9qjg9kf6jyd` |
+| `portal-fashion-hub` (fashion-culture) | Fashion / Culture District → Hub | `dst_7g19n1vm9ackw8a0` |
+| `portal-fashion-brand` (fashion-culture) | Fashion / Culture District → Placeholder Fashion / Culture Brand (same chunk) | `dst_tgfh5h5jvm3wj0w7` |
+
+No eighth portal; `cannabis-21` owns none; NRVNA Farms stays reachable through the directory / deep link. The sensors are plain translucent cyan box meshes (`opacity 0.35`, `script.tag: "m0-portal"`, no shaders, particles, animation or assets): 1 × 3 × 14 panels on the platform edges facing the neighbouring district and 6 × 3 × 1 panels on the north side towards the sub-destination; none overlaps a spawn of its chunk (tested), so an arrival never re-triggers.
+
+**Chunk ownership.** Each sensor is listed in its chunk's `componentIds`, so it is staged and retired with that chunk by the unchanged orchestrator; there are no globally persistent portals. The chunk payloads gained the sensor geometry only — no `destinationId`, target URL, gate or metadata (tested). The binding lives in the generated index; gate truth stays in the manifest.
+
+**`PortalController` lifecycle** (`src/lib/spatial/portal-controller.ts`, constructed in `app-store.ts` after destination data, the spatial index, the runtime and the orchestrator exist, with `onPortalEntered: (id) => travelToDestination(id)` injected — no circular module):
+
+| Moment | Action |
+|---|---|
+| initial ungated load | initial chunk committed → adapter emits `arrived` → `syncPortals()` → `activate(activeChunkKey)` → reveal |
+| initial gated deep link | Cannabis refused (no fetch) → Hub fallback committed → `activate("hub")` → reveal; app stays `gateRequired` |
+| cross-chunk arrival | previous bindings released (their components were already retired — unsubscribe is safe after disposal) → the new chunk's portals bound |
+| same-chunk arrival | `activate` with the already active key → no-op (no duplicate listeners, no rebind) |
+| failed / gated / superseded travel | no `arrived` → bindings untouched (still valid: the active chunk did not change) |
+| `disposeApp()` | `portals.dispose()` runs **before** `orchestrator.dispose()` / `runtime.dispose()` |
+
+A portal that cannot be bound (unknown / non-sensor component) is reported via `warn` and skipped; activation never influences a travel outcome and never throws into the travel path.
+
+**Trigger semantics.** SENSOR ENTER only (never STAY, no timer): one physical entry → one `travelToDestination` call, deferred to a microtask so the request starts after the engine's frame update rather than inside the sensor emit. Non-player intersections are ignored. The gated Hub → Cannabis portal is not special-cased: it routes its stable id, the adapter answers `gate-required` before any fetch, the visitor stays in the Hub inside the sensor, the sensor stays bound, and only leaving and re-entering produces another request. No "I am 21" bypass exists. Concurrency is entirely the existing store/orchestrator machinery: a portal entered during an in-flight travel supersedes it (tested); there is no portal-specific cancellation, cooldown or reducer.
+
+**URL / history.** Portal arrival writes exactly what directory travel writes (`buildDeepLinkQuery` → `?destination=<stable-id>&from=spatial`); gated refusal writes nothing; `?portal=`, `?chunk=`, component ids and coordinates never appear (tested at store level and observed in the browser).
+
+**Diagnostics.** `spatialDiagnostics` gained `boundPortals` and `lastPortal { componentId, destinationId }` (dev panel: "bound portals: n · last portal: … → dst_…"); the dev-only `__nrvnaverse` handle exposes the controller. Sensor-enter → adapter `traveling` overhead measured in the browser: **≈ 9 ms** under SwiftShader at ≈2 fps (microtask + store `beginTravel`), negligible against the 20–450 ms chunk transition.
+
+**Tests (177 app tests, was 126; 56 manifest tests unchanged).** `spatial-pipeline` (+16): seven bindings, deterministic index section, ownership by declared chunk, identity-free chunk payloads, no coordinates/gates in bindings, gated / same-chunk / shared targets allowed, no spawn overlap, optional-additive without `portals`, and rejection of non-array / malformed / unknown-field / missing-duplicate component / unknown component / global component / chunk mismatch / unknown chunk / non-sensor / malformed-unknown-non-NRVNAVerse-wrong-world destination. `spatial-index` (+4): parses seven bindings, missing field → empty set, malformed rejected, store wiring source scan. `sensor-subscription` (6): once per player entry, non-player ignored, unknown / non-sensor fail clearly, idempotent unsubscribe, safe after disposal, disposed runtime holds nothing. `portal-controller` (11): Hub 3 / Music 2 / Fashion 2 / cannabis 0, same-chunk no-op, chunk switch releases, bind failure warned, exact stable id routed once on a microtask, non-player ignored, gate not special-cased, async callback without spam, rejected/throwing callback reported, no coordinates, disposal. `app-store` (+13): bound before reveal; Hub → Music / Music → Artist / Music → Hub / Hub → Fashion / Fashion → Brand / Fashion → Hub through the real sensor seam of the fake runtime with the same state/URL as directory travel; Hub → Cannabis `gateRequired` with **no** cannabis request and no URL write; usable after refusal incl. re-entry; gated deep-link fallback binds Hub portals; directory + history still work and re-sync portals; portal during in-flight travel supersedes; failed portal travel keeps bindings; URLs never carry portal/chunk/component ids; disposal order. Two pre-existing assertions were made data-derived (Music chunk now has 9 components; the Hub is a portal target) — nothing was weakened.
+
+**Browser validation (2026-09-19, headless Chrome `--headless=new` + SwiftShader over raw CDP against the running `next dev`; the avatar was driven with trusted `Input.dispatchKeyEvent` WASD into the real sensor colliders — no check called the portal callback directly):**
+
+| Check | Result |
+|---|---|
+| A Hub direct load | `hub.json` only; 15 components (7 global + 8 hub); `byTag("m0-portal")` = the 3 Hub portals, each `collider.isSensor === true`; bound portals 3; screenshot shows the translucent panels |
+| B walk west into `portal-hub-music` | sensor fired after ≈4 s of walking; `music.json` fetched; Hub retired (`platform-hub` gone, 16 = 7 + 9 music); active `music`; URL `?destination=<music>&from=spatial`; bound 2; last portal `portal-hub-music`; overhead 8.9 ms |
+| C walk north into `portal-music-artist` | same Music chunk (music fetch count still 1); avatar at the Artist spawn; URL names the Artist |
+| D `portal-music-hub` (after a directory click to the Music spawn) | Hub loaded, Music retired |
+| E `portal-hub-fashion` | Fashion loaded |
+| F `portal-fashion-brand` | same-chunk teleport, no refetch / rebuild of Fashion (fashion fetch count 1) |
+| G `portal-fashion-hub` (after a directory click to the Fashion spawn) | Hub loaded |
+| H `portal-hub-cannabis` | `gateRequired` banner; visitor inside the sensor in the Hub; active `hub`; URL still the Hub; **cannabis fetch count 0** throughout the whole session |
+| I after refusal | walked out (momentum had carried the avatar to the far side, so walking back crossed the sensor once more → one more refusal, still no fetch), then west into `portal-hub-music` → Music |
+| J directory after portal travel | three directory clicks arrived normally and re-synced the bindings |
+| K back / forward after portal travel | back → Music, forward → Hub, bindings followed |
+| L WASD / camera / canvas | every walk moved the avatar; rAF alive (2 frames / 500 ms under SwiftShader); canvas focus click works (headless cannot pointer-lock: the only non-upstream console item is that `WrongDocumentError`, pre-existing) |
+| M | every URL observed: `?destination=dst_…&from=spatial` or empty; no `?chunk=`, `?portal=`, component id or coordinate |
+| N | no request or source matching `ghost` |
