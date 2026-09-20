@@ -9,10 +9,16 @@
  * full scene (`static-scene.json`) and the spatial index are deliberately not budgeted.
  *
  * Evidence basis (2B.4C.1 audit, 2026-09-20): the committed M0 placeholder artifacts are ≈7–10 KiB
- * and 7–9 components each; cross-chunk staging of a 9-component chunk cost ≈8–15 ms warm and
- * ≈28–48 ms under a 4× CPU slowdown. 64 KiB / 64 components is generous headroom above that
- * baseline while still keeping a chunk to roughly one network round trip and well under a second
- * of staging on a slow CPU. Revisit with the first representative art vertical slice.
+ * and 7–9 components each. 64 KiB / 64 components is deliberately generous early-warning headroom
+ * (roughly 6–9× the current placeholder baseline, depending on metric and artifact) meant to expose
+ * accidental growth during M0. The thresholds are warning-only; they are NOT network round-trip
+ * guarantees (the budget is raw serialized bytes, while transfer depends on compression, protocol,
+ * RTT and cache state), NOT staging-time guarantees (component count does not predict staging cost
+ * once real GLBs, materials, textures, scripts or more expensive component types arrive), NOT
+ * production capacity limits and NOT representative-art budgets. The audit's staging observations
+ * (≈8–15 ms warm, ≈28–48 ms under a 4× CPU slowdown for a 9-component placeholder chunk) describe
+ * the current placeholder components only. Re-evaluate at the first representative art vertical
+ * slice.
  */
 
 /** Warning thresholds. Bytes are the serialized (LF) artifact text; counts are top-level components. */
