@@ -6,11 +6,7 @@ import { StaticChunkDataSource, type StaticChunkEntry } from "@/lib/spatial/chun
 import { ChunkOrchestrator } from "@/lib/spatial/chunk-orchestrator";
 import { lookupPlacement, toSpatialPlacement, type PlacementRegistry } from "@/lib/spatial/placement-registry";
 import { parseSpatialIndex, registryFromSpatialIndex } from "@/lib/spatial/spatial-index";
-import cannabisJson from "../public/data/spatial/chunks/cannabis-21.json";
-import fashionJson from "../public/data/spatial/chunks/fashion-culture.json";
-import hubJson from "../public/data/spatial/chunks/hub.json";
-import musicJson from "../public/data/spatial/chunks/music.json";
-import spatialIndexJson from "../public/data/spatial/spatial-index.json";
+import { cannabisJson, fashionJson, hubJson, musicJson, spatialIndexJson } from "./support/generated-spatial";
 import { FakeChunkRuntime, flush } from "./support/fake-chunk-runtime";
 
 // The registry under test is built from the GENERATED spatial index — the same data the app

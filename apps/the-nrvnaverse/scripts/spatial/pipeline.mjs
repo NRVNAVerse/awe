@@ -4,11 +4,11 @@
  *
  *   authoritative physical source (spatial/source/*)  ──▶ validate ──▶ generate ──▶
  *     public/data/static-scene.json            (compatibility full scene; validation/debugging only since 2B.2)
- *     public/data/spatial/global-scene.json    (components that exist independent of any chunk; content-versioned URL)
- *     public/data/spatial/chunks/<key>.json    (one file per logical M0 chunk; content-versioned URL)
- *     public/data/spatial/spatial-index.json   (derived physical lookup: destinationId → chunkKey → spawn,
- *                                               physical portal sensor → destinationId bindings since 2B.3,
- *                                               and the VERSION ROOT for the two lines above since 2B.4B.2)
+ *     public/data/spatial/global-scene.<v>.json     (components that exist independent of any chunk; content-addressed)
+ *     public/data/spatial/chunks/<key>.<v>.json     (one file per logical M0 chunk; content-addressed)
+ *     public/data/spatial/spatial-index.json        (derived physical lookup: destinationId → chunkKey → spawn,
+ *                                                    physical portal sensor → destinationId bindings since 2B.3,
+ *                                                    and the VERSION ROOT for the two lines above since 2B.4B.2)
  *
  * Ownership rules (D-004, D-006, D-016):
  * - The destination manifest (`packages/nrvna-manifest`) is canonical for destination IDENTITY
@@ -28,11 +28,15 @@
  *   still valid and yields an empty portal set.
  * - Versioned delivery (M0 Step 2B.4B.2): the index is the VERSION ROOT. Its own URL never
  *   changes and it is served short-lived / revalidated; the `globalSceneUrl` and every
- *   `chunks[key].dataUrl` it points at carry a deterministic content version
- *   (`?v=<first 32 lowercase hex chars of SHA-256 over the exact serialized artifact>`) so the
- *   physical artifacts can be served `immutable` (see `next.config.ts`). Artifact FILE NAMES are
- *   unchanged; the token lives only in the URL the index hands out. Changing a chunk's content
- *   changes its token, so a browser cache entry for the old URL can never satisfy the new one.
+ *   `chunks[key].dataUrl` it points at are CONTENT-ADDRESSED FILE PATHS: the file name itself
+ *   carries `<v>`, the first 32 lowercase hex chars of SHA-256 over the exact serialized artifact,
+ *   so the physical artifacts can be served `immutable` (see `next.config.ts`). The hash in a
+ *   requested file name therefore always corresponds to the bytes stored in THAT file: after a
+ *   deployment an old URL either still finds its old bytes or is a 404 — it can never be answered
+ *   with new content (a query-only token, rejected in review, could not guarantee this because the
+ *   query never selects bytes on the server). Changing a chunk's content changes its file name, so
+ *   a browser cache entry for the old URL can never satisfy the new one, and the previous file is
+ *   removed by `cli.mjs` (the generator owns every file matching {@link CONTENT_ADDRESSED_OUTPUT}).
  *   The token is opaque to the runtime (nothing parses it) and is not identity (D-004): chunk
  *   keys, destination ids and the schema version are untouched.
  *
@@ -50,13 +54,11 @@ export const SPATIAL_SCHEMA_VERSION = 1;
 
 /**
  * Content version token: the first 32 lowercase hexadecimal characters (128 bits) of the SHA-256
- * digest of the exact UTF-8 artifact text written to disk. `next.config.ts` conditions the
- * immutable cache policy on this exact shape.
+ * digest of the exact UTF-8 artifact text written to disk. It is embedded in the artifact's FILE
+ * NAME (`<base>.<token>.json`); `next.config.ts` keys the immutable cache policy on this exact shape.
  */
 export const CONTENT_VERSION_LENGTH = 32;
 export const CONTENT_VERSION_PATTERN = /^[0-9a-f]{32}$/;
-/** Query parameter that carries the content version on a physical artifact URL. */
-export const CONTENT_VERSION_PARAM = "v";
 
 /** Chunk keys double as file names: lowercase kebab-case, no path characters, bounded length. */
 export const CHUNK_KEY_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
@@ -71,12 +73,30 @@ export const THE_NRVNAVERSE_PLATFORM = "the-nrvnaverse";
 /** Public URL prefix under which the generated artifacts are served (Next.js `public/data`). */
 export const DATA_URL_PREFIX = "/data";
 
-/** Output file names, relative to `public/data/`. */
+/**
+ * Output locations, relative to `public/data/`. The compatibility scene and the index have fixed
+ * names; the global scene and every chunk are content-addressed (`<base>.<token>.json`, see
+ * {@link contentAddressedFileName}).
+ */
 export const OUTPUT = Object.freeze({
   compatibilityScene: "static-scene.json",
-  globalScene: "spatial/global-scene.json",
   spatialIndex: "spatial/spatial-index.json",
+  /** `spatial/global-scene.<token>.json` */
+  globalSceneBase: "spatial/global-scene",
+  /** `spatial/chunks/<key>.<token>.json` */
   chunksDir: "spatial/chunks",
+});
+
+/**
+ * The generator's ownership boundary for content-addressed outputs: a file whose name matches one
+ * of these (relative to `public/data/`) was produced by a generation of this pipeline and nothing
+ * else, so a stale one (a previous content version) may be removed by `cli.mjs`. Nothing outside
+ * these two shapes is ever deleted. `[0-9a-f]{32}` is {@link CONTENT_VERSION_PATTERN};
+ * `[a-z0-9]+(?:-[a-z0-9]+)*` is {@link CHUNK_KEY_PATTERN}.
+ */
+export const CONTENT_ADDRESSED_OUTPUT = Object.freeze({
+  globalScene: /^spatial\/global-scene\.([0-9a-f]{32})\.json$/,
+  chunk: /^spatial\/chunks\/([a-z0-9]+(?:-[a-z0-9]+)*)\.([0-9a-f]{32})\.json$/,
 });
 
 const CONFIG_KEYS = ["schemaVersion", "worldId", "scene", "global", "chunks", "placements", "portals"];
@@ -111,11 +131,15 @@ const POSITION_KEYS = ["x", "y", "z"];
  * @typedef {{
  *   files: Record<string, string>;
  *   versions: Record<string, string>;
+ *   globalSceneFile: string;
+ *   chunkFiles: Record<string, string>;
  *   chunkKeys: string[];
  *   destinationIds: string[];
  *   portalComponentIds: string[];
  * }} SpatialArtifacts
- *   `versions` maps each content-versioned output file name (global scene, chunks) to its token.
+ *   `files` is keyed by output file name relative to `public/data/` — the content-addressed names
+ *   for the global scene and the chunks. `versions` maps each content-addressed file name to its
+ *   token; `globalSceneFile` / `chunkFiles[key]` resolve the logical artifact to its current name.
  */
 
 /**
@@ -444,13 +468,31 @@ export function contentVersion(serialized) {
 }
 
 /**
- * Public delivery URL of a content-versioned artifact: the unchanged file path plus `?v=<token>`.
- * The runtime treats the whole string as an opaque URL.
- * @param {string} fileName output file name relative to `public/data/`
+ * Content-addressed output file name: `<base>.<token>.json`, relative to `public/data/`. The token
+ * is part of the name, so the name identifies exactly one artifact content.
+ * @param {string} base `OUTPUT.globalSceneBase` or `${OUTPUT.chunksDir}/<key>`
  * @param {string} version token from {@link contentVersion}
  */
-export function versionedDataUrl(fileName, version) {
-  return `${DATA_URL_PREFIX}/${fileName}?${CONTENT_VERSION_PARAM}=${version}`;
+export function contentAddressedFileName(base, version) {
+  return `${base}.${version}.json`;
+}
+
+/**
+ * Public delivery URL of an output file: the file path under `/data`, nothing else — no query, no
+ * runtime construction. The runtime treats the whole string as an opaque URL.
+ * @param {string} fileName output file name relative to `public/data/`
+ */
+export function dataUrl(fileName) {
+  return `${DATA_URL_PREFIX}/${fileName}`;
+}
+
+/**
+ * Whether a `public/data/`-relative file name is a content-addressed output of this pipeline
+ * (any content version, current or stale). See {@link CONTENT_ADDRESSED_OUTPUT}.
+ * @param {string} fileName
+ */
+export function isContentAddressedOutput(fileName) {
+  return CONTENT_ADDRESSED_OUTPUT.globalScene.test(fileName) || CONTENT_ADDRESSED_OUTPUT.chunk.test(fileName);
 }
 
 /**
@@ -470,45 +512,49 @@ export function generateSpatialArtifacts(input) {
 
   /** @type {Record<string, string>} */
   const files = {};
-  /** @type {Record<string, string>} content-versioned output file → token (global scene + chunks) */
+  /** @type {Record<string, string>} content-addressed output file → token (global scene + chunks) */
   const versions = {};
 
   // A. Compatibility full scene — exactly the authored scene. Validation/debugging output only
-  //    since Step 2B.2 (the runtime never requests it); not content-versioned.
+  //    since Step 2B.2 (the runtime never requests it); fixed name, not content-addressed.
   files[OUTPUT.compatibilityScene] = serializeArtifact(scene);
 
   // B. Global scene — the same envelope, only the components that exist independent of chunks.
+  //    The text is serialized first and its NAME is derived from that exact text; the text never
+  //    contains its own name or token, so there is no circularity.
   const globalIds = new Set(config.global.componentIds);
-  files[OUTPUT.globalScene] = serializeArtifact(withComponents(scene, (id) => globalIds.has(id)));
+  const globalSceneText = serializeArtifact(withComponents(scene, (id) => globalIds.has(id)));
+  const globalSceneFile = contentAddressedFileName(OUTPUT.globalSceneBase, contentVersion(globalSceneText));
+  files[globalSceneFile] = globalSceneText;
+  versions[globalSceneFile] = contentVersion(globalSceneText);
 
-  // C. Chunk files — sorted by key; components keep the authored scene order. The file names are
-  //    stable (`<key>.json`); the content version is attached to the URL below, never to the name.
+  // C. Chunk files — sorted by key; components keep the authored scene order. Each file is named
+  //    `<key>.<token>.json` from its own serialized text, so a content change is a new file name
+  //    (and a new URL) while an unchanged chunk keeps exactly the same name.
   const chunks = [...config.chunks].sort((a, b) => compareStrings(a.key, b.key));
+  /** @type {Record<string, string>} chunk key → content-addressed file name */
+  const chunkFiles = {};
+  /** @type {Record<string, { dataUrl: string }>} */
+  const chunkIndex = {};
   for (const chunk of chunks) {
     const memberIds = new Set(chunk.componentIds);
-    files[`${OUTPUT.chunksDir}/${chunk.key}.json`] = serializeArtifact({
+    const text = serializeArtifact({
       schemaVersion: SPATIAL_SCHEMA_VERSION,
       worldId: config.worldId,
       chunkKey: chunk.key,
       components: pickComponents(scene.components, (id) => memberIds.has(id)),
     });
-  }
-
-  // Content versions — computed from the FINAL serialized text of each physical artifact, after
-  // every artifact string exists and before the index is built, so the index (the version root)
-  // depends on the artifacts and never the other way round (no circular generation).
-  versions[OUTPUT.globalScene] = contentVersion(files[OUTPUT.globalScene]);
-  /** @type {Record<string, { dataUrl: string }>} */
-  const chunkIndex = {};
-  for (const chunk of chunks) {
-    const fileName = `${OUTPUT.chunksDir}/${chunk.key}.json`;
-    versions[fileName] = contentVersion(files[fileName]);
-    chunkIndex[chunk.key] = { dataUrl: versionedDataUrl(fileName, versions[fileName]) };
+    const fileName = contentAddressedFileName(`${OUTPUT.chunksDir}/${chunk.key}`, contentVersion(text));
+    files[fileName] = text;
+    versions[fileName] = contentVersion(text);
+    chunkFiles[chunk.key] = fileName;
+    chunkIndex[chunk.key] = { dataUrl: dataUrl(fileName) };
   }
 
   // D. Spatial index — derived physical lookup and version root. Not identity: the manifest stays
   //    canonical. Served at a fixed, unversioned URL (short-lived / revalidated); it points at the
-  //    immutable versioned artifacts.
+  //    immutable content-addressed artifact paths built above (the index depends on the artifacts,
+  //    never the reverse).
   const placements = [...config.placements].sort((a, b) => compareStrings(a.destinationId, b.destinationId));
   /** @type {Record<string, { chunkKey: string; spawn: Spawn }>} */
   const destinationIndex = {};
@@ -531,7 +577,7 @@ export function generateSpatialArtifacts(input) {
   files[OUTPUT.spatialIndex] = serializeArtifact({
     schemaVersion: SPATIAL_SCHEMA_VERSION,
     worldId: config.worldId,
-    globalSceneUrl: versionedDataUrl(OUTPUT.globalScene, versions[OUTPUT.globalScene]),
+    globalSceneUrl: dataUrl(globalSceneFile),
     chunks: chunkIndex,
     destinations: destinationIndex,
     portals: portalIndex,
@@ -540,6 +586,8 @@ export function generateSpatialArtifacts(input) {
   return {
     files,
     versions,
+    globalSceneFile,
+    chunkFiles,
     chunkKeys: chunks.map((c) => c.key),
     destinationIds: placements.map((p) => p.destinationId),
     portalComponentIds: portals.map((p) => p.componentId),

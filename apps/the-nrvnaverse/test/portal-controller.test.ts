@@ -6,10 +6,7 @@ import destinationsJson from "../../../packages/nrvna-manifest/generated/destina
 import { parseChunkPayload } from "@/lib/spatial/chunk-payload";
 import { PortalController } from "@/lib/spatial/portal-controller";
 import { parseSpatialIndex } from "@/lib/spatial/spatial-index";
-import fashionJson from "../public/data/spatial/chunks/fashion-culture.json";
-import hubJson from "../public/data/spatial/chunks/hub.json";
-import musicJson from "../public/data/spatial/chunks/music.json";
-import spatialIndexJson from "../public/data/spatial/spatial-index.json";
+import { fashionJson, hubJson, musicJson, spatialIndexJson } from "./support/generated-spatial";
 import { FakeChunkRuntime, flush } from "./support/fake-chunk-runtime";
 
 /**

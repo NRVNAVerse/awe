@@ -5,11 +5,7 @@ import { abortError, StaticChunkDataSource, type StaticChunkEntry } from "@/lib/
 import { ChunkOrchestrator } from "@/lib/spatial/chunk-orchestrator";
 import { parseChunkPayload } from "@/lib/spatial/chunk-payload";
 import { parseSpatialIndex } from "@/lib/spatial/spatial-index";
-import cannabisJson from "../public/data/spatial/chunks/cannabis-21.json";
-import fashionJson from "../public/data/spatial/chunks/fashion-culture.json";
-import hubJson from "../public/data/spatial/chunks/hub.json";
-import musicJson from "../public/data/spatial/chunks/music.json";
-import spatialIndexJson from "../public/data/spatial/spatial-index.json";
+import { cannabisJson, fashionJson, hubJson, musicJson, spatialIndexJson } from "./support/generated-spatial";
 import { FakeChunkRuntime, flush } from "./support/fake-chunk-runtime";
 
 const index = parseSpatialIndex(spatialIndexJson);
@@ -55,7 +51,7 @@ describe("chunk orchestrator — initial load and same-chunk travel", () => {
     expect(result).toEqual({ status: "arrived", chunkKey: "music", kind: "cross-chunk" });
     expect(source.requests.map((r) => r.chunkKey)).toEqual(["music"]);
     expect(source.requests[0].dataUrl).toBe(index.chunks.music.dataUrl);
-    expect(source.requests[0].dataUrl).toMatch(/\?v=[0-9a-f]{32}$/); // the whole content-versioned delivery URL, as the index emitted it (2B.4B.2)
+    expect(source.requests[0].dataUrl).toMatch(/^\/data\/spatial\/chunks\/music\.[0-9a-f]{32}\.json$/); // the whole content-addressed delivery URL, as the index emitted it (2B.4B.2)
     expect(orchestrator.activeChunkKey).toBe("music");
     expect(runtime.liveOf(MUSIC)).toEqual(Object.keys(MUSIC.components));
     expect(runtime.liveOf(HUB)).toEqual([]);

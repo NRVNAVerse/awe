@@ -30,7 +30,7 @@ describe("generated spatial index → placement registry", () => {
     const index = parseSpatialIndex(spatialIndexJson);
     expect(index.schemaVersion).toBe(SPATIAL_SCHEMA_VERSION);
     expect(index.worldId).toBe("the-nrvnaverse");
-    expect(index.globalSceneUrl).toMatch(/^\/data\/spatial\/global-scene\.json\?v=[0-9a-f]{32}$/); // content-versioned since 2B.4B.2
+    expect(index.globalSceneUrl).toMatch(/^\/data\/spatial\/global-scene\.[0-9a-f]{32}\.json$/); // content-addressed since 2B.4B.2
     expect(Object.keys(index.chunks)).toEqual(["cannabis-21", "fashion-culture", "hub", "music"]);
     expect(Object.keys(index.destinations).sort()).toEqual(activeWorldIds);
   });

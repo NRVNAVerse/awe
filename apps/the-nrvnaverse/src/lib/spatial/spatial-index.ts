@@ -21,17 +21,18 @@ import type { PhysicalPlacement, PlacementRegistry, SpawnPoint } from "@/lib/spa
  * `portals` parses as an empty portal set (schema version unchanged).
  *
  * Since M0 Step 2B.4B.2 the index is also the VERSION ROOT of the physical artifacts:
- * `globalSceneUrl` and every `chunks[key].dataUrl` are opaque delivery URLs that carry a
- * content-version query (`?v=<digest>`) so the server can mark them immutable. The runtime passes
- * them to `fetch` untouched — nothing here or downstream parses, strips or reconstructs them, and
- * they never appear in a navigation URL (that contract is `?destination=<stable-id>` only).
+ * `globalSceneUrl` and every `chunks[key].dataUrl` are opaque delivery URLs of CONTENT-ADDRESSED
+ * files (`global-scene.<digest>.json`, `chunks/<key>.<digest>.json`) so the server can mark them
+ * immutable. The runtime passes them to `fetch` untouched — nothing here or downstream parses,
+ * derives or reconstructs a file name or digest, and they never appear in a navigation URL (that
+ * contract is `?destination=<stable-id>` only).
  */
 export const SPATIAL_SCHEMA_VERSION = 1;
 
 export interface SpatialIndexChunk {
   /**
-   * Public URL of the generated chunk payload, exactly as the pipeline emitted it (including its
-   * content-version query). Step 2B.2 fetches it — never before a gate passes. Opaque: not parsed.
+   * Public URL of the generated chunk payload, exactly as the pipeline emitted it (a
+   * content-addressed path). Step 2B.2 fetches it — never before a gate passes. Opaque: not parsed.
    */
   dataUrl: string;
 }

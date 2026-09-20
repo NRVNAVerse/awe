@@ -5,15 +5,28 @@
  *
  *   validate   validate spatial/source/* against the scene and the canonical destination set
  *   generate   validate, then (re)write the derived artifacts under public/data (only changed files)
+ *              and remove stale CONTENT-ADDRESSED outputs of previous generations
  *   check      validate, then fail if any committed artifact is stale, missing or unexpected
  *
- * File-system concerns live here; `pipeline.mjs` stays pure and is what the tests exercise.
+ * Generated-output ownership (M0 Step 2B.4B.2). The global scene and every chunk are written under
+ * content-addressed names (`spatial/global-scene.<token>.json`, `spatial/chunks/<key>.<token>.json`),
+ * so a content change is a NEW file and the previous one becomes stale. `generate` therefore owns
+ * the whole expected set: it writes exactly the current outputs and deletes any file that matches
+ * the pipeline's content-addressed shapes (`isContentAddressedOutput`) but is not part of the
+ * current generation. Nothing else is ever deleted — a file under `spatial/` or `spatial/chunks/`
+ * that does not match those shapes (e.g. a legacy unversioned `chunks/<key>.json`, or anything
+ * hand-placed) is reported as an unexpected leftover and left in place. `check` fails on stale,
+ * missing and unexpected files alike, so nothing accumulates silently.
+ *
+ * File-system concerns live here; `pipeline.mjs` stays pure. The write / check / remove helpers
+ * take an explicit output directory (defaulting to `public/data`) so the vitest suite can exercise
+ * the generated-output lifecycle in a scratch directory without touching the committed artifacts.
  */
 
-import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, readdirSync, readFileSync, unlinkSync, writeFileSync } from "node:fs";
 import { dirname, join, relative, resolve, sep } from "node:path";
-import { fileURLToPath } from "node:url";
-import { OUTPUT, formatSpatialErrors, generateSpatialArtifacts, validateSpatialSource } from "./pipeline.mjs";
+import { fileURLToPath, pathToFileURL } from "node:url";
+import { OUTPUT, formatSpatialErrors, generateSpatialArtifacts, isContentAddressedOutput, validateSpatialSource } from "./pipeline.mjs";
 
 const APP_ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "../..");
 
@@ -53,26 +66,39 @@ function normalizeEol(text) {
 }
 
 /**
- * Every file currently under the chunk output directory, so a chunk removed from the source is
- * reported as an unexpected leftover instead of silently lingering.
+ * Every `.json` file currently in the generator's output namespace: the chunk directory (any
+ * name) and `spatial/global-scene*.json`. Anything listed here that the current generation does
+ * not produce is unexpected — a stale content version, a chunk removed from the source, or a
+ * legacy unversioned name — and is reported; only content-addressed shapes are ever deleted.
+ * @param {string} outputDir
  */
-function existingChunkFiles() {
-  const dir = join(OUTPUT_DIR, OUTPUT.chunksDir);
-  if (!existsSync(dir)) return [];
-  return readdirSync(dir)
-    .filter((name) => name.endsWith(".json"))
-    .map((name) => `${OUTPUT.chunksDir}/${name}`);
+export function existingOutputCandidates(outputDir = OUTPUT_DIR) {
+  /** @type {string[]} */
+  const found = [];
+  const chunksDir = join(outputDir, OUTPUT.chunksDir);
+  if (existsSync(chunksDir)) {
+    for (const name of readdirSync(chunksDir)) if (name.endsWith(".json")) found.push(`${OUTPUT.chunksDir}/${name}`);
+  }
+  const spatialDir = dirname(join(outputDir, OUTPUT.globalSceneBase));
+  const globalBase = OUTPUT.globalSceneBase.slice(OUTPUT.globalSceneBase.lastIndexOf("/") + 1);
+  if (existsSync(spatialDir)) {
+    for (const name of readdirSync(spatialDir)) {
+      if (name.startsWith(globalBase) && name.endsWith(".json")) found.push(relative(outputDir, join(spatialDir, name)).split(sep).join("/"));
+    }
+  }
+  return found.sort();
 }
 
 /**
  * @param {Record<string, string>} files
+ * @param {string} outputDir
  * @returns {{ written: string[]; unchanged: string[] }}
  */
-export function writeArtifacts(files) {
+export function writeArtifacts(files, outputDir = OUTPUT_DIR) {
   /** @type {{ written: string[]; unchanged: string[] }} */
   const result = { written: [], unchanged: [] };
   for (const [name, content] of Object.entries(files)) {
-    const path = join(OUTPUT_DIR, name);
+    const path = join(outputDir, name);
     const prev = existsSync(path) ? normalizeEol(readFileSync(path, "utf8")) : null;
     if (prev === content) {
       result.unchanged.push(name);
@@ -87,18 +113,41 @@ export function writeArtifacts(files) {
 
 /**
  * @param {Record<string, string>} files
+ * @param {string} outputDir
  * @returns {{ upToDate: boolean; stale: string[]; unexpected: string[] }}
  */
-export function checkArtifacts(files) {
+export function checkArtifacts(files, outputDir = OUTPUT_DIR) {
   /** @type {string[]} */
   const stale = [];
   for (const [name, content] of Object.entries(files)) {
-    const path = join(OUTPUT_DIR, name);
+    const path = join(outputDir, name);
     const actual = existsSync(path) ? normalizeEol(readFileSync(path, "utf8")) : null;
     if (actual !== content) stale.push(name);
   }
-  const unexpected = existingChunkFiles().filter((name) => !(name in files));
+  const unexpected = existingOutputCandidates(outputDir).filter((name) => !(name in files));
   return { upToDate: stale.length === 0 && unexpected.length === 0, stale, unexpected };
+}
+
+/**
+ * Delete stale content-addressed outputs of previous generations (files whose name matches the
+ * pipeline's own `<base>.<token>.json` shapes but which the current generation does not produce).
+ * Unexpected files of any other shape are returned as `leftovers` and never touched.
+ * @param {Record<string, string>} files the current generation
+ * @param {string} outputDir
+ * @returns {{ removed: string[]; leftovers: string[] }}
+ */
+export function removeStaleArtifacts(files, outputDir = OUTPUT_DIR) {
+  /** @type {{ removed: string[]; leftovers: string[] }} */
+  const result = { removed: [], leftovers: [] };
+  for (const name of checkArtifacts(files, outputDir).unexpected) {
+    if (isContentAddressedOutput(name)) {
+      unlinkSync(join(outputDir, name));
+      result.removed.push(name);
+    } else {
+      result.leftovers.push(name);
+    }
+  }
+  return result;
 }
 
 /** @param {string} name */
@@ -123,12 +172,14 @@ function main(argv) {
     case "generate": {
       const artifacts = generateSpatialArtifacts(loadSpatialSource());
       const { written, unchanged } = writeArtifacts(artifacts.files);
+      // Write first, remove second: a failed write leaves the previous generation intact.
+      const { removed, leftovers } = removeStaleArtifacts(artifacts.files);
       /** @param {string} name */
-      const describe = (name) => `${name} (${sizeOf(name)} bytes${name in artifacts.versions ? `, v=${artifacts.versions[name]}` : ""})`;
+      const describe = (name) => `${name} (${sizeOf(name)} bytes${name in artifacts.versions ? `, content-addressed` : ""})`;
       for (const name of written) console.log(`wrote ${describe(name)}`);
       for (const name of unchanged) console.log(`unchanged ${describe(name)}`);
-      const leftovers = checkArtifacts(artifacts.files).unexpected;
-      for (const name of leftovers) console.warn(`unexpected leftover ${name} — delete it (not generated from the current source)`);
+      for (const name of removed) console.log(`removed stale ${name} (previous content version)`);
+      for (const name of leftovers) console.warn(`unexpected leftover ${name} — not generated from the current source and not a content-addressed output; delete it by hand`);
       console.log(`${artifacts.chunkKeys.length} chunks, ${artifacts.destinationIds.length} destination placements`);
       return leftovers.length === 0 ? 0 : 1;
     }
@@ -137,7 +188,7 @@ function main(argv) {
       const { upToDate, stale, unexpected } = checkArtifacts(artifacts.files);
       if (!upToDate) {
         if (stale.length) console.error(`stale generated files: ${stale.join(", ")}`);
-        if (unexpected.length) console.error(`unexpected files: ${unexpected.join(", ")}`);
+        if (unexpected.length) console.error(`unexpected files (stale content versions, removed chunks or legacy names): ${unexpected.join(", ")}`);
         console.error(`run "pnpm --filter the-nrvnaverse spatial:generate" and commit the result`);
         return 1;
       }
@@ -155,9 +206,12 @@ function main(argv) {
   }
 }
 
-try {
-  process.exitCode = main(process.argv.slice(2));
-} catch (err) {
-  console.error(err instanceof Error ? err.message : String(err));
-  process.exitCode = 1;
+// Run only when executed directly (`node scripts/spatial/cli.mjs …`); importing the module (tests) has no side effect.
+if (process.argv[1] && import.meta.url === pathToFileURL(resolve(process.argv[1])).href) {
+  try {
+    process.exitCode = main(process.argv.slice(2));
+  } catch (err) {
+    console.error(err instanceof Error ? err.message : String(err));
+    process.exitCode = 1;
+  }
 }

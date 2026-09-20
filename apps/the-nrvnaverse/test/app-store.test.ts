@@ -7,11 +7,7 @@ import { appStore, bootApp, currentAdapter, currentPortals, disposeApp, lifecycl
 import type { AppState } from "@/lib/app-state";
 import { StaticChunkDataSource, type StaticChunkEntry } from "@/lib/spatial/chunk-data-source";
 import { StaticSpatialIndexSource } from "@/lib/spatial/spatial-index-source";
-import cannabisJson from "../public/data/spatial/chunks/cannabis-21.json";
-import fashionJson from "../public/data/spatial/chunks/fashion-culture.json";
-import hubJson from "../public/data/spatial/chunks/hub.json";
-import musicJson from "../public/data/spatial/chunks/music.json";
-import spatialIndexJson from "../public/data/spatial/spatial-index.json";
+import { cannabisJson, fashionJson, hubJson, musicJson, spatialIndexJson } from "./support/generated-spatial";
 import { FakeChunkRuntime, flush } from "./support/fake-chunk-runtime";
 import { installFakeWindow, uninstallFakeWindow, type FakeWindow } from "./support/fake-window";
 
@@ -101,7 +97,7 @@ describe("app store — boot from the global scene with one selectively loaded c
   it("initialises the runtime from spatialIndex.globalSceneUrl, never from the compatibility full scene", async () => {
     await boot("");
     expect(runtime.initOptions).toEqual({ sceneUrl: spatialIndexJson.globalSceneUrl });
-    expect(runtime.initOptions?.sceneUrl).toMatch(/^\/data\/spatial\/global-scene\.json\?v=[0-9a-f]{32}$/); // the whole versioned URL, untouched
+    expect(runtime.initOptions?.sceneUrl).toMatch(/^\/data\/spatial\/global-scene\.[0-9a-f]{32}\.json$/); // the whole content-addressed URL, untouched
     expect(runtime.initOptions?.sceneUrl).not.toContain("static-scene");
   });
 

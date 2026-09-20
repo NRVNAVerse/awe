@@ -3,10 +3,7 @@ import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import { ChunkPayloadError, parseChunkPayload } from "@/lib/spatial/chunk-payload";
 import { parseSpatialIndex } from "@/lib/spatial/spatial-index";
-import cannabisJson from "../public/data/spatial/chunks/cannabis-21.json";
-import hubJson from "../public/data/spatial/chunks/hub.json";
-import musicJson from "../public/data/spatial/chunks/music.json";
-import spatialIndexJson from "../public/data/spatial/spatial-index.json";
+import { cannabisJson, hubJson, musicJson, readServedJson, spatialIndexJson } from "./support/generated-spatial";
 
 const APP_ROOT = join(__dirname, "..");
 const index = parseSpatialIndex(spatialIndexJson);
@@ -25,8 +22,8 @@ function code(fn: () => unknown): string {
 describe("chunk payload validation (runtime, before any engine mutation)", () => {
   it("accepts every generated M0 chunk against its own index entry", () => {
     for (const chunkKey of Object.keys(index.chunks)) {
-      // The runtime never does this: the test maps the opaque versioned delivery URL back to the file on disk.
-      const raw = JSON.parse(readFileSync(join(APP_ROOT, "public", new URL(index.chunks[chunkKey].dataUrl, "http://localhost").pathname), "utf8"));
+      // The runtime never does this: the test maps the opaque content-addressed delivery URL back to the file on disk.
+      const raw = readServedJson(index.chunks[chunkKey].dataUrl);
       const payload = parseChunkPayload(raw, { worldId: index.worldId, chunkKey });
       expect(payload.chunkKey).toBe(chunkKey);
       expect(payload.worldId).toBe(index.worldId);
