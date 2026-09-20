@@ -7,9 +7,11 @@
 | **Current milestone** | M0 — Foundation |
 | **Landmark date** | 2026-09-19 |
 | **Canonical repository** | https://github.com/NRVNAVerse/awe (fork of https://github.com/oncyberio/awe) |
-| **Companion documents** | [DECISIONS.md](./DECISIONS.md) · [NRVNAVERSE_GOVERNANCE.md](./NRVNAVERSE_GOVERNANCE.md) (developer/agent governance) · [CLAUDE.md](../CLAUDE.md) (entry point) |
+| **Companion documents** | [NRVNAVERSE_OPERATING_GUIDE.md](./NRVNAVERSE_OPERATING_GUIDE.md) (project orientation / operating model — start there) · [DECISIONS.md](./DECISIONS.md) · [NRVNAVERSE_GOVERNANCE.md](./NRVNAVERSE_GOVERNANCE.md) (developer/agent governance) · [CLAUDE.md](../CLAUDE.md) (entry point) |
 
 This file is the canonical high-level benchmark for the NRVNAVerse project. It states what is **locked**, what is **verified**, what is **experimental**, and what is only **planned or aspirational**. Read it before substantial NRVNAVerse work.
+
+> **Project orientation / operating model** (what NRVNAVerse is, source precedence, related repositories, how humans and AI agents work together) → [`NRVNAVERSE_OPERATING_GUIDE.md`](./NRVNAVERSE_OPERATING_GUIDE.md). This Landmark records *current state*; the guide records *how we operate*.
 
 Labels used throughout:
 

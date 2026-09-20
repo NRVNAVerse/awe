@@ -20,9 +20,18 @@ If you are working in a scaffolded repo and `/examples` is not present locally, 
 
 # NRVNAVerse Governance
 
-This repository (`NRVNAVerse/awe`) is the NRVNAVerse fork of `oncyberio/awe`. Everything above this heading is upstream AWE guidance and still applies. Before substantial NRVNAVerse work, read `docs/NRVNAVERSE_GOVERNANCE.md`, which requires you to:
+This repository (`NRVNAVerse/awe`) is the NRVNAVerse fork of `oncyberio/awe`. Everything above this heading is upstream AWE guidance and still applies.
 
-1. Read `docs/NRVNAVERSE_LANDMARK.md` before substantial NRVNAVerse work.
+Orientation order for NRVNAVerse work:
+
+1. `docs/NRVNAVERSE_OPERATING_GUIDE.md` — START HERE: project purpose, source precedence, repositories, human/AI operating model, cold-start checklist.
+2. `docs/NRVNAVERSE_LANDMARK.md` — current verified state, locked principles, risks.
+3. `docs/DECISIONS.md` — when architectural or product decisions matter.
+4. `docs/NRVNAVERSE_GOVERNANCE.md` — process, authority, branch model.
+
+Before substantial NRVNAVerse work, read `docs/NRVNAVERSE_GOVERNANCE.md`, which requires you to:
+
+1. Read `docs/NRVNAVERSE_OPERATING_GUIDE.md`, then `docs/NRVNAVERSE_LANDMARK.md`, before substantial NRVNAVerse work.
 2. Read `docs/DECISIONS.md` when architectural or product decisions matter.
 3. Never silently contradict a locked principle.
 4. Surface a conflict before implementing a contradictory change.

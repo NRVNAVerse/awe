@@ -8,13 +8,13 @@ Upstream AWE guidance in `CLAUDE.md` (project overview, kebab-case rule, `/engin
 
 | When | Read |
 |---|---|
-| Before substantial NRVNAVerse work | [`NRVNAVERSE_LANDMARK.md`](./NRVNAVERSE_LANDMARK.md) — locked principles, verified baseline, current risks |
+| Before substantial NRVNAVerse work | [`NRVNAVERSE_OPERATING_GUIDE.md`](./NRVNAVERSE_OPERATING_GUIDE.md) — START HERE: orientation, source precedence, repositories, operating model; then [`NRVNAVERSE_LANDMARK.md`](./NRVNAVERSE_LANDMARK.md) — locked principles, verified baseline, current risks |
 | When an architectural or product decision matters | [`DECISIONS.md`](./DECISIONS.md) — decision log with stable IDs |
 | Before engine, editor or tools changes | upstream `CLAUDE.md`, `CONTRIBUTING.md`, `packages/tools/AGENT.md`, `.claude/skills/*` |
 
 ## Rules
 
-1. **Read the Landmark first.** Substantial NRVNAVerse work starts by reading `docs/NRVNAVERSE_LANDMARK.md`.
+1. **Read the Operating Guide, then the Landmark, first.** Substantial NRVNAVerse work starts by reading `docs/NRVNAVERSE_OPERATING_GUIDE.md` (orientation, source precedence, operating model) and then `docs/NRVNAVERSE_LANDMARK.md` (current verified state).
 2. **Consult the Decision Log** whenever a change touches architecture, data models, domains, identity, gating, districts, commerce, mobile strategy or the AWE relationship.
 3. **Never silently contradict a locked principle.** Locked principles are marked `[LOCKED]` in the Landmark and listed under "Do Not Accidentally Change".
 4. **Surface conflicts before implementing.** If a requested change contradicts the Landmark or a decision, stop, state the conflict plainly, and propose either (a) a compliant alternative or (b) a new `DECISIONS.md` entry that supersedes the prior decision. Do not implement the contradiction while the conflict is unresolved.
