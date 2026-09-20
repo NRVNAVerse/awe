@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useStore } from "@/hooks/use-store";
 import { APP_IDENTITY } from "@/lib/app-identity";
 import { appStore, bootApp, disposeApp } from "@/lib/app-store";
-import { isSettled } from "@/lib/app-state";
+import { isInitialLoading, isPlaced, isSettled } from "@/lib/app-state";
 import { DestinationView } from "@/components/destination-view";
 import { DirectoryNav } from "@/components/directory-nav";
 import { EngineCanvas } from "@/components/engine-canvas";
@@ -15,9 +15,9 @@ import { TouchJoystick } from "@/components/touch-joystick";
 import { TravelBanner } from "@/components/travel-banner";
 
 /**
- * Prototype shell (M0 Step 2A): the official AWE canvas fills the viewport; a deliberately plain
- * HUD sits on top. It proves engine mount, deep-link placement, stable-id travel and the gate
- * boundary — not visual design.
+ * Prototype shell (M0 Step 2A/2B.2): the official AWE canvas fills the viewport; a deliberately
+ * plain HUD sits on top. It proves engine mount, deep-link placement, stable-id travel, selective
+ * chunk loading and the gate boundary — not visual design.
  */
 export function AppShell() {
   const state = useStore(appStore);
@@ -31,7 +31,7 @@ export function AppShell() {
   }, []);
 
   const settled = isSettled(state);
-  const loading = state.phase === "boot" || state.phase === "resolvingDestination" || state.phase === "loadingGlobals";
+  const loading = state.phase === "boot" || state.phase === "resolvingDestination" || isInitialLoading(state);
 
   return (
     <div className="fixed inset-0 overflow-hidden bg-black text-neutral-100">
@@ -44,6 +44,7 @@ export function AppShell() {
             {state.phase === "boot" && "Loading destination data…"}
             {state.phase === "resolvingDestination" && "Resolving destination…"}
             {state.phase === "loadingGlobals" && `Loading the world for ${state.requested.name}…`}
+            {state.phase === "loadingChunk" && state.stage === "initial" && `Loading ${state.requested.name}…`}
           </p>
           <p className="text-xs text-neutral-600">
             phase: <code>{state.phase}</code>
@@ -64,7 +65,7 @@ export function AppShell() {
         </div>
       )}
 
-      {(settled || state.phase === "traveling") && (
+      {isPlaced(state) && (
         <>
           <div className="pointer-events-none absolute inset-0 z-20 flex flex-col">
             <header className="pointer-events-auto m-3 flex w-fit flex-col gap-0.5 rounded bg-neutral-950/80 px-3 py-2 backdrop-blur">
@@ -101,7 +102,7 @@ export function AppShell() {
             >
               <DestinationView destination={state.current} entry={state.entry} index={state.loaded.index} />
               <SpatialPanel state={state} />
-              <DirectoryNav index={state.loaded.index} currentId={state.current.id} busy={state.phase === "traveling"} />
+              <DirectoryNav index={state.loaded.index} currentId={state.current.id} />
             </aside>
           )}
 

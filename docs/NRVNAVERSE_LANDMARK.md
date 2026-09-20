@@ -291,6 +291,24 @@ Branch `feat/m0-chunk-streaming` (from `nrvna/integration`). Full description: [
 | Ghost boundary | No Ghost code read, copied, cherry-picked or depended on; engine/engine-edit/studio untouched. |
 | Dependencies | None added; `package.json` gained three scripts only; `pnpm-lock.yaml` unchanged. |
 
+### NRVNAVerse implementation state — M0 Step 2B.2  [VERIFIED 2026-09-19]
+
+Branch `feat/m0-chunk-runtime` (from `nrvna/integration`). Full description: [`NRVNAVERSE_SPATIAL_RUNTIME.md`](./NRVNAVERSE_SPATIAL_RUNTIME.md).
+
+| Item | State |
+|---|---|
+| Runtime boot | Official AWE (`createSpace`) is initialised from the generated **global scene** (`spatialIndex.globalSceneUrl` → `/data/spatial/global-scene.json`: avatar, animations, environment, ground). The compatibility full scene `static-scene.json` is **no longer requested by the runtime** (source scan + fake-runtime boot test + browser resource list); it remains a generated validation/debugging artifact. |
+| Active-chunk model | Exactly **one** chunk is instantiated at a time. `ChunkOrchestrator` (app-owned, `src/lib/spatial/chunk-orchestrator.ts`) owns fetch → validate → stage → teleport → commit → retire over the official `space.components.create(data, { abort })` / `destroy` wrappers in `AweSpatialRuntime`; engine `Component3D` handles never leave the runtime file (opaque `ChunkBatch`). Same-chunk travel (Music District ↔ Artist, Fashion ↔ Brand) is a teleport only. |
+| Transition safety | Never unload-before-fetch: the target is fetched, validated and fully staged **while the old chunk stays alive**; the visitor is teleported with both alive; the old chunk is retired only after a successful placement. Fetch 404 / network error / malformed payload / partial component creation / teleport failure all leave the previous chunk and position intact (partial targets are destroyed). A failed old-chunk cleanup after arrival keeps the target active and is reported, never rolled back. |
+| Latest request wins | Monotonic request generation + `AbortController` per request (signal passed to fetch and to `ComponentManager.create`), re-checked at every async boundary; a promise-chain mutex serialises stage/commit/rollback. Stale requests cannot teleport, commit, destroy, change state or write the URL; they resolve `superseded` (new `TravelResult` status), not as a user-facing failure. |
+| Gate before fetch | Manifest `gates[]` are evaluated before the orchestrator is consulted: `chunks/cannabis-21.json` is never requested on the initial gated deep link (Hub chunk loaded as fallback, app `gateRequired`), on a directory click, or on back/forward. `enforced: false` is not a permission. No verification, bypass or fake pass exists. |
+| State / URL | `loadingChunk` is implemented (`initial` during boot, `travel` for cross-chunk travel only); `PLANNED_PHASES` is empty. Travel may supersede an in-flight travel. URL stays `?destination=<id>`, written only after committed arrival; `?chunk=` never written. |
+| Instrumentation | `chunk-fetch`, `chunk-validate`, `chunk-stage`, `cross-chunk-travel`, `same-chunk-travel`, `travel` with outcome. Warm dev-server baseline: cross-chunk 21–95 ms (fetch 10–78 ms, stage 8–14 ms), same-chunk ≈0.1 ms, superseded fetches abort in ≈20 ms. |
+| Checks | 126 app vitest tests (was 69), 56 manifest tests, `check` (incl. strict pass), `spatial:check`, `generate:check`, `next build` pass. Browser checks A–N all executed (A, D, E, F, G, J, K, M, N in Chrome via the extension; B, C, H, I, L in headless Chrome over CDP after the extension tab went to the background). |
+| Not implemented | 3D portals (2B.3), prefetch/cache/neighbour warming (2B.4), age verification, gate persistence, jurisdiction policy, hosting-level protection of gated chunk URLs. |
+| Ghost boundary | No Ghost code read, copied, cherry-picked or depended on; his ChunkManager, localStorage persistence, `?chunk=` URL mutation and unload-first transition were explicitly not adopted; engine/engine-edit/studio untouched. |
+| Dependencies | None added; `package.json` dependency ranges and `pnpm-lock.yaml` unchanged. |
+
 ### Development machine (informational)
 
 Windows 10 Home; Node v24.19.0; Git 2.46.2; Corepack 0.35.0; **pnpm 10.10.0 via Corepack** (shims in `%USERPROFILE%\.local\bin` because `C:\Program Files\nodejs` is not writable without elevation — see D-014). Local clone: `D:\NRVNAVerse\awe` on an **NTFS mechanical HDD**; pnpm content-addressable store at `D:\.pnpm-store`. Git HTTPS requires `http.sslbackend=schannel` on this machine (set repo-locally) because a local antivirus TLS proxy (Avast) breaks the OpenSSL backend. The same antivirus's real-time scanning plus the HDD make pnpm's link phase very slow (≈16 packages/min on first install; package downloads themselves complete in about a minute). An antivirus exclusion for `D:\NRVNAVerse` and `D:\.pnpm-store` would remove most of that cost but is a machine-level change for the machine owner to make, not a coding session.
@@ -300,7 +318,7 @@ Windows 10 Home; Node v24.19.0; Git 2.46.2; Corepack 0.35.0; **pnpm 10.10.0 via 
 | Risk | Status |
 |---|---|
 | Ghost experimental code requires review/testing | Open — commit message itself says "AI makes mistakes"; no tests for chunk/portal systems. Ghost's review is required before splitting/reworking, publishing refactors, or upstream contributions based on his work (D-013) |
-| Chunk transition behavior | Open — unload-then-load, no prefetch/overlap/cancellation; visible pop expected |
+| Chunk transition behavior | Mitigated (M0 Step 2B.2) for THE NRVNAVerse app: stage-before-retire with rollback and latest-request-wins cancellation; no prefetch yet (2B.4), so a first visit to a chunk shows a short load (tens of ms on the dev server). Ghost's experimental unload-then-load manager remains unreviewed and unused |
 | Mobile performance | Open — no adaptive quality tier in engine yet; budgets undefined |
 | Asset budgets | Open — no validator thresholds; KTX2 disabled |
 | Upstream/fork divergence | Low now (Ghost 6 ahead / 0 behind; NRVNAVerse identical) — grows with every engine change |
@@ -311,15 +329,15 @@ Windows 10 Home; Node v24.19.0; Git 2.46.2; Corepack 0.35.0; **pnpm 10.10.0 via 
 | New workspace packages not yet in `pnpm-lock.yaml` | Closed — `importers` entries added in `44992f3`; `pnpm install --frozen-lockfile --offline` is up to date |
 | Engine load in a background tab | Known — no `requestAnimationFrame` in a hidden tab stalls the upstream intro and trips the engine's 60 s `LOAD_TIMEOUT`; the app shows its error phase and a foreground reload recovers. Upstream behaviour; a resume-on-visibility strategy is a later decision |
 | Placement registry is hand-kept | Closed (M0 Step 2B.1) — placements and the scene are generated from one authoritative spatial source; `placements.m0.ts` removed; the spatial index is generated and keyed by stable id, never by coordinates |
-| Gated chunk payloads are statically served | Open — `public/data/spatial/chunks/cannabis-21.json` is a static file; "never fetched before the gate" is an application-layer rule (Step 2B.2) until a hosting/server-side enforcement design exists |
+| Gated chunk payloads are statically served | Open (known non-M0 limitation) — `public/data/spatial/chunks/cannabis-21.json` is a static file; "never fetched before the gate" is now an implemented and tested application-layer rule (Step 2B.2), not a hosting-layer one, until a server-side enforcement design exists |
 | Manifest `generate:check` fails on `core.autocrlf=true` checkouts | Closed (2026-09-19, `feat/m0-chunk-streaming`) — `manifests-fs.ts` now normalises line endings only when comparing on-disk files with fresh canonical LF output (write and check paths); canonical serialization unchanged; temp-directory tests cover LF, CRLF, real content and whitespace differences |
 | awe.box and open-source AWE are different runtimes | Confirmed — hosted awe.box worlds are not portable to this repo's runtime |
 | Ghost's PR #11 was closed unmerged upstream | Confirmed — future upstream contributions must be small, topical PRs |
 | ~200 MB of binaries in Ghost's history | Mitigated by decision (D-013) — `ghost/experimental` is **not** pushed to `origin`; preserved by reference at `a5880dd…` via the `ghost` remote. Any archive / Git LFS / mirror strategy is a separate future decision |
 
-### M0 implementation direction (D-016)  [PLANNED — application-layer boundary]
+### M0 implementation direction (D-016)  [IN PROGRESS — application-layer boundary; chunk orchestration VERIFIED in Step 2B.2, portals PLANNED]
 
-For M0, chunk orchestration and destination travel are implemented in the NRVNAVerse application layer (`apps/the-nrvnaverse`) over official AWE runtime APIs, with stable destination IDs resolving to physical chunk/spawn data and visitor gates evaluated before gated fetches (D-016). This is an M0 implementation boundary, not a claim that chunk streaming is complete, and not an adoption of Ghost's experimental chunk/portal code — that work remains EXPERIMENTAL per Section 13 and D-013. Generic primitives may later move to `contrib/*` or upstream once validated.
+For M0, chunk orchestration and destination travel are implemented in the NRVNAVerse application layer (`apps/the-nrvnaverse`) over official AWE runtime APIs, with stable destination IDs resolving to physical chunk/spawn data and visitor gates evaluated before gated fetches (D-016). Step 2B.2 delivered the one-active-chunk orchestrator on `ComponentManager.create/destroy`; 3D portals (2B.3) and performance hardening (2B.4) remain. This is an M0 implementation boundary, not a claim that chunk streaming is complete, and not an adoption of Ghost's experimental chunk/portal code — that work remains EXPERIMENTAL per Section 13 and D-013. Generic primitives may later move to `contrib/*` or upstream once validated.
 
 ## 14. Do Not Accidentally Change  [LOCKED]
 

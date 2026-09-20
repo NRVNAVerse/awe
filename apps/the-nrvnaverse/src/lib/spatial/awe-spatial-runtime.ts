@@ -1,6 +1,7 @@
 import {
   Camera,
   Engine,
+  type Component3D,
   type Space,
   type EnterSpaceOpts,
   AvatarComponent,
@@ -17,34 +18,34 @@ import {
 import { Mover, ThirdPersonCameraRig, createMoverAnimStateMachine } from "@oncyberio/engine/controls";
 import type { MoverAnimLocomotionState } from "@oncyberio/engine/controls";
 import { Quaternion, Vector3 } from "three";
+import type { ChunkPayload } from "@/lib/spatial/chunk-payload";
+import { createComponentBatch } from "@/lib/spatial/component-batch";
 import type { SpawnPoint } from "@/lib/spatial/placement-registry";
-import type { SpatialRuntime } from "@/lib/spatial/spatial-runtime";
+import type { ChunkBatch, ChunkRuntime } from "@/lib/spatial/spatial-runtime";
 
 /**
- * Official AWE runtime mount for THE NRVNAVerse (M0 Step 2A).
+ * Official AWE runtime mount for THE NRVNAVerse (M0 Step 2A; chunk operations added in 2B.2).
  *
  * Adapted from `examples/starter/src/lib/game-script.ts` + `utils.ts` (upstream lifecycle:
  * create space → player/controls → camera/mover → reveal → start → dispose). Deviations from the
  * starter, all deliberate:
  *
- * - `init()` does NOT reveal. The application reveals (`reveal()`) only after the initial
- *   destination placement is known, so the world is never shown at the wrong place.
+ * - `init({ sceneUrl })` loads the GLOBAL scene only (`spatialIndex.globalSceneUrl`: avatar,
+ *   animations, environment, ground). Destination geometry arrives later as chunk batches; the
+ *   compatibility full scene (`static-scene.json`) is never requested by the runtime.
+ * - `init()` does NOT reveal. The application reveals (`reveal()`) only after the initial chunk
+ *   and destination placement are settled, so the world is never shown at the wrong place.
  * - No "click to start" screen and no pause toggle: the space starts when revealed. Pointer
  *   lock still engages on the first canvas click through the camera rig (upstream Mediator).
- * - Adds `placeVisitor(spawn)` — same-scene teleport via the official `Mover.teleport` /
- *   rigid-body API followed by a camera-rig reset. This is the only movement primitive the
- *   spatial adapter uses.
- * - Scene URL is an argument; the game store is replaced by the application store.
+ * - Adds `placeVisitor(spawn)` — teleport via the official `Mover.teleport` / rigid-body API
+ *   followed by a camera-rig reset. This is the only movement primitive the spatial layer uses.
+ * - Adds `stageChunk` / `retireChunk` — thin wrappers over the official
+ *   `space.components.create(data, { abort })` and `space.components.destroy(component)`. The
+ *   engine `Component3D` handles never leave this file: callers hold an opaque `ChunkBatch`.
  *
  * This file is the only application module that imports `@oncyberio/engine`. It knows nothing
- * about destination ids; the adapter owns that translation.
+ * about destination ids, gates or chunk selection; the adapter and orchestrator own those.
  */
-
-/**
- * Compatibility full scene, GENERATED from `spatial/source/scene.m0.json` by the spatial pipeline
- * (M0 Step 2B.1). Step 2B.2 replaces this with the generated global scene + chunk payloads.
- */
-export const M0_SCENE_URL = "/data/static-scene.json";
 
 // --- Input definitions (identical to the official starter) ---
 const GAMEPLAY_INPUTS = {
@@ -128,14 +129,16 @@ const _spawnPosition = new Vector3();
 const _spawnQuaternion = new Quaternion();
 
 export interface AweSpatialRuntimeInitOptions {
-  /** Where the static scene JSON is served from (same origin). */
-  sceneUrl?: string;
+  /** The global scene JSON (`spatialIndex.globalSceneUrl`, same origin). Required: there is no default scene. */
+  sceneUrl: string;
   /** Base URL for asset resolution; "" keeps the app's own `public/`. */
   assetsBaseUrl?: string;
 }
 
-export class AweSpatialRuntime implements SpatialRuntime {
+export class AweSpatialRuntime implements ChunkRuntime {
   private space: Space | null = null;
+  /** Engine components per staged batch. Private: the opaque handle is all callers get. */
+  private readonly batches = new Map<ChunkBatch, Component3D[]>();
   private revealFn: (() => Promise<void>) | null = null;
   private cleanup: (() => void) | null = null;
   private player: AvatarComponent | null = null;
@@ -156,8 +159,9 @@ export class AweSpatialRuntime implements SpatialRuntime {
   }
 
   /** Create the space and wire the official controls. Resolves when the space is fully loaded (hidden). */
-  async init(options: AweSpatialRuntimeInitOptions = {}): Promise<void> {
-    const sceneUrl = options.sceneUrl ?? M0_SCENE_URL;
+  async init(options: AweSpatialRuntimeInitOptions): Promise<void> {
+    const sceneUrl = options.sceneUrl;
+    if (typeof sceneUrl !== "string" || sceneUrl.length === 0) throw new Error("runtime init requires the global scene url");
     const baseUrl = options.assetsBaseUrl ?? "";
 
     const res = await fetch(sceneUrl, { headers: { accept: "application/json" } });
@@ -246,8 +250,8 @@ export class AweSpatialRuntime implements SpatialRuntime {
   }
 
   /**
-   * Same-scene teleport. Uses the official Mover → rigid-body teleport (clears velocity) and
-   * re-seats the third-person camera behind the avatar so the new place is framed immediately.
+   * Teleport. Uses the official Mover → rigid-body teleport (clears velocity) and re-seats the
+   * third-person camera behind the avatar so the new place is framed immediately.
    */
   placeVisitor(spawn: SpawnPoint): void {
     if (!this.mover || !this.player) throw new Error("runtime is not ready");
@@ -255,6 +259,58 @@ export class AweSpatialRuntime implements SpatialRuntime {
     _spawnQuaternion.setFromAxisAngle(Y_AXIS, spawn.yaw);
     this.mover.teleport(_spawnPosition, _spawnQuaternion);
     this.cameraRig?.reset();
+  }
+
+  /**
+   * Instantiate every component of a validated chunk payload through the official
+   * `ComponentManager.create` (with its `abort` signal). All-or-nothing: `createComponentBatch`
+   * destroys whatever was created if any creation fails or the signal fires, then rejects.
+   * Whatever chunk is already loaded is untouched.
+   */
+  async stageChunk(payload: ChunkPayload, signal: AbortSignal): Promise<ChunkBatch> {
+    const space = this.space;
+    if (!space) throw new Error("runtime is not ready");
+    const records = Object.values(payload.components);
+    const components = await createComponentBatch<Component3D>(
+      records,
+      {
+        create: (record, abort) => space.components.create(record as Parameters<typeof space.components.create>[0], { abort }),
+        destroy: (component) => {
+          space.components.destroy(component);
+        },
+      },
+      signal,
+    );
+    const batch: ChunkBatch = { chunkKey: payload.chunkKey, componentIds: components.map((c) => c.data.id) };
+    this.batches.set(batch, components);
+    return batch;
+  }
+
+  /**
+   * Destroy every component of a staged batch via the official `ComponentManager.destroy`.
+   * Unknown / already retired batches are a no-op. Throws only after attempting every component.
+   */
+  retireChunk(batch: ChunkBatch): void {
+    const components = this.batches.get(batch);
+    if (!components) return;
+    this.batches.delete(batch);
+    const space = this.space;
+    if (!space) return; // space already destroyed → components are gone with it
+    let failures = 0;
+    for (const component of components) {
+      try {
+        if (!component.wasDisposed) space.components.destroy(component);
+      } catch (err) {
+        failures++;
+        console.warn(`[awe-spatial-runtime] failed to destroy component "${component.data?.id}" of chunk "${batch.chunkKey}"`, err);
+      }
+    }
+    if (failures > 0) throw new Error(`${failures} of ${components.length} components of chunk "${batch.chunkKey}" could not be destroyed`);
+  }
+
+  /** Diagnostics/tests: number of chunk batches this runtime currently holds. */
+  get stagedBatchCount(): number {
+    return this.batches.size;
   }
 
   /** Fade the intro out and start the simulation with controls enabled. Idempotent. */
@@ -269,6 +325,8 @@ export class AweSpatialRuntime implements SpatialRuntime {
   dispose(): void {
     this.cleanup?.();
     this.cleanup = null;
+    // Any batch still held is destroyed with the space below; drop the handles.
+    this.batches.clear();
 
     this.animStateMachine?.dispose();
     this.animStateMachine = null;

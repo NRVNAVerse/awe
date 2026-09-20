@@ -8,8 +8,8 @@ import {
   type TravelEligibility,
   type TravelResult,
 } from "@nrvnaverse/manifest";
+import type { ChunkOrchestrator } from "@/lib/spatial/chunk-orchestrator";
 import { lookupPlacement, toSpatialPlacement, type PlacementRegistry } from "@/lib/spatial/placement-registry";
-import type { SpatialRuntime } from "@/lib/spatial/spatial-runtime";
 import { now, perfRecord } from "@/lib/perf";
 
 export const RUNTIME_NOT_READY_REASON = "The spatial runtime is not ready yet.";
@@ -18,23 +18,25 @@ export interface AweSpatialAdapterOptions {
   registry: PlacementRegistry;
   /** Manifest lookup (from the runtime destination index). Gates are read from here, never from the registry. */
   getDestination: (destinationId: string) => Destination | undefined;
-  /** Engine runtime; may be bound later with `bindRuntime` once the space is loaded. */
-  runtime?: SpatialRuntime | null;
+  /** Chunk orchestrator over the engine runtime; may be bound later with `bindOrchestrator`. */
+  orchestrator?: ChunkOrchestrator | null;
 }
 
 type PhaseListener = (phase: SpatialTravelPhase, destinationId: string | null) => void;
 
 /**
- * M0 Step 2A adapter: stable destination id → physical placement in the single prototype AWE
- * scene → same-scene teleport through the official Mover/rigid-body API.
+ * Stable destination id → physical placement (`chunkKey` + spawn) → chunk orchestrator.
  *
  * Only this adapter (and its registry) knows coordinates. Application and UI code call
- * `travelTo(id)`; they never receive or pass positions.
+ * `travelTo(id)`; they never receive or pass positions. The adapter never touches engine
+ * components itself: it asks the `ChunkOrchestrator` to make the placement's chunk active and to
+ * place the visitor (M0 Step 2B.2, D-016).
  *
  * Gate boundary (D-006, Landmark §9): any destination whose manifest carries `gates[]` is
- * refused with a structured `gate-required` result. No age verification, no jurisdiction policy
- * and no bypass exist in this build; the placeholder `enforced: false` flag in the manifest is
- * deliberately NOT consulted here — declaring a gate is enough to stop spatial entry.
+ * refused with a structured `gate-required` result BEFORE the orchestrator is asked for anything,
+ * so no gated chunk payload is ever requested. No age verification, no jurisdiction policy and
+ * no bypass exist in this build; the placeholder `enforced: false` flag in the manifest is
+ * deliberately NOT consulted — declaring a gate is enough to stop spatial entry.
  *
  * Builds only on official upstream AWE code plus NRVNAVerse-owned code (D-013: no Ghost code).
  */
@@ -43,7 +45,7 @@ export class AweSpatialAdapter implements SpatialTravelAdapter {
 
   private readonly registry: PlacementRegistry;
   private readonly getDestination: (destinationId: string) => Destination | undefined;
-  private runtime: SpatialRuntime | null;
+  private orchestrator: ChunkOrchestrator | null;
   private listeners = new Set<PhaseListener>();
   private phase: SpatialTravelPhase = "idle";
   private disposed = false;
@@ -51,16 +53,21 @@ export class AweSpatialAdapter implements SpatialTravelAdapter {
   constructor(options: AweSpatialAdapterOptions) {
     this.registry = options.registry;
     this.getDestination = options.getDestination;
-    this.runtime = options.runtime ?? null;
+    this.orchestrator = options.orchestrator ?? null;
   }
 
-  /** Attach (or detach with `null`) the engine runtime once the space exists. */
-  bindRuntime(runtime: SpatialRuntime | null): void {
-    this.runtime = runtime;
+  /** Attach (or detach with `null`) the orchestrator once the engine space exists. */
+  bindOrchestrator(orchestrator: ChunkOrchestrator | null): void {
+    this.orchestrator = orchestrator;
   }
 
   get currentPhase(): SpatialTravelPhase {
     return this.phase;
+  }
+
+  /** Diagnostics: the chunk currently instantiated (never identity, never written to a URL). */
+  get activeChunkKey(): string | null {
+    return this.orchestrator?.activeChunkKey ?? null;
   }
 
   canTravel(destinationId: string): TravelEligibility {
@@ -78,7 +85,7 @@ export class AweSpatialAdapter implements SpatialTravelAdapter {
     if (lookup.status === "missing") {
       return { allowed: false, destinationId, reason: "unplaced", message: lookup.reason };
     }
-    if (!this.runtime || !this.runtime.isReady) {
+    if (!this.orchestrator || !this.orchestrator.isReady) {
       return { allowed: false, destinationId, reason: "unavailable", message: RUNTIME_NOT_READY_REASON };
     }
     return { allowed: true, destinationId };
@@ -92,6 +99,11 @@ export class AweSpatialAdapter implements SpatialTravelAdapter {
     return { status: "resolved", placement: toSpatialPlacement(destinationId, lookup.placement) };
   }
 
+  /**
+   * Gate → placement → chunk transition → arrived. Phases: `traveling`, then `loadingChunk` only
+   * if the orchestrator has to fetch a different chunk, then `arrived` / `gateRequired` / `failed`.
+   * A superseded request emits nothing further (the newer request owns the phase stream).
+   */
   async travelTo(destinationId: string): Promise<TravelResult> {
     const started = now();
     this.emit("traveling", destinationId);
@@ -111,24 +123,35 @@ export class AweSpatialAdapter implements SpatialTravelAdapter {
       return { status: "failed", destinationId, reason: eligibility.message };
     }
 
-    // Eligible: the registry entry and runtime are guaranteed by canTravel.
+    // Eligible: the registry entry and orchestrator are guaranteed by canTravel.
     const lookup = lookupPlacement(this.registry, destinationId);
-    if (lookup.status !== "found" || !this.runtime) {
+    const orchestrator = this.orchestrator;
+    if (lookup.status !== "found" || !orchestrator) {
       this.emit("failed", destinationId);
       return { status: "failed", destinationId, reason: "placement disappeared during travel" };
     }
 
-    try {
-      this.runtime.placeVisitor(lookup.placement.spawn);
-    } catch (err) {
-      this.emit("failed", destinationId);
-      perfRecord("travel", now() - started, { destinationId, outcome: "failed" });
-      return { status: "failed", destinationId, reason: err instanceof Error ? err.message : String(err) };
-    }
+    const { chunkKey, spawn } = lookup.placement;
+    const result = await orchestrator.transitionTo({
+      chunkKey,
+      spawn,
+      destinationId,
+      onLoadingChunk: () => this.emit("loadingChunk", destinationId),
+    });
 
-    this.emit("arrived", destinationId);
-    perfRecord("travel", now() - started, { destinationId, outcome: "arrived" });
-    return { status: "arrived", placement: toSpatialPlacement(destinationId, lookup.placement) };
+    switch (result.status) {
+      case "arrived":
+        this.emit("arrived", destinationId);
+        perfRecord("travel", now() - started, { destinationId, outcome: "arrived", kind: result.kind });
+        return { status: "arrived", placement: toSpatialPlacement(destinationId, lookup.placement) };
+      case "superseded":
+        perfRecord("travel", now() - started, { destinationId, outcome: "superseded" });
+        return { status: "superseded", destinationId };
+      case "failed":
+        this.emit("failed", destinationId);
+        perfRecord("travel", now() - started, { destinationId, outcome: "failed", step: result.step });
+        return { status: "failed", destinationId, reason: result.reason };
+    }
   }
 
   onPhase(listener: PhaseListener): () => void {
@@ -144,15 +167,16 @@ export class AweSpatialAdapter implements SpatialTravelAdapter {
     return this.listeners.size;
   }
 
-  /** Drop every subscription and detach the runtime. Further travel reports `unavailable`. */
+  /** Drop every subscription and detach the orchestrator. Further travel reports `unavailable`. */
   dispose(): void {
     this.disposed = true;
     this.listeners.clear();
-    this.runtime = null;
+    this.orchestrator = null;
     this.phase = "idle";
   }
 
   private emit(phase: SpatialTravelPhase, destinationId: string | null) {
+    if (this.disposed) return;
     this.phase = phase;
     for (const listener of this.listeners) listener(phase, destinationId);
   }

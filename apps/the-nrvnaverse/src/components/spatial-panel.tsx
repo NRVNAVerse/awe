@@ -7,8 +7,9 @@ import { spatialDiagnostics } from "@/lib/app-store";
 import { onPerfMeasurement, perfMeasurements, type PerfMeasurement } from "@/lib/perf";
 
 /**
- * Diagnostics for the spatial layer. Shows the adapter's coordinate-free placement handle, its
- * last reported phase and the lightweight performance measurements. Never shows a coordinate.
+ * Diagnostics for the spatial layer. Shows the adapter's coordinate-free placement handle, the
+ * active chunk key, its last reported phase and the lightweight performance measurements. Never
+ * shows a coordinate. The chunk key is diagnostics only — never identity, never in a URL.
  */
 export function SpatialPanel({ state }: { state: AppState }) {
   const diagnostics = useStore(spatialDiagnostics);
@@ -35,6 +36,9 @@ export function SpatialPanel({ state }: { state: AppState }) {
       </p>
       <p className="mt-1">
         placement: <code>{placement ? `${placement.worldId} / ${placement.placementRef ?? "—"}` : "—"}</code>
+      </p>
+      <p className="mt-1">
+        active chunk: <code data-active-chunk={diagnostics.activeChunkKey ?? ""}>{diagnostics.activeChunkKey ?? "—"}</code>
       </p>
       {measures.length > 0 && (
         <details className="mt-2">

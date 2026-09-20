@@ -13,6 +13,14 @@ export function TravelBanner({ state }: { state: AppState }) {
     );
   }
 
+  if (state.phase === "loadingChunk" && state.stage === "travel") {
+    return (
+      <div role="status" className="rounded border border-sky-800 bg-sky-950/70 px-3 py-2 text-sm text-sky-100" data-phase="loadingChunk">
+        Loading <strong>{state.target.name}</strong>… <span className="text-sky-300/70">(you stay at {state.current.name} until it is ready)</span>
+      </div>
+    );
+  }
+
   if (state.phase === "arrived") {
     return (
       <div role="status" className="flex items-center gap-3 rounded border border-emerald-800 bg-emerald-950/70 px-3 py-2 text-sm text-emerald-100" data-phase="arrived">

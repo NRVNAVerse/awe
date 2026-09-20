@@ -2,13 +2,13 @@
 
 | Field | Value |
 |---|---|
-| **Status** | VERIFIED (2026-09-19) — authoritative spatial source, validator, deterministic generator, generated global scene + 4 chunks + spatial index, placement registry migrated to generated data, tests, browser smoke |
+| **Status** | VERIFIED (2026-09-19) — authoritative spatial source, validator, deterministic generator, generated global scene + 4 chunks + spatial index, placement registry migrated to generated data, tests, browser smoke. **Since M0 Step 2B.2 the runtime boots from the generated global scene and loads exactly one chunk selectively** (see [`NRVNAVERSE_SPATIAL_RUNTIME.md`](./NRVNAVERSE_SPATIAL_RUNTIME.md)); the compatibility full scene is no longer requested by the runtime. |
 | **App** | `apps/the-nrvnaverse` (THE NRVNAVerse, spatial interface) |
 | **Builds on** | [`NRVNAVERSE_SPATIAL_RUNTIME.md`](./NRVNAVERSE_SPATIAL_RUNTIME.md) (M0 Step 2A) · [`NRVNAVERSE_DESTINATION_MANIFEST.md`](./NRVNAVERSE_DESTINATION_MANIFEST.md) (M0 Step 1) |
 | **Governing decisions** | D-004 (stable ids are identity), D-006 (auth ≠ gates), D-013 (Ghost boundary), D-014 (no dependency changes), D-016 (application-layer chunk orchestration); Landmark §6, §7, §9 |
-| **Not in scope (M0 Step 2B.2)** | runtime chunk loading/unloading, `loadingChunk` phase, portal sensors, age verification, gate persistence, jurisdiction policy |
+| **Not in scope here** | runtime chunk loading/unloading and `loadingChunk` (done in **2B.2**, documented in the runtime doc), portal sensors (2B.3), prefetch/cache (2B.4), age verification, gate persistence, jurisdiction policy |
 
-M0 is **not** complete after Step 2B.1; the Landmark stays at v0.1. No new architectural decision was needed — D-004, D-006 and D-016 govern this work.
+M0 is **not** complete after Step 2B.1/2B.2; the Landmark stays at v0.1. No new architectural decision was needed — D-004, D-006 and D-016 govern this work.
 
 ---
 
@@ -22,14 +22,14 @@ AUTHORITATIVE PHYSICAL SOURCE (hand-edited, committed)
         ▼  validate  (reads packages/nrvna-manifest/generated/destinations.json — canonical, read-only)
         ▼  generate  (deterministic; node scripts/spatial/cli.mjs)
 GENERATED RUNTIME ARTIFACTS (derived, committed, never hand-edited)
-  apps/the-nrvnaverse/public/data/static-scene.json               compatibility FULL scene  ← what Step 2A loads today
-  apps/the-nrvnaverse/public/data/spatial/global-scene.json       components independent of any chunk
-  apps/the-nrvnaverse/public/data/spatial/chunks/<key>.json       one file per logical M0 chunk (4)
-  apps/the-nrvnaverse/public/data/spatial/spatial-index.json      destinationId → chunkKey → spawn · chunk data URLs
+  apps/the-nrvnaverse/public/data/static-scene.json               compatibility FULL scene  ← validation/debugging only since 2B.2
+  apps/the-nrvnaverse/public/data/spatial/global-scene.json       components independent of any chunk  ← runtime boot source (2B.2)
+  apps/the-nrvnaverse/public/data/spatial/chunks/<key>.json       one file per logical M0 chunk (4)     ← fetched one at a time, after the gate (2B.2)
+  apps/the-nrvnaverse/public/data/spatial/spatial-index.json      destinationId → chunkKey → spawn · chunk data URLs · globalSceneUrl
         │
         ▼
-RUNTIME (2B.1): index → placement registry → same-scene teleport in the full compatibility scene
-RUNTIME (2B.2): global scene + selective chunk fetch (after gate evaluation) — not implemented yet
+RUNTIME (2B.1, historical): index → placement registry → same-scene teleport in the full compatibility scene
+RUNTIME (2B.2, current):    index → global scene boot → gate → fetch + validate + stage ONE chunk → teleport → retire the previous chunk
 ```
 
 | Layer | File | Role |
@@ -39,6 +39,7 @@ RUNTIME (2B.2): global scene + selective chunk fetch (after gate evaluation) —
 | Package scripts | `apps/the-nrvnaverse/package.json` | `spatial:validate`, `spatial:generate`, `spatial:check` (scripts only — no dependency change, `pnpm-lock.yaml` untouched) |
 | Runtime index loader | `src/lib/spatial/spatial-index.ts`, `src/lib/spatial/spatial-index-source.ts` | `parseSpatialIndex` (structural + finite checks), `registryFromSpatialIndex`, `FetchSpatialIndexSource` (`/data/spatial/spatial-index.json`) |
 | Placement registry consumer | `src/lib/app-store.ts` → `AweSpatialAdapter` | registry is built from the loaded index at boot; `placements.m0.ts` is **deleted** |
+| Runtime chunk consumer (2B.2) | `src/lib/spatial/chunk-data-source.ts`, `chunk-payload.ts`, `chunk-orchestrator.ts` | `FetchChunkDataSource` fetches `chunks[key].dataUrl`; `parseChunkPayload` validates envelope + component records (schema, `worldId`, `chunkKey`, component ids) before any engine mutation; the orchestrator keeps one active chunk |
 
 No CMS, no generalized world-authoring platform, no automatic spatial-grid partitioner: M0 uses explicit logical chunk membership.
 
@@ -112,7 +113,7 @@ Seven placements, migrated verbatim from the Step 2A `placements.m0.ts` coordina
 
 | Artifact | Shape | Size (bytes, LF) |
 |---|---|---|
-| `public/data/static-scene.json` (compatibility full scene) | exactly the authored scene (33 components) | 36 954 |
+| `public/data/static-scene.json` (compatibility full scene — not requested by the runtime since 2B.2) | exactly the authored scene (33 components) | 36 954 |
 | `public/data/spatial/global-scene.json` | same scene envelope, 7 global components | 9 763 |
 | `public/data/spatial/chunks/hub.json` | `{ schemaVersion, worldId, chunkKey, components }` | 5 375 |
 | `public/data/spatial/chunks/music.json` | 〃 | 7 321 |
@@ -142,26 +143,26 @@ The validator reads the canonical generated destination set only to verify refer
 
 **Regenerate / check.** `pnpm --filter the-nrvnaverse spatial:validate` · `spatial:generate` · `spatial:check` (CI-style staleness check). The vitest suite (`pnpm --filter the-nrvnaverse test`) repeats the staleness check.
 
-## 9. Why the compatibility full scene still exists in 2B.1
+## 9. Why the compatibility full scene still exists
 
-Step 2A's runtime mounts one static scene (`M0_SCENE_URL = /data/static-scene.json`) and teleports within it. Runtime chunk loading does not exist yet, so switching the app to `global-scene.json` would leave it with no platforms to stand on. The pipeline therefore keeps emitting the full scene as a **generated** compatibility output from the same authoritative source that produces the global scene and the chunks. Result: Step 2A behaviour is unchanged, there is exactly one hand-edited scene (`spatial/source/scene.m0.json`), and the only diff to the previously hand-maintained `static-scene.json` is JSON escaping of four `→`/`—` characters (semantically identical).
+In 2B.1 the Step 2A runtime still mounted the full scene (`/data/static-scene.json`), so the pipeline emitted it as a **generated** compatibility output from the same authoritative source that produces the global scene and the chunks. **Since 2B.2 the runtime no longer requests it** (tested: no `src/` file references the path; the store boots the runtime from `spatialIndex.globalSceneUrl`). The file is kept as a generated artifact for validation and debugging — e.g. `pnpm run-space --scene=apps/the-nrvnaverse/public/data/static-scene.json` still smoke-tests the complete authored world headlessly — and because it costs nothing to keep deterministic. There is still exactly one hand-edited scene (`spatial/source/scene.m0.json`).
 
-## 10. Exact Step 2B.2 runtime handoff
+## 10. Step 2B.2 runtime handoff — consumed
 
-Inputs 2B.2 consumes (all generated, all present now):
+What 2B.2 built on the inputs listed here (details in the runtime doc):
 
-1. `spatial-index.json` → `parseSpatialIndex` (already loaded at boot by `app-store.ts` via `FetchSpatialIndexSource`) gives `globalSceneUrl`, `chunks[key].dataUrl` and `destinations[id] = { chunkKey, spawn }`.
-2. `global-scene.json` — replace `M0_SCENE_URL` as the payload passed to the official `createSpace` so the world boots with avatar, animations, environment and ground only.
-3. `chunks/<key>.json` — `{ schemaVersion, worldId, chunkKey, components }`; 2B.2 adds/removes these components through official AWE runtime component APIs (D-016) and reports `loadingChunk` through `SpatialTravelPhase`.
+1. `spatial-index.json` → `parseSpatialIndex` at boot gives `globalSceneUrl` (runtime boot source), `chunks[key].dataUrl` (the only source of chunk URLs) and `destinations[id] = { chunkKey, spawn }` (placement registry).
+2. `global-scene.json` is the payload passed to the official `createSpace`: the world boots with avatar, animations, environment and ground only.
+3. `chunks/<key>.json` is fetched **one chunk at a time, only after the manifest gate**, validated with `parseChunkPayload` (schema, `worldId`, `chunkKey`, component records) and instantiated through the official `space.components.create(data, { abort })` / `destroy` while the previous chunk stays alive; `loadingChunk` is reported through `SpatialTravelPhase` for real cross-chunk work only.
 
-Required order per travel (D-006): `canTravel(id)` (manifest gates) → **only if allowed** resolve `chunkKey` → fetch `chunks[chunkKey].dataUrl` → instantiate → `placeVisitor(spawn)`. `PhysicalPlacement.chunkKey` is already on the registry record for this purpose. The URL contract stays `?destination=<id>`.
+Order per travel (D-006, implemented): `canTravel(id)` (manifest gates) → only if allowed resolve `chunkKey` → same chunk? teleport : fetch → validate → stage → teleport → commit → retire old. The URL contract stays `?destination=<id>`.
 
-## 11. Cannabis pre-fetch gate requirement (architectural, not implemented here)
+## 11. Cannabis pre-fetch gate requirement (implemented at the application layer in 2B.2)
 
-- The runtime must **never fetch `chunks/cannabis-21.json`** (or any chunk mapped from a destination whose manifest carries `gates[]`) before that gate has passed. In 2B.1 nothing fetches chunk files at all; the compatibility scene is loaded (it already contained the walled enclosure in Step 2A).
+- The runtime **never fetches `chunks/cannabis-21.json`** (or any chunk mapped from a destination whose manifest carries `gates[]`) before that gate has passed: the adapter evaluates the gate before the orchestrator is asked for anything. Tested at adapter, store and browser level for the initial deep link, directory click and back/forward paths; the Hub chunk is the fallback for a gated initial deep link.
 - The spatial index may reveal `cannabis-21` as the chunk key of the two gated destinations. That mapping is not the gated experience content; the content is the chunk payload.
-- No age verification, gate persistence, jurisdiction policy or bypass exists or is designed here. The manifest's placeholder `enforced: false` remains deliberately unconsulted: a declared gate stops spatial entry (Step 2A).
-- Known limitation to carry into the gate design: files under `public/` are statically served, so "not fetched by the runtime" is an application-layer guarantee, not a hosting-layer one. A real gate will need server-side enforcement of gated chunk URLs — a later decision, not part of M0 Step 2B.1.
+- No age verification, gate persistence, jurisdiction policy or bypass exists or is designed here. The manifest's placeholder `enforced: false` remains deliberately unconsulted: a declared gate stops spatial entry.
+- Known limitation (non-M0): files under `public/` are statically served, so "not fetched by the runtime" is an application-layer guarantee, not a hosting-layer one. A real gate will need server-side enforcement of gated chunk URLs — a later decision.
 
 ## 12. Tests (`pnpm --filter the-nrvnaverse test` — 69 tests, was 35)
 

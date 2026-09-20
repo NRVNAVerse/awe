@@ -2,7 +2,7 @@
  * Spatial adapter boundary — the seam between NRVNAVerse destination identity and AWE
  * physical placement / travel.
  *
- * STATUS: interface refined in M0 Step 2A; first real implementation lives in
+ * STATUS: interface refined in M0 Step 2A (`superseded` added in 2B.2); the implementation lives in
  * `apps/the-nrvnaverse/src/lib/spatial/awe-spatial-adapter.ts`. The application layer talks
  * only in destination ids; how an id becomes a world, chunk, spawn or portal is the
  * adapter's private concern. Nothing here may leak coordinates into identity (D-004).
@@ -44,12 +44,19 @@ export type TravelResult =
   | { status: "arrived"; placement: SpatialPlacement }
   | { status: "gate-required"; destinationId: string; gates: string[] }
   | { status: "failed"; destinationId: string; reason: string }
-  | { status: "unavailable"; reason: string };
+  | { status: "unavailable"; reason: string }
+  /**
+   * A newer travel request replaced this one before it could complete (latest request wins).
+   * Nothing was moved, loaded or unloaded on behalf of this request; it is not a user-facing
+   * failure and callers must not change state or URLs because of it.
+   */
+  | { status: "superseded"; destinationId: string };
 
 /**
  * Lifecycle states a spatial adapter may report. They map to the application state phases
- * (`loadingGlobals`, `traveling`, `arrived`, `gateRequired`); `loadingChunk` is reserved for a
- * future chunk-streamed adapter (M0 Step 2B) and is not reported by the Step 2A adapter.
+ * (`loadingGlobals`, `loadingChunk`, `traveling`, `arrived`, `gateRequired`). `loadingChunk` is
+ * reported only for real cross-chunk work (M0 Step 2B.2); same-chunk travel and gate refusals
+ * never enter it.
  */
 export type SpatialTravelPhase = "idle" | "loadingGlobals" | "loadingChunk" | "traveling" | "arrived" | "gateRequired" | "failed";
 

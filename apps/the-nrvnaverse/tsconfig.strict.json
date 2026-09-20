@@ -7,5 +7,5 @@
     "incremental": false
   },
   "include": ["src/lib/**/*.ts", "src/hooks/**/*.ts", "test/**/*.ts", "scripts/**/*.mjs"],
-  "exclude": ["node_modules", "src/lib/spatial/awe-spatial-runtime.ts", "src/lib/app-store.ts"]
+  "exclude": ["node_modules", "src/lib/spatial/awe-spatial-runtime.ts", "src/lib/app-store.ts", "test/app-store.test.ts"]
 }

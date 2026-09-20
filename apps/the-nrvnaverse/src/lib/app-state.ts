@@ -12,21 +12,28 @@ import {
 /**
  * Application state model for THE NRVNAVerse.
  *
- * Implemented phases (M0 Step 2A):
+ * Implemented phases (M0 Step 2B.2):
  *
- *   boot → resolvingDestination → loadingGlobals → ready | gateRequired | error
- *   ready | arrived | gateRequired ── travel ──▶ traveling → arrived | gateRequired | ready(+notice)
+ *   boot → resolvingDestination → loadingGlobals → loadingChunk(initial) → ready | gateRequired | error
+ *   ready | arrived | gateRequired ── travel ──▶ traveling ─[cross-chunk only]─▶ loadingChunk(travel)
+ *                                                          ──▶ arrived | gateRequired | ready(+notice)
+ *   traveling | loadingChunk(travel) ── newer travel ──▶ traveling            (latest request wins)
  *   arrived | gateRequired ── dismiss ──▶ ready
  *
- * - `loadingGlobals`: the deep link is resolved and the AWE engine/space is initialising; the
- *   world is not revealed until the initial placement (or gate refusal) is known.
+ * - `loadingGlobals`: the deep link is resolved and the AWE engine/space is initialising from the
+ *   global scene; the world is not revealed until the initial chunk and placement are settled.
+ * - `loadingChunk` (stage `initial`): the engine is up and the first chunk is being fetched and
+ *   instantiated; still hidden.
  * - `ready`: engine revealed, visitor standing at `current`, idle.
- * - `traveling`: a same-scene travel towards `target` is in progress.
+ * - `traveling`: a travel towards `target` is in progress; the visitor is still at `current`.
+ * - `loadingChunk` (stage `travel`): the travel needs a different chunk, which is being fetched /
+ *   staged while the current chunk stays alive. Same-chunk travel never enters this phase.
  * - `arrived`: travel completed; `current` is the new destination.
  * - `gateRequired`: travel was refused because the target carries `gates[]`; the visitor stays
- *   at `current` (the hub for an initial deep link). No verification/bypass exists yet.
+ *   at `current` (the hub for an initial deep link). No verification/bypass exists yet; no gated
+ *   chunk was fetched.
  *
- * Reserved, NOT implemented: `loadingChunk` (chunk-streamed adapter, M0 Step 2B).
+ * A travel result whose request was superseded by a newer one leaves the state untouched.
  *
  * Everything in this file is pure so it can be unit-tested without React, a browser or the engine.
  */
@@ -35,6 +42,7 @@ export const IMPLEMENTED_PHASES = [
   "boot",
   "resolvingDestination",
   "loadingGlobals",
+  "loadingChunk",
   "ready",
   "traveling",
   "arrived",
@@ -43,11 +51,14 @@ export const IMPLEMENTED_PHASES = [
 ] as const;
 export type AppPhase = (typeof IMPLEMENTED_PHASES)[number];
 
-/** Reserved for the chunk-streamed adapter (M0 Step 2B). Listed so the extension point is explicit. */
-export const PLANNED_PHASES = ["loadingChunk"] as const;
+/** No phase is reserved any more: `loadingChunk` became real in M0 Step 2B.2. */
+export const PLANNED_PHASES = [] as const;
 export type PlannedPhase = (typeof PLANNED_PHASES)[number];
 
-/** Phases in which the visitor is placed and may start a new travel. */
+/** Phases from which a (new) travel may start: settled, or an in-flight travel that the new one supersedes. */
+export const TRAVEL_START_PHASES = ["ready", "arrived", "gateRequired", "traveling", "loadingChunk"] as const;
+
+/** Phases in which the visitor is placed and no travel is in flight. */
 export const SETTLED_PHASES = ["ready", "arrived", "gateRequired"] as const;
 export type SettledPhase = (typeof SETTLED_PHASES)[number];
 
@@ -71,7 +82,7 @@ export interface LoadedData {
 
 export interface TravelArrival {
   destinationId: string;
-  /** destination resolve → arrived, milliseconds (same-scene travel). */
+  /** travel request → arrived, milliseconds (includes chunk fetch/staging for cross-chunk travel). */
   durationMs: number;
 }
 
@@ -103,16 +114,43 @@ export type AppState =
       requested: Destination;
       notices: AppNotice[];
     }
+  | {
+      phase: "loadingChunk";
+      stage: "initial";
+      loaded: LoadedData;
+      entry: DeepLinkEntry;
+      requested: Destination;
+      notices: AppNotice[];
+    }
   | ({ phase: "ready" } & SettledBase)
   | ({ phase: "traveling"; target: Destination } & SettledBase)
+  | ({ phase: "loadingChunk"; stage: "travel"; target: Destination } & SettledBase)
   | ({ phase: "arrived"; arrival: TravelArrival } & SettledBase)
   | ({ phase: "gateRequired"; gate: GateRefusal } & SettledBase)
   | { phase: "error"; message: string; notices: AppNotice[] };
 
 export type SettledState = Extract<AppState, { phase: SettledPhase }>;
+/** States that carry a `current` placement: settled, or a travel in flight (the visitor has not moved yet). */
+export type PlacedState = Extract<AppState, SettledBase>;
+/** Boot-time states that precede the first placement. */
+export type InitialLoadingState = Extract<AppState, { phase: "loadingGlobals" } | { phase: "loadingChunk"; stage: "initial" }>;
 
 export function isSettled(state: AppState): state is SettledState {
   return (SETTLED_PHASES as readonly string[]).includes(state.phase);
+}
+
+/** True while the visitor is physically placed (settled or mid-travel). */
+export function isPlaced(state: AppState): state is PlacedState {
+  return "current" in state;
+}
+
+/** True if a new travel may be requested from this state (it supersedes an in-flight one). */
+export function canBeginTravel(state: AppState): state is PlacedState {
+  return isPlaced(state) && (TRAVEL_START_PHASES as readonly string[]).includes(state.phase);
+}
+
+export function isInitialLoading(state: AppState): state is InitialLoadingState {
+  return state.phase === "loadingGlobals" || (state.phase === "loadingChunk" && state.stage === "initial");
 }
 
 export function bootState(): AppState {
@@ -154,9 +192,26 @@ export type InitialPlacementOutcome =
   | { kind: "gate-required"; gates: string[]; fallback: { destination: Destination; placement: SpatialPlacement } }
   | { kind: "failed"; message: string; fallback: { destination: Destination; placement: SpatialPlacement } | null };
 
+/**
+ * The adapter reported real cross-chunk work for `destinationId`. During boot this moves
+ * `loadingGlobals → loadingChunk(initial)`; during travel `traveling → loadingChunk(travel)` but
+ * only if the loading destination is still the current target — a stale report changes nothing.
+ */
+export function withChunkLoading(state: AppState, destinationId: string): AppState {
+  if (state.phase === "loadingGlobals") {
+    const { loaded, entry, requested, notices } = state;
+    return { phase: "loadingChunk", stage: "initial", loaded, entry, requested, notices };
+  }
+  if (state.phase === "traveling" && state.target.id === destinationId) {
+    const { loaded, entry, current, placement, notices, target } = state;
+    return { phase: "loadingChunk", stage: "travel", loaded, entry, current, placement, notices, target };
+  }
+  return state;
+}
+
 /** Engine and initial placement are done: become ready (or gateRequired at the fallback, or error). */
 export function withInitialPlacement(state: AppState, outcome: InitialPlacementOutcome): AppState {
-  if (state.phase !== "loadingGlobals") {
+  if (!isInitialLoading(state)) {
     return errorState(`cannot complete initial placement in phase "${state.phase}"`, state.notices);
   }
   const { loaded, entry, requested, notices } = state;
@@ -192,18 +247,26 @@ export function withInitialPlacement(state: AppState, outcome: InitialPlacementO
   }
 }
 
-/** Start a travel from any settled phase. */
+/**
+ * Start a travel from any settled phase — or from an in-flight travel, which the new one
+ * supersedes (latest request wins). `current` never changes here: the visitor has not moved.
+ */
 export function beginTravel(state: AppState, target: Destination): AppState {
-  if (!isSettled(state)) return state;
+  if (!canBeginTravel(state)) return state;
   const { loaded, entry, current, placement } = state;
   return { phase: "traveling", loaded, entry, current, placement, notices: [], target };
 }
 
-/** Apply the adapter's travel result. */
+/**
+ * Apply the adapter's travel result. Only meaningful while a travel is in flight; a `superseded`
+ * result is not an outcome at all and leaves the state untouched (the newer request will settle it).
+ */
 export function withTravelResult(state: AppState, result: TravelResult, durationMs: number): AppState {
-  if (state.phase !== "traveling") return state;
+  if (state.phase !== "traveling" && !(state.phase === "loadingChunk" && state.stage === "travel")) return state;
   const { loaded, entry, current, placement, target } = state;
   switch (result.status) {
+    case "superseded":
+      return state;
     case "arrived":
       return {
         phase: "arrived",

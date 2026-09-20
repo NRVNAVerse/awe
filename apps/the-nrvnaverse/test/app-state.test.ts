@@ -5,10 +5,14 @@ import {
   IMPLEMENTED_PHASES,
   PLANNED_PHASES,
   SETTLED_PHASES,
+  TRAVEL_START_PHASES,
   beginTravel,
   bootState,
+  canBeginTravel,
   dismissTravelOutcome,
+  isInitialLoading,
   isSettled,
+  withChunkLoading,
   withData,
   withEntry,
   withInitialDeepLink,
@@ -22,6 +26,7 @@ const hubId = data.hubId;
 const musicId = data.index.bySlug["music"];
 const farmsId = data.index.bySlug["nrvna-farms-placeholder"];
 const cannabisId = data.index.bySlug["cannabis-21"];
+const fashionId = data.index.bySlug["fashion-culture"];
 
 function placement(destinationId: string, ref: string): SpatialPlacement {
   return { destinationId, platform: "the-nrvnaverse", worldId: "the-nrvnaverse", placementRef: ref };
@@ -38,11 +43,27 @@ function readyState(search: string) {
 }
 
 describe("application state — phases", () => {
-  it("keeps implemented and planned phases distinct", () => {
-    expect(IMPLEMENTED_PHASES).toEqual(["boot", "resolvingDestination", "loadingGlobals", "ready", "traveling", "arrived", "gateRequired", "error"]);
-    expect(PLANNED_PHASES).toEqual(["loadingChunk"]);
-    for (const planned of PLANNED_PHASES) expect(IMPLEMENTED_PHASES as readonly string[]).not.toContain(planned);
+  it("implements loadingChunk and reserves nothing", () => {
+    expect(IMPLEMENTED_PHASES).toEqual(["boot", "resolvingDestination", "loadingGlobals", "loadingChunk", "ready", "traveling", "arrived", "gateRequired", "error"]);
+    expect(PLANNED_PHASES).toEqual([]);
     for (const settled of SETTLED_PHASES) expect(IMPLEMENTED_PHASES as readonly string[]).toContain(settled);
+    for (const phase of TRAVEL_START_PHASES) expect(IMPLEMENTED_PHASES as readonly string[]).toContain(phase);
+  });
+
+  it("moves loadingGlobals → loadingChunk(initial) when the first chunk starts loading, and completes from there", () => {
+    const loading = loadingState(`?destination=${musicId}`);
+    expect(isInitialLoading(loading)).toBe(true);
+    const chunk = withChunkLoading(loading, musicId);
+    expect(chunk).toMatchObject({ phase: "loadingChunk", stage: "initial" });
+    if (chunk.phase !== "loadingChunk" || chunk.stage !== "initial") throw new Error("unreachable");
+    expect(chunk.requested.id).toBe(musicId);
+    expect(isInitialLoading(chunk)).toBe(true);
+    expect(isSettled(chunk)).toBe(false);
+    expect(canBeginTravel(chunk)).toBe(false);
+    const ready = withInitialPlacement(chunk, { kind: "placed", placement: placement(musicId, "chunk:music") });
+    expect(ready.phase).toBe("ready");
+    if (ready.phase !== "ready") throw new Error("unreachable");
+    expect(ready.current.id).toBe(musicId);
   });
 
   it("boots, loads data, resolves the deep link and waits for the engine", () => {
@@ -202,7 +223,7 @@ describe("application state — travel transitions", () => {
     expect(unavailable.notices.map((n) => n.code)).toEqual(["spatial-unavailable"]);
   });
 
-  it("allows a new travel from arrived and gateRequired, but not from traveling or loading", () => {
+  it("allows a new travel from arrived and gateRequired, and from an in-flight travel (which it supersedes), but not while booting", () => {
     const ready = readyState("");
     if (ready.phase !== "ready") throw new Error("unreachable");
     const music = ready.loaded.index.byId.get(musicId)!;
@@ -210,9 +231,43 @@ describe("application state — travel transitions", () => {
     expect(beginTravel(arrived, ready.loaded.index.hub).phase).toBe("traveling");
 
     const traveling = beginTravel(ready, music);
-    expect(beginTravel(traveling, ready.loaded.index.hub)).toBe(traveling);
+    expect(canBeginTravel(traveling)).toBe(true);
+    const superseding = beginTravel(traveling, ready.loaded.index.hub);
+    expect(superseding).toMatchObject({ phase: "traveling", target: { id: hubId }, current: { id: hubId } });
+    expect(superseding).not.toBe(traveling);
+
+    const loadingChunk = withChunkLoading(traveling, musicId);
+    expect(loadingChunk).toMatchObject({ phase: "loadingChunk", stage: "travel", target: { id: musicId }, current: { id: hubId } });
+    expect(canBeginTravel(loadingChunk)).toBe(true);
+    expect(beginTravel(loadingChunk, ready.loaded.index.hub)).toMatchObject({ phase: "traveling", target: { id: hubId } });
+
     const loading = loadingState("");
     expect(beginTravel(loading, ready.loaded.index.hub)).toBe(loading);
+  });
+
+  it("enters loadingChunk only for the destination currently targeted; stale reports change nothing", () => {
+    const ready = readyState("");
+    if (ready.phase !== "ready") throw new Error("unreachable");
+    const music = ready.loaded.index.byId.get(musicId)!;
+    const traveling = beginTravel(ready, music);
+    expect(withChunkLoading(traveling, hubId)).toBe(traveling); // stale: the target is music
+    expect(withChunkLoading(ready, musicId)).toBe(ready); // nothing in flight
+    const loadingChunk = withChunkLoading(traveling, musicId);
+    expect(loadingChunk.phase).toBe("loadingChunk");
+    const arrived = withTravelResult(loadingChunk, { status: "arrived", placement: placement(musicId, "chunk:music") }, 40);
+    expect(arrived).toMatchObject({ phase: "arrived", current: { id: musicId }, arrival: { destinationId: musicId, durationMs: 40 } });
+  });
+
+  it("a superseded travel result leaves the state untouched", () => {
+    const ready = readyState("");
+    if (ready.phase !== "ready") throw new Error("unreachable");
+    const music = ready.loaded.index.byId.get(musicId)!;
+    const fashion = ready.loaded.index.byId.get(fashionId)!;
+    const traveling = beginTravel(beginTravel(ready, music), fashion);
+    expect(withTravelResult(traveling, { status: "superseded", destinationId: musicId }, 5)).toBe(traveling);
+    const loadingChunk = withChunkLoading(traveling, fashionId);
+    expect(withTravelResult(loadingChunk, { status: "superseded", destinationId: musicId }, 5)).toBe(loadingChunk);
+    expect(withTravelResult(ready, { status: "superseded", destinationId: musicId }, 5)).toBe(ready);
   });
 
   it("re-resolves the deep-link entry after the URL changes without moving anyone", () => {
