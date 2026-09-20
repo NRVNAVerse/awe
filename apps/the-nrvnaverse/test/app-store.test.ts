@@ -101,7 +101,7 @@ describe("app store — boot from the global scene with one selectively loaded c
   it("initialises the runtime from spatialIndex.globalSceneUrl, never from the compatibility full scene", async () => {
     await boot("");
     expect(runtime.initOptions).toEqual({ sceneUrl: spatialIndexJson.globalSceneUrl });
-    expect(runtime.initOptions?.sceneUrl).toBe("/data/spatial/global-scene.json");
+    expect(runtime.initOptions?.sceneUrl).toMatch(/^\/data\/spatial\/global-scene\.json\?v=[0-9a-f]{32}$/); // the whole versioned URL, untouched
     expect(runtime.initOptions?.sceneUrl).not.toContain("static-scene");
   });
 
@@ -317,8 +317,9 @@ describe("app store — travel, URL and latest-request-wins", () => {
     for (const id of [musicId, artistId, fashionId, brandId, hubId]) {
       await travelToDestination(id);
       expect(win.location.search).not.toMatch(/chunk|spawn|position|[?&][xyz]=/i);
+      expect(win.location.search).not.toMatch(/[?&]v=|[0-9a-f]{32}/); // no content-version token in a navigation URL (2B.4B.2)
     }
-    expect(win.history.entries.join(" ")).not.toMatch(/chunk/);
+    expect(win.history.entries.join(" ")).not.toMatch(/chunk|[?&]v=/);
   });
 });
 

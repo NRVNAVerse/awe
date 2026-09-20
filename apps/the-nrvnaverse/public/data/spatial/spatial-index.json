@@ -1,19 +1,19 @@
 {
   "schemaVersion": 1,
   "worldId": "the-nrvnaverse",
-  "globalSceneUrl": "/data/spatial/global-scene.json",
+  "globalSceneUrl": "/data/spatial/global-scene.json?v=c1acc16bcc0dceb14da723dfd8ac0d77",
   "chunks": {
     "cannabis-21": {
-      "dataUrl": "/data/spatial/chunks/cannabis-21.json"
+      "dataUrl": "/data/spatial/chunks/cannabis-21.json?v=47ef62cb39981c5a64bfe91a5dea4f41"
     },
     "fashion-culture": {
-      "dataUrl": "/data/spatial/chunks/fashion-culture.json"
+      "dataUrl": "/data/spatial/chunks/fashion-culture.json?v=4cf8e4ca99a8bc9d19afc42e60816b24"
     },
     "hub": {
-      "dataUrl": "/data/spatial/chunks/hub.json"
+      "dataUrl": "/data/spatial/chunks/hub.json?v=6a30542efff7a2e575edac1faf6679f4"
     },
     "music": {
-      "dataUrl": "/data/spatial/chunks/music.json"
+      "dataUrl": "/data/spatial/chunks/music.json?v=dffba466b06980f5e7adc5260538f70d"
     }
   },
   "destinations": {

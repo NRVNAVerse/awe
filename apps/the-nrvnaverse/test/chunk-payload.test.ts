@@ -25,7 +25,8 @@ function code(fn: () => unknown): string {
 describe("chunk payload validation (runtime, before any engine mutation)", () => {
   it("accepts every generated M0 chunk against its own index entry", () => {
     for (const chunkKey of Object.keys(index.chunks)) {
-      const raw = JSON.parse(readFileSync(join(APP_ROOT, "public", index.chunks[chunkKey].dataUrl), "utf8"));
+      // The runtime never does this: the test maps the opaque versioned delivery URL back to the file on disk.
+      const raw = JSON.parse(readFileSync(join(APP_ROOT, "public", new URL(index.chunks[chunkKey].dataUrl, "http://localhost").pathname), "utf8"));
       const payload = parseChunkPayload(raw, { worldId: index.worldId, chunkKey });
       expect(payload.chunkKey).toBe(chunkKey);
       expect(payload.worldId).toBe(index.worldId);

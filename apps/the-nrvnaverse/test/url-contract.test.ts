@@ -24,6 +24,7 @@ describe("URL contract after travel", () => {
     for (const id of Object.keys(M0_PLACEMENTS)) {
       const query = buildDeepLinkQuery(id, { from: "spatial" });
       expect(query).not.toMatch(/chunk|placement|spawn|position|[?&][xyz]=/i);
+      expect(query).not.toMatch(/[?&]v=|[0-9a-f]{32}/); // no content-version token (2B.4B.2): delivery metadata never reaches navigation
       expect(query).not.toContain(M0_PLACEMENTS[id].placementRef);
       expect(query).not.toContain(M0_PLACEMENTS[id].chunkKey);
     }

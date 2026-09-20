@@ -123,8 +123,10 @@ function main(argv) {
     case "generate": {
       const artifacts = generateSpatialArtifacts(loadSpatialSource());
       const { written, unchanged } = writeArtifacts(artifacts.files);
-      for (const name of written) console.log(`wrote ${name} (${sizeOf(name)} bytes)`);
-      for (const name of unchanged) console.log(`unchanged ${name} (${sizeOf(name)} bytes)`);
+      /** @param {string} name */
+      const describe = (name) => `${name} (${sizeOf(name)} bytes${name in artifacts.versions ? `, v=${artifacts.versions[name]}` : ""})`;
+      for (const name of written) console.log(`wrote ${describe(name)}`);
+      for (const name of unchanged) console.log(`unchanged ${describe(name)}`);
       const leftovers = checkArtifacts(artifacts.files).unexpected;
       for (const name of leftovers) console.warn(`unexpected leftover ${name} — delete it (not generated from the current source)`);
       console.log(`${artifacts.chunkKeys.length} chunks, ${artifacts.destinationIds.length} destination placements`);

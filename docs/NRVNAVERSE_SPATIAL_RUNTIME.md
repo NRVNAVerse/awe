@@ -1,16 +1,16 @@
-# NRVNAVerse Spatial Runtime — M0 Step 2A + 2B.2 + 2B.3 + 2B.4A
+# NRVNAVerse Spatial Runtime — M0 Step 2A + 2B.2 + 2B.3 + 2B.4A + 2B.4B
 
 | Field | Value |
 |---|---|
-| **Status** | VERIFIED (2026-09-19) — global-scene boot, stable-id → placement adapter, one selectively loaded chunk with safe transitions / rollback / latest-request-wins, gate-before-fetch, physical portal sensors → stable-id travel (2B.3), **hardened lifecycle / asynchronous shutdown (2B.4A, §14)**; tests + browser validation incl. the real avatar entering real sensor colliders and a real teardown / re-boot cycle |
+| **Status** | VERIFIED (2026-09-19) — global-scene boot, stable-id → placement adapter, one selectively loaded chunk with safe transitions / rollback / latest-request-wins, gate-before-fetch, physical portal sensors → stable-id travel (2B.3), **hardened lifecycle / asynchronous shutdown (2B.4A, §14)**, **content-versioned immutable delivery of the global scene and chunks behind a revalidated spatial-index version root (2B.4B, §15)**; tests + browser validation incl. the real avatar entering real sensor colliders, a real teardown / re-boot cycle and a production-server cache check |
 | **App** | `apps/the-nrvnaverse` (THE NRVNAVerse, spatial interface) |
 | **Builds on** | [`NRVNAVERSE_SPATIAL_DATA_PIPELINE.md`](./NRVNAVERSE_SPATIAL_DATA_PIPELINE.md) (M0 Step 2B.1) · [`NRVNAVERSE_DESTINATION_MANIFEST.md`](./NRVNAVERSE_DESTINATION_MANIFEST.md) (M0 Step 1) |
 | **Governing decisions** | D-002, D-004, D-006, D-010, D-013, D-014, D-016; Landmark §3, §6, §7, §9 |
-| **Not in scope (M0 Step 2B.4B+)** | prefetch / chunk cache / neighbour warming, budgets, mobile/adaptive quality; age verification / compliance policy; hosting-level protection of gated chunk URLs; portal art. **Correctness / lifecycle / shutdown hardening is now done (2B.4A, §14)** |
+| **Not in scope (M0 Step 2B.4C+)** | budgets, mobile/adaptive quality; age verification / compliance policy; hosting-level protection of gated chunk URLs; portal art. **Correctness / lifecycle / shutdown hardening is done (2B.4A, §14); the performance step is done as HTTP delivery only (2B.4B, §15) — an application chunk cache, prefetch and neighbour warming were measured and rejected for M0** |
 
-M0 is **not** complete after Step 2B.4A (2B.4B / 2B.4C remain); the Landmark stays at v0.1. No new architectural decision was needed — D-004, D-006, D-013 and D-016 govern this work.
+M0 is **not** complete after Step 2B.4B (2B.4C remains); the Landmark stays at v0.1. No new architectural decision was needed — D-004, D-006, D-013 and D-016 govern this work.
 
-History: Step 2A (branch `feat/m0-spatial-runtime`) mounted the official runtime on the full compatibility scene with same-scene teleports. Step 2B.1 generated the global scene, chunk files and spatial index. Step 2B.2 (branch `feat/m0-chunk-runtime`) replaced the full-scene runtime with global scene + one active chunk. Step 2B.3 (branch `feat/m0-portals`) added physical portal sensors that route a stable destination id into the same `travelToDestination()` path (§13). **Step 2B.4A (branch `feat/m0-hardening-correctness`) hardened the lifecycle: an asynchronous orchestrator shutdown contract, boot/dispose coordination with an explicit run state, boot-failure recovery, and stale-portal-microtask protection (§14).** Sections marked *(2A, unchanged)* still describe the current code.
+History: Step 2A (branch `feat/m0-spatial-runtime`) mounted the official runtime on the full compatibility scene with same-scene teleports. Step 2B.1 generated the global scene, chunk files and spatial index. Step 2B.2 (branch `feat/m0-chunk-runtime`) replaced the full-scene runtime with global scene + one active chunk. Step 2B.3 (branch `feat/m0-portals`) added physical portal sensors that route a stable destination id into the same `travelToDestination()` path (§13). **Step 2B.4A (branch `feat/m0-hardening-correctness`) hardened the lifecycle: an asynchronous orchestrator shutdown contract, boot/dispose coordination with an explicit run state, boot-failure recovery, and stale-portal-microtask protection (§14).** **Step 2B.4B (read-only audit 2B.4B.1, then branch `feat/m0-http-cache-delivery` for 2B.4B.2) versioned the physical artifact URLs and made them immutable behind the revalidated spatial index (§15) — no runtime module changed behaviour.** Sections marked *(2A, unchanged)* still describe the current code.
 
 ---
 
@@ -77,7 +77,7 @@ Movement suppression during a transition was **not** needed: staging happens whi
 ## 3. Chunk payload source and validation (2B.2)
 
 - `ChunkDataSource.load({ chunkKey, dataUrl, signal })` returns raw JSON. `FetchChunkDataSource` fetches `dataUrl` with the `AbortSignal`; `StaticChunkDataSource` (tests/tooling) serves in-memory entries, models a 404 for a missing key, lets an entry throw / reject / observe the signal, and records every request.
-- The URL always comes from `spatialIndex.chunks[chunkKey].dataUrl`. No chunk path is hard-coded in runtime logic (tested by source scan).
+- The URL always comes from `spatialIndex.chunks[chunkKey].dataUrl`. No chunk path is hard-coded in runtime logic (tested by source scan). Since 2B.4B the URL carries an opaque content-version query (`?v=<digest>`, §15); the source passes the whole string to `fetch` and never parses, strips or rebuilds it (tested with a stubbed `fetch` and by source scan).
 - `parseChunkPayload(raw, { worldId, chunkKey })` rejects with a stable `ChunkPayloadError.code`: `not-an-object`, `unsupported-schema-version`, `world-id-mismatch`, `chunk-key-mismatch` (a mis-served file, or a payload for another chunk), `invalid-components` (not an object), `invalid-component` (record not an object / missing or empty `type`), `component-id-mismatch` (record `id` ≠ key). It looks for no identity or gate data (chunk files carry none). Component-specific fields are left to the engine factories.
 - Validation runs **before** any engine mutation, while the previous chunk is still alive — a malformed target never costs the current world.
 - No third-party validator was added.
@@ -208,7 +208,8 @@ Note on the tool: the Claude-in-Chrome tab used for A–K went to the background
 ## 12. What remains for M0 Step 2B.4+
 
 - **2B.4A — correctness / lifecycle / shutdown hardening: DONE** (§14). The carried shutdown risk is **closed**: `disposeApp` now awaits the orchestrator's settled mutation queue *and* the runtime's asynchronous disposal (engine session settled) before the run is cleared, so the Space is never destroyed while `stageChunk` / `ComponentManager.create` is still resolving.
-- **2B.4B / 2B.4C — performance / mobile**: neighbour prefetch / cache policy over the orchestrator, budgets, mobile/adaptive quality. Not started.
+- **2B.4B — performance: DONE as HTTP delivery only** (§15). The 2B.4B.1 audit measured that repeat chunk fetches were conditional revalidations of `max-age=0` responses; 2B.4B.2 versioned the artifact URLs and made them `immutable` behind a revalidated index. Application cache, prefetch and neighbour warming were **rejected for M0** on the measurements (§15). Browser-verified: repeat visits are disk-cache hits with 0 wire bytes and no conditional request.
+- **2B.4C — mobile**: budgets, mobile/adaptive quality. Not started.
 - Real gate flow design (verification provider seam, jurisdiction policy at the content layer, server-side protection of gated chunk URLs) — still no compliance claims.
 - Decide how (or whether) Ghost's experimental chunk manager / portal component inform a later generic primitive — read-only until his review (D-013).
 - Replace prototype geometry and portal visuals only when a world-layout decision is made (human review, governance rule 9).
@@ -365,3 +366,46 @@ A **repeat boot→dispose→boot cycle run twice in one page** both created fres
 ### 14.8 Background-tab load timeout
 
 The upstream hidden/background-tab `requestAnimationFrame` / `LOAD_TIMEOUT` behaviour was **not** the target of 2B.4A and was **not** modified (engine timing, `LOAD_TIMEOUT` and animation scheduling are untouched). It remains recorded as an upstream/runtime risk; validation used a visible headless tab where rAF runs.
+
+## 15. Versioned delivery and HTTP cache policy (M0 Step 2B.4B)
+
+Data-pipeline side (token algorithm, generation order, cache rules, unversioned safety, invalidation proof, full production and browser measurements): [`NRVNAVERSE_SPATIAL_DATA_PIPELINE.md`](./NRVNAVERSE_SPATIAL_DATA_PIPELINE.md) §15. This section records what the *runtime* side of the step is — and, mostly, what it deliberately is not.
+
+### 15.1 The 2B.4B.1 audit and decision B
+
+The read-only audit (2026-09-20) measured the running system rather than assuming where time went: cross-chunk travel ≈45 ms median locally, validation ≈0 ms, staging ≈10 ms for the current placeholder chunks — and **every repeat chunk fetch was a conditional HTTP revalidation** (`next dev` and `next start` both answer `Cache-Control: public, max-age=0` with a weak `ETag` / `Last-Modified`), i.e. one round trip per revisit (≈243 B, 304). Under a bounded 150 ms-latency profile a repeat travel cost ≈175 ms; with a long-lived cache policy simulated in the browser it cost ≈36 ms with 0 body bytes from disk cache. Decision **B — HTTP delivery follow-up only**:
+
+| Rejected for M0 | Why |
+|---|---|
+| Application raw-payload / validated-payload cache (`Map` of chunk JSON) | The browser HTTP cache already holds the bytes once the delivery contract allows it; a second copy adds memory, invalidation logic and a stale-data surface for no measured gain. |
+| Predictive / neighbour prefetch, neighbour warming | Fetches chunks the visitor may never enter; for a gated neighbour it would violate gate-before-fetch (D-006). Not justified by the measured cost. |
+| Instantiated-chunk retention | Changes the one-active-chunk model and its memory profile; no measured need. |
+| Service Worker / CacheStorage / IndexedDB / localStorage | Another cache layer with its own lifecycle; the HTTP cache is the cache. |
+| Hashed file names | Would need output-file lifecycle and stale-file cleanup design; reviewed separately if ever needed. |
+
+### 15.2 What changed for the runtime: nothing behavioural
+
+- `FetchChunkDataSource`, `ChunkOrchestrator`, `AweSpatialAdapter`, `PortalController`, `AweSpatialRuntime` are **structurally unchanged**. They already consumed `spatialIndex.globalSceneUrl` and `spatialIndex.chunks[key].dataUrl` as opaque strings; those strings now end in `?v=<32 lowercase hex>` and are handed to `fetch` exactly as before.
+- `parseSpatialIndex` has no new field and no token validation (`globalSceneUrl` / `dataUrl` remain plain strings); a doc comment records the opacity contract. Schema version stays 1.
+- Gate-before-fetch (§7) is untouched: Cannabis → adapter gate → `gateRequired` → zero chunk requests. The versioned cannabis URL exists in the index like every other artifact and is served `immutable` — delivery metadata that neither authorises nor prefetches it. The known non-M0 limitation (the static chunk file is not server-authorised content) is unchanged and not solved by caching.
+- URL contract (§8) unchanged: `?destination=<stable-id>&from=spatial` only; the token never appears in a navigation URL (tested at URL-contract, store and browser level).
+
+### 15.3 Tests
+
+`test/spatial-delivery.test.ts` — the committed index carries versioned artifact URLs and an unversioned index URL; `FetchChunkDataSource` fetches exactly the `dataUrl` (token included) with the request's `AbortSignal` and surfaces a 404 without retrying a derived URL; `FetchSpatialIndexSource` requests the fixed index URL; `parseSpatialIndex` passes URLs through verbatim with or without a token; no `src/` file parses / strips / rebuilds a token or a chunk path (comment-stripped source scan) and both real consumers pass the URL straight to `fetch`; the token never appears in `buildDeepLinkQuery` output. `test/cache-policy.test.ts` evaluates the `next.config.ts` rules with Next's own `path-to-regexp` / `matchHas`. Existing tests tightened: orchestrator request URL matches the versioned shape; store and URL-contract suites assert no `v=` / 32-hex token in navigation URLs; the exact global-scene URL assertions now pin the versioned shape. 235 app tests (was 213), 56 manifest tests, `check` (strict pass incl. `checkJs` over the pipeline), `spatial:check`, `generate:check`, `next build` pass.
+
+### 15.4 Browser validation (2026-09-20, fresh headless-Chrome profile, GPU-backed, raw CDP, against `next build` + `next start --port 3200`)
+
+| Check | Result |
+|---|---|
+| Boot (fresh profile) | index `200` 1 035 B (`public, max-age=0, must-revalidate`); versioned global scene `200` 2 845 B and versioned Hub `200` 1 396 B (`public, max-age=31536000, immutable`); arrived at the Hub in 9.8 s wall incl. engine boot |
+| Hub → Music (first visit) | network `200`, 1 394 B on the wire, `chunk-fetch` 22.6 ms, `cross-chunk-travel` 37 ms |
+| Music → Hub, Hub → Music, … (revisits, ×9 across Hub / Music / Fashion) | **`fromDiskCache: true`, 0 wire bytes, Resource Timing `transferSize 0` / `deliveryType "cache"`, no `If-None-Match` sent** — no conditional round trip; `chunk-fetch` 2.2–4.3 ms, `cross-chunk-travel` 8–14 ms |
+| Hub → Cannabis | `gateRequired`, **zero** network requests, URL unchanged; cannabis chunk requests over the whole run: 0 |
+| Music District → Placeholder Artist | same-chunk teleport, no request |
+| 150 ms latency (bounded check, applied after the fresh-profile flow) | cache-cold Fashion first visit `chunk-fetch` 153.6 ms / travel 165 ms; Fashion revisit 7.7 ms / 19.3 ms; Hub and Music revisits 3–4 ms / 12–14 ms (audit baseline under the same profile: ≈175 ms per repeat travel) |
+| Reload in the same profile | index revalidated (`304`, 259 B, `If-None-Match` sent — the version root working as intended); global scene and Hub from disk cache, 0 bytes; Hub → Music afterwards from disk cache |
+| URLs | only `?destination=<id>&from=spatial` ever written |
+| Console | no error; only pre-existing upstream Three/VRM warnings |
+
+Success criterion met: repeat visits no longer pay the measured conditional-revalidation round trip. No application cache was added to compensate for anything.

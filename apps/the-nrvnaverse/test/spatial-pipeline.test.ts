@@ -3,12 +3,19 @@ import { join, resolve } from "node:path";
 import { describe, expect, it } from "vitest";
 import type { DestinationsFile } from "@nrvnaverse/manifest";
 import destinationsJson from "../../../packages/nrvna-manifest/generated/destinations.json";
+import { createHash } from "node:crypto";
 import {
+  CONTENT_VERSION_LENGTH,
+  CONTENT_VERSION_PARAM,
+  CONTENT_VERSION_PATTERN,
+  DATA_URL_PREFIX,
   OUTPUT,
   SPATIAL_SCHEMA_VERSION,
+  contentVersion,
   generateSpatialArtifacts,
   serializeArtifact,
   validateSpatialSource,
+  versionedDataUrl,
   type SpatialSourceInput,
 } from "../scripts/spatial/pipeline.mjs";
 
@@ -125,7 +132,9 @@ describe("spatial source — valid M0 input", () => {
     const index = JSON.parse(artifacts.files[OUTPUT.spatialIndex]);
     const cannabisChunk = index.destinations[destinations.index.bySlug["cannabis-21"]].chunkKey;
     // The small index reveals the mapping (allowed); the gated CONTENT lives only in the chunk file.
-    expect(index.chunks[cannabisChunk].dataUrl).toBe(`/data/${OUTPUT.chunksDir}/${cannabisChunk}.json`);
+    // The content-version token (2B.4B.2) is delivery metadata: it neither authorises nor prefetches the chunk.
+    const cannabisFile = `${OUTPUT.chunksDir}/${cannabisChunk}.json`;
+    expect(index.chunks[cannabisChunk].dataUrl).toBe(`/data/${cannabisFile}?v=${artifacts.versions[cannabisFile]}`);
     const globalIds = Object.keys(JSON.parse(artifacts.files[OUTPUT.globalScene]).components);
     const cannabisIds = Object.keys(JSON.parse(artifacts.files[`${OUTPUT.chunksDir}/${cannabisChunk}.json`]).components);
     expect(cannabisIds.length).toBeGreaterThan(0);
@@ -477,5 +486,194 @@ describe("spatial source — portal validation rejects", () => {
 
   it("does not generate anything from an invalid portal set", () => {
     expect(() => generateSpatialArtifacts(source((d) => (d.config.portals[0].componentId = "nope")))).toThrow(/unknown-component/);
+  });
+});
+
+/**
+ * M0 Step 2B.4B.2 — versioned spatial delivery. The index is the version root: its own URL is
+ * fixed; `globalSceneUrl` and every `chunks[key].dataUrl` carry `?v=<content version>` where the
+ * token is the first 32 lowercase hex chars of SHA-256 over the exact serialized artifact. File
+ * names, chunk keys, destination ids and the schema version are unchanged.
+ */
+const VERSIONED_FILES = [OUTPUT.globalScene, ...EXPECTED_CHUNKS.map((k) => `${OUTPUT.chunksDir}/${k}.json`)];
+const TOKEN = /^[0-9a-f]{32}$/;
+
+/** Split an emitted delivery URL into its path and its single content-version token. */
+function splitVersioned(url: string): { path: string; token: string } {
+  const parsed = new URL(url, "http://localhost");
+  expect(url.match(/\?/g)).toHaveLength(1); // exactly one query string …
+  expect([...parsed.searchParams.keys()]).toEqual([CONTENT_VERSION_PARAM]); // … with exactly one parameter, `v`
+  expect(parsed.hash).toBe("");
+  const token = parsed.searchParams.get(CONTENT_VERSION_PARAM)!;
+  expect(token).toMatch(TOKEN);
+  return { path: parsed.pathname, token };
+}
+
+function urlsOf(artifacts: ReturnType<typeof generateSpatialArtifacts>): Record<string, string> {
+  const index = JSON.parse(artifacts.files[OUTPUT.spatialIndex]);
+  const urls: Record<string, string> = { [OUTPUT.globalScene]: index.globalSceneUrl };
+  for (const [key, entry] of Object.entries<{ dataUrl: string }>(index.chunks)) urls[`${OUTPUT.chunksDir}/${key}.json`] = entry.dataUrl;
+  return urls;
+}
+
+describe("spatial generation — content-versioned delivery URLs (M0 Step 2B.4B.2)", () => {
+  it("emits globalSceneUrl and every chunk dataUrl with exactly one valid content-version token on the unchanged file path", () => {
+    const artifacts = generateSpatialArtifacts(source());
+    const urls = urlsOf(artifacts);
+    expect(Object.keys(urls).sort()).toEqual([...VERSIONED_FILES].sort());
+    for (const [file, url] of Object.entries(urls)) {
+      const { path, token } = splitVersioned(url);
+      expect(path).toBe(`${DATA_URL_PREFIX}/${file}`); // file name unchanged — the token is only in the query
+      expect(token).toBe(artifacts.versions[file]);
+      expect(url).toBe(versionedDataUrl(file, token));
+    }
+    expect(Object.keys(artifacts.versions).sort()).toEqual([...VERSIONED_FILES].sort());
+    // The version root itself and the compatibility scene are NOT versioned.
+    expect(artifacts.versions[OUTPUT.spatialIndex]).toBeUndefined();
+    expect(artifacts.versions[OUTPUT.compatibilityScene]).toBeUndefined();
+    expect(artifacts.files[OUTPUT.spatialIndex]).not.toMatch(/spatial-index\.json/); // the index never points at itself
+  });
+
+  it("derives each token from the exact serialized artifact: SHA-256 over the UTF-8 text, first 32 lowercase hex chars", () => {
+    const artifacts = generateSpatialArtifacts(source());
+    for (const file of VERSIONED_FILES) {
+      const text = artifacts.files[file];
+      const independent = createHash("sha256").update(text, "utf8").digest("hex").slice(0, CONTENT_VERSION_LENGTH);
+      expect(artifacts.versions[file]).toBe(independent);
+      expect(contentVersion(text)).toBe(independent);
+      expect(CONTENT_VERSION_PATTERN.test(independent)).toBe(true);
+      // Any byte change to the serialized artifact changes the token — nothing else participates.
+      expect(contentVersion(`${text} `)).not.toBe(independent);
+      expect(contentVersion(text.replace(/\n$/, "\r\n"))).not.toBe(independent);
+    }
+    expect(CONTENT_VERSION_LENGTH).toBe(32);
+    expect(CONTENT_VERSION_PATTERN.source).toBe("^[0-9a-f]{32}$");
+    expect(contentVersion("")).toBe("e3b0c44298fc1c149afbf4c8996fb924"); // SHA-256("") prefix — a fixed, machine-independent value
+  });
+
+  it("is deterministic: the same source yields the same versioned URLs and byte-identical artifacts on every run", () => {
+    const a = generateSpatialArtifacts(source());
+    const b = generateSpatialArtifacts(source());
+    expect(b.files).toEqual(a.files);
+    expect(b.versions).toEqual(a.versions);
+    expect(urlsOf(b)).toEqual(urlsOf(a));
+    expect(b.files[OUTPUT.spatialIndex]).toBe(a.files[OUTPUT.spatialIndex]);
+    // Reordering the authored membership/placements/portals does not move a single byte or token.
+    const reordered = generateSpatialArtifacts(
+      source((d) => {
+        d.config.chunks.reverse();
+        d.config.placements.reverse();
+        d.config.portals.reverse();
+        for (const chunk of d.config.chunks) chunk.componentIds.reverse();
+        d.config.global.componentIds.reverse();
+      }),
+    );
+    expect(reordered.files).toEqual(a.files);
+    expect(reordered.versions).toEqual(a.versions);
+  });
+
+  it("changes only the Hub token when Hub physical content changes (Music, Fashion, Cannabis and the global scene keep theirs)", () => {
+    const before = generateSpatialArtifacts(source());
+    const after = generateSpatialArtifacts(source((d) => (d.scene.components["platform-hub"].position.x += 1)));
+    const hub = `${OUTPUT.chunksDir}/hub.json`;
+    expect(after.files[hub]).not.toBe(before.files[hub]);
+    expect(after.versions[hub]).not.toBe(before.versions[hub]);
+    expect(urlsOf(after)[hub]).not.toBe(urlsOf(before)[hub]);
+    for (const file of VERSIONED_FILES.filter((f) => f !== hub)) {
+      expect(after.files[file]).toBe(before.files[file]);
+      expect(after.versions[file]).toBe(before.versions[file]);
+      expect(urlsOf(after)[file]).toBe(urlsOf(before)[file]);
+    }
+    // Cache invalidation proof: the old URL is gone from the new index, so a browser entry cached
+    // under `hub.json?v=<old>` can never satisfy the new index's `hub.json?v=<new>`.
+    expect(after.files[OUTPUT.spatialIndex]).not.toContain(before.versions[hub]);
+    expect(after.files[OUTPUT.spatialIndex]).toContain(after.versions[hub]);
+    expect(splitVersioned(urlsOf(after)[hub]).path).toBe(splitVersioned(urlsOf(before)[hub]).path); // same file name
+    // Everything else in the index is byte-identical.
+    expect(after.files[OUTPUT.spatialIndex].replace(after.versions[hub], before.versions[hub])).toBe(before.files[OUTPUT.spatialIndex]);
+  });
+
+  it("changes only the globalSceneUrl token when global physical content changes", () => {
+    const before = generateSpatialArtifacts(source());
+    const after = generateSpatialArtifacts(source((d) => (d.scene.components.ground.position.y -= 0.5)));
+    expect(after.versions[OUTPUT.globalScene]).not.toBe(before.versions[OUTPUT.globalScene]);
+    expect(urlsOf(after)[OUTPUT.globalScene]).not.toBe(urlsOf(before)[OUTPUT.globalScene]);
+    expect(splitVersioned(urlsOf(after)[OUTPUT.globalScene]).path).toBe(`${DATA_URL_PREFIX}/${OUTPUT.globalScene}`);
+    for (const key of EXPECTED_CHUNKS) {
+      const file = `${OUTPUT.chunksDir}/${key}.json`;
+      expect(after.versions[file]).toBe(before.versions[file]);
+      expect(after.files[file]).toBe(before.files[file]);
+    }
+    expect(after.files[OUTPUT.compatibilityScene]).not.toBe(before.files[OUTPUT.compatibilityScene]); // the authored scene changed …
+    expect(after.versions[OUTPUT.compatibilityScene]).toBeUndefined(); // … but the compatibility output is still not versioned
+  });
+
+  it("does not spuriously change a chunk token for index-only or label-only changes that leave the chunk's serialized content alone", () => {
+    const before = generateSpatialArtifacts(source());
+    const spawnMoved = generateSpatialArtifacts(
+      source((d) => {
+        const hubPlacement = d.config.placements.find((p: Mutable) => p.chunkKey === "hub");
+        hubPlacement.spawn.position.z += 2; // placement metadata lives in the index, not in the chunk payload
+        hubPlacement.spawn.yaw = 1.5;
+        d.config.chunks.find((c: Mutable) => c.key === "hub").label = "The Hub (renamed)"; // labels are source-only
+        d.config.portals.reverse();
+      }),
+    );
+    expect(spawnMoved.versions).toEqual(before.versions);
+    expect(urlsOf(spawnMoved)).toEqual(urlsOf(before));
+    for (const file of VERSIONED_FILES) expect(spawnMoved.files[file]).toBe(before.files[file]);
+    expect(spawnMoved.files[OUTPUT.spatialIndex]).not.toBe(before.files[OUTPUT.spatialIndex]); // the spawn did change in the index
+    // A portal binding change (a different target) is index-only too: the sensor geometry is unchanged.
+    const rebound = generateSpatialArtifacts(
+      source((d) => {
+        const portal = d.config.portals.find((p: Mutable) => p.componentId === "portal-music-artist");
+        portal.destinationId = destinations.index.bySlug["hub"];
+      }),
+    );
+    expect(rebound.versions).toEqual(before.versions);
+  });
+
+  it("keeps identity, gates and the schema untouched: schemaVersion 1 everywhere, no destination id or gate in any chunk payload, no token in the payloads", () => {
+    const artifacts = generateSpatialArtifacts(source());
+    const index = JSON.parse(artifacts.files[OUTPUT.spatialIndex]);
+    expect(index.schemaVersion).toBe(1);
+    expect(Object.keys(index)).toEqual(["schemaVersion", "worldId", "globalSceneUrl", "chunks", "destinations", "portals"]); // no new field for the token
+    for (const key of EXPECTED_CHUNKS) {
+      expect(Object.keys(index.chunks[key])).toEqual(["dataUrl"]);
+      const text = artifacts.files[`${OUTPUT.chunksDir}/${key}.json`];
+      const chunk = JSON.parse(text);
+      expect(chunk.schemaVersion).toBe(1);
+      expect(chunk.chunkKey).toBe(key);
+      expect(Object.keys(chunk)).toEqual(["schemaVersion", "worldId", "chunkKey", "components"]);
+      expect(text).not.toMatch(/dst_[0-9a-z]{16}|"gates"|"gate"|"age21"|"destinationId"|"dataUrl"|"version"|[?&]v=/);
+      expect(text).not.toContain(artifacts.versions[`${OUTPUT.chunksDir}/${key}.json`]); // a payload never carries its own token
+    }
+    expect(artifacts.files[OUTPUT.globalScene]).not.toContain(artifacts.versions[OUTPUT.globalScene]);
+    expect(JSON.parse(artifacts.files[OUTPUT.globalScene]).schemaVersion).toBeUndefined(); // the scene envelope is authored, unchanged
+    expect(Object.keys(index.destinations).sort()).toEqual(activeWorldDestinations);
+    expect(JSON.stringify(index)).not.toMatch(/"(gates|gate|age21|ageRestriction|enforced|jurisdictions|auth)"/);
+  });
+
+  it("versions the gated cannabis chunk exactly like every other artifact — a token is delivery metadata, not authorisation", () => {
+    const artifacts = generateSpatialArtifacts(source());
+    const cannabis = `${OUTPUT.chunksDir}/cannabis-21.json`;
+    const { path, token } = splitVersioned(urlsOf(artifacts)[cannabis]);
+    expect(path).toBe(`${DATA_URL_PREFIX}/${cannabis}`);
+    expect(token).toBe(contentVersion(artifacts.files[cannabis]));
+    // Nothing in the generated data says anything about gates, prefetch or eligibility.
+    expect(artifacts.files[OUTPUT.spatialIndex]).not.toMatch(/prefetch|preload|warm|eligible|allowed|gate/i);
+  });
+
+  it("matches the committed index byte for byte (regenerate with `pnpm --filter the-nrvnaverse spatial:generate` if this fails)", () => {
+    const artifacts = generateSpatialArtifacts(source());
+    const committed = readFileSync(join(OUTPUT_DIR, OUTPUT.spatialIndex), "utf8").replace(/\r\n/g, "\n");
+    expect(committed).toBe(artifacts.files[OUTPUT.spatialIndex]);
+    const committedIndex = JSON.parse(committed);
+    splitVersioned(committedIndex.globalSceneUrl);
+    for (const key of EXPECTED_CHUNKS) {
+      const { token } = splitVersioned(committedIndex.chunks[key].dataUrl);
+      const onDisk = readFileSync(join(OUTPUT_DIR, OUTPUT.chunksDir, `${key}.json`), "utf8").replace(/\r\n/g, "\n");
+      expect(token).toBe(contentVersion(onDisk)); // the committed token IS the digest of the committed file
+    }
   });
 });

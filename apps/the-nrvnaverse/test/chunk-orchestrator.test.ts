@@ -55,6 +55,7 @@ describe("chunk orchestrator — initial load and same-chunk travel", () => {
     expect(result).toEqual({ status: "arrived", chunkKey: "music", kind: "cross-chunk" });
     expect(source.requests.map((r) => r.chunkKey)).toEqual(["music"]);
     expect(source.requests[0].dataUrl).toBe(index.chunks.music.dataUrl);
+    expect(source.requests[0].dataUrl).toMatch(/\?v=[0-9a-f]{32}$/); // the whole content-versioned delivery URL, as the index emitted it (2B.4B.2)
     expect(orchestrator.activeChunkKey).toBe("music");
     expect(runtime.liveOf(MUSIC)).toEqual(Object.keys(MUSIC.components));
     expect(runtime.liveOf(HUB)).toEqual([]);

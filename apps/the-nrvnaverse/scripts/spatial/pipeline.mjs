@@ -3,11 +3,12 @@
  * NRVNAVerse spatial data pipeline — pure validation + deterministic generation (M0 Step 2B.1).
  *
  *   authoritative physical source (spatial/source/*)  ──▶ validate ──▶ generate ──▶
- *     public/data/static-scene.json            (compatibility full scene, what Step 2A loads today)
- *     public/data/spatial/global-scene.json    (components that exist independent of any chunk)
- *     public/data/spatial/chunks/<key>.json    (one file per logical M0 chunk)
+ *     public/data/static-scene.json            (compatibility full scene; validation/debugging only since 2B.2)
+ *     public/data/spatial/global-scene.json    (components that exist independent of any chunk; content-versioned URL)
+ *     public/data/spatial/chunks/<key>.json    (one file per logical M0 chunk; content-versioned URL)
  *     public/data/spatial/spatial-index.json   (derived physical lookup: destinationId → chunkKey → spawn,
- *                                               plus physical portal sensor → destinationId bindings since 2B.3)
+ *                                               physical portal sensor → destinationId bindings since 2B.3,
+ *                                               and the VERSION ROOT for the two lines above since 2B.4B.2)
  *
  * Ownership rules (D-004, D-006, D-016):
  * - The destination manifest (`packages/nrvna-manifest`) is canonical for destination IDENTITY
@@ -25,14 +26,37 @@
  *   the validator checks that the referenced component, chunk and destination exist and that the
  *   component is an enabled sensor, and never copies gate truth. A source without `portals` is
  *   still valid and yields an empty portal set.
+ * - Versioned delivery (M0 Step 2B.4B.2): the index is the VERSION ROOT. Its own URL never
+ *   changes and it is served short-lived / revalidated; the `globalSceneUrl` and every
+ *   `chunks[key].dataUrl` it points at carry a deterministic content version
+ *   (`?v=<first 32 lowercase hex chars of SHA-256 over the exact serialized artifact>`) so the
+ *   physical artifacts can be served `immutable` (see `next.config.ts`). Artifact FILE NAMES are
+ *   unchanged; the token lives only in the URL the index hands out. Changing a chunk's content
+ *   changes its token, so a browser cache entry for the old URL can never satisfy the new one.
+ *   The token is opaque to the runtime (nothing parses it) and is not identity (D-004): chunk
+ *   keys, destination ids and the schema version are untouched.
  *
- * This module has no I/O and no dependencies. `cli.mjs` wires it to the file system; the vitest
- * suite imports it directly. Determinism: no timestamps, no random values, no machine paths,
- * fixed key order (authored envelopes are built in a fixed order; pass-through component objects
- * keep the committed source order), fixed 2-space JSON with a trailing newline.
+ * This module has no I/O and no third-party dependencies (`node:crypto` only, for the content
+ * digest). `cli.mjs` wires it to the file system; the vitest suite imports it directly.
+ * Determinism: no timestamps, no random values, no machine paths, fixed key order (authored
+ * envelopes are built in a fixed order; pass-through component objects keep the committed source
+ * order), fixed 2-space JSON with a trailing newline; content versions depend on the serialized
+ * artifact bytes alone.
  */
 
+import { createHash } from "node:crypto";
+
 export const SPATIAL_SCHEMA_VERSION = 1;
+
+/**
+ * Content version token: the first 32 lowercase hexadecimal characters (128 bits) of the SHA-256
+ * digest of the exact UTF-8 artifact text written to disk. `next.config.ts` conditions the
+ * immutable cache policy on this exact shape.
+ */
+export const CONTENT_VERSION_LENGTH = 32;
+export const CONTENT_VERSION_PATTERN = /^[0-9a-f]{32}$/;
+/** Query parameter that carries the content version on a physical artifact URL. */
+export const CONTENT_VERSION_PARAM = "v";
 
 /** Chunk keys double as file names: lowercase kebab-case, no path characters, bounded length. */
 export const CHUNK_KEY_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
@@ -84,7 +108,14 @@ const POSITION_KEYS = ["x", "y", "z"];
  * @typedef {{ config: unknown; scene: unknown; destinations: unknown }} SpatialSourceInput
  * @typedef {{ code: string; path: string; message: string }} SpatialValidationError
  * @typedef {{ ok: true; errors: [] } | { ok: false; errors: SpatialValidationError[] }} SpatialValidationResult
- * @typedef {{ files: Record<string, string>; chunkKeys: string[]; destinationIds: string[]; portalComponentIds: string[] }} SpatialArtifacts
+ * @typedef {{
+ *   files: Record<string, string>;
+ *   versions: Record<string, string>;
+ *   chunkKeys: string[];
+ *   destinationIds: string[];
+ *   portalComponentIds: string[];
+ * }} SpatialArtifacts
+ *   `versions` maps each content-versioned output file name (global scene, chunks) to its token.
  */
 
 /**
@@ -403,6 +434,26 @@ export function serializeArtifact(value) {
 }
 
 /**
+ * Deterministic content version of a serialized artifact: SHA-256 over the exact UTF-8 text,
+ * truncated to the first 32 lowercase hex characters. Same text → same token; any byte change →
+ * a different token. Nothing else (paths, times, source order) participates.
+ * @param {string} serialized the exact artifact text as written to disk
+ */
+export function contentVersion(serialized) {
+  return createHash("sha256").update(serialized, "utf8").digest("hex").slice(0, CONTENT_VERSION_LENGTH);
+}
+
+/**
+ * Public delivery URL of a content-versioned artifact: the unchanged file path plus `?v=<token>`.
+ * The runtime treats the whole string as an opaque URL.
+ * @param {string} fileName output file name relative to `public/data/`
+ * @param {string} version token from {@link contentVersion}
+ */
+export function versionedDataUrl(fileName, version) {
+  return `${DATA_URL_PREFIX}/${fileName}?${CONTENT_VERSION_PARAM}=${version}`;
+}
+
+/**
  * Validate, then build every generated artifact in memory. Throws on invalid input so a stale or
  * broken source can never produce partial output.
  *
@@ -419,32 +470,45 @@ export function generateSpatialArtifacts(input) {
 
   /** @type {Record<string, string>} */
   const files = {};
+  /** @type {Record<string, string>} content-versioned output file → token (global scene + chunks) */
+  const versions = {};
 
-  // A. Compatibility full scene — exactly the authored scene. Step 2A keeps loading this until
-  //    Step 2B.2 switches the runtime to global scene + chunks.
+  // A. Compatibility full scene — exactly the authored scene. Validation/debugging output only
+  //    since Step 2B.2 (the runtime never requests it); not content-versioned.
   files[OUTPUT.compatibilityScene] = serializeArtifact(scene);
 
   // B. Global scene — the same envelope, only the components that exist independent of chunks.
   const globalIds = new Set(config.global.componentIds);
   files[OUTPUT.globalScene] = serializeArtifact(withComponents(scene, (id) => globalIds.has(id)));
 
-  // C. Chunk files — sorted by key; components keep the authored scene order.
+  // C. Chunk files — sorted by key; components keep the authored scene order. The file names are
+  //    stable (`<key>.json`); the content version is attached to the URL below, never to the name.
   const chunks = [...config.chunks].sort((a, b) => compareStrings(a.key, b.key));
-  /** @type {Record<string, { dataUrl: string }>} */
-  const chunkIndex = {};
   for (const chunk of chunks) {
     const memberIds = new Set(chunk.componentIds);
-    const fileName = `${OUTPUT.chunksDir}/${chunk.key}.json`;
-    files[fileName] = serializeArtifact({
+    files[`${OUTPUT.chunksDir}/${chunk.key}.json`] = serializeArtifact({
       schemaVersion: SPATIAL_SCHEMA_VERSION,
       worldId: config.worldId,
       chunkKey: chunk.key,
       components: pickComponents(scene.components, (id) => memberIds.has(id)),
     });
-    chunkIndex[chunk.key] = { dataUrl: `${DATA_URL_PREFIX}/${fileName}` };
   }
 
-  // D. Spatial index — derived physical lookup. Not identity: the manifest stays canonical.
+  // Content versions — computed from the FINAL serialized text of each physical artifact, after
+  // every artifact string exists and before the index is built, so the index (the version root)
+  // depends on the artifacts and never the other way round (no circular generation).
+  versions[OUTPUT.globalScene] = contentVersion(files[OUTPUT.globalScene]);
+  /** @type {Record<string, { dataUrl: string }>} */
+  const chunkIndex = {};
+  for (const chunk of chunks) {
+    const fileName = `${OUTPUT.chunksDir}/${chunk.key}.json`;
+    versions[fileName] = contentVersion(files[fileName]);
+    chunkIndex[chunk.key] = { dataUrl: versionedDataUrl(fileName, versions[fileName]) };
+  }
+
+  // D. Spatial index — derived physical lookup and version root. Not identity: the manifest stays
+  //    canonical. Served at a fixed, unversioned URL (short-lived / revalidated); it points at the
+  //    immutable versioned artifacts.
   const placements = [...config.placements].sort((a, b) => compareStrings(a.destinationId, b.destinationId));
   /** @type {Record<string, { chunkKey: string; spawn: Spawn }>} */
   const destinationIndex = {};
@@ -467,13 +531,19 @@ export function generateSpatialArtifacts(input) {
   files[OUTPUT.spatialIndex] = serializeArtifact({
     schemaVersion: SPATIAL_SCHEMA_VERSION,
     worldId: config.worldId,
-    globalSceneUrl: `${DATA_URL_PREFIX}/${OUTPUT.globalScene}`,
+    globalSceneUrl: versionedDataUrl(OUTPUT.globalScene, versions[OUTPUT.globalScene]),
     chunks: chunkIndex,
     destinations: destinationIndex,
     portals: portalIndex,
   });
 
-  return { files, chunkKeys: chunks.map((c) => c.key), destinationIds: placements.map((p) => p.destinationId), portalComponentIds: portals.map((p) => p.componentId) };
+  return {
+    files,
+    versions,
+    chunkKeys: chunks.map((c) => c.key),
+    destinationIds: placements.map((p) => p.destinationId),
+    portalComponentIds: portals.map((p) => p.componentId),
+  };
 }
 
 /**
