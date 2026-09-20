@@ -300,23 +300,218 @@ describe("chunk orchestrator — latest request wins", () => {
   });
 });
 
-describe("chunk orchestrator — disposal", () => {
-  it("aborts pending work, retires the active chunk and refuses further transitions", async () => {
+/**
+ * M0 Step 2B.4A — asynchronous shutdown contract. `dispose()` immediately refuses new work and
+ * aborts the in-flight request, then WAITS for the mutation queue to settle before retiring the
+ * active chunk (exactly once, as the last mutation); it resolves only when no batch this
+ * orchestrator created can still exist. Every test uses explicit holds — no timing sleeps.
+ */
+describe("chunk orchestrator — asynchronous shutdown contract", () => {
+  const settledFlag = (promise: Promise<unknown>) => {
+    const state = { settled: false };
+    void promise.then(() => (state.settled = true));
+    return state;
+  };
+  const retireCount = (log: string[], key: string) => log.filter((e) => e === `retire:${key}`).length;
+
+  it("dispose during an in-flight fetch: the fetch is aborted, nothing is staged, the active chunk is retired once", async () => {
+    let aborted = false;
+    const { runtime, source, orchestrator, go } = setup({
+      ...GENERATED,
+      music: (signal: AbortSignal) =>
+        new Promise((_resolve, reject) => {
+          signal.addEventListener("abort", () => {
+            aborted = true;
+            reject(abortError());
+          });
+        }),
+    });
+    await go(ids.hub);
+    runtime.log.length = 0;
+    const a = go(ids.music);
+    await flush();
+    expect(source.requests.map((r) => r.chunkKey)).toEqual(["hub", "music"]);
+
+    const disposal = orchestrator.dispose();
+    expect(aborted).toBe(true); // synchronously
+    expect(orchestrator.isReady).toBe(false);
+    expect(orchestrator.isDisposed).toBe(true);
+    await disposal;
+    expect(await a).toEqual({ status: "superseded", chunkKey: "music" });
+    expect(runtime.log.filter((e) => e.startsWith("stage:"))).toEqual([]);
+    expect(retireCount(runtime.log, "hub")).toBe(1);
+    expect(orchestrator.activeChunkKey).toBeNull();
+    expect(runtime.world.size).toBe(0);
+    expect(runtime.batches.size).toBe(0);
+  });
+
+  it("dispose while a request waits to enter the mutation lock: it never stages; shutdown waits for the request holding the lock", async () => {
+    const { runtime, orchestrator, go } = await atHub();
+    runtime.holdStage = true;
+    const a = go(ids.music); // enters the lock, staging held
+    await flush();
+    runtime.holdStage = false;
+    const b = go(ids.fashion); // fetched + validated, queued behind the lock
+    await flush();
+    expect(runtime.log).toEqual(["stage:music"]);
+
+    const disposal = orchestrator.dispose();
+    const flag = settledFlag(disposal);
+    await flush(5);
+    expect(flag.settled).toBe(false); // A still holds the lock
+    expect(runtime.liveOf(HUB)).toEqual(Object.keys(HUB.components)); // active chunk untouched until the queue settles
+    runtime.releaseStage();
+    await disposal;
+    expect(flag.settled).toBe(true);
+    expect(await a).toEqual({ status: "superseded", chunkKey: "music" });
+    expect(await b).toEqual({ status: "superseded", chunkKey: "fashion-culture" });
+    expect(runtime.log.filter((e) => e.startsWith("stage:"))).toEqual(["stage:music"]); // B never staged
+    expect(retireCount(runtime.log, "hub")).toBe(1);
+    expect(runtime.world.size).toBe(0);
+    expect(runtime.batches.size).toBe(0);
+  });
+
+  it("dispose while stageChunk is resolving: waits for it, the fully created batch is retired before shutdown resolves, active retired once", async () => {
+    const { runtime, orchestrator, go } = await atHub();
+    runtime.holdStageEnd = true;
+    const a = go(ids.music);
+    await flush();
+    expect(runtime.liveOf(MUSIC)).toEqual(Object.keys(MUSIC.components)); // every target component exists already
+
+    const disposal = orchestrator.dispose();
+    const flag = settledFlag(disposal);
+    await flush(5);
+    expect(flag.settled).toBe(false);
+    expect(runtime.liveOf(MUSIC)).toEqual(Object.keys(MUSIC.components)); // nothing destroyed while the stage is unsettled
+    expect(runtime.liveOf(HUB)).toEqual(Object.keys(HUB.components));
+    runtime.holdStageEnd = false;
+    runtime.releaseStage();
+    await disposal;
+    expect(await a).toEqual({ status: "superseded", chunkKey: "music" });
+    // The stale batch cleaned itself BEFORE the active chunk was retired, and both are gone.
+    expect(runtime.log.indexOf("retire:music")).toBeGreaterThanOrEqual(0);
+    expect(runtime.log.indexOf("retire:hub")).toBeGreaterThan(runtime.log.indexOf("retire:music"));
+    expect(retireCount(runtime.log, "hub")).toBe(1);
+    expect(retireCount(runtime.log, "music")).toBe(1);
+    expect(runtime.placed).toEqual([]); // the stale request never teleported
+    expect(runtime.world.size).toBe(0);
+    expect(runtime.batches.size).toBe(0);
+    expect(orchestrator.activeChunkKey).toBeNull();
+  });
+
+  it("a batch whose components are created just before the abort is observed is cleaned before shutdown resolves", async () => {
     const { runtime, orchestrator, go } = await atHub();
     runtime.holdStage = true;
     const a = go(ids.music);
     await flush();
-    orchestrator.dispose();
-    expect(orchestrator.activeChunkKey).toBeNull();
-    expect(orchestrator.isReady).toBe(false);
-    expect(runtime.liveOf(HUB)).toEqual([]);
+    const disposal = orchestrator.dispose(); // abort fires while the stage is held before creation
     runtime.holdStage = false;
     runtime.releaseStage();
+    await disposal;
+    expect(await a).toEqual({ status: "superseded", chunkKey: "music" });
+    expect(runtime.liveOf(MUSIC)).toEqual([]); // the batch helper rolled the aborted creation back
+    expect(runtime.world.size).toBe(0);
+    expect(runtime.batches.size).toBe(0);
+  });
+
+  it("dispose with no work in flight retires the active chunk once and resolves", async () => {
+    const { runtime, orchestrator } = await atHub();
+    await orchestrator.dispose();
+    expect(runtime.log).toEqual(["retire:hub", ...Object.keys(HUB.components).map((id) => `destroy:${id}`)]);
+    expect(runtime.world.size).toBe(0);
+    expect(orchestrator.activeChunkKey).toBeNull();
+  });
+
+  it("is idempotent: every call returns the same promise, the active chunk is retired exactly once, and calls after settlement resolve", async () => {
+    const { runtime, orchestrator, go } = await atHub();
+    runtime.holdStage = true;
+    const a = go(ids.music);
+    await flush();
+    const first = orchestrator.dispose();
+    const second = orchestrator.dispose();
+    expect(second).toBe(first);
+    runtime.holdStage = false;
+    runtime.releaseStage();
+    await first;
+    await a;
+    await orchestrator.dispose();
+    await orchestrator.dispose();
+    expect(retireCount(runtime.log, "hub")).toBe(1);
+    expect(runtime.world.size).toBe(0);
+  });
+
+  it("refuses transitions structurally after dispose, before and after settlement, without touching the runtime", async () => {
+    const { runtime, source, orchestrator, go } = await atHub();
+    const disposal = orchestrator.dispose();
+    expect(await go(ids.music)).toEqual({ status: "failed", chunkKey: "music", step: "place", reason: "chunk orchestrator is disposed" });
+    await disposal;
+    expect(await go(ids.music)).toMatchObject({ status: "failed", reason: expect.stringMatching(/disposed/) });
+    expect(await go(ids.hub)).toMatchObject({ status: "failed", reason: expect.stringMatching(/disposed/) }); // even the former active chunk
+    expect(source.requests).toEqual([]);
+    expect(runtime.placed).toEqual([]);
+    expect(runtime.log.filter((e) => e.startsWith("stage:"))).toEqual([]);
+  });
+
+  it("a retire failure during shutdown is reported and does not leave the shutdown promise hanging", async () => {
+    const { runtime, orchestrator, warnings, go } = await atHub();
+    runtime.holdStageEnd = true;
+    const a = go(ids.music);
+    await flush();
+    const disposal = orchestrator.dispose();
+    runtime.holdStageEnd = false;
+    runtime.failRetire = "renderer refused (stale target)"; // consumed by the stale batch's own retire
+    runtime.releaseStage();
+    await disposal;
+    expect(await a).toEqual({ status: "superseded", chunkKey: "music" });
+    expect(warnings).toEqual([expect.stringMatching(/could not fully retire superseded target \("music"\)/)]);
+    expect(runtime.world.size).toBe(0); // the fake removes components before throwing
+    expect(runtime.batches.size).toBe(0);
+  });
+
+  it("a retire failure of the active chunk is reported and shutdown still resolves", async () => {
+    const { runtime, orchestrator, warnings } = await atHub();
+    runtime.failRetire = "renderer refused";
+    await orchestrator.dispose();
+    expect(warnings).toEqual([expect.stringMatching(/could not fully retire active chunk on dispose \("hub"\)/)]);
+    expect(orchestrator.activeChunkKey).toBeNull();
+    expect(runtime.batches.size).toBe(0);
+  });
+
+  it("an interrupted staging that rejects with a real error (not an abort) is reported as superseded and shutdown resolves", async () => {
+    const { runtime, orchestrator, go } = await atHub();
+    runtime.holdStage = true;
+    const a = go(ids.music);
+    await flush();
+    runtime.failCreate["label-music"] = "font missing";
+    const disposal = orchestrator.dispose();
+    runtime.holdStage = false;
+    runtime.releaseStage();
+    await disposal;
     expect(await a).toEqual({ status: "superseded", chunkKey: "music" });
     expect(runtime.liveOf(MUSIC)).toEqual([]);
-    expect(runtime.placed).toEqual([]);
-    expect(runtime.batches.size).toBe(0);
-    expect(await go(ids.music)).toMatchObject({ status: "failed", reason: expect.stringMatching(/disposed/) });
-    orchestrator.dispose(); // idempotent
+    expect(runtime.world.size).toBe(0);
+  });
+
+  it("never leaks an unhandled rejection from the mutation queue during shutdown", async () => {
+    const unhandled: unknown[] = [];
+    const onUnhandled = (reason: unknown) => unhandled.push(reason);
+    process.on("unhandledRejection", onUnhandled);
+    try {
+      const { runtime, orchestrator, go } = await atHub();
+      runtime.holdStage = true;
+      const a = go(ids.music);
+      await flush();
+      runtime.failCreate["label-music"] = "font missing";
+      runtime.failRetire = "renderer refused";
+      const disposal = orchestrator.dispose();
+      runtime.holdStage = false;
+      runtime.releaseStage();
+      await disposal;
+      await a;
+      await flush(5);
+    } finally {
+      process.off("unhandledRejection", onUnhandled);
+    }
+    expect(unhandled).toEqual([]);
   });
 });

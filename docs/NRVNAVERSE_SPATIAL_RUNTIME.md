@@ -1,16 +1,16 @@
-# NRVNAVerse Spatial Runtime — M0 Step 2A + 2B.2 + 2B.3
+# NRVNAVerse Spatial Runtime — M0 Step 2A + 2B.2 + 2B.3 + 2B.4A
 
 | Field | Value |
 |---|---|
-| **Status** | VERIFIED (2026-09-19) — official AWE runtime booted from the generated **global scene**, stable-id → placement adapter, **one selectively loaded chunk** with safe transitions / rollback / latest-request-wins, gate-before-fetch, **physical portal sensors → stable-id travel (2B.3)**, tests, browser validation incl. the real avatar entering real sensor colliders |
+| **Status** | VERIFIED (2026-09-19) — global-scene boot, stable-id → placement adapter, one selectively loaded chunk with safe transitions / rollback / latest-request-wins, gate-before-fetch, physical portal sensors → stable-id travel (2B.3), **hardened lifecycle / asynchronous shutdown (2B.4A, §14)**; tests + browser validation incl. the real avatar entering real sensor colliders and a real teardown / re-boot cycle |
 | **App** | `apps/the-nrvnaverse` (THE NRVNAVerse, spatial interface) |
 | **Builds on** | [`NRVNAVERSE_SPATIAL_DATA_PIPELINE.md`](./NRVNAVERSE_SPATIAL_DATA_PIPELINE.md) (M0 Step 2B.1) · [`NRVNAVERSE_DESTINATION_MANIFEST.md`](./NRVNAVERSE_DESTINATION_MANIFEST.md) (M0 Step 1) |
 | **Governing decisions** | D-002, D-004, D-006, D-010, D-013, D-014, D-016; Landmark §3, §6, §7, §9 |
-| **Not in scope (M0 Step 2B.4+)** | prefetch / chunk cache / neighbour warming, budgets, mobile/adaptive quality, async mutation-queue shutdown hardening (2B.4); age verification / compliance policy; hosting-level protection of gated chunk URLs; portal art |
+| **Not in scope (M0 Step 2B.4B+)** | prefetch / chunk cache / neighbour warming, budgets, mobile/adaptive quality; age verification / compliance policy; hosting-level protection of gated chunk URLs; portal art. **Correctness / lifecycle / shutdown hardening is now done (2B.4A, §14)** |
 
-M0 is **not** complete after Step 2B.3; the Landmark stays at v0.1. No new architectural decision was needed — D-004, D-006, D-013 and D-016 govern this work.
+M0 is **not** complete after Step 2B.4A (2B.4B / 2B.4C remain); the Landmark stays at v0.1. No new architectural decision was needed — D-004, D-006, D-013 and D-016 govern this work.
 
-History: Step 2A (branch `feat/m0-spatial-runtime`) mounted the official runtime on the full compatibility scene with same-scene teleports. Step 2B.1 generated the global scene, chunk files and spatial index. Step 2B.2 (branch `feat/m0-chunk-runtime`) replaced the full-scene runtime with global scene + one active chunk. **Step 2B.3 (branch `feat/m0-portals`) added physical portal sensors that route a stable destination id into the same `travelToDestination()` path** (§13). Sections marked *(2A, unchanged)* still describe the current code.
+History: Step 2A (branch `feat/m0-spatial-runtime`) mounted the official runtime on the full compatibility scene with same-scene teleports. Step 2B.1 generated the global scene, chunk files and spatial index. Step 2B.2 (branch `feat/m0-chunk-runtime`) replaced the full-scene runtime with global scene + one active chunk. Step 2B.3 (branch `feat/m0-portals`) added physical portal sensors that route a stable destination id into the same `travelToDestination()` path (§13). **Step 2B.4A (branch `feat/m0-hardening-correctness`) hardened the lifecycle: an asynchronous orchestrator shutdown contract, boot/dispose coordination with an explicit run state, boot-failure recovery, and stale-portal-microtask protection (§14).** Sections marked *(2A, unchanged)* still describe the current code.
 
 ---
 
@@ -114,7 +114,7 @@ Movement suppression during a transition was **not** needed: staging happens whi
 
 **Latest request wins.** A monotonically increasing `generation` plus one `AbortController` per request. The signal cancels the fetch and is passed into `ComponentManager.create` (which resolves `null` when aborted), but it is not relied upon alone: `isCurrent()` is re-checked after every `await` and before every teleport / commit / destroy. A stale request can therefore never teleport, replace `activeChunkKey`, destroy the current chunk, or (via the store) update the URL or application state. An aborted fetch / creation is reported as `superseded`, never as a user-facing failure.
 
-**Disposal** (`dispose()`): mark disposed, bump the generation, abort the controller, retire the active chunk. A transition still inside `stageChunk` observes the abort / bumped generation when it settles and retires its own batch; further `transitionTo` calls fail structurally. The store calls this **before** `runtime.dispose()`.
+**Disposal** (`dispose(): Promise<void>`, 2B.4A — see §14 for the full contract): synchronously marks disposed, bumps the generation and aborts the controller (so `transitionTo` fails structurally and in-flight fetch/creation is cancelled), then **awaits the mutation queue** and retires the active chunk **as the last mutation** — exactly once. A transition still inside `stageChunk` finishes, observes it is stale and retires its own batch *before* shutdown resolves; the promise never rejects (retire failures are reported through `warn`). Idempotent. The store awaits this **before** `runtime.dispose()`.
 
 **No prefetch, no cache.** The only reuse is the already-active-chunk check; rapid A→B→A re-fetches A (see performance). Neighbour/predictive prefetch and cache infrastructure are Step 2B.4.
 
@@ -207,7 +207,8 @@ Note on the tool: the Claude-in-Chrome tab used for A–K went to the background
 
 ## 12. What remains for M0 Step 2B.4+
 
-- **2B.4 — hardening / performance / mobile / disposal**: neighbour prefetch / cache policy over the orchestrator, budgets, mobile/adaptive quality, and the carried shutdown note: `disposeApp` still does not await the orchestrator's mutation queue before `runtime.dispose()` destroys the Space (a transition inside `stageChunk` at unmount observes the abort/bumped generation when it settles; not expanded here because portals exposed no new reproducible regression).
+- **2B.4A — correctness / lifecycle / shutdown hardening: DONE** (§14). The carried shutdown risk is **closed**: `disposeApp` now awaits the orchestrator's settled mutation queue *and* the runtime's asynchronous disposal (engine session settled) before the run is cleared, so the Space is never destroyed while `stageChunk` / `ComponentManager.create` is still resolving.
+- **2B.4B / 2B.4C — performance / mobile**: neighbour prefetch / cache policy over the orchestrator, budgets, mobile/adaptive quality. Not started.
 - Real gate flow design (verification provider seam, jurisdiction policy at the content layer, server-side protection of gated chunk URLs) — still no compliance claims.
 - Decide how (or whether) Ghost's experimental chunk manager / portal component inform a later generic primitive — read-only until his review (D-013).
 - Replace prototype geometry and portal visuals only when a world-layout decision is made (human review, governance rule 9).
@@ -280,3 +281,87 @@ A portal that cannot be bound (unknown / non-sensor component) is reported via `
 | L WASD / camera / canvas | every walk moved the avatar; rAF alive (2 frames / 500 ms under SwiftShader); canvas focus click works (headless cannot pointer-lock: the only non-upstream console item is that `WrongDocumentError`, pre-existing) |
 | M | every URL observed: `?destination=dst_…&from=spatial` or empty; no `?chunk=`, `?portal=`, component id or coordinate |
 | N | no request or source matching `ghost` |
+
+## 14. Correctness / lifecycle / shutdown hardening (M0 Step 2B.4A)
+
+Branch `feat/m0-hardening-correctness` (from `nrvna/integration`). This step added **no** new travel architecture, prefetch, cache, budget, mobile tier or gate flow — only correctness around teardown, boot/dispose lifecycle, repeated mount cycles, stale asynchronous work and cleanup-failure containment. The successful travel path (gate → placement → fetch → validate → stage-while-old-alive → teleport → commit → retire → arrived), stable-id URLs, latest-request-wins, same-chunk teleport and portal → `travelToDestination` are unchanged.
+
+### 14.1 Orchestrator asynchronous shutdown contract
+
+`ChunkOrchestrator.dispose()` returns `Promise<void>` (was `void`). Semantics:
+
+- **Synchronous, before the first await:** mark disposed (`isReady` → false, `transitionTo` fails structurally with `"chunk orchestrator is disposed"`), bump the generation, abort the active `AbortController`. So every in-flight request is immediately stale: its fetch is cancelled and a stage inside `ComponentManager.create` sees the aborted signal.
+- **Then it waits for the mutation queue to settle.** The active chunk is retired **inside** the same promise-chain mutex used by stage/commit/rollback, appended as the **last** entry. Because `transitionTo` refuses once disposed, nothing can be queued after it. A request that was already inside the lock finishes its `stageChunk`, observes it is stale, and retires the batch it created (or the batch helper already rolled it back on abort) **before** the disposal's own mutation runs — so the active chunk is retired only when no stale transition can still be mutating the component set.
+- **Idempotent:** every call returns the same promise.
+- **Never rejects:** retire failures are caught and reported through `warn`; the internal `mutationTail` is `.catch()`-guarded, so no cleanup failure leaks as an unhandled rejection or can leave shutdown hanging.
+- **Resolves** only once no batch this orchestrator created can still exist, so the caller may then destroy the engine runtime. (Settlement depends on the runtime's `stageChunk` settling; the official `ComponentManager.create` bounds each creation with its own 120 s timeout.)
+
+**Active-chunk retire order.** The active chunk is retired **as the last mutation on the queue**, not eagerly at the top of `dispose()`. This removes the race where an eager retire runs while a still-settling stale transition references runtime state: by the time the retire runs, every earlier mutation has drained. Double-retire is prevented by clearing `this.active` before the retire and by `retireChunk` being idempotent per batch; a leftover staged batch cannot survive because a stale transition always retires its own batch when it discovers it is not current.
+
+### 14.2 Runtime disposal (`AweSpatialRuntime.dispose(): Promise<void>`)
+
+Now asynchronous and idempotent (was synchronous `void`). Synchronously it removes the space hooks, drops the batch handles, disposes controls/inputs/camera/animation and calls `space.destroy()` **exactly once** (guarded by a single disposal promise). It then awaits `settleEngineSession()`, which resolves when `Engine.sessionState` returns to `"void"` after the upstream async destroy handler runs (microtask polling, then a bounded macrotask fallback that warns rather than hangs). This is what lets a replacement `init()` on the same page never hit the engine's `"Destroy the current space before creating a new one."` guard. Repeated calls return the same promise; after it resolves, further calls resolve immediately. The engine, `ComponentManager`, `LOAD_TIMEOUT` and animation scheduling were **not** modified.
+
+### 14.3 Application boot/dispose coordination (`app-store.ts`)
+
+The incremental boolean globals (`started`, `engineLoaded`, `runtime`, `orchestrator`, `portals`, `adapter`, `unsubscribePhase`) were replaced by **one explicit `AppRun`** with a `status` of `booting → running → disposing → (idle)`, its owned handles, a `disposeRequested` flag and `booted` / `settled` promises. The module holds at most one run. This makes the eight required cases correct:
+
+1. **First boot** — creates the run, executes the boot, becomes `running`.
+2. **Duplicate boot while booting** — returns the same `booted` promise; exactly one runtime is ever created.
+3. **Normal dispose after boot** — `teardown` runs, `settled` resolves, run cleared.
+4. **Repeated dispose** — concurrent calls share the one teardown promise; later calls resolve immediately.
+5. **Boot after completed dispose** — a fresh run; the old runtime was already destroyed (and its engine session settled) before the new `createSpace`.
+6. **Boot failure before running** — the boot's `finally` unwinds every allocated resource (adapter/portals/orchestrator/runtime disposed, listeners removed) and clears the run; the `error` app state stays on screen; a later boot works.
+7. **Dispose while booting** — the request is **recorded** (`disposeRequested`) and honoured at the boot's next await boundary, where the boot returns and its `finally` unwinds. `disposeApp()` returns the run's `settled`.
+8. **Boot while an earlier dispose is still finishing** — `bootApp` awaits the disposing run's `settled` before creating anything, so a new Space is never created while the old one is shutting down.
+
+**Hardened `teardown` order** (best-effort — each step is wrapped so a failure is reported and the next steps still run; the lifecycle can never stay `disposing`):
+
+1. status `disposing` + travel sequence bumped → no new travel; a pending travel result can no longer settle state or write the URL; `popstate` listener removed;
+2. adapter phase listener removed → no late `loadingChunk` / `arrived` / portal re-sync;
+3. **portals disposed** (references nulled synchronously) → sensor subscriptions released while their components still exist; deferred portal triggers invalidated;
+4. adapter disposed → further travel `unavailable`;
+5. **orchestrator disposed and awaited** (§14.1);
+6. **runtime disposed and awaited** (§14.2) → Space destroyed once, engine session settled;
+7. references dropped, dev handle removed, run cleared, stores reset (a failed boot keeps its `error` state instead).
+
+`travelToDestination` re-checks the live run (`run === current && status === "running"`) after its `await`, so a portal callback or history event that fires during teardown cannot start travel, change state or write the URL. `disposeApp()` returns a `Promise<void>`; `AppShell`'s effect cleanup calls `void disposeApp()`.
+
+### 14.4 React Strict Mode
+
+Preserved the reason Step 2A guarded teardown during the development Strict Mode simulated unmount, **without** the blunt "abort on any cleanup" that would destroy a valid initial boot. The mechanism is the run's `disposeRequested` flag: Strict Mode's `setup → simulated cleanup → setup` becomes `bootApp() (booting) → disposeApp() (records the request) → bootApp() (rescinds it and adopts the in-flight boot)`. One runtime is created, it is never destroyed by the simulated cleanup, and the world reveals normally. A **real** unmount (cleanup with no immediately following setup) leaves `disposeRequested` set, so the boot unwinds at its next boundary. Strict Mode is not disabled and runtime safety is not weakened.
+
+### 14.5 Stale portal microtask protection
+
+`PortalController.trigger()` still defers the travel to a microtask, but the deferred callback now carries the **binding epoch** it was recorded under. The epoch is bumped whenever the bound set changes (activation to another chunk, release, dispose). When the microtask runs it routes **only** if the controller is not disposed, the epoch is unchanged, and the portal is still bound — otherwise the trigger is dropped (`droppedTriggerCount`), never turned into a travel request. This closes the window where a portal became unbound between SENSOR ENTER and the microtask (a chunk switch committed by an earlier-queued continuation, or `dispose()`). A legitimate entry still routes exactly once; there is no debounce or cooldown. `release()` also now attempts every unsubscribe even if one throws (reported), as a second line of defence behind the sensor seam's own disposed-emitter guard.
+
+### 14.6 Tests
+
+App test count 213 (was 177). New/changed deterministic tests, all with explicit deferred promises / holds and no timing sleeps:
+
+- **`chunk-orchestrator.test.ts`** — new "asynchronous shutdown contract" suite (13 tests): dispose during in-flight fetch (fetch aborted, nothing staged, active retired once); dispose while a request waits for the lock (never stages; shutdown waits for the lock holder); dispose while `stageChunk` is resolving (waits, stale batch cleaned before the active chunk, active retired once, stale batch retired before active); a batch created just before the abort is cleaned; dispose with no work in flight; idempotent (same promise, one retire); transitions refused before and after settlement; retire failure of the stale target reported without hanging; retire failure of the active chunk reported, shutdown resolves; interrupted staging that rejects with a real error → superseded; **no unhandled rejection from `mutationTail`**.
+- **`app-store.test.ts`** — new "lifecycle hardening" suite (24 tests): boot → dispose → boot again (old runtime destroyed before the replacement is created, proved by a shared event log); repeated boot while booting → one runtime; repeated dispose safe; dispose during a cross-chunk transition (no state/URL/history write, world empty, runtime destroyed last); nothing after dispose (portal/history/direct travel cannot fetch or write); listener/subscription counts return to zero; boot-failure recovery for five failure points (destination source, spatial index, malformed index, runtime init, both chunks fail) each followed by a clean later boot; dispose while booting unwinds; dispose while init is still resolving; Strict Mode setup → cleanup → setup adopts the boot; boot waits for a still-finishing async dispose; two boots during a dispose share one replacement; failure during shutdown contained (runtime.dispose throws, retireChunk throws, stale cleanup + interrupted staging throw, portal unsubscribe throws) — each returns to `idle` and the next boot succeeds. The existing disposal test now asserts the async settle order (portals released synchronously before any component is destroyed; the Space is destroyed only after the mutation queue settles).
+- **`portal-controller.test.ts`** — new "stale deferred triggers" suite (4 tests): binding unchanged → callback once; different chunk activated before the microtask → old callback does not run and the new chunk works; dispose before the microtask → callback does not run; two entries in one frame both route (no debounce), no duplicate on a same-chunk rebind. Plus a throwing-unsubscribe containment test.
+
+### 14.7 Browser validation (2026-09-19, headless Chrome `--headless=new` + SwiftShader over raw CDP against `next dev`)
+
+The real avatar was driven with trusted WASD into the real sensor colliders; teardown/re-boot used a dev-only `window.__nrvnaverseLifecycle` handle (guarded by `NODE_ENV`, never used by application code) to exercise the real engine without unmounting React.
+
+| Check | Result |
+|---|---|
+| A normal Hub boot | ready at the Hub, 15 components (7 global + 8 hub), 3 Hub portals bound, active `hub` |
+| B Hub → Music portal | walked west; `music.json` fetched, Hub retired, active `music`, URL `?destination=<music>`, bound 2 |
+| C Music → Artist portal | same-chunk (music fetch count still 1), avatar at the Artist spawn, URL names the Artist |
+| D Music → Hub portal | Hub loaded, Music retired |
+| E cross-chunk travel + **real teardown mid-travel, then re-boot** | on `disposeApp()`: orchestrator disposed synchronously, portals unbound (0), then await → active chunk null, batches 0, runtime not ready, Space `_wasDisposed`, `__nrvnaverse` handle gone, **no URL write**, app returns to `boot`; the immediate `bootApp()` created a **fresh Space** (`$space !== old`, runtime !== old), reached `ready`, global scene re-fetched — **no "engine already has a session"**; portals worked again afterward |
+| F page reload after teardown | `?destination=<hub>` reload created a fresh Space, ready at the Hub |
+| G Hub → Cannabis portal | `gateRequired`, **cannabis fetch count 0**, visitor stays in the Hub, URL unchanged, portals stay bound |
+| H repeated navigation (directory ×4) | arrived each time, bindings followed, no stale trigger, `droppedTriggerCount` 0 during normal navigation |
+| I duplicate-binding check | each bound portal holds exactly one controller sensor-enter listener; bound set = live sensors |
+| K console | only pre-existing upstream items (VRM `LookAtDegreeMap`, THREE `plugins`/`copyTextureToTexture` deprecations, headless-only `WrongDocumentError` pointer-lock, and a SwiftShader-only cross-origin `texSubImage2D` texture error from a CDN asset in the render loop) — **none attributable to the hardening** |
+
+A **repeat boot→dispose→boot cycle run twice in one page** both created fresh Spaces (dispose ≈4–10 s, cold SwiftShader re-boot ≈51–54 s) with no session error and no new console error introduced by the lifecycle changes.
+
+### 14.8 Background-tab load timeout
+
+The upstream hidden/background-tab `requestAnimationFrame` / `LOAD_TIMEOUT` behaviour was **not** the target of 2B.4A and was **not** modified (engine timing, `LOAD_TIMEOUT` and animation scheduling are untouched). It remains recorded as an upstream/runtime risk; validation used a visible headless tab where rAF runs.

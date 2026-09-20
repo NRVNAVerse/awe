@@ -242,5 +242,103 @@ describe("portal controller — disposal", () => {
     controller.dispose();
     await flush();
     expect(travelled).toEqual([]);
+    expect(controller.droppedTriggerCount).toBe(1);
+    expect(controller.triggerCount).toBe(0);
+  });
+
+  it("a throwing unsubscribe is reported, every other portal is still released, and disposal completes", () => {
+    // The real seam (`subscribePlayerEnterSensor`) already swallows a disposed emitter; this exercises the
+    // controller's own second line of defence against a `SensorRuntime` whose unsubscribe throws.
+    const released: string[] = [];
+    const warnings: string[] = [];
+    const sensors = {
+      onPlayerEnterSensor: (componentId: string) => () => {
+        if (componentId === "portal-hub-fashion") throw new Error("emitter exploded");
+        released.push(componentId);
+      },
+    };
+    const controller = new PortalController({ portals: index.portals, sensors, onPortalEntered: () => {}, warn: (m) => warnings.push(m) });
+    controller.activate("hub");
+    expect(controller.boundPortalCount).toBe(3);
+    expect(() => controller.dispose()).not.toThrow();
+    expect(controller.boundPortalCount).toBe(0);
+    expect(released.sort()).toEqual(["portal-hub-cannabis", "portal-hub-music"]);
+    expect(warnings).toEqual([expect.stringMatching(/could not release portal "portal-hub-fashion"/)]);
+  });
+});
+
+/**
+ * M0 Step 2B.4A — a deferred trigger is bound to the binding epoch it was recorded under. If the
+ * bound set changed between SENSOR ENTER and the microtask (chunk switch, release, dispose), the
+ * trigger is dropped instead of starting a stale travel. No debounce/cooldown: a legitimate entry
+ * still routes exactly once.
+ */
+describe("portal controller — stale deferred triggers", () => {
+  it("trigger, binding unchanged → the callback runs exactly once", async () => {
+    const { runtime, controller, travelled } = setup();
+    await runtime.stageChunk(HUB, signal());
+    controller.activate("hub");
+    const epoch = controller.bindingEpoch;
+    runtime.enterSensor("portal-hub-music");
+    controller.activate("hub"); // same chunk again: no-op, no epoch change
+    expect(controller.bindingEpoch).toBe(epoch);
+    await flush();
+    expect(travelled).toEqual([bySlug["music"]]);
+    expect(controller.triggerCount).toBe(1);
+    expect(controller.droppedTriggerCount).toBe(0);
+  });
+
+  it("trigger, then a different chunk is activated before the microtask → the old callback does NOT run", async () => {
+    const { runtime, controller, travelled } = setup();
+    const hub = await runtime.stageChunk(HUB, signal());
+    await runtime.stageChunk(MUSIC, signal()); // a transition has the target staged (old chunk alive)
+    controller.activate("hub");
+    runtime.enterSensor("portal-hub-music"); // deferred to a microtask
+    // Before that microtask runs, an earlier-queued continuation commits the chunk switch.
+    runtime.retireChunk(hub);
+    controller.activate("music");
+    await flush();
+    expect(travelled).toEqual([]);
+    expect(controller.droppedTriggerCount).toBe(1);
+    expect(controller.lastTrigger).toBeNull();
+    // The new chunk's portals work, exactly once each.
+    runtime.enterSensor("portal-music-artist");
+    await flush();
+    expect(travelled).toEqual([bySlug["placeholder-artist"]]);
+    expect(controller.triggerCount).toBe(1);
+    expect(runtime.sensorListenerCount("portal-music-artist")).toBe(1);
+    expect(runtime.sensorListenerCount("portal-music-hub")).toBe(1);
+  });
+
+  it("trigger, then dispose before the microtask → the callback does NOT run; a fresh controller still works", async () => {
+    const { runtime, controller, travelled } = setup();
+    await runtime.stageChunk(HUB, signal());
+    controller.activate("hub");
+    runtime.enterSensor("portal-hub-fashion");
+    controller.dispose();
+    await flush();
+    expect(travelled).toEqual([]);
+    expect(controller.droppedTriggerCount).toBe(1);
+
+    const next = setup();
+    await next.runtime.stageChunk(HUB, signal());
+    next.controller.activate("hub");
+    next.runtime.enterSensor("portal-hub-fashion");
+    await flush();
+    expect(next.travelled).toEqual([bySlug["fashion-culture"]]);
+  });
+
+  it("two entries in one frame both route (no debounce), and none is duplicated by a rebind of the same chunk", async () => {
+    const { runtime, controller, travelled } = setup();
+    await runtime.stageChunk(HUB, signal());
+    controller.activate("hub");
+    runtime.enterSensor("portal-hub-music");
+    runtime.enterSensor("portal-hub-fashion");
+    controller.activate("hub");
+    await flush();
+    expect(travelled).toEqual([bySlug["music"], bySlug["fashion-culture"]]);
+    expect(controller.triggerCount).toBe(2);
+    expect(controller.droppedTriggerCount).toBe(0);
+    for (const id of ["portal-hub-music", "portal-hub-fashion", "portal-hub-cannabis"]) expect(runtime.sensorListenerCount(id)).toBe(1);
   });
 });

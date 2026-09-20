@@ -47,6 +47,11 @@ import type { ChunkBatch, ChunkRuntime, SensorRuntime } from "@/lib/spatial/spat
  * - Adds `onPlayerEnterSensor(componentId, cb)` — the official `Component3D.onSensorEnter` on a
  *   staged component whose collider is a sensor, filtered to the player's avatar (`event.other`).
  *   Portal-neutral: it knows component ids, not destinations (the `PortalController` does).
+ * - (2B.4A) `dispose()` is asynchronous and idempotent: it destroys the space exactly once and
+ *   resolves only after the engine session has settled back to `"void"`, so a replacement
+ *   `init()` can never race the old session ("engine already has a session"). The engine offers
+ *   no public "session settled" signal; the runtime observes `Engine.sessionState`, which the
+ *   upstream destroy handler settles a few microtasks after `space.destroy()`.
  *
  * This file is the only application module that imports `@oncyberio/engine`. It knows nothing
  * about destination ids, gates or chunk selection; the adapter, orchestrator and portal
@@ -131,6 +136,29 @@ const SPEED = 15;
 const SPRINT_BOOST = 1.5;
 
 const Y_AXIS = new Vector3(0, 1, 0);
+
+/**
+ * Resolve once `engine.sessionState` is back to `"void"` after `space.destroy()`. Upstream
+ * settles the session inside an async destroy handler with no awaited I/O (a few microtask
+ * turns today), so this checks on the microtask queue first and then, defensively, on
+ * macrotasks with a bound so a shutdown can never hang; if the bound is hit the condition is
+ * reported and the promise still resolves (the next `init()` then fails loudly and structurally
+ * with "engine already has a session" instead of racing).
+ */
+async function settleEngineSession(engine: Engine): Promise<void> {
+  const MICROTASK_TURNS = 64;
+  const MACROTASK_TURNS = 250;
+  for (let i = 0; i < MICROTASK_TURNS; i++) {
+    if (engine.sessionState === "void") return;
+    await Promise.resolve();
+  }
+  for (let i = 0; i < MACROTASK_TURNS; i++) {
+    if (engine.sessionState === "void") return;
+    await new Promise<void>((resolve) => setTimeout(resolve, 0));
+  }
+  console.warn(`[awe-spatial-runtime] engine session did not settle after space.destroy() (state "${engine.sessionState}")`);
+}
+
 const _spawnPosition = new Vector3();
 const _spawnQuaternion = new Quaternion();
 
@@ -155,6 +183,8 @@ export class AweSpatialRuntime implements ChunkRuntime, SensorRuntime {
   private animStateMachine: ReturnType<typeof createMoverAnimStateMachine> | null = null;
   private controlsActive = false;
   private revealed = false;
+  /** The one disposal promise (`dispose()` is idempotent; the space is destroyed exactly once). */
+  private disposal: Promise<void> | null = null;
 
   get isReady(): boolean {
     return this.space !== null && this.player !== null && this.mover !== null;
@@ -349,7 +379,21 @@ export class AweSpatialRuntime implements ChunkRuntime, SensorRuntime {
     this.space.start();
   }
 
-  dispose(): void {
+  /**
+   * Tear the runtime down. Synchronously (before the first await): space hooks removed, batch
+   * handles dropped, controls / camera / inputs / animation disposed, `isReady` false, and the
+   * space destroyed (exactly once). Then waits for the engine session to settle to `"void"` so
+   * the next `init()` cannot observe the old session. Idempotent: repeated calls return the same
+   * promise; after it resolved, further calls resolve immediately. Never rejects.
+   *
+   * The caller (the store) must have settled the chunk orchestrator first: destroying the space
+   * while `ComponentManager.create` is still resolving is exactly the race 2B.4A removes.
+   */
+  dispose(): Promise<void> {
+    if (this.disposal) return this.disposal;
+    const space = this.space;
+    this.space = null;
+
     this.cleanup?.();
     this.cleanup = null;
     // Any batch still held is destroyed with the space below; drop the handles.
@@ -368,8 +412,9 @@ export class AweSpatialRuntime implements ChunkRuntime, SensorRuntime {
     this.revealFn = null;
     this.revealed = false;
 
-    this.space?.destroy();
-    this.space = null;
+    if (space) space.destroy();
+    this.disposal = space ? settleEngineSession(Engine.getInstance()) : Promise.resolve();
+    return this.disposal;
   }
 
   private setActive(val: boolean) {

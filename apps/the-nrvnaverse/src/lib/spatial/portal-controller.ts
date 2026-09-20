@@ -21,7 +21,13 @@ import type { SpatialIndexPortal } from "@/lib/spatial/spatial-index";
  * refused (gated) portal stays bound — the visitor must leave and re-enter to try again.
  *
  * The callback is deferred to a microtask so the travel starts after the engine's physics/event
- * dispatch for the frame has completed rather than inside the sensor emit.
+ * dispatch for the frame has completed rather than inside the sensor emit. Because the binding
+ * set can change between the sensor event and that microtask (a chunk switch committed by an
+ * earlier-queued continuation, or `dispose()`), every deferred trigger carries the binding
+ * epoch it was recorded under: it routes only if the controller is not disposed, the epoch is
+ * unchanged (no `activate` to another chunk, no release) and its portal is still bound. A
+ * stale trigger is dropped, never turned into a travel request. No debounce / cooldown exists:
+ * a legitimate entry still routes exactly once.
  */
 
 export interface PortalTrigger {
@@ -50,6 +56,9 @@ export class PortalController {
   private readonly bound = new Map<string, () => void>();
   private last: PortalTrigger | null = null;
   private triggers = 0;
+  private dropped = 0;
+  /** Bumped whenever the bound set changes (activation to another chunk, release, dispose); stamps deferred triggers. */
+  private epoch = 0;
   private disposed = false;
 
   constructor(options: PortalControllerOptions) {
@@ -82,6 +91,16 @@ export class PortalController {
   /** Total portal entries routed to the callback (diagnostics/tests). */
   get triggerCount(): number {
     return this.triggers;
+  }
+
+  /** Deferred triggers dropped because their binding was gone by the time the microtask ran (diagnostics/tests). */
+  get droppedTriggerCount(): number {
+    return this.dropped;
+  }
+
+  /** Current binding epoch (diagnostics/tests): changes exactly when the bound set changes. */
+  get bindingEpoch(): number {
+    return this.epoch;
   }
 
   /** Portal bindings owned by a chunk, in generated-index (sorted) order. */
@@ -123,17 +142,30 @@ export class PortalController {
     this.active = null;
   }
 
+  /** Unsubscribe every bound sensor; every unsubscribe is attempted even if one throws (reported). */
   private release(): void {
-    for (const off of this.bound.values()) off();
+    this.epoch++;
+    for (const [componentId, off] of this.bound) {
+      try {
+        off();
+      } catch (err) {
+        this.warn(`could not release portal "${componentId}"`, err);
+      }
+    }
     this.bound.clear();
   }
 
   private trigger(portal: PortalTrigger): void {
     if (this.disposed || !this.bound.has(portal.componentId)) return;
-    this.triggers++;
-    this.last = { componentId: portal.componentId, destinationId: portal.destinationId };
+    const epoch = this.epoch;
     queueMicrotask(() => {
-      if (this.disposed) return;
+      // Still bound? The set may have changed since the sensor fired (chunk switch / dispose).
+      if (this.disposed || epoch !== this.epoch || !this.bound.has(portal.componentId)) {
+        this.dropped++;
+        return;
+      }
+      this.triggers++;
+      this.last = { componentId: portal.componentId, destinationId: portal.destinationId };
       try {
         const result = this.onPortalEntered(portal.destinationId);
         if (result && typeof (result as Promise<void>).then === "function") {

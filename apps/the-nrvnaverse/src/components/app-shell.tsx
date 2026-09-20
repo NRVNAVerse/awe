@@ -23,10 +23,14 @@ export function AppShell() {
   const state = useStore(appStore);
   const [panelOpen, setPanelOpen] = useState(true);
 
+  // Boot on mount, tear down on unmount. Both are idempotent and coordinate with each other in
+  // the store (2B.4A): Strict Mode's simulated cleanup + re-setup adopts the in-flight boot
+  // instead of destroying it, a real unmount unwinds even a boot that is still in progress, and
+  // a remount waits for the previous asynchronous teardown before creating a new Space.
   useEffect(() => {
     void bootApp();
     return () => {
-      disposeApp();
+      void disposeApp();
     };
   }, []);
 

@@ -29,6 +29,12 @@ import { now, perfRecord } from "@/lib/perf";
  *   no destroy, no `loadingChunk`.
  * - No prefetch, no cache, no neighbour warming (Step 2B.4). The "already active" check is the
  *   only reuse.
+ * - Asynchronous shutdown (2B.4A). `dispose()` immediately refuses new transitions, bumps the
+ *   generation and aborts the active controller, then WAITS for the mutation queue to settle
+ *   (a stage that was already creating components finishes, observes that it is stale and
+ *   retires its own batch) and only then retires the active chunk — exactly once, as the last
+ *   entry of the mutation queue. The promise never rejects: cleanup failures are reported
+ *   through `warn`. Callers destroy the engine runtime only after this promise resolves.
  *
  * The orchestrator knows chunk keys and spawns, never destination ids as identity (the
  * `destinationId` it receives is diagnostics for perf/log detail only) and never gates: the
@@ -88,6 +94,8 @@ export class ChunkOrchestrator {
   private mutationTail: Promise<unknown> = Promise.resolve();
   private crossChunkInFlight = 0;
   private disposed = false;
+  /** The one shutdown promise (`dispose()` is idempotent). */
+  private disposal: Promise<void> | null = null;
 
   constructor(options: ChunkOrchestratorOptions) {
     this.runtime = options.runtime;
@@ -244,20 +252,49 @@ export class ChunkOrchestrator {
     });
   }
 
+  /** True once `dispose()` has been called (the shutdown may still be settling). */
+  get isDisposed(): boolean {
+    return this.disposed;
+  }
+
   /**
-   * Abort in-flight work, supersede every pending transition and retire the active chunk. Any
-   * transition still staging will observe the bumped generation / aborted signal and retire its
-   * own batch when it settles. Call BEFORE disposing the engine runtime.
+   * Asynchronous shutdown contract (M0 Step 2B.4A). Synchronously, before the first await:
+   *
+   *   1. mark disposed — `transitionTo` now fails structurally, `isReady` is false;
+   *   2. bump the generation and abort the active controller — every in-flight request is stale
+   *      (its fetch is cancelled; a stage inside `ComponentManager.create` observes the signal).
+   *
+   * Then it waits for the mutation queue to SETTLE: a request that was already inside the lock
+   * finishes its `stageChunk`, sees that it is stale and retires the batch it created (or the
+   * batch helper rolled it back on abort); requests queued behind the lock return `superseded`
+   * without touching the runtime; requests still fetching / validating never enter the lock
+   * (`isCurrent()` is checked before it) and are simply abandoned. Finally the active chunk is
+   * retired exactly once, as the LAST entry of the mutation queue, so no stale transition can
+   * still be mutating the component set when it happens and none can commit after it.
+   *
+   * Idempotent: every call returns the same promise. Never rejects — retire failures are
+   * reported through `warn` and shutdown continues. Resolves only once no batch this
+   * orchestrator created can still exist, so the caller may then destroy the engine runtime.
+   * (Settlement depends on the runtime's `stageChunk` settling; the official
+   * `ComponentManager.create` bounds creation with its own timeout.)
    */
-  dispose(): void {
-    if (this.disposed) return;
+  dispose(): Promise<void> {
+    if (this.disposal) return this.disposal;
     this.disposed = true;
     this.generation++;
     this.controller?.abort();
     this.controller = null;
-    const active = this.active;
-    this.active = null;
-    if (active) this.retireQuietly(active.batch, "active chunk on dispose");
+    this.disposal = this.withMutationLock(async () => {
+      // Every earlier mutation has settled (stale batches retired by their own transitions);
+      // nothing can be queued after this because `transitionTo` refuses once disposed.
+      const active = this.active;
+      this.active = null;
+      if (active) this.retireQuietly(active.batch, "active chunk on dispose");
+    }).catch((err) => {
+      // `retireQuietly` never throws; this is defensive so shutdown can never hang or reject.
+      this.warn("unexpected error while settling the mutation queue on dispose", err);
+    });
+    return this.disposal;
   }
 
   private retireQuietly(batch: ChunkBatch, what: string) {

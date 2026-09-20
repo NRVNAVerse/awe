@@ -52,7 +52,8 @@ export const spatialDiagnostics = new Store<SpatialDiagnostics>(IDLE_DIAGNOSTICS
 export interface BootableRuntime extends ChunkRuntime, SensorRuntime {
   init(options: { sceneUrl: string }): Promise<void>;
   reveal(): Promise<void>;
-  dispose(): void;
+  /** Destroy the space. May be asynchronous (the real runtime waits for the engine session to settle). */
+  dispose(): void | Promise<void>;
 }
 
 export interface BootOptions {
@@ -69,15 +70,65 @@ async function createAweRuntime(): Promise<BootableRuntime> {
   return new AweSpatialRuntime();
 }
 
-let started = false;
-let engineLoaded = false;
-let runtime: BootableRuntime | null = null;
-let orchestrator: ChunkOrchestrator | null = null;
-let portals: PortalController | null = null;
-let adapter: AweSpatialAdapter | null = null;
-let unsubscribePhase: (() => void) | null = null;
+/**
+ * Application lifecycle (M0 Step 2B.4A). One `AppRun` exists from the moment `bootApp()` starts
+ * until its teardown has completed; the module holds at most one. Its status is explicit:
+ *
+ *   idle ── bootApp() ──▶ booting ──▶ running ── disposeApp() ──▶ disposing ──▶ idle
+ *                            │                                        ▲
+ *                            ├─ boot failure ─▶ (resources unwound) ──┘  (app state stays `error`)
+ *                            └─ disposeApp() while booting: the request is RECORDED and honoured
+ *                               at the boot's next await boundary (the boot then unwinds itself);
+ *                               a bootApp() that follows synchronously — React Strict Mode's
+ *                               simulated cleanup + re-setup — rescinds the request and adopts
+ *                               the in-flight boot instead of starting a second runtime.
+ *
+ * Every boot call while a run exists returns that run's boot promise (never two runtimes); every
+ * dispose call returns the run's `settled` promise (resolves once the teardown is complete).
+ * A boot requested while a run is disposing waits for `settled` before creating anything, so a
+ * new Space is never created while the old one is still shutting down.
+ */
+type RunStatus = "booting" | "running" | "disposing";
+
+interface AppRun {
+  readonly id: number;
+  status: RunStatus;
+  /** Set by `disposeApp()` while booting; observed at the boot's next await boundary. */
+  disposeRequested: boolean;
+  runtime: BootableRuntime | null;
+  orchestrator: ChunkOrchestrator | null;
+  portals: PortalController | null;
+  adapter: AweSpatialAdapter | null;
+  unsubscribePhase: (() => void) | null;
+  popstateBound: boolean;
+  /** Resolves when the boot procedure has returned (running, failed or unwound). Never rejects. */
+  booted: Promise<void>;
+  /** Resolves when the run has been fully torn down. Never rejects. */
+  settled: Promise<void>;
+  resolveSettled: () => void;
+}
+
+let run: AppRun | null = null;
+let runSeq = 0;
 /** Store-level travel sequence: only the newest request may settle state or touch the URL. */
 let travelSeq = 0;
+/** Shutdown problems are reported here (diagnostics); shutdown always continues. Overridable for tests. */
+let reportShutdownError: (step: string, err: unknown) => void = defaultShutdownReporter;
+
+function defaultShutdownReporter(step: string, err: unknown): void {
+  console.error(`[app-store] shutdown step "${step}" failed`, err);
+}
+
+/** Diagnostics/tests: the explicit lifecycle status (`idle` when no run exists). */
+export function lifecycleStatus(): "idle" | RunStatus {
+  return run?.status ?? "idle";
+}
+
+if (process.env.NODE_ENV !== "production") {
+  // Dev-only handle so browser validation can exercise the real teardown / re-boot against the
+  // real engine without unmounting React (never used by application code).
+  (globalThis as Record<string, unknown>).__nrvnaverseLifecycle = { bootApp, disposeApp, lifecycleStatus };
+}
 
 /**
  * Boot sequence (M0 Step 2B.2 + 2B.3):
@@ -88,44 +139,96 @@ let travelSeq = 0;
  *
  * The runtime never requests the compatibility full scene; exactly one chunk is active, and only
  * that chunk's physical portals are bound (`syncPortals`, on every committed arrival).
+ *
+ * Lifecycle (2B.4A): a call while a run is booting or running returns that run's boot promise
+ * (a pending dispose request on a booting run is rescinded — Strict Mode); a call while a run is
+ * disposing waits for the teardown to settle first. A boot that fails, or that is disposed while
+ * in progress, unwinds whatever it allocated so the next call boots cleanly.
  */
 export async function bootApp(options: BootOptions = {}): Promise<void> {
-  if (started) return;
-  started = true;
+  while (run) {
+    if (run.status === "booting") {
+      run.disposeRequested = false; // Strict Mode: cleanup → immediate re-setup adopts the boot
+      return run.booted;
+    }
+    if (run.status === "running") return run.booted;
+    await run.settled; // disposing: never race the old Space; re-check, another boot may have started
+  }
+
+  const current = createRun();
+  run = current;
+  current.booted = executeBoot(current, options);
+  return current.booted;
+}
+
+function createRun(): AppRun {
+  let resolveSettled = () => {};
+  const settled = new Promise<void>((resolve) => {
+    resolveSettled = resolve;
+  });
+  return {
+    id: ++runSeq,
+    status: "booting",
+    disposeRequested: false,
+    runtime: null,
+    orchestrator: null,
+    portals: null,
+    adapter: null,
+    unsubscribePhase: null,
+    popstateBound: false,
+    booted: Promise.resolve(),
+    settled,
+    resolveSettled,
+  };
+}
+
+async function executeBoot(current: AppRun, options: BootOptions): Promise<void> {
   perfMark("app-boot");
+  appStore.update(bootState());
 
   const destinationSource = options.destinationSource ?? new FetchDestinationSource();
   const spatialIndexSource = options.spatialIndexSource ?? new FetchSpatialIndexSource();
   const chunkSource = options.chunkSource ?? new FetchChunkDataSource();
   const createRuntime = options.createRuntime ?? createAweRuntime;
+  let failed = false;
 
   try {
     const data = await destinationSource.load();
+    if (current.disposeRequested) return;
     appStore.update(withData(appStore.state, data));
-    if (appStore.state.phase === "error") return;
+    if (appStore.state.phase === "error") {
+      failed = true;
+      return;
+    }
 
     appStore.update(withInitialDeepLink(appStore.state, options.search ?? window.location.search));
     const state = appStore.state;
-    if (state.phase !== "loadingGlobals") return;
+    if (state.phase !== "loadingGlobals") {
+      failed = true;
+      return;
+    }
 
     const [bootRuntime, spatialIndex] = await Promise.all([createRuntime(), spatialIndexSource.load()]);
-    runtime = bootRuntime;
-    orchestrator = new ChunkOrchestrator({ runtime: bootRuntime, chunkSource, worldId: spatialIndex.worldId, chunks: spatialIndex.chunks });
-    adapter = new AweSpatialAdapter({
+    current.runtime = bootRuntime; // registered before any further await so an unwind can dispose it
+    if (current.disposeRequested) return;
+    const orchestrator = new ChunkOrchestrator({ runtime: bootRuntime, chunkSource, worldId: spatialIndex.worldId, chunks: spatialIndex.chunks });
+    current.orchestrator = orchestrator;
+    const adapter = new AweSpatialAdapter({
       registry: registryFromSpatialIndex(spatialIndex),
       getDestination: (id) => state.loaded.index.byId.get(id),
       orchestrator,
     });
-    unsubscribePhase = adapter.onPhase(onSpatialPhase);
+    current.adapter = adapter;
+    current.unsubscribePhase = adapter.onPhase(onSpatialPhase);
     // Physical portal sensor → stable id → the SAME travel entry point the directory uses.
-    portals = new PortalController({ portals: spatialIndex.portals, sensors: bootRuntime, onPortalEntered: (destinationId) => travelToDestination(destinationId) });
+    current.portals = new PortalController({ portals: spatialIndex.portals, sensors: bootRuntime, onPortalEntered: (destinationId) => travelToDestination(destinationId) });
 
     // Official AWE boots from the global scene only (avatar, animations, environment, ground).
     await bootRuntime.init({ sceneUrl: spatialIndex.globalSceneUrl });
-    engineLoaded = true;
+    if (current.disposeRequested) return;
     if (process.env.NODE_ENV !== "production") {
       // Dev-only handle for browser debugging (never used by application code).
-      (globalThis as Record<string, unknown>).__nrvnaverse = { runtime, adapter, orchestrator, portals };
+      (globalThis as Record<string, unknown>).__nrvnaverse = { runtime: bootRuntime, adapter, orchestrator, portals: current.portals };
     }
     perfMark("engine-ready");
     perfMeasure("boot→engine-ready", "app-boot", "engine-ready");
@@ -133,14 +236,30 @@ export async function bootApp(options: BootOptions = {}): Promise<void> {
 
     // Gate → chunk → place first, reveal second: the world is never shown before the initial destination is settled.
     const outcome = await initialPlacement(adapter, state.requested, state.loaded.index.hub);
+    if (current.disposeRequested) return;
     if (outcome.kind !== "failed" || outcome.fallback) await bootRuntime.reveal();
+    if (current.disposeRequested) return;
     perfMark("revealed");
     perfMeasure("boot→revealed", "app-boot", "revealed", { destinationId: state.requested.id, outcome: outcome.kind });
 
-    appStore.update(withInitialPlacement(appStore.state, outcome));
+    const placedState = withInitialPlacement(appStore.state, outcome);
+    appStore.update(placedState);
+    if (placedState.phase === "error") {
+      failed = true;
+      return;
+    }
     window.addEventListener("popstate", onPopState);
+    current.popstateBound = true;
+    current.status = "running";
   } catch (err) {
-    appStore.update(errorState(err instanceof Error ? err.message : String(err), appStore.state.notices));
+    failed = true;
+    if (!current.disposeRequested) appStore.update(errorState(err instanceof Error ? err.message : String(err), appStore.state.notices));
+  } finally {
+    if (current.status !== "running") {
+      // Disposed while booting, or the boot failed: unwind whatever was allocated. A failed boot
+      // keeps the `error` state for the UI; a disposed boot resets to `boot`.
+      await teardown(current, { keepAppState: failed && !current.disposeRequested });
+    }
   }
 }
 
@@ -183,18 +302,19 @@ function onSpatialPhase(phase: SpatialTravelPhase, destinationId: string | null)
  * bindings are unchanged). Portal activation never influences the travel outcome.
  */
 function syncPortals() {
-  portals?.activate(orchestrator?.activeChunkKey ?? null);
+  run?.portals?.activate(run.orchestrator?.activeChunkKey ?? null);
 }
 
 function refreshDiagnostics(phase?: SpatialTravelPhase, destinationId?: string | null) {
+  const current = run;
   spatialDiagnostics.update((prev) => ({
-    adapterName: adapter?.name ?? null,
+    adapterName: current?.adapter?.name ?? null,
     phase: phase ?? prev.phase,
     destinationId: destinationId === undefined ? prev.destinationId : destinationId,
-    runtimeReady: runtime?.isReady ?? false,
-    activeChunkKey: orchestrator?.activeChunkKey ?? null,
-    boundPortals: portals?.boundPortalCount ?? 0,
-    lastPortal: portals?.lastTrigger ?? null,
+    runtimeReady: current?.runtime?.isReady ?? false,
+    activeChunkKey: current?.orchestrator?.activeChunkKey ?? null,
+    boundPortals: current?.portals?.boundPortalCount ?? 0,
+    lastPortal: current?.portals?.lastTrigger ?? null,
   }));
 }
 
@@ -212,19 +332,22 @@ export interface TravelOptions {
  * key or a coordinate — and only after the arrival is committed.
  */
 export async function travelToDestination(destinationId: string, options: TravelOptions = {}): Promise<void> {
+  const current = run;
   const state = appStore.state;
-  if (!canBeginTravel(state) || !adapter) return;
+  // No travel once disposal has begun (portal callbacks / history events can still arrive).
+  if (!current || current.status !== "running" || !current.adapter || !canBeginTravel(state)) return;
   const target = state.loaded.index.byId.get(destinationId);
   if (!target) return;
 
   const requestId = ++travelSeq;
   appStore.update(beginTravel(state, target));
   const startedAt = now();
-  const result = await adapter.travelTo(target.id);
+  const result = await current.adapter.travelTo(target.id);
+  // Stale: a newer travel owns the state now, or the run was disposed (disposal bumps the
+  // sequence). The adapter also reports `superseded`, but the store guards independently so no
+  // ordering of adapter results can leak an old outcome into state, diagnostics or the URL.
+  if (requestId !== travelSeq || run !== current || current.status !== "running" || result.status === "superseded") return;
   refreshDiagnostics();
-  // Stale: a newer travel owns the state now. The adapter also reports `superseded`, but the
-  // store guards independently so no ordering of adapter results can leak an old outcome.
-  if (requestId !== travelSeq || result.status === "superseded") return;
 
   appStore.update(withTravelResult(appStore.state, result, now() - startedAt));
 
@@ -256,55 +379,101 @@ export function dismissOutcome(): void {
 }
 
 /**
- * Tear everything down on real unmount, in dependency order: supersede pending travel, release
- * portal sensor subscriptions (before the components they listen to are destroyed), abort
- * in-flight chunk work and retire the active chunk (orchestrator), drop listeners, then destroy
- * the space. Skipped while the engine is still loading so React Strict Mode's simulated unmount
- * cannot abort the initial load (upstream starter pattern).
+ * Tear the application down (real unmount). Returns a promise that resolves once the teardown is
+ * complete; idempotent (repeated calls share it). While a boot is in progress the request is
+ * recorded and honoured at the boot's next await boundary — see `bootApp` for why it is not
+ * applied immediately (React Strict Mode). With no run (never booted, or a failed boot already
+ * unwound) it only resets the stores.
  */
-export function disposeApp(): void {
-  if (!engineLoaded) return;
+export function disposeApp(): Promise<void> {
+  const current = run;
+  if (!current) {
+    resetStores();
+    return Promise.resolve();
+  }
+  if (current.status === "booting") {
+    current.disposeRequested = true;
+    return current.settled;
+  }
+  if (current.status === "running") void teardown(current, { keepAppState: false });
+  return current.settled;
+}
+
+/**
+ * Hardened shutdown order (2B.4A). Synchronously, before the first await:
+ *   1. status `disposing` + travel sequence bumped → no new travel; pending travel results can
+ *      no longer settle state or write the URL; `popstate` listener removed;
+ *   2. adapter phase listener removed → no late `loadingChunk` / `arrived` / portal re-sync;
+ *   3. portals disposed → sensor subscriptions released (while their components still exist),
+ *      deferred portal triggers invalidated;
+ *   4. adapter disposed → further travel `unavailable`, listeners cleared.
+ * Then, asynchronously:
+ *   5. orchestrator disposed and AWAITED → in-flight work aborted, mutation queue settled, stale
+ *      staged batches cleaned, active chunk retired exactly once;
+ *   6. runtime disposed and AWAITED → controls/inputs/camera/animation disposed, Space destroyed
+ *      exactly once, engine session settled;
+ *   7. references dropped, stores reset (unless the run keeps its `error` state), run cleared.
+ * Every step is best-effort: a failing step is reported and the following steps still run, so
+ * the lifecycle can never remain `disposing`. Never rejects.
+ */
+async function teardown(current: AppRun, options: { keepAppState: boolean }): Promise<void> {
+  current.status = "disposing";
   travelSeq++;
-  window.removeEventListener("popstate", onPopState);
-  unsubscribePhase?.();
-  unsubscribePhase = null;
-  portals?.dispose();
-  portals = null;
-  adapter?.dispose();
-  adapter = null;
-  orchestrator?.dispose();
-  orchestrator = null;
-  runtime?.dispose();
-  runtime = null;
-  engineLoaded = false;
-  started = false;
+  if (current.popstateBound) {
+    attempt("remove popstate listener", () => window.removeEventListener("popstate", onPopState));
+    current.popstateBound = false;
+  }
+  attempt("unsubscribe adapter phases", () => current.unsubscribePhase?.());
+  current.unsubscribePhase = null;
+  attempt("dispose portals", () => current.portals?.dispose());
+  current.portals = null;
+  attempt("dispose adapter", () => current.adapter?.dispose());
+  current.adapter = null;
+  await attemptAsync("dispose orchestrator", () => current.orchestrator?.dispose());
+  current.orchestrator = null;
+  await attemptAsync("dispose runtime", () => current.runtime?.dispose());
+  current.runtime = null;
+  if (process.env.NODE_ENV !== "production") delete (globalThis as Record<string, unknown>).__nrvnaverse;
+  if (run === current) run = null;
+  if (options.keepAppState) spatialDiagnostics.update(IDLE_DIAGNOSTICS);
+  else resetStores();
+  current.resolveSettled();
+}
+
+function attempt(step: string, fn: () => void): void {
+  try {
+    fn();
+  } catch (err) {
+    reportShutdownError(step, err);
+  }
+}
+
+async function attemptAsync(step: string, fn: () => void | Promise<void>): Promise<void> {
+  try {
+    await fn();
+  } catch (err) {
+    reportShutdownError(step, err);
+  }
+}
+
+function resetStores(): void {
   spatialDiagnostics.update(IDLE_DIAGNOSTICS);
   appStore.update(bootState());
 }
 
 /** Diagnostics for the prototype panel. */
 export function currentAdapter(): AweSpatialAdapter | null {
-  return adapter;
+  return run?.adapter ?? null;
 }
 
 /** Diagnostics/tests: the portal controller of the booted app. */
 export function currentPortals(): PortalController | null {
-  return portals;
+  return run?.portals ?? null;
 }
 
-/** Test-only: reset module state without an engine (mirrors `disposeApp` for a never-booted or fake-booted store). */
-export function resetAppForTests(): void {
-  if (engineLoaded) {
-    disposeApp();
-    return;
-  }
-  started = false;
-  travelSeq++;
-  portals?.dispose();
-  portals = null;
-  adapter = null;
-  orchestrator = null;
-  runtime = null;
-  spatialDiagnostics.update(IDLE_DIAGNOSTICS);
-  appStore.update(bootState());
+/** Test-only: full teardown of whatever run exists (booting, running or disposing) and store reset. */
+export async function resetAppForTests(options: { reportShutdownError?: (step: string, err: unknown) => void } = {}): Promise<void> {
+  reportShutdownError = options.reportShutdownError ?? defaultShutdownReporter;
+  await disposeApp();
+  resetStores();
 }
