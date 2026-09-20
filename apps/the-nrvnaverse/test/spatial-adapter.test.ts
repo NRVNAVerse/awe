@@ -3,9 +3,16 @@ import { createDestinationIndex, type DestinationsFile, type SpatialTravelPhase 
 import destinationsJson from "../../../packages/nrvna-manifest/generated/destinations.json";
 import { AweSpatialAdapter, RUNTIME_NOT_READY_REASON } from "@/lib/spatial/awe-spatial-adapter";
 import { lookupPlacement, toSpatialPlacement, type PlacementRegistry } from "@/lib/spatial/placement-registry";
-import { M0_PLACEMENTS, M0_WORLD_ID } from "@/lib/spatial/placements.m0";
 import type { SpawnPoint } from "@/lib/spatial/placement-registry";
+import { parseSpatialIndex, registryFromSpatialIndex } from "@/lib/spatial/spatial-index";
 import type { SpatialRuntime } from "@/lib/spatial/spatial-runtime";
+import spatialIndexJson from "../public/data/spatial/spatial-index.json";
+
+// The registry under test is built from the GENERATED spatial index — the same data the app
+// loads at boot. No hand-kept coordinate table exists any more (M0 Step 2B.1).
+const M0_INDEX = parseSpatialIndex(spatialIndexJson);
+const M0_PLACEMENTS = registryFromSpatialIndex(M0_INDEX);
+const M0_WORLD_ID = M0_INDEX.worldId;
 
 const data = destinationsJson as unknown as DestinationsFile;
 const index = createDestinationIndex(data.destinations);
@@ -29,7 +36,7 @@ function makeAdapter(runtime: SpatialRuntime | null = new FakeRuntime(), registr
   return new AweSpatialAdapter({ registry, getDestination: (id) => index.byId.get(id), runtime });
 }
 
-describe("placement registry", () => {
+describe("placement registry (built from the generated spatial index)", () => {
   it("is keyed by stable destination id and covers every M0 manifest", () => {
     for (const d of data.destinations) {
       expect(lookupPlacement(M0_PLACEMENTS, d.id).status).toBe("found");
@@ -47,7 +54,8 @@ describe("placement registry", () => {
     const found = lookupPlacement(M0_PLACEMENTS, musicId);
     if (found.status !== "found") throw new Error("unreachable");
     const view = toSpatialPlacement(musicId, found.placement);
-    expect(view).toEqual({ destinationId: musicId, platform: "the-nrvnaverse", worldId: M0_WORLD_ID, placementRef: "m0:music" });
+    expect(view).toEqual({ destinationId: musicId, platform: "the-nrvnaverse", worldId: M0_WORLD_ID, placementRef: "chunk:music" });
+    expect(JSON.stringify(view)).not.toContain("chunkKey");
     expect(JSON.stringify(view)).not.toMatch(/position|spawn|"x"|"y"|"z"/);
   });
 
@@ -111,7 +119,7 @@ describe("AWE spatial adapter — placement and travel", () => {
     const adapter = makeAdapter(runtime);
     expect(await adapter.resolvePlacement(musicId)).toEqual({
       status: "resolved",
-      placement: { destinationId: musicId, platform: "the-nrvnaverse", worldId: M0_WORLD_ID, placementRef: "m0:music" },
+      placement: { destinationId: musicId, platform: "the-nrvnaverse", worldId: M0_WORLD_ID, placementRef: "chunk:music" },
     });
     expect(await adapter.resolvePlacement("dst_0000000000000000")).toMatchObject({ status: "unplaced", destinationId: "dst_0000000000000000" });
     expect(runtime.placed).toEqual([]);
@@ -126,9 +134,10 @@ describe("AWE spatial adapter — placement and travel", () => {
     const result = await adapter.travelTo(musicId);
     expect(result).toEqual({
       status: "arrived",
-      placement: { destinationId: musicId, platform: "the-nrvnaverse", worldId: M0_WORLD_ID, placementRef: "m0:music" },
+      placement: { destinationId: musicId, platform: "the-nrvnaverse", worldId: M0_WORLD_ID, placementRef: "chunk:music" },
     });
     expect(runtime.placed).toEqual([M0_PLACEMENTS[musicId].spawn]);
+    expect(runtime.placed[0]).toEqual(M0_INDEX.destinations[musicId].spawn);
     expect(phases).toEqual([
       ["traveling", musicId],
       ["arrived", musicId],

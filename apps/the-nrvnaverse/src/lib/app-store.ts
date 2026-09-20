@@ -16,7 +16,8 @@ import {
 } from "@/lib/app-state";
 import { FetchDestinationSource, type DestinationDataSource } from "@/lib/destination-source";
 import { AweSpatialAdapter } from "@/lib/spatial/awe-spatial-adapter";
-import { M0_PLACEMENTS } from "@/lib/spatial/placements.m0";
+import { registryFromSpatialIndex } from "@/lib/spatial/spatial-index";
+import { FetchSpatialIndexSource, type SpatialIndexSource } from "@/lib/spatial/spatial-index-source";
 import type { AweSpatialRuntime } from "@/lib/spatial/awe-spatial-runtime";
 import { now, perfMark, perfMeasure } from "@/lib/perf";
 
@@ -39,12 +40,18 @@ let adapter: AweSpatialAdapter | null = null;
 let unsubscribePhase: (() => void) | null = null;
 
 /**
- * Boot sequence (M0 Step 2A):
- *   load destination data → resolve the deep link → mount the official AWE runtime (hidden)
- *   → place the visitor through the spatial adapter (or record a gate refusal and place at the hub)
- *   → reveal → ready | gateRequired.
+ * Boot sequence (M0 Step 2A, data source migrated in 2B.1):
+ *   load destination data → resolve the deep link → load the generated spatial index (placements)
+ *   → mount the official AWE runtime (hidden) → place the visitor through the spatial adapter
+ *   (or record a gate refusal and place at the hub) → reveal → ready | gateRequired.
+ *
+ * The runtime still loads the complete compatibility scene (`static-scene.json`); the index only
+ * supplies placements in 2B.1. Selective chunk loading is Step 2B.2.
  */
-export async function bootApp(source: DestinationDataSource = new FetchDestinationSource()): Promise<void> {
+export async function bootApp(
+  source: DestinationDataSource = new FetchDestinationSource(),
+  spatialIndexSource: SpatialIndexSource = new FetchSpatialIndexSource(),
+): Promise<void> {
   if (started) return;
   started = true;
   perfMark("app-boot");
@@ -59,10 +66,11 @@ export async function bootApp(source: DestinationDataSource = new FetchDestinati
     if (state.phase !== "loadingGlobals") return;
 
     // The engine bundle is loaded lazily so the shell (and its tests) never import it eagerly.
-    const { AweSpatialRuntime } = await import("@/lib/spatial/awe-spatial-runtime");
+    // The generated spatial index (the only source of physical placements) loads alongside it.
+    const [{ AweSpatialRuntime }, spatialIndex] = await Promise.all([import("@/lib/spatial/awe-spatial-runtime"), spatialIndexSource.load()]);
     runtime = new AweSpatialRuntime();
     adapter = new AweSpatialAdapter({
-      registry: M0_PLACEMENTS,
+      registry: registryFromSpatialIndex(spatialIndex),
       getDestination: (id) => state.loaded.index.byId.get(id),
       runtime,
     });

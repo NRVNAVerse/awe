@@ -1,10 +1,12 @@
 import { describe, expect, it } from "vitest";
 import { buildDeepLinkQuery, parseDeepLink, type DestinationsFile } from "@nrvnaverse/manifest";
 import destinationsJson from "../../../packages/nrvna-manifest/generated/destinations.json";
-import { M0_PLACEMENTS } from "@/lib/spatial/placements.m0";
+import { parseSpatialIndex, registryFromSpatialIndex } from "@/lib/spatial/spatial-index";
+import spatialIndexJson from "../public/data/spatial/spatial-index.json";
 
 const data = destinationsJson as unknown as DestinationsFile;
 const musicId = data.index.bySlug["music"];
+const M0_PLACEMENTS = registryFromSpatialIndex(parseSpatialIndex(spatialIndexJson));
 
 /**
  * The URL the store writes after a successful travel is exactly `buildDeepLinkQuery(id, …)`.
@@ -23,6 +25,7 @@ describe("URL contract after travel", () => {
       const query = buildDeepLinkQuery(id, { from: "spatial" });
       expect(query).not.toMatch(/chunk|placement|spawn|position|[?&][xyz]=/i);
       expect(query).not.toContain(M0_PLACEMENTS[id].placementRef);
+      expect(query).not.toContain(M0_PLACEMENTS[id].chunkKey);
     }
   });
 

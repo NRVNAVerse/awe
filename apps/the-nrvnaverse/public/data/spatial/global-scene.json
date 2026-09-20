@@ -1,0 +1,340 @@
+{
+  "id": "the-nrvnaverse-m0",
+  "creatorId": "nrvnaverse",
+  "editors": [
+    "nrvnaverse"
+  ],
+  "components": {
+    "vrm-anims": {
+      "name": "VRM Animations",
+      "kit": "cyber",
+      "id": "vrm-anims",
+      "type": "vrm-anims",
+      "_version": 1725904926656,
+      "url": "https://cyber.mypinata.cloud/ipfs/QmSxBEzzgwqjmtTRBc6ywcJ2fDYE2ckNRTsKmA9JNETfgp?filename=1725904909-Ny3MlG6hsAlirYgsRqYO-vrm-anims-default.json",
+      "anims": {
+        "jump_idle": {
+          "fileName": "jump_idle.fbx",
+          "name": "jump_idle",
+          "loop": true,
+          "sync": false,
+          "timeScale": 1,
+          "url": "/assets/anims/jump_idle.json",
+          "hash": "947ed5b6b6b4b5d1de662006f9f56a15e26fbe81add2c18a3b3c3a0880b5bc92"
+        },
+        "jump_running": {
+          "fileName": "jump_running.fbx",
+          "name": "jump_running",
+          "loop": true,
+          "sync": false,
+          "timeScale": 1,
+          "url": "/assets/anims/jump_running.json",
+          "hash": "f97f989f11065d6ef16953997b376bbe52ec6579ffe8cac65fec545670812ea1"
+        },
+        "jump_sprinting": {
+          "fileName": "jump_sprinting.fbx",
+          "name": "jump_sprinting",
+          "loop": true,
+          "sync": false,
+          "timeScale": 1,
+          "url": "/assets/anims/jump_sprinting.json",
+          "hash": "676f434bbfa9a2dd21fd0e1e3f4e2cc56d41b3d137c0d44a3c83ba6c07f6a3c4"
+        },
+        "jump_walking": {
+          "fileName": "jump_walking.fbx",
+          "name": "jump_walking",
+          "loop": true,
+          "sync": false,
+          "timeScale": 1,
+          "url": "/assets/anims/jump_walking.json",
+          "hash": "5770376de5a698598b5e976bdc8522561b177134c5829bb8c8b3f2c2422f6dd9"
+        },
+        "sprint": {
+          "fileName": "sprint.fbx",
+          "name": "sprint",
+          "loop": true,
+          "sync": false,
+          "timeScale": 1,
+          "url": "/assets/anims/sprint.json",
+          "hash": "5eaac025cd7d756f7be6a06e7624535e647157ce904bcc09998ddae59fee7bba"
+        },
+        "drop_running_roll": {
+          "fileName": "drop_running_roll.fbx",
+          "name": "drop_running_roll",
+          "loop": true,
+          "sync": false,
+          "timeScale": 1,
+          "url": "/assets/anims/drop_running_roll.json",
+          "hash": "d8284031e7d9767c5b17a96f747813fcd0dadca8bc52eb1563530c2eb6aaa413"
+        },
+        "drop_running": {
+          "fileName": "drop_running.fbx",
+          "name": "drop_running",
+          "loop": true,
+          "sync": false,
+          "timeScale": 1,
+          "url": "/assets/anims/drop_running.json",
+          "hash": "06c2913f25622fd029d5bf4fdf4a0594c872df3315c23f695811977ce612aa28"
+        },
+        "drop_sprinting_roll": {
+          "fileName": "drop_sprinting_roll.fbx",
+          "name": "drop_sprinting_roll",
+          "loop": true,
+          "sync": false,
+          "timeScale": 1,
+          "url": "/assets/anims/drop_sprinting_roll.json",
+          "hash": "e955f9806042a1047ce31feb2efdac82200abca13892ae2b8967409c36a35bb4"
+        },
+        "drop_sprinting": {
+          "fileName": "drop_sprinting.fbx",
+          "name": "drop_sprinting",
+          "loop": true,
+          "sync": false,
+          "timeScale": 1,
+          "url": "/assets/anims/drop_sprinting.json",
+          "hash": "13311a9edda27e16b37451836117973a00f88da498b6c5d520a869e62ad2c405"
+        },
+        "drop_walking_roll": {
+          "fileName": "drop_walking_roll.fbx",
+          "name": "drop_walking_roll",
+          "loop": true,
+          "sync": false,
+          "timeScale": 1,
+          "url": "/assets/anims/drop_walking_roll.json",
+          "hash": "663caf738a20b4176827161b4b88233be04375bccdbaabd1963882a0d1406026"
+        },
+        "drop_walking": {
+          "fileName": "drop_walking.fbx",
+          "name": "drop_walking",
+          "loop": true,
+          "sync": false,
+          "timeScale": 1,
+          "url": "/assets/anims/drop_walking.json",
+          "hash": "eaba01df01a46722df3980a2587791187dd1e2e868b9bdc820e5965e98a2f221"
+        },
+        "falling": {
+          "fileName": "falling.fbx",
+          "name": "falling",
+          "loop": true,
+          "sync": false,
+          "timeScale": 1,
+          "url": "/assets/anims/falling.json",
+          "hash": "ee8f320e6efae9f3513ed06b38ff04ee4ddd7a4f09da611aa5cf928ef44c00b7"
+        },
+        "jump_double": {
+          "fileName": "jump_double.fbx",
+          "name": "jump_double",
+          "loop": true,
+          "sync": false,
+          "timeScale": 1,
+          "url": "/assets/anims/jump_double.json",
+          "hash": "a0c74c836a855eae4a5eced9f4c018e986f59400438859f2f260802f01868d42"
+        },
+        "p_idle": {
+          "fileName": "idle.fbx",
+          "name": "p_idle",
+          "loop": true,
+          "sync": false,
+          "timeScale": 1,
+          "url": "/assets/anims/idle.json",
+          "hash": "084b681c2ffd7e810e8d5dd71d93484ac949a2ecd03d6d8a379f267434d1fa7f"
+        },
+        "p_run": {
+          "fileName": "run.fbx",
+          "name": "p_run",
+          "loop": true,
+          "sync": false,
+          "timeScale": 1,
+          "url": "/assets/anims/run.json",
+          "hash": "86173d3e9c2c436658a9e6828d99c6a6378b63b53e3c308749cf965d2b738269"
+        },
+        "p_walk": {
+          "fileName": "walk.fbx",
+          "name": "p_walk",
+          "loop": true,
+          "sync": false,
+          "timeScale": 1,
+          "url": "/assets/anims/walk.json",
+          "hash": "eb0107c1383e7de11898ecf695938919af9d471d88439db9a2afb988c2c0dd6d"
+        },
+        "drop_idle": {
+          "fileName": "drop_idle.fbx",
+          "name": "drop_idle",
+          "loop": true,
+          "sync": false,
+          "timeScale": 1,
+          "hash": "e4a82d190538a0106255faaffffc4d3863f0726b5190ef91d2024691ac02bd41",
+          "url": "/assets/anims/drop_idle.json"
+        }
+      }
+    },
+    "lighting": {
+      "name": "Lighting",
+      "id": "lighting",
+      "type": "lighting",
+      "kit": "cyber",
+      "enabled": true,
+      "intensity": 1,
+      "lightDirection": {
+        "x": 0.5,
+        "y": -1,
+        "z": 0.5
+      },
+      "lightPosition": {
+        "x": 50,
+        "y": 100,
+        "z": 50
+      },
+      "size": 260,
+      "far": 400,
+      "near": 1,
+      "bias": -0.001
+    },
+    "background": {
+      "name": "Background",
+      "id": "background",
+      "type": "background",
+      "kit": "cyber",
+      "options": {
+        "type": "color",
+        "color": "#0b1020"
+      }
+    },
+    "envmap": {
+      "name": "Environment Map",
+      "id": "envmap",
+      "kit": "cyber",
+      "type": "envmap",
+      "options": {
+        "type": "image",
+        "imageId": "studio",
+        "imageFormat": "hdr",
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        }
+      },
+      "_version": 1769528679378
+    },
+    "fog": {
+      "name": "Fog",
+      "id": "fog",
+      "type": "fog",
+      "kit": "cyber",
+      "enabled": true,
+      "fadeColor": "#0b1020",
+      "near": 120,
+      "far": 600
+    },
+    "ground": {
+      "name": "Ground",
+      "id": "ground",
+      "type": "terrain",
+      "kit": "cyber",
+      "position": {
+        "x": 0,
+        "y": 0,
+        "z": -60
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 420,
+        "y": 1,
+        "z": 420
+      },
+      "color": "#2a2f3a",
+      "noiseEnabled": false,
+      "definition": 100,
+      "seed": 4321,
+      "noiseDomain": 5,
+      "smoothCenter": 0.5,
+      "smoothLength": 0.1,
+      "islandSmooth": 1,
+      "islandLength": 0.1,
+      "innerRadius": 0,
+      "textureOpts": {
+        "id": "grid",
+        "name": "Grid",
+        "image": "https://cdn.oncyber.xyz/engine-assets/terrain/gridImg-v2.png",
+        "path": "https://cdn.oncyber.xyz/engine-assets/terrain/grid-v2.png",
+        "format": ".jpg"
+      },
+      "tiles": 20,
+      "mode": "texture",
+      "shader": "grid",
+      "shape": "plane",
+      "griddiv": 84,
+      "lineWidth": 0.5,
+      "gridColor": "#000000",
+      "edgeTransition": 5,
+      "noTileDisplacement": 1,
+      "smoothAngle": 0.7,
+      "visibleOnOcclusion": true,
+      "textureSideOpts": {
+        "id": "grass",
+        "name": "Grass",
+        "image": "https://cdn.oncyber.xyz/engine-assets/terrain/grassImg-v2.png",
+        "path": "https://cdn.oncyber.xyz/engine-assets/terrain/grass.jpg",
+        "format": ".jpg"
+      },
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "MESH"
+      },
+      "receiveShadow": true
+    },
+    "Player": {
+      "name": "Player",
+      "id": "Player",
+      "type": "avatar",
+      "kit": "cyber",
+      "position": {
+        "x": 0,
+        "y": 1,
+        "z": 6
+      },
+      "rotation": {
+        "x": 1.6960369922133703e-16,
+        "y": 0,
+        "z": -3.5068231544738513e-17
+      },
+      "scale": {
+        "x": 0.71,
+        "y": 0.71,
+        "z": 0.71
+      },
+      "plugins": [],
+      "renderMode": "default",
+      "useCpuAnimation": true,
+      "script": {
+        "_isPlayer": true,
+        "identifier": "player"
+      },
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "PLAYER",
+        "colliderType": "CAPSULE"
+      },
+      "_version": 1772805483736,
+      "url": "https://cdn.oncyber.xyz/engine-assets/vrms/sunshine.glb",
+      "picture": "",
+      "awaitAvatarLoading": true,
+      "awaitPictureLoading": true,
+      "awaitLoaderThrottle": 0,
+      "text": "",
+      "nameDisplayWithPicture": true,
+      "animation": "IDLE",
+      "opacity": 1,
+      "ignoreLOD": false
+    }
+  },
+  "params": {},
+  "createdAt": 1789776000000,
+  "updatedAt": 1789776000000
+}

@@ -1,0 +1,343 @@
+{
+  "schemaVersion": 1,
+  "worldId": "the-nrvnaverse",
+  "chunkKey": "music",
+  "components": {
+    "platform-music": {
+      "name": "Platform Music District",
+      "id": "platform-music",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -70,
+        "y": 0.25,
+        "z": 0
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "type": "box",
+        "boxParams": {
+          "width": 24,
+          "height": 0.5,
+          "depth": 24
+        },
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        }
+      },
+      "color": "#7c3aed",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "platform-music",
+        "tag": "m0-platform"
+      }
+    },
+    "marker-music": {
+      "name": "Marker Music District",
+      "id": "marker-music",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -70,
+        "y": 2.5,
+        "z": -9
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "type": "box",
+        "boxParams": {
+          "width": 1.2,
+          "height": 5,
+          "depth": 1.2
+        },
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        }
+      },
+      "color": "#7c3aed",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      }
+    },
+    "label-music": {
+      "name": "Label Music District",
+      "id": "label-music",
+      "type": "text",
+      "kit": "cyber",
+      "text": "Music District",
+      "position": {
+        "x": -70,
+        "y": 6.5,
+        "z": -9
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 2.6,
+        "y": 2.6,
+        "z": 2.6
+      },
+      "align": "center",
+      "font": "aeonik-bold",
+      "lineHeight": 60,
+      "textColor": "#ffffff",
+      "textTransform": "none",
+      "width": 900,
+      "opacity": 1
+    },
+    "platform-music-artist": {
+      "name": "Platform Placeholder Artist",
+      "id": "platform-music-artist",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -70,
+        "y": 0.25,
+        "z": -40
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "type": "box",
+        "boxParams": {
+          "width": 24,
+          "height": 0.5,
+          "depth": 24
+        },
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        }
+      },
+      "color": "#a78bfa",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "platform-music-artist",
+        "tag": "m0-platform"
+      }
+    },
+    "marker-music-artist": {
+      "name": "Marker Placeholder Artist",
+      "id": "marker-music-artist",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -70,
+        "y": 2.5,
+        "z": -49
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "type": "box",
+        "boxParams": {
+          "width": 1.2,
+          "height": 5,
+          "depth": 1.2
+        },
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        }
+      },
+      "color": "#a78bfa",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      }
+    },
+    "label-music-artist": {
+      "name": "Label Placeholder Artist",
+      "id": "label-music-artist",
+      "type": "text",
+      "kit": "cyber",
+      "text": "Placeholder Artist",
+      "position": {
+        "x": -70,
+        "y": 6.5,
+        "z": -49
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 2.6,
+        "y": 2.6,
+        "z": 2.6
+      },
+      "align": "center",
+      "font": "aeonik-bold",
+      "lineHeight": 60,
+      "textColor": "#ffffff",
+      "textTransform": "none",
+      "width": 900,
+      "opacity": 1
+    },
+    "path-music-north": {
+      "name": "Path Music→Artist",
+      "id": "path-music-north",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -70,
+        "y": 0.1,
+        "z": -20
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "type": "box",
+        "boxParams": {
+          "width": 4,
+          "height": 0.2,
+          "depth": 16
+        },
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        }
+      },
+      "color": "#374151",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      }
+    }
+  }
+}

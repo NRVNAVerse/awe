@@ -40,6 +40,10 @@ import type { SpatialRuntime } from "@/lib/spatial/spatial-runtime";
  * about destination ids; the adapter owns that translation.
  */
 
+/**
+ * Compatibility full scene, GENERATED from `spatial/source/scene.m0.json` by the spatial pipeline
+ * (M0 Step 2B.1). Step 2B.2 replaces this with the generated global scene + chunk payloads.
+ */
 export const M0_SCENE_URL = "/data/static-scene.json";
 
 // --- Input definitions (identical to the official starter) ---

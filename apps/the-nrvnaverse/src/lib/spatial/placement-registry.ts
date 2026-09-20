@@ -7,8 +7,10 @@
  * spawn positions. Everything in here is a replaceable implementation detail: re-laying-out
  * the world changes this file and nothing else.
  *
- * Shape evolution (M0 Step 2B and later): `destinationId → chunkKey → spawn` fits this same
- * record without touching destination identity — add `chunkKey` next to `worldId`.
+ * Since M0 Step 2B.1 the registry is BUILT FROM GENERATED DATA (`registryFromSpatialIndex` in
+ * `spatial-index.ts`, fed by `public/data/spatial/spatial-index.json`), which the spatial
+ * pipeline derives from the authoritative source in `spatial/source/`. Nothing in `src/` holds a
+ * hand-kept coordinate table any more: `destinationId → chunkKey → spawn`, never the reverse.
  */
 
 import type { SpatialPlacement } from "@nrvnaverse/manifest";
@@ -24,9 +26,12 @@ export interface PhysicalPlacement {
   /** Which AWE world/scene this placement belongs to (matches `spatialDestination.worldId`). */
   worldId: string;
   /**
-   * Adapter-private handle for diagnostics and future chunk keys. It is NOT identity and is
-   * never written to a URL.
+   * Logical physical chunk that owns this destination's geometry (generated spatial index). A
+   * replaceable implementation detail: it is NOT identity and is never written to a URL. Step
+   * 2B.2 uses it to fetch the chunk payload — after gate evaluation, never before.
    */
+  chunkKey: string;
+  /** Adapter-private diagnostics handle derived from `chunkKey` (`chunk:<key>`). Never identity. */
   placementRef: string;
   spawn: SpawnPoint;
 }

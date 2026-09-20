@@ -1,0 +1,343 @@
+{
+  "schemaVersion": 1,
+  "worldId": "the-nrvnaverse",
+  "chunkKey": "fashion-culture",
+  "components": {
+    "platform-fashion-culture": {
+      "name": "Platform Fashion / Culture District",
+      "id": "platform-fashion-culture",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 70,
+        "y": 0.25,
+        "z": 0
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "type": "box",
+        "boxParams": {
+          "width": 24,
+          "height": 0.5,
+          "depth": 24
+        },
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        }
+      },
+      "color": "#db2777",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "platform-fashion-culture",
+        "tag": "m0-platform"
+      }
+    },
+    "marker-fashion-culture": {
+      "name": "Marker Fashion / Culture District",
+      "id": "marker-fashion-culture",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 70,
+        "y": 2.5,
+        "z": -9
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "type": "box",
+        "boxParams": {
+          "width": 1.2,
+          "height": 5,
+          "depth": 1.2
+        },
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        }
+      },
+      "color": "#db2777",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      }
+    },
+    "label-fashion-culture": {
+      "name": "Label Fashion / Culture District",
+      "id": "label-fashion-culture",
+      "type": "text",
+      "kit": "cyber",
+      "text": "Fashion / Culture District",
+      "position": {
+        "x": 70,
+        "y": 6.5,
+        "z": -9
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 2.6,
+        "y": 2.6,
+        "z": 2.6
+      },
+      "align": "center",
+      "font": "aeonik-bold",
+      "lineHeight": 60,
+      "textColor": "#ffffff",
+      "textTransform": "none",
+      "width": 900,
+      "opacity": 1
+    },
+    "platform-fashion-culture-brand": {
+      "name": "Platform Placeholder Fashion / Culture Brand",
+      "id": "platform-fashion-culture-brand",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 70,
+        "y": 0.25,
+        "z": -40
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "type": "box",
+        "boxParams": {
+          "width": 24,
+          "height": 0.5,
+          "depth": 24
+        },
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        }
+      },
+      "color": "#f472b6",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "platform-fashion-culture-brand",
+        "tag": "m0-platform"
+      }
+    },
+    "marker-fashion-culture-brand": {
+      "name": "Marker Placeholder Fashion / Culture Brand",
+      "id": "marker-fashion-culture-brand",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 70,
+        "y": 2.5,
+        "z": -49
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "type": "box",
+        "boxParams": {
+          "width": 1.2,
+          "height": 5,
+          "depth": 1.2
+        },
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        }
+      },
+      "color": "#f472b6",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      }
+    },
+    "label-fashion-culture-brand": {
+      "name": "Label Placeholder Fashion / Culture Brand",
+      "id": "label-fashion-culture-brand",
+      "type": "text",
+      "kit": "cyber",
+      "text": "Placeholder Fashion / Culture Brand",
+      "position": {
+        "x": 70,
+        "y": 6.5,
+        "z": -49
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 2.6,
+        "y": 2.6,
+        "z": 2.6
+      },
+      "align": "center",
+      "font": "aeonik-bold",
+      "lineHeight": 60,
+      "textColor": "#ffffff",
+      "textTransform": "none",
+      "width": 900,
+      "opacity": 1
+    },
+    "path-fashion-north": {
+      "name": "Path Fashion→Brand",
+      "id": "path-fashion-north",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 70,
+        "y": 0.1,
+        "z": -20
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "type": "box",
+        "boxParams": {
+          "width": 4,
+          "height": 0.2,
+          "depth": 16
+        },
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        }
+      },
+      "color": "#374151",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      }
+    }
+  }
+}

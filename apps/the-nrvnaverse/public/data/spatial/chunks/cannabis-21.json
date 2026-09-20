@@ -1,0 +1,339 @@
+{
+  "schemaVersion": 1,
+  "worldId": "the-nrvnaverse",
+  "chunkKey": "cannabis-21",
+  "components": {
+    "platform-cannabis-21": {
+      "name": "Platform 21+ Cannabis District (gated)",
+      "id": "platform-cannabis-21",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 0,
+        "y": 0.25,
+        "z": -134
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "type": "box",
+        "boxParams": {
+          "width": 44,
+          "height": 0.5,
+          "depth": 64
+        },
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        }
+      },
+      "color": "#166534",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "platform-cannabis-21",
+        "tag": "m0-gated"
+      }
+    },
+    "gate-wall-north": {
+      "name": "Gate wall north",
+      "id": "gate-wall-north",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 0,
+        "y": 4,
+        "z": -166
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "type": "box",
+        "boxParams": {
+          "width": 44,
+          "height": 8,
+          "depth": 1
+        },
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        }
+      },
+      "color": "#14532d",
+      "opacity": 0.9,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      }
+    },
+    "gate-wall-south": {
+      "name": "Gate wall south",
+      "id": "gate-wall-south",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 0,
+        "y": 4,
+        "z": -102
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "type": "box",
+        "boxParams": {
+          "width": 44,
+          "height": 8,
+          "depth": 1
+        },
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        }
+      },
+      "color": "#14532d",
+      "opacity": 0.9,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      }
+    },
+    "gate-wall-west": {
+      "name": "Gate wall west",
+      "id": "gate-wall-west",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -22,
+        "y": 4,
+        "z": -134
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "type": "box",
+        "boxParams": {
+          "width": 1,
+          "height": 8,
+          "depth": 64
+        },
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        }
+      },
+      "color": "#14532d",
+      "opacity": 0.9,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      }
+    },
+    "gate-wall-east": {
+      "name": "Gate wall east",
+      "id": "gate-wall-east",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 22,
+        "y": 4,
+        "z": -134
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "type": "box",
+        "boxParams": {
+          "width": 1,
+          "height": 8,
+          "depth": 64
+        },
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        }
+      },
+      "color": "#14532d",
+      "opacity": 0.9,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      }
+    },
+    "label-cannabis-21": {
+      "name": "Label 21+ Cannabis District — gated (age21)",
+      "id": "label-cannabis-21",
+      "type": "text",
+      "kit": "cyber",
+      "text": "21+ Cannabis District — gated (age21)",
+      "position": {
+        "x": 0,
+        "y": 10,
+        "z": -102
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 2.2,
+        "y": 2.2,
+        "z": 2.2
+      },
+      "align": "center",
+      "font": "aeonik-bold",
+      "lineHeight": 60,
+      "textColor": "#fbbf24",
+      "textTransform": "none",
+      "width": 900,
+      "opacity": 1
+    },
+    "label-cannabis-21-closed": {
+      "name": "Label Verification not implemented in M0 — no spatial entry",
+      "id": "label-cannabis-21-closed",
+      "type": "text",
+      "kit": "cyber",
+      "text": "Verification not implemented in M0 — no spatial entry",
+      "position": {
+        "x": 0,
+        "y": 7.5,
+        "z": -102
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1.2,
+        "y": 1.2,
+        "z": 1.2
+      },
+      "align": "center",
+      "font": "aeonik-bold",
+      "lineHeight": 60,
+      "textColor": "#fde68a",
+      "textTransform": "none",
+      "width": 900,
+      "opacity": 1
+    }
+  }
+}

@@ -1,0 +1,98 @@
+{
+  "schemaVersion": 1,
+  "worldId": "the-nrvnaverse",
+  "globalSceneUrl": "/data/spatial/global-scene.json",
+  "chunks": {
+    "cannabis-21": {
+      "dataUrl": "/data/spatial/chunks/cannabis-21.json"
+    },
+    "fashion-culture": {
+      "dataUrl": "/data/spatial/chunks/fashion-culture.json"
+    },
+    "hub": {
+      "dataUrl": "/data/spatial/chunks/hub.json"
+    },
+    "music": {
+      "dataUrl": "/data/spatial/chunks/music.json"
+    }
+  },
+  "destinations": {
+    "dst_1qtfn9qjg9kf6jyd": {
+      "chunkKey": "music",
+      "spawn": {
+        "position": {
+          "x": -70,
+          "y": 1,
+          "z": -34
+        },
+        "yaw": 0
+      }
+    },
+    "dst_441dtdafq3e3ehjn": {
+      "chunkKey": "cannabis-21",
+      "spawn": {
+        "position": {
+          "x": 0,
+          "y": 1,
+          "z": -114
+        },
+        "yaw": 0
+      }
+    },
+    "dst_7g19n1vm9ackw8a0": {
+      "chunkKey": "hub",
+      "spawn": {
+        "position": {
+          "x": 0,
+          "y": 1,
+          "z": 6
+        },
+        "yaw": 0
+      }
+    },
+    "dst_9c4wxtpec8awsx1q": {
+      "chunkKey": "fashion-culture",
+      "spawn": {
+        "position": {
+          "x": 70,
+          "y": 1,
+          "z": 6
+        },
+        "yaw": 0
+      }
+    },
+    "dst_gm3xs4a3tws7bgh3": {
+      "chunkKey": "music",
+      "spawn": {
+        "position": {
+          "x": -70,
+          "y": 1,
+          "z": 6
+        },
+        "yaw": 0
+      }
+    },
+    "dst_tgfh5h5jvm3wj0w7": {
+      "chunkKey": "fashion-culture",
+      "spawn": {
+        "position": {
+          "x": 70,
+          "y": 1,
+          "z": -34
+        },
+        "yaw": 0
+      }
+    },
+    "dst_vfkz626za0vra89j": {
+      "chunkKey": "cannabis-21",
+      "spawn": {
+        "position": {
+          "x": 0,
+          "y": 1,
+          "z": -154
+        },
+        "yaw": 0
+      }
+    }
+  }
+}

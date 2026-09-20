@@ -275,6 +275,22 @@ Branch `feat/m0-spatial-runtime` (from `feat/m0-app-foundation`). Full descripti
 | Ghost boundary | No Ghost code read, copied, cherry-picked or depended on. |
 | Dependencies | None added; `package.json` dependency ranges and `pnpm-lock.yaml` unchanged. |
 
+### NRVNAVerse implementation state — M0 Step 2B.1  [VERIFIED 2026-09-19]
+
+Branch `feat/m0-chunk-streaming` (from `nrvna/integration`). Full description: [`NRVNAVERSE_SPATIAL_DATA_PIPELINE.md`](./NRVNAVERSE_SPATIAL_DATA_PIPELINE.md).
+
+| Item | State |
+|---|---|
+| Authoritative physical source | `apps/the-nrvnaverse/spatial/source/scene.m0.json` (complete authored M0 scene, 33 components) + `spatial-config.m0.json` (schema v1: `worldId`, global membership, 4 logical chunks with explicit component membership, 7 destination placements `destinationId → chunkKey → spawn`). Carries no destination metadata and no gates — any extra field is rejected. |
+| Pipeline | Dependency-free Node ESM (`scripts/spatial/pipeline.mjs` pure, `cli.mjs` I/O), JSDoc-typed and strict-checked; `spatial:validate` / `spatial:generate` / `spatial:check` package scripts. 23 stable validation codes incl. unsupported schema, duplicate/unsafe chunk keys, unknown/multiply-owned/unassigned components, unknown destination/chunk, non-finite spawn/orientation, wrong world id, duplicate/missing placement, non-THE-NRVNAVerse destination, stale output. |
+| Generated artifacts (`public/data/`) | `static-scene.json` (compatibility full scene, still what the runtime loads), `spatial/global-scene.json` (7 global components: avatar, VRM anims, lighting, background, envmap, fog, ground), `spatial/chunks/{hub,music,fashion-culture,cannabis-21}.json`, `spatial/spatial-index.json`. Deterministic: second run writes nothing; byte-identical across reordered source; committed outputs verified by `spatial:check` and tests. Sizes: 36 954 / 9 763 / 5 375 / 7 321 / 7 578 / 7 335 / 1 863 bytes. `portals-index.json` still not created. |
+| Placement registry | `placements.m0.ts` **deleted**. `app-store.ts` loads the generated index at boot (`FetchSpatialIndexSource`) and builds the adapter registry with `registryFromSpatialIndex`; `PhysicalPlacement` gained `chunkKey`; `placementRef` is `chunk:<key>` (diagnostics only). A test asserts `src/` contains no stable ids or coordinate literals. |
+| Runtime behaviour | Unchanged from Step 2A by design: full compatibility scene, same-scene teleport, gate refusal for the cannabis destinations, `?destination=<id>` only, `?chunk=` never written. Browser smoke re-executed after the migration. |
+| Checks | 69 app vitest tests (was 35), `check` (incl. strict tsconfig now also covering the pipeline scripts), `next build` pass. |
+| Not implemented | Runtime chunk loading/unloading, `loadingChunk`, portals, age verification, gate persistence, jurisdiction policy, hosting-level protection of gated chunk URLs (Step 2B.2+). |
+| Ghost boundary | No Ghost code read, copied, cherry-picked or depended on; engine/engine-edit/studio untouched. |
+| Dependencies | None added; `package.json` gained three scripts only; `pnpm-lock.yaml` unchanged. |
+
 ### Development machine (informational)
 
 Windows 10 Home; Node v24.19.0; Git 2.46.2; Corepack 0.35.0; **pnpm 10.10.0 via Corepack** (shims in `%USERPROFILE%\.local\bin` because `C:\Program Files\nodejs` is not writable without elevation — see D-014). Local clone: `D:\NRVNAVerse\awe` on an **NTFS mechanical HDD**; pnpm content-addressable store at `D:\.pnpm-store`. Git HTTPS requires `http.sslbackend=schannel` on this machine (set repo-locally) because a local antivirus TLS proxy (Avast) breaks the OpenSSL backend. The same antivirus's real-time scanning plus the HDD make pnpm's link phase very slow (≈16 packages/min on first install; package downloads themselves complete in about a minute). An antivirus exclusion for `D:\NRVNAVerse` and `D:\.pnpm-store` would remove most of that cost but is a machine-level change for the machine owner to make, not a coding session.
@@ -294,7 +310,9 @@ Windows 10 Home; Node v24.19.0; Git 2.46.2; Corepack 0.35.0; **pnpm 10.10.0 via 
 | Cannabis compliance | Open — policy layer not designed beyond principles; M0 Step 1 models the `age21` gate as placeholder data only (not enforced) |
 | New workspace packages not yet in `pnpm-lock.yaml` | Closed — `importers` entries added in `44992f3`; `pnpm install --frozen-lockfile --offline` is up to date |
 | Engine load in a background tab | Known — no `requestAnimationFrame` in a hidden tab stalls the upstream intro and trips the engine's 60 s `LOAD_TIMEOUT`; the app shows its error phase and a foreground reload recovers. Upstream behaviour; a resume-on-visibility strategy is a later decision |
-| Placement registry is hand-kept | Open — `placements.m0.ts` and `static-scene.json` are kept in sync by hand for M0; a generated spatial index (never coordinate-keyed identity) is a Step 2B candidate |
+| Placement registry is hand-kept | Closed (M0 Step 2B.1) — placements and the scene are generated from one authoritative spatial source; `placements.m0.ts` removed; the spatial index is generated and keyed by stable id, never by coordinates |
+| Gated chunk payloads are statically served | Open — `public/data/spatial/chunks/cannabis-21.json` is a static file; "never fetched before the gate" is an application-layer rule (Step 2B.2) until a hosting/server-side enforcement design exists |
+| Manifest `generate:check` fails on `core.autocrlf=true` checkouts | Open (pre-existing, outside 2B.1 scope) — `packages/nrvna-manifest` compares raw bytes, so a CRLF-converted working copy of an unchanged LF blob is reported stale. The spatial pipeline normalises line endings; the manifest check should do the same in its own change |
 | awe.box and open-source AWE are different runtimes | Confirmed — hosted awe.box worlds are not portable to this repo's runtime |
 | Ghost's PR #11 was closed unmerged upstream | Confirmed — future upstream contributions must be small, topical PRs |
 | ~200 MB of binaries in Ghost's history | Mitigated by decision (D-013) — `ghost/experimental` is **not** pushed to `origin`; preserved by reference at `a5880dd…` via the `ghost` remote. Any archive / Git LFS / mirror strategy is a separate future decision |

@@ -8,7 +8,10 @@
     "build": "next build --turbopack",
     "start": "next start",
     "check": "tsc --noEmit && tsc --noEmit -p tsconfig.strict.json",
-    "test": "vitest run"
+    "test": "vitest run",
+    "spatial:validate": "node scripts/spatial/cli.mjs validate",
+    "spatial:generate": "node scripts/spatial/cli.mjs generate",
+    "spatial:check": "node scripts/spatial/cli.mjs check"
   },
   "dependencies": {
     "@dimforge/rapier3d": "0.11.2",
