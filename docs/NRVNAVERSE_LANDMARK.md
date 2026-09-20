@@ -299,6 +299,10 @@ Windows 10 Home; Node v24.19.0; Git 2.46.2; Corepack 0.35.0; **pnpm 10.10.0 via 
 | Ghost's PR #11 was closed unmerged upstream | Confirmed — future upstream contributions must be small, topical PRs |
 | ~200 MB of binaries in Ghost's history | Mitigated by decision (D-013) — `ghost/experimental` is **not** pushed to `origin`; preserved by reference at `a5880dd…` via the `ghost` remote. Any archive / Git LFS / mirror strategy is a separate future decision |
 
+### M0 implementation direction (D-016)  [PLANNED — application-layer boundary]
+
+For M0, chunk orchestration and destination travel are implemented in the NRVNAVerse application layer (`apps/the-nrvnaverse`) over official AWE runtime APIs, with stable destination IDs resolving to physical chunk/spawn data and visitor gates evaluated before gated fetches (D-016). This is an M0 implementation boundary, not a claim that chunk streaming is complete, and not an adoption of Ghost's experimental chunk/portal code — that work remains EXPERIMENTAL per Section 13 and D-013. Generic primitives may later move to `contrib/*` or upstream once validated.
+
 ## 14. Do Not Accidentally Change  [LOCKED]
 
 Implementation, refactors, or "helpful" cleanups must not alter any of the following without an explicit decision:
