@@ -53,11 +53,11 @@ export function SpatialPanel({ state }: { state: AppState }) {
       {measures.length > 0 && (
         <details className="mt-2">
           <summary className="cursor-pointer text-neutral-300">performance ({measures.length})</summary>
-          <ul className="mt-1 flex flex-col gap-0.5 text-xs">
+          <ul className="mt-1 flex min-w-0 flex-col gap-0.5 text-xs break-words">
             {measures.slice(-12).map((m, i) => (
               <li key={`${m.name}-${i}`}>
                 <code>{m.name}</code> {m.durationMs} ms
-                {Object.keys(m.detail).length > 0 ? <span className="text-neutral-500"> {JSON.stringify(m.detail)}</span> : null}
+                {Object.keys(m.detail).length > 0 ? <span className="break-all text-neutral-500"> {JSON.stringify(m.detail)}</span> : null}
               </li>
             ))}
           </ul>

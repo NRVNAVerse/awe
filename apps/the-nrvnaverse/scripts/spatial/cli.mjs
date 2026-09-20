@@ -6,7 +6,9 @@
  *   validate   validate spatial/source/* against the scene and the canonical destination set
  *   generate   validate, then (re)write the derived artifacts under public/data (only changed files)
  *              and remove stale CONTENT-ADDRESSED outputs of previous generations
- *   check      validate, then fail if any committed artifact is stale, missing or unexpected
+ *   check      validate, then fail if any committed artifact is stale, missing or unexpected;
+ *              additionally prints NON-FATAL initial M0 budget warnings (budgets.mjs: 64 KiB /
+ *              64 components per runtime global-scene or chunk artifact — 2B.4C.2)
  *
  * Generated-output ownership (M0 Step 2B.4B.2). The global scene and every chunk are written under
  * content-addressed names (`spatial/global-scene.<token>.json`, `spatial/chunks/<key>.<token>.json`),
@@ -26,6 +28,7 @@
 import { existsSync, mkdirSync, readdirSync, readFileSync, unlinkSync, writeFileSync } from "node:fs";
 import { dirname, join, relative, resolve, sep } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
+import { formatSpatialBudgetWarning, spatialBudgetWarnings } from "./budgets.mjs";
 import { OUTPUT, formatSpatialErrors, generateSpatialArtifacts, isContentAddressedOutput, validateSpatialSource } from "./pipeline.mjs";
 
 const APP_ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "../..");
@@ -192,7 +195,10 @@ function main(argv) {
         console.error(`run "pnpm --filter the-nrvnaverse spatial:generate" and commit the result`);
         return 1;
       }
-      console.log(`generated spatial artifacts up to date (${Object.keys(artifacts.files).length} files)`);
+      // Initial M0 warning budgets (2B.4C.2): reported, never fatal — see budgets.mjs.
+      const warnings = spatialBudgetWarnings(artifacts);
+      for (const warning of warnings) console.warn(formatSpatialBudgetWarning(warning));
+      console.log(`generated spatial artifacts up to date (${Object.keys(artifacts.files).length} files${warnings.length ? `, ${warnings.length} budget warning${warnings.length === 1 ? "" : "s"}` : ", within initial budgets"})`);
       return 0;
     }
     case "--help":

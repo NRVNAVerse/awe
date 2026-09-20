@@ -2,6 +2,7 @@
 
 import { sharedControlState } from "@oncyberio/engine/input";
 import { useEffect, useRef, useState } from "react";
+import { useInteractionMode } from "@/lib/interaction-mode";
 
 type JoystickPosition = {
   x: number;
@@ -82,22 +83,11 @@ function applyCardinalAssist(x: number, y: number): JoystickPosition {
   return { x, y };
 }
 
-function isTouchScreen(): boolean {
-  if (typeof window === "undefined") {
-    return false;
-  }
-
-  return (
-    navigator.maxTouchPoints > 0 ||
-    window.matchMedia("(pointer: coarse)").matches ||
-    "ontouchstart" in window
-  );
-}
-
 export function TouchJoystick() {
   const joystickRef = useRef<HTMLDivElement>(null);
   const pointerIdRef = useRef<number | null>(null);
-  const [enabled, setEnabled] = useState(false);
+  // Shared shell interaction mode (2B.4C.2) — same detection the starter used, now app-wide.
+  const enabled = useInteractionMode().touch;
   const [metrics, setMetrics] = useState<JoystickMetrics>(getJoystickMetrics);
   const [thumbPosition, setThumbPosition] = useState<JoystickPosition>({
     x: 0,
@@ -109,18 +99,14 @@ export function TouchJoystick() {
       return;
     }
 
-    const media = window.matchMedia("(pointer: coarse)");
     const update = () => {
-      setEnabled(isTouchScreen());
       setMetrics(getJoystickMetrics());
     };
 
     update();
-    media.addEventListener("change", update);
     window.addEventListener("resize", update);
 
     return () => {
-      media.removeEventListener("change", update);
       window.removeEventListener("resize", update);
       sharedControlState.touch.setJoystick(0, 0);
     };
@@ -185,8 +171,9 @@ export function TouchJoystick() {
         style={{
           width: metrics.stickSize,
           height: metrics.stickSize,
-          left: metrics.edgeOffset,
-          bottom: metrics.edgeOffset,
+          // Safe-area aware (2B.4C.2): keep clear of notches / home indicator without device-specific numbers.
+          left: `calc(${metrics.edgeOffset}px + env(safe-area-inset-left, 0px))`,
+          bottom: `calc(${metrics.edgeOffset}px + env(safe-area-inset-bottom, 0px))`,
           touchAction: "none",
         }}
         onPointerDown={(event) => {

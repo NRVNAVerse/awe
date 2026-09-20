@@ -16,7 +16,7 @@ export function DestinationView({ destination, entry, index }: DestinationViewPr
       <h2 className="text-xl font-semibold">{destination.name}</h2>
       <p className="mt-1 text-sm text-neutral-300">{destination.description}</p>
 
-      <dl className="mt-4 grid grid-cols-[max-content_1fr] gap-x-4 gap-y-1 text-sm">
+      <dl className="mt-4 grid min-w-0 grid-cols-[max-content_minmax(0,1fr)] gap-x-4 gap-y-1 text-sm">
         <dt className="text-neutral-500">id</dt>
         <dd>
           <code>{destination.id}</code>
@@ -40,7 +40,7 @@ export function DestinationView({ destination, entry, index }: DestinationViewPr
             : destination.gates.map((g) => `${g.kind} (declared; spatial entry refused; verification not implemented)`).join(", ")}
         </dd>
         <dt className="text-neutral-500">web</dt>
-        <dd>
+        <dd className="min-w-0 break-words">
           <a className="underline" href={destination.webUrl}>
             {destination.webUrl}
           </a>
@@ -64,7 +64,7 @@ export function DestinationView({ destination, entry, index }: DestinationViewPr
         {entry.returnUrl && (
           <>
             <dt className="text-neutral-500">return</dt>
-            <dd>
+            <dd className="min-w-0 break-words">
               <a className="underline" href={entry.returnUrl}>
                 {entry.returnUrl}
               </a>

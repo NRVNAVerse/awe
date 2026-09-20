@@ -1,4 +1,4 @@
-# NRVNAVerse Spatial Data Pipeline — M0 Step 2B.1 + 2B.3 + 2B.4B.2
+# NRVNAVerse Spatial Data Pipeline — M0 Step 2B.1 + 2B.3 + 2B.4B.2 + 2B.4C.2
 
 | Field | Value |
 |---|---|
@@ -6,9 +6,9 @@
 | **App** | `apps/the-nrvnaverse` (THE NRVNAVerse, spatial interface) |
 | **Builds on** | [`NRVNAVERSE_SPATIAL_RUNTIME.md`](./NRVNAVERSE_SPATIAL_RUNTIME.md) (M0 Step 2A) · [`NRVNAVERSE_DESTINATION_MANIFEST.md`](./NRVNAVERSE_DESTINATION_MANIFEST.md) (M0 Step 1) |
 | **Governing decisions** | D-004 (stable ids are identity), D-006 (auth ≠ gates), D-013 (Ghost boundary), D-014 (no dependency changes), D-016 (application-layer chunk orchestration); Landmark §6, §7, §9 |
-| **Not in scope here** | runtime chunk loading/unloading and `loadingChunk` (done in **2B.2**) and the portal controller / sensor seam (done in **2B.3**) — both documented in the runtime doc; application-level chunk cache / prefetch (**rejected for M0 by the 2B.4B.1 audit**, §15); age verification, gate persistence, jurisdiction policy |
+| **Not in scope here** | runtime chunk loading/unloading and `loadingChunk` (done in **2B.2**) and the portal controller / sensor seam (done in **2B.3**) — both documented in the runtime doc; application-level chunk cache / prefetch (**rejected for M0 by the 2B.4B.1 audit**, §15); age verification, gate persistence, jurisdiction policy. **Since M0 Step 2B.4C.2 `spatial:check` also prints non-fatal initial warning budgets for the runtime artifacts (§16)** |
 
-M0 is **not** complete after Step 2B.1/2B.2/2B.3/2B.4B.2 (2B.4C remains); the Landmark stays at v0.1. No new architectural decision was needed — D-004, D-006, D-013 and D-016 govern this work.
+M0 is **not** complete after Step 2B.1/2B.2/2B.3/2B.4B.2/2B.4C.2 (independent review and integration of 2B.4C remain); the Landmark stays at v0.1. No new architectural decision was needed — D-004, D-006, D-009, D-013 and D-016 govern this work.
 
 ---
 
@@ -131,7 +131,7 @@ Seven placements, migrated verbatim from the Step 2A `placements.m0.ts` coordina
 
 `<digest>` = first 32 lowercase hex chars of SHA-256 over the file's exact bytes; the file name changes whenever the content changes (§15). The legacy unversioned names (`global-scene.json`, `chunks/<key>.json`) are no longer generated and are not served.
 
-Data-size baseline only (text JSON, no binaries); no asset optimisation or budgets were attempted. Chunk files carry no destination ids, names, URLs, gates or roles (tested). The index reveals which chunk a destination maps to — that small mapping is not the gated content.
+Data-size baseline only (text JSON, no binaries); no asset optimisation was attempted. Since 2B.4C.2 `spatial:check` prints warning-only initial budgets for these runtime artifacts (§16). Chunk files carry no destination ids, names, URLs, gates or roles (tested). The index reveals which chunk a destination maps to — that small mapping is not the gated content.
 
 Determinism: no timestamps, no random ids, no machine paths, index keys sorted by code-unit order, components in authored scene order (the source is committed, so its order is stable), fixed 2-space JSON + trailing LF; content digests — and therefore file names (§15) — depend on the serialized artifact bytes alone. Two consecutive `spatial:generate` runs write and remove nothing the second time; the test suite asserts byte-identical output and identical file names across runs and across reordered chunks/placements, and asserts the committed files match a fresh generation with no stale or legacy file next to them. `spatial:check` additionally fails on any unexpected file in the output namespace (a stale content version, a chunk the source no longer declares, a legacy unversioned name). Line endings are normalised before comparison so a `core.autocrlf` checkout on Windows is not reported as stale (the generator always writes LF).
 
@@ -233,4 +233,25 @@ digest = first 32 lowercase hex chars (128 bits) of SHA-256 over the exact UTF-8
 
 **Browser verification (fresh headless-Chrome profile, GPU-backed, raw CDP, same production server; focused Hub → Music → Hub → Music, not the full audit).** Boot: index 200 (1 029 B wire), `global-scene.<digest>.json` 200 (2 834 B), `hub.<digest>.json` 200 (1 375 B). Hub → Music first visit: network 200, **1 387 B on the wire**, `chunk-fetch` 27.8 ms. Music → Hub, Hub → Music, Music → Hub, Hub → Music (revisits of the exact hashed URLs): **`fromDiskCache: true`, 0 wire bytes, Resource Timing `transferSize 0` / `deliveryType "cache"`, no `If-None-Match` sent** — no conditional round trip; `chunk-fetch` 3.2–25.6 ms, travel 14–36 ms (the first two revisits include cold-JIT staging; the later ones 14–16 ms, in line with the 8–14 ms measured for the query form). Hub → Cannabis: `gateRequired`, zero requests, URL unchanged; cannabis chunk requests across the run: 0. Only `?destination=<id>&from=spatial` ever written. No console error; the only console output is pre-existing upstream Three/VRM warnings.
 
-2B.4B is **complete** with this correction; 2B.4C (budgets / mobile / adaptive quality) remains and M0 is still incomplete. Landmark version unchanged (0.1); no new decision was needed — this changes physical delivery only, not a governing architecture decision.
+2B.4B is **complete** with this correction; 2B.4C followed (§16 and the runtime doc §16). Landmark version unchanged (0.1); no new decision was needed — this changes physical delivery only, not a governing architecture decision.
+
+## 16. Initial M0 warning budgets (M0 Step 2B.4C.2)
+
+**What.** `pnpm --filter the-nrvnaverse spatial:check` evaluates two initial budgets against the runtime artifacts of the current generation and prints a warning per exceeded metric — **warning only**: the command still succeeds when the artifacts are otherwise valid and current, and stale / missing / unexpected artifacts fail exactly as before. Pure helper `scripts/spatial/budgets.mjs` (`SPATIAL_WARNING_BUDGETS`, `spatialBudgetWarnings`, `formatSpatialBudgetWarning`, `countArtifactComponents`); `cli.mjs` only calls it from `check`.
+
+| Scope | Metric | Initial M0 warning threshold |
+|---|---|---|
+| runtime global scene (`spatial/global-scene.<token>.json`) | serialized bytes (LF) | 64 KiB (65 536 bytes) |
+| runtime global scene | top-level components | 64 |
+| each runtime chunk (`spatial/chunks/<key>.<token>.json`) | serialized bytes (LF) | 64 KiB each |
+| each runtime chunk | top-level components | 64 each |
+
+Not budgeted, deliberately: the compatibility full scene `static-scene.json` (not requested by the runtime) and `spatial-index.json` (the small version root). No asset, draw-call, triangle, texture, FPS or heap threshold exists.
+
+**Output.** A warning names the artifact and chunk, the actual value and the threshold, e.g. `budget warning: runtime chunk "music" spatial/chunks/music.<token>.json is 70 213 bytes (initial M0 warning threshold 65536 bytes) — warning only, check still succeeds`; a generation within budget prints `… (7 files, within initial budgets)`. Exit status is unchanged by warnings.
+
+**Evidence basis (2B.4C.1 audit, 2026-09-20, committed LF bytes).** Global scene 9 763 B / 7 components; chunks hub 9 288 B / 8, music 9 929 B / 9, fashion-culture 10 216 B / 9, cannabis-21 7 335 B / 7 (≈1.0–1.4 KB gzip on the wire each; the ungated initial Hub requirement index + global + hub is 21 868 B raw / 5 278 B wire). Staging a 9-component chunk cost ≈8–15 ms warm and ≈28–48 ms under a 4× CPU slowdown. 64 KiB / 64 components is generous headroom above that placeholder baseline while keeping a chunk to roughly one network round trip and well under a second of staging on a slow CPU. These are **initial guardrails**, not production or world-capacity promises; they are expected to be re-based when the first representative art vertical slice exists.
+
+**Observational baseline recorded, not enforced (same audit).** Cold Hub boot on a fresh browser profile transferred 3.77 MB in 76 requests, dominated by placeholder / upstream scene assets — the `studio` HDR envmap alone 1.61 MB (43 %), Next JS 0.87 MB, Rapier WASM 0.51 MB, the avatar VRMs 0.34 MB, 17 animation clips 0.12 MB — while the spatial JSON was 5.3 KB (0.14 %). The placeholder world renders with 13–15 draw calls and ≈6.9 k triangles, 22–23 geometries and 10 textures, 15–16 live components, and the browser JS heap stayed ≈44–50 MB (flat) across a ten-step travel loop. Asset / render budgets and any cold-boot time threshold are deferred until representative art exists.
+
+**Tests** (`test/spatial-budgets.test.ts`, 12): thresholds; the committed M0 generation emits no warning; a >64 KiB chunk / global artifact warns naming the artifact, actual bytes and threshold; >64 components warns (64 exactly does not); both metrics can warn and are ordered global-first then chunks by key; `static-scene.json` / the index are never budgeted; malformed text counts as zero components; an over-budget but current generation is up to date; stale / missing / unexpected artifacts still fail; the real `spatial:check` exits 0 for the committed artifacts and reports them within the initial budgets.

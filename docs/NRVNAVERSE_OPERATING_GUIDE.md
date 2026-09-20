@@ -225,7 +225,7 @@ Verified on its pushed `main` at the time this guide was written; re-verify befo
 Facts to carry into planning:
 
 - That repository is a **snapshot import**, not a Git fork: compare with upstream by file diff, not by Git ancestry; nothing merges across.
-- **World / plots authoring** (multi-world or plot primitives, e.g. a `world-types.ts`) is **NOT VERIFIABLE FROM THE PUSHED REPOSITORY** at the time of writing — it was absent from pushed `main`. Do not plan against it until it is pushed and inspected.
+- **World / plots authoring** is now VERIFIED IN TheCannaMan/awe on its pushed `main`: a generic world/plots system with, at family level, an operator-owned world, bounded manager-owned plots, plot-local authoring, a draft/live publish model, a merged visitor scene and operator administration. Preliminary NRVNAVerse classification: **B INFORM** — highly relevant to Founding Worlds / partner authoring, but its visitor model is a single merged scene, whereas THE NRVNAVerse canonical product uses stable destination identity, gate resolution and chunk-based travel (D-004, D-006, D-016). Any selective USE / ADAPT is decided in a dedicated post-M0 architecture review, not inferred from this note.
 - Nothing there implements chunk streaming, `?chunk=` URLs, coordinate-keyed portal indexes, auth / gates, or cannabis compliance; none of the NRVNAVerse network architecture exists there.
 - Some README claims are ahead of or behind the code (counts, deployment flows, CI status): verify in source.
 

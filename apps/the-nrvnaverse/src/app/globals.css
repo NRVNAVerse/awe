@@ -1,2 +1,17 @@
 @import "tailwindcss";
 @source not "../../public";
+
+/*
+ * Mobile shell (M0 Step 2B.4C.2). The world surface owns its touches: no browser pan / zoom /
+ * pull-to-refresh gestures start on the canvas container, and the application viewport never
+ * overscrolls or bounces. Scrolling INSIDE the directory aside is untouched (it is its own
+ * scroll container with `overscroll-contain`). Engine input code is not involved.
+ */
+html,
+body {
+  overscroll-behavior: none;
+}
+
+#canvas-container {
+  touch-action: none;
+}

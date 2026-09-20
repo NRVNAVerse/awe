@@ -27,7 +27,7 @@ export function TravelBanner({ state }: { state: AppState }) {
         <span>
           Arrived at <strong>{state.current.name}</strong> <span className="text-emerald-300/70">({Math.round(state.arrival.durationMs)} ms)</span>
         </span>
-        <button type="button" onClick={dismissOutcome} className="ml-auto text-xs underline">
+        <button type="button" onClick={dismissOutcome} className="ml-auto touch-manipulation px-2 py-1 text-xs underline">
           ok
         </button>
       </div>
@@ -42,7 +42,7 @@ export function TravelBanner({ state }: { state: AppState }) {
           <span>
             <strong>{gated?.name ?? state.gate.destinationId}</strong> requires a gate: <code>{state.gate.gates.join(", ")}</code>
           </span>
-          <button type="button" onClick={dismissOutcome} className="ml-auto text-xs underline">
+          <button type="button" onClick={dismissOutcome} className="ml-auto touch-manipulation px-2 py-1 text-xs underline">
             ok
           </button>
         </div>

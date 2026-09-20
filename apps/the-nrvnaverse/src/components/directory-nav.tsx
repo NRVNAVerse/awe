@@ -58,7 +58,7 @@ function DestinationLink({ destination, currentId }: { destination: Destination;
       aria-current={isCurrent ? "page" : undefined}
       data-destination-id={destination.id}
       data-gated={gated || undefined}
-      className={isCurrent ? "font-semibold text-white" : "text-neutral-300 underline hover:text-white"}
+      className={`inline-block touch-manipulation py-0.5 ${isCurrent ? "font-semibold text-white" : "text-neutral-300 underline hover:text-white"}`}
     >
       {destination.name}
       {gated && (
