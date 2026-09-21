@@ -2,10 +2,10 @@
 
 | Field | Value |
 |---|---|
-| **Version** | 0.1 |
-| **Status** | Pre-M0 |
-| **Current milestone** | M0 — Foundation |
-| **Landmark date** | 2026-09-19 |
+| **Version** | 0.2 |
+| **Status** | M0 Complete |
+| **Current milestone** | M0 — Foundation (complete) |
+| **Landmark date** | 2026-09-20 |
 | **Canonical repository** | https://github.com/NRVNAVerse/awe (fork of https://github.com/oncyberio/awe) |
 | **Companion documents** | [NRVNAVERSE_OPERATING_GUIDE.md](./NRVNAVERSE_OPERATING_GUIDE.md) (project orientation / operating model — start there) · [DECISIONS.md](./DECISIONS.md) · [NRVNAVERSE_GOVERNANCE.md](./NRVNAVERSE_GOVERNANCE.md) (developer/agent governance) · [CLAUDE.md](../CLAUDE.md) (entry point) |
 
@@ -127,7 +127,7 @@ Mobile is first-class. Use **adaptive rendering/quality inside the same NRVNAVer
 - Do **not** hardcode jurisdiction-specific legal assumptions into AWE engine core.
 - **NRVNAVerse itself does not sell or distribute cannabis.**
 
-## 10. First Vertical Slice  [LOCKED scope · PLANNED implementation]
+## 10. First Vertical Slice  [LOCKED scope · VERIFIED M0 architecture slice]
 
 ```
 THE NRVNAVerse Hub
@@ -140,6 +140,8 @@ THE NRVNAVerse Hub
 ```
 
 This is a **technical vertical slice** — it proves architecture, navigation, loading, metadata, web handoff and scalability. It is **not** final visual or world design.
+
+**M0 state (VERIFIED 2026-09-20).** The placeholder destination graph above exists as seven committed manifests with stable ids, and the stable-id navigation / selective loading / gate-before-fetch architecture over it is proven in tests and in the browser (Section 12, "M0 Foundation Completion Gate"). Hub, the two districts and their placeholder artist / brand are reachable by deep link, directory and physical portal; the 21+ Cannabis District and NRVNA Farms are reachable only through the directory / deep-link structure and are refused at the gate boundary (no physical portal leads into the cannabis enclosure, and NRVNA Farms has no internal cannabis portal of its own). All content is placeholder geometry (boxes, labels, translucent sensor panels); nothing here is final visual or world design, and no representative art exists yet.
 
 ## 11. Long-Term Direction — NOT Current Functionality  [ASPIRATIONAL]
 
@@ -160,14 +162,43 @@ None of the following exists today. They are future possibilities that inform ar
 - contextual commerce
 - companion-app integration
 
-## 12. Static Technical Baseline — Landmark v0.1 (Pre-M0)  [VERIFIED 2026-09-19]
+## 12. Static Technical Baseline — Landmark v0.2 (M0 Complete)  [VERIFIED 2026-09-20]
 
-### Repositories and Git relationship
+### Current verified refs (v0.2)
+
+| Ref | SHA | Meaning |
+|---|---|---|
+| `upstream/main` (oncyberio/awe) | `04a07c8d75c114d8ea217d0870eeef2c6a65635a` | official upstream AWE |
+| `origin/main` (NRVNAVerse/awe) | `04a07c8d75c114d8ea217d0870eeef2c6a65635a` | **pristine, upstream-compatible base** — identical to `upstream/main`, no NRVNAVerse commits |
+| `origin/nrvna/integration` | `135ec860d49268525502844e09f6b772a840a832` | **the completed NRVNAVerse M0 product work** — 18 commits ahead of `main` (apps / packages / docs only; `packages/engine`, `engine-edit`, `studio`, `tools` and `examples/*` are byte-identical to upstream) |
+| `ghost/main` = local `ghost/experimental` | `a5880dd463e105275c251c61b6bfa951c2431af1` | Ghost's preserved experimental baseline (D-013), unchanged, not pushed to `origin` |
+
+Application / package versions are unchanged by this milestone: `apps/the-nrvnaverse` **0.1.0**, `@nrvnaverse/manifest` **0.1.0** (no `APP_VERSION` bump; Landmark version ≠ application version, Operating Guide §14). Dependency policy: the only lockfile change since upstream is the registration of the two workspace importers (`44992f3`, D-014); no third-party dependency was added or changed.
+
+### M0 Foundation Completion Gate  [VERIFIED 2026-09-20]
+
+Why M0 is considered complete — each row is verified in the integrated code and its tests (269 app + 56 manifest), and where stated in a real browser; detail lives in the linked domain documents.
+
+| Criterion | Verified state | Detail |
+|---|---|---|
+| A. Canonical destination identity | Stable `dst_…` ids generated once and committed; identity independent of coordinates, chunk keys, slug, URL and domain (validator rejects coordinates in manifests); deterministic manifest validation / generation with `generate:check`; deep links are `?destination=<id>` only, `?chunk=` ignored | [Manifest](./NRVNAVERSE_DESTINATION_MANIFEST.md) |
+| B. Deterministic physical data | One authoritative spatial source (`scene.m0.json` + `spatial-config.m0.json`); generated global scene, four chunks and spatial index are byte-deterministic; `destinationId → chunkKey → spawn` resolved from the generated index at boot; `spatial:check` fails on stale / missing / unexpected artifacts; chunk files carry no identity or gate data | [Pipeline](./NRVNAVERSE_SPATIAL_DATA_PIPELINE.md) §1–§7 |
+| C. Application-layer chunk streaming | Official AWE `createSpace` / `ComponentManager.create / destroy` only; global scene + exactly one active chunk; fetch → validate → stage (old chunk alive) → teleport → commit → retire; every failure step leaves the previous chunk and position intact | [Runtime](./NRVNAVERSE_SPATIAL_RUNTIME.md) §1–§5 |
+| D. Concurrency / lifecycle correctness | Monotonic generation + `AbortController`: latest request wins, stale work cannot teleport, commit, destroy or write the URL; same-chunk travel is a teleport only; asynchronous orchestrator / runtime disposal awaits staged mutations and the engine session; boot → dispose → re-boot verified in tests and in a real headless teardown | [Runtime](./NRVNAVERSE_SPATIAL_RUNTIME.md) §4, §14 |
+| E. Stable-id physical portals | Seven authored sensor components bound to stable destination ids in the generated index (never coordinates); a sensor enter routes into the same `travelToDestination(id)` path; walked into with real input in the browser | [Runtime](./NRVNAVERSE_SPATIAL_RUNTIME.md) §13 |
+| F. Gate boundary (application layer) | Gates come from the canonical manifest; evaluated before any gated chunk fetch; Hub → Cannabis (deep link, directory, portal, touch) → `gateRequired` with **zero** cannabis chunk requests in every browser run; no bypass exists. This is **application-layer gate-before-fetch, not server-side content authorization** (the static file remains publicly retrievable — Section 13) | [Runtime](./NRVNAVERSE_SPATIAL_RUNTIME.md) §7 |
+| G. Delivery / cache correctness | Global scene and chunks are content-addressed (`<name>.<sha256[0:32]>.json`, digest of the exact bytes), served `immutable` behind the revalidated `spatial-index.json` version root; a stale URL is the old bytes or 404, never new bytes; repeat visits are disk-cache hits with 0 wire bytes and no conditional request; navigation stays stable-id based | [Pipeline](./NRVNAVERSE_SPATIAL_DATA_PIPELINE.md) §15 |
+| H. Mobile-aware M0 viability | **EMULATED MOBILE ONLY** (four viewports + 4× CPU profile): touch movement, jump, simultaneous joystick + jump, drag-look, joystick + look, orientation / canvas resize, directory closed by default on touch / narrow viewports with reachable controls and status, gate / arrival controls usable; desktop regression passed. Real iOS / Android validation is future work | [Runtime](./NRVNAVERSE_SPATIAL_RUNTIME.md) §16 |
+| I. Initial guardrails | `spatial:check` warning-only budgets (64 KiB / 64 components per runtime global-scene or chunk artifact); current placeholder artifacts (≈7–10 KiB, 7–9 components) are within them; adaptive quality deliberately deferred to representative art | [Pipeline](./NRVNAVERSE_SPATIAL_DATA_PIPELINE.md) §16 |
+| J. Architecture boundaries | No Ghost chunk / portal code adopted (D-013); no NRVNAVerse product work in `main`; no engine / editor / studio change for M0 streaming (D-010, D-016); no new dependency (D-014); D-016 remains the governing M0 boundary | this section, Governance |
+| K. Non-goals unchanged | M0 completion does **not** claim production deployment, a production-ready visual world, representative-art performance, real age verification, server-authorized gated delivery, cannabis compliance, multiplayer, friends / social graph, partner authoring, world / plots integration, analytics backend, CMS, final mobile polish or real-device certification, a final adaptive-quality architecture, web-site migration, or an upstream AWE contribution | Section 11, Section 13 |
+
+### Repositories and Git relationship (historical v0.1 snapshot, 2026-09-19)
 
 | Ref | SHA | Date | Notes |
 |---|---|---|---|
 | `upstream/main` (oncyberio/awe) | `04a07c8d75c114d8ea217d0870eeef2c6a65635a` | 2026-03-25 | "fix component factory data config isolation" |
-| `origin/main` (NRVNAVerse/awe) | `04a07c8d75c114d8ea217d0870eeef2c6a65635a` | 2026-03-25 | **identical to upstream** (0 ahead / 0 behind) |
+| `origin/main` (NRVNAVerse/awe) | `04a07c8d75c114d8ea217d0870eeef2c6a65635a` | 2026-03-25 | `main` **identical to upstream** (0 ahead / 0 behind) — still true at v0.2; the NRVNAVerse work lives on `nrvna/integration` (see the v0.2 refs above) |
 | `ghost/main` (Gh0sTtD3v/awe) | `a5880dd463e105275c251c61b6bfa951c2431af1` | 2026-08-04 | **6 ahead / 0 behind** upstream; merge-base = `04a07c8` |
 | `upstream/dev` | `864510978661fb0d1a17db304c438067abac2b1a` | 2026-03-24 | "Headless (#9)" |
 | `upstream/headless` | `8c7abd1e15897a39226a05d3690bb42511ee8f4a` | 2026-03-24 | |
@@ -369,7 +400,7 @@ Read-only audit 2B.4B.1 (no repo change), then branch `feat/m0-http-cache-delive
 | Dependencies | None added; `package.json` and `pnpm-lock.yaml` unchanged (`node:crypto` is built in). |
 | Status | **2B.4B complete.** 2B.4C (budgets, mobile/adaptive quality) remains; M0 is still incomplete; Landmark version unchanged; no new decision needed (D-004, D-006, D-013, D-014, D-016 govern). |
 
-### NRVNAVerse implementation state — M0 Step 2B.4C  [VERIFIED 2026-09-20 · emulated mobile; awaiting independent review]
+### NRVNAVerse implementation state — M0 Step 2B.4C  [VERIFIED 2026-09-20 · emulated mobile · independently reviewed and integrated]
 
 Read-only audit 2B.4C.1 (no repo change; emulated mobile matrix, content / boot / travel / memory baselines, capability-repo comparison), then branch `feat/m0-mobile-guardrails` (2B.4C.2, from `nrvna/integration`): a bounded mobile HUD correction in `apps/the-nrvnaverse` plus warning-only spatial budgets. No adaptive quality, no engine / editor / studio change, no dependency change. Full description: [`NRVNAVERSE_SPATIAL_RUNTIME.md`](./NRVNAVERSE_SPATIAL_RUNTIME.md) §16 and [`NRVNAVERSE_SPATIAL_DATA_PIPELINE.md`](./NRVNAVERSE_SPATIAL_DATA_PIPELINE.md) §16.
 
@@ -389,7 +420,7 @@ Read-only audit 2B.4C.1 (no repo change; emulated mobile matrix, content / boot 
 | Not implemented | Real-device (iOS / Android) validation, real safe-area behaviour, adaptive quality, minimap / photo / share / multiplayer, age verification, hosting-level gate enforcement, world / plots integration, visual design. |
 | Ghost boundary | No Ghost code read, copied, cherry-picked or depended on; engine / engine-edit / studio untouched. |
 | Dependencies | None added; `package.json` dependency ranges and `pnpm-lock.yaml` unchanged. |
-| Status | **2B.4C implemented on `feat/m0-mobile-guardrails`, awaiting independent review and integration.** M0 completion and the Landmark 0.2 bump are decided after that review, not here. |
+| Status | **Independently reviewed, integrated into `nrvna/integration` by fast-forward (`dc07ee0` + `135ec86`), and accepted as part of M0 completion** (this Landmark v0.2). The feature branch is retained as history. |
 
 ### Development machine (informational)
 
@@ -397,14 +428,21 @@ Windows 10 Home; Node v24.19.0; Git 2.46.2; Corepack 0.35.0; **pnpm 10.10.0 via 
 
 ## 13. Current Risks
 
-| Risk | Status |
+**M0 blockers: none remaining** — the M0 Foundation Completion Gate (Section 12) passed on 2026-09-20. Everything below is **known post-M0 / production work**; M0 completion is an architecture proof, not production readiness.
+
+| Risk / open work | Status |
 |---|---|
+| Real iOS / Android device validation | Open (post-M0) — all mobile evidence is EMULATED (headless Chrome, touch emulation, device metrics); physical safe areas, pull-to-refresh, double-tap zoom on HUD text, software keyboard, thermal / fps behaviour are unverified |
+| Representative-art asset / render budgets | Open (post-M0) — only warning-only JSON byte / component budgets exist; GLB / texture / draw-call / FPS / heap budgets are defined with the first representative art vertical slice |
+| Adaptive quality | Deferred by measurement (M0 Step 2B.4C) — re-decide with real art; D-009 (adaptive quality inside one product, no Lite product) unchanged |
+| Production deployment / hosting | Open (post-M0) — nothing is deployed; `worlds.nrvnaverse.com` is not wired; cache policy is verified only on `next start` locally (Governance rule 8 for any production change) |
+| Partner authoring / worlds-plots architecture | Open (post-M0) — `TheCannaMan/awe` holds a pushed generic world / plots system classified INFORM (Operating Guide §6.4); a dedicated architecture review is a separate planning task |
 | Ghost experimental code requires review/testing | Open — commit message itself says "AI makes mistakes"; no tests for chunk/portal systems. Ghost's review is required before splitting/reworking, publishing refactors, or upstream contributions based on his work (D-013) |
 | Chunk transition behavior | Mitigated (M0 Step 2B.2) for THE NRVNAVerse app: stage-before-retire with rollback and latest-request-wins cancellation; portal-triggered travel (2B.3) uses the same path. **Repeat visits no longer pay a network round trip (M0 Step 2B.4B): content-addressed chunk/global-scene files (`<name>.<digest>.json`) are served `immutable` and revisits are browser disk-cache hits with 0 wire bytes; a stale URL can never be answered with new bytes (query-only versioning was rejected in review).** A first visit to a chunk still shows a short load (≈20–40 ms locally; ≈165 ms under a 150 ms-latency profile) — prefetch was measured and deliberately rejected for M0. Ghost's experimental unload-then-load manager remains unreviewed and unused |
 | Unmount while a chunk transition is staging | **Closed (M0 Step 2B.4A, `feat/m0-hardening-correctness`)** — `ChunkOrchestrator.dispose()` and `AweSpatialRuntime.dispose()` are now asynchronous; `disposeApp` awaits the settled orchestrator mutation queue (active chunk retired as the last mutation, stale batches self-cleaned) and the runtime's disposal (engine session settled) before the run is cleared, so the Space is never destroyed while `stageChunk` / `ComponentManager.create` is still resolving. Idempotent, best-effort (cleanup failures reported, never hang shutdown). Verified by 213 app tests and a real headless teardown / re-boot cycle. See [`NRVNAVERSE_SPATIAL_RUNTIME.md`](./NRVNAVERSE_SPATIAL_RUNTIME.md) §14 |
 | Mobile performance | Baseline recorded (M0 Step 2B.4C, emulated mobile): placeholder world renders trivially (13–15 draw calls, ≈6.9 k triangles), heap flat, touch viable, 4× CPU slowdown tolerated; **adaptive quality deferred until the first representative art vertical slice** (D-009 unchanged). **Real iOS / Android device validation and real safe-area behaviour still required** — emulation only |
 | Asset budgets | Partially addressed (M0 Step 2B.4C.2): warning-only initial budgets for runtime JSON artifacts (64 KiB / 64 components per global scene or chunk) in `spatial:check`; **asset (GLB / texture), draw-call, FPS and heap budgets deferred to representative art**; cold boot is dominated by placeholder / upstream scene assets (`studio` HDR 1.6 MB) — a scene-data choice for the art step; KTX2 disabled |
-| Upstream/fork divergence | Low now (Ghost 6 ahead / 0 behind; NRVNAVerse identical) — grows with every engine change |
+| Upstream/fork divergence | Low — canonical `main` remains identical to `upstream/main` at `04a07c8`; `nrvna/integration` is intentionally ahead (18 commits) with NRVNAVerse app / package / docs work only, and `packages/engine`, `engine-edit`, `studio`, `tools`, `examples/*` are unchanged from upstream; Ghost's fork is 6 ahead / 0 behind. Divergence grows only with a future engine change |
 | Multiplayer hosting | Open — Colyseus URL hardcoded to `ws://localhost:2567`; needs a WebSocket-capable host |
 | Repo runtime lacks built-in auth/persistence | Open — must be provided at application layer |
 | Slow dependency installs on the development machine | Known — HDD + antivirus real-time scanning make pnpm's link phase ≈25 min on first install (downloads ≈1 min). Mitigation is a machine-level AV exclusion by the owner; CI/other machines unaffected |
@@ -418,9 +456,9 @@ Windows 10 Home; Node v24.19.0; Git 2.46.2; Corepack 0.35.0; **pnpm 10.10.0 via 
 | Ghost's PR #11 was closed unmerged upstream | Confirmed — future upstream contributions must be small, topical PRs |
 | ~200 MB of binaries in Ghost's history | Mitigated by decision (D-013) — `ghost/experimental` is **not** pushed to `origin`; preserved by reference at `a5880dd…` via the `ghost` remote. Any archive / Git LFS / mirror strategy is a separate future decision |
 
-### M0 implementation direction (D-016)  [IN PROGRESS — application-layer boundary; chunk orchestration VERIFIED in Step 2B.2, physical portals VERIFIED in Step 2B.3, lifecycle/shutdown hardening VERIFIED in Step 2B.4A, content-addressed immutable delivery VERIFIED in Step 2B.4B; mobile shell + initial guardrails (2B.4C) IMPLEMENTED on `feat/m0-mobile-guardrails`, awaiting independent review]
+### M0 implementation direction (D-016)  [COMPLETE FOR M0 — application-layer boundary; chunk orchestration VERIFIED in Step 2B.2, physical portals VERIFIED in Step 2B.3, lifecycle/shutdown hardening VERIFIED in Step 2B.4A, content-addressed immutable delivery VERIFIED in Step 2B.4B, mobile-aware prototype shell + warning guardrails VERIFIED in Step 2B.4C; all integrated into `nrvna/integration`]
 
-For M0, chunk orchestration and destination travel are implemented in the NRVNAVerse application layer (`apps/the-nrvnaverse`) over official AWE runtime APIs, with stable destination IDs resolving to physical chunk/spawn data and visitor gates evaluated before gated fetches (D-016). Step 2B.2 delivered the one-active-chunk orchestrator on `ComponentManager.create/destroy`; Step 2B.3 delivered physical portal sensors (official mesh + `isSensor` collider + `Component3D.onSensorEnter`) that route a stable destination id into the same travel path; Step 2B.4A hardened the runtime lifecycle (asynchronous orchestrator/runtime shutdown, boot/dispose coordination with an explicit run state, boot-failure recovery, stale-portal-microtask protection) and closed the carried disposal risk; Step 2B.4B measured the loading path and delivered the performance step as HTTP policy only — content-addressed, `immutable` global-scene/chunk files behind a revalidated spatial-index version root (a first query-token version was corrected after independent review), with application cache and prefetch rejected for M0 on the measurements; Step 2B.4C audited the shell on emulated mobile, corrected the phone HUD (directory default / toggle / status layering / touch-control interception / safe area / world-surface gestures) and added warning-only JSON budgets, while deferring adaptive quality to the first representative art slice. This is an M0 implementation boundary, not a claim that chunk streaming is complete, and not an adoption of Ghost's experimental chunk/portal code — that work remains EXPERIMENTAL per Section 13 and D-013. Generic primitives may later move to `contrib/*` or upstream once validated.
+For M0, chunk orchestration and destination travel are implemented in the NRVNAVerse application layer (`apps/the-nrvnaverse`) over official AWE runtime APIs, with stable destination IDs resolving to physical chunk/spawn data and visitor gates evaluated before gated fetches (D-016). Step 2B.2 delivered the one-active-chunk orchestrator on `ComponentManager.create/destroy`; Step 2B.3 delivered physical portal sensors (official mesh + `isSensor` collider + `Component3D.onSensorEnter`) that route a stable destination id into the same travel path; Step 2B.4A hardened the runtime lifecycle (asynchronous orchestrator/runtime shutdown, boot/dispose coordination with an explicit run state, boot-failure recovery, stale-portal-microtask protection) and closed the carried disposal risk; Step 2B.4B measured the loading path and delivered the performance step as HTTP policy only — content-addressed, `immutable` global-scene/chunk files behind a revalidated spatial-index version root (a first query-token version was corrected after independent review), with application cache and prefetch rejected for M0 on the measurements; Step 2B.4C audited the shell on emulated mobile, corrected the phone HUD (directory default / toggle / status layering / touch-control interception / safe area / world-surface gestures) and added warning-only JSON budgets, while deferring adaptive quality to the first representative art slice. The M0 direction is **complete**: every step above is integrated and verified (Section 12, Completion Gate). This remains an M0 implementation boundary — it is not a claim that generic or upstream chunk streaming is complete, and it is not an adoption of Ghost's experimental chunk/portal code, which remains EXPERIMENTAL per Section 13 and D-013. D-016 is unchanged; generic primitives may later move to `contrib/*` or upstream once validated, as a separate decision.
 
 ## 14. Do Not Accidentally Change  [LOCKED]
 
@@ -444,9 +482,9 @@ Increment the Landmark version only at meaningful milestones, for example:
 
 | Version | Milestone |
 |---|---|
-| 0.1 | Pre-M0 (this version) |
-| 0.2 | M0 complete |
-| 0.3 | M1 vertical slice |
+| 0.1 | Pre-M0 (historical, 2026-09-19) |
+| 0.2 | M0 complete (**this version**, 2026-09-20) |
+| 0.3 | M1 vertical slice (future; scope not yet defined in this repository) |
 | 0.4 | First real partner pilot |
 | 0.5 | Web prototype |
 | 1.0 | Initial public release |
