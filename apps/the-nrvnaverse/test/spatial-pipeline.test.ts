@@ -41,10 +41,12 @@ function readJson<T = Mutable>(path: string): T {
 
 const sourceConfig = readJson(join(SOURCE_DIR, "spatial-config.m0.json"));
 const sourceScene = readJson(join(SOURCE_DIR, sourceConfig.scene as string));
+// M1.0: the config declares an asset registry next to it (the Hub tracer references it).
+const sourceAssets = readJson(join(SOURCE_DIR, sourceConfig.assetRegistry as string));
 const destinations = destinationsJson as unknown as DestinationsFile;
 
-function source(mutate?: (draft: { config: Mutable; scene: Mutable; destinations: Mutable }) => void): SpatialSourceInput {
-  const draft = structuredClone({ config: sourceConfig, scene: sourceScene, destinations: destinations as unknown as Mutable });
+function source(mutate?: (draft: { config: Mutable; scene: Mutable; destinations: Mutable; assets: Mutable }) => void): SpatialSourceInput {
+  const draft = structuredClone({ config: sourceConfig, scene: sourceScene, destinations: destinations as unknown as Mutable, assets: sourceAssets });
   mutate?.(draft);
   return draft;
 }
@@ -111,9 +113,20 @@ describe("spatial source — valid M0 input", () => {
     expect(globalIds).toEqual(["vrm-anims", "lighting", "background", "envmap", "fog", "ground", "Player"]);
   });
 
-  it("emits the compatibility full scene as exactly the authored scene", () => {
+  it("emits the compatibility full scene as the authored scene with asset references resolved", () => {
     const artifacts = generateSpatialArtifacts(source());
-    expect(JSON.parse(artifacts.files[OUTPUT.compatibilityScene])).toEqual(sourceScene);
+    const compatibility = JSON.parse(artifacts.files[OUTPUT.compatibilityScene]);
+    // Identical except that every `assetRef` became the registry-resolved runtime `url` (M1.0).
+    const expected = structuredClone(sourceScene);
+    for (const component of Object.values(expected.components as Record<string, Mutable>)) {
+      if ("assetRef" in component) {
+        const record = sourceAssets.assets[component.assetRef];
+        delete component.assetRef;
+        component.url = `/${record.revisions[String(record.currentRevision)].artifact.storage.objectKey}`;
+      }
+    }
+    expect(compatibility).toEqual(expected);
+    expect(JSON.stringify(compatibility)).not.toContain("assetRef");
     const global = JSON.parse(artifacts.files[artifacts.globalSceneFile]);
     const { components: _c1, ...sceneEnvelope } = sourceScene;
     const { components: _c2, ...globalEnvelope } = global;

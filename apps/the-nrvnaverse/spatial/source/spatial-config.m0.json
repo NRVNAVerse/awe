@@ -2,6 +2,7 @@
   "schemaVersion": 1,
   "worldId": "the-nrvnaverse",
   "scene": "scene.m0.json",
+  "assetRegistry": "asset-registry.json",
   "global": {
     "componentIds": [
       "vrm-anims",
@@ -25,7 +26,8 @@
         "path-east",
         "portal-hub-music",
         "portal-hub-fashion",
-        "portal-hub-cannabis"
+        "portal-hub-cannabis",
+        "tracer-rock-monster"
       ]
     },
     {

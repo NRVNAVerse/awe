@@ -100,9 +100,12 @@ describe("initial M0 spatial warning budgets (2B.4C.2)", () => {
   });
 
   it("more than 64 components in a chunk warns on the component count (and only that chunk)", () => {
-    const gen = generation((d) => addComponents(d, 56, { chunkKey: "hub" })); // 8 + 56 = 64 → exactly at the limit: no warning
+    // The Hub's authored size is read from the source (8 in M0, 9 with the M1.0 tracer), so the
+    // padding lands exactly on the threshold whatever the Hub currently holds.
+    const hubSize = (realSource.config as Mutable).chunks.find((c: Mutable) => c.key === "hub").componentIds.length;
+    const gen = generation((d) => addComponents(d, 64 - hubSize, { chunkKey: "hub" })); // exactly at the limit: no warning
     expect(spatialBudgetWarnings(gen)).toEqual([]);
-    const over = generation((d) => addComponents(d, 57, { chunkKey: "hub" })); // 65
+    const over = generation((d) => addComponents(d, 65 - hubSize, { chunkKey: "hub" })); // 65
     const warnings = spatialBudgetWarnings(over);
     expect(warnings.map((w) => [w.scope, w.chunkKey, w.metric, w.actual, w.threshold])).toEqual([["chunk", "hub", "components", 65, 64]]);
   });

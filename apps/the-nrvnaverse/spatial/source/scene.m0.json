@@ -1998,6 +1998,32 @@
         "identifier": "portal-fashion-brand",
         "tag": "m0-portal"
       }
+    },
+    "tracer-rock-monster": {
+      "name": "M1.0 TRACER — Rock Monster (temporary engineering content, not Hub art)",
+      "id": "tracer-rock-monster",
+      "type": "model",
+      "kit": "cyber",
+      "assetRef": "ast_drbw0be6qzbft4we",
+      "position": {
+        "x": 4,
+        "y": 1.06,
+        "z": -10
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "enableAnimation": true,
+      "animations": {
+        "Armature|mixamo.com|Layer0": true
+      }
     }
   },
   "params": {},

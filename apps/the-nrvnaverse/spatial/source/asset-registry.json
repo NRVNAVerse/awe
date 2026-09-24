@@ -1,0 +1,111 @@
+{
+  "schemaVersion": 1,
+  "assets": {
+    "ast_drbw0be6qzbft4we": {
+      "name": "Rock Monster — M1.0 engineering tracer",
+      "kind": "model",
+      "usage": "internal-tracer",
+      "currentRevision": 1,
+      "provenance": {
+        "origin": "self-authored",
+        "creationContext": "tutorial-assisted",
+        "creator": "Nic Clifton",
+        "source": {
+          "canonicalSource": {
+            "description": "Current Rock Monster Blender source (highest version, newest file in the Rock Monster series). Read-only vault source; never modified by the pipeline.",
+            "path": "D:/AWE-Vault/Blender/Rock Monster 1.7.blend",
+            "bytes": 79969756,
+            "modifiedAt": "2023-04-09T20:19:14-07:00",
+            "sha256": "6d063935e63999bd85af0fcfb328a00c2a62bd7deecdf442635335c040ae5368"
+          },
+          "exportUsed": {
+            "description": "Existing animated GLB export used unchanged as the M1.0 runtime artifact. It PREDATES the current .blend (2022-09-26 vs 2023-04-09), so the exact source revision it was exported from is not recorded; the export's own mesh node is named \"Lava2-body\".",
+            "path": "D:/AWE-Vault/Blender/Rock Monster/Animated GLB/Rock1.glb",
+            "bytes": 6355764,
+            "modifiedAt": "2022-09-26T11:16:31-07:00",
+            "sha256": "62c2278be4c2180be4df622e01e2f8e4718ef736f804b78fbdfba8fa39154fb7"
+          }
+        },
+        "dependencies": [
+          {
+            "id": "animation-mixamo-layer0",
+            "kind": "animation",
+            "description": "Embedded animation clip \"Armature|mixamo.com|Layer0\" (3.43 s, 87 channels). The clip name indicates it was obtained through Adobe Mixamo; the applicable terms and whether they permit this use are not established here.",
+            "status": "unresolved",
+            "notes": "Confirm the Mixamo / Adobe terms for web-runtime use, or replace the clip with a self-authored animation or strip it before any production use."
+          },
+          {
+            "id": "texture-color-pallette",
+            "kind": "texture",
+            "description": "Embedded PNG base-color texture named \"color pallette\" (800x3568, 266,503 bytes).",
+            "status": "unresolved",
+            "notes": "Origin not established from the file; confirm it is self-made (a palette image) or identify its source."
+          }
+        ]
+      },
+      "rights": {
+        "status": "unresolved",
+        "license": null,
+        "rightsHolder": "Nic Clifton (model); embedded dependencies unresolved",
+        "attributionRequired": false,
+        "attributionText": null,
+        "commercialUse": "unknown",
+        "webRuntimeRedistribution": "unknown",
+        "modification": "unknown",
+        "restrictions": [
+          "INTERNAL TRACER ONLY — not production-license-clear while any dependency is unresolved",
+          "Engineering tracer for the M1.0 asset contract; not THE NRVNAVerse art direction"
+        ]
+      },
+      "review": {
+        "status": "internal-tracer-accepted",
+        "reviewedBy": null,
+        "reviewedAt": null,
+        "notes": "Accepted as an internal engineering tracer by the M1.0 task definition (Nic). No production rights review has taken place."
+      },
+      "revisions": {
+        "1": {
+          "artifact": {
+            "sha256": "62c2278be4c2180be4df622e01e2f8e4718ef736f804b78fbdfba8fa39154fb7",
+            "bytes": 6355764,
+            "format": "glb",
+            "storage": {
+              "backend": "repo-public",
+              "objectKey": "assets/art/ast_drbw0be6qzbft4we.62c2278be4c2180be4df622e01e2f8e4.glb"
+            }
+          },
+          "stats": {
+            "method": "measured from the artifact: pnpm inspect-gltf (existing tools CLI) + the glTF JSON chunk (accessor bounds, image headers)",
+            "triangles": 38022,
+            "vertices": 105446,
+            "meshes": 1,
+            "skinnedMeshes": 1,
+            "skins": 1,
+            "joints": 28,
+            "materials": 1,
+            "textures": 1,
+            "images": [{ "name": "color pallette", "mimeType": "image/png", "width": 800, "height": 3568, "bytes": 266503 }],
+            "maxTextureDimension": 3568,
+            "animations": 1,
+            "extensionsUsed": [],
+            "cameras": 0,
+            "lights": 0,
+            "bindPoseBoundsMeters": { "min": [-1.974, -0.307, -2.031], "max": [2.031, 1.956, 1.845] },
+            "generator": "Khronos glTF Blender I/O v3.2.43"
+          },
+          "export": {
+            "tool": "Blender glTF 2.0 exporter (Khronos glTF Blender I/O v3.2.43)",
+            "preset": null,
+            "notes": "Exported before the M1 Blender contract existed: uncompressed, embedded PNG, armature root carries an unapplied rotation (~44 degrees yaw) and offset, material double-sided."
+          },
+          "pipeline": {
+            "validation": "structural (NRVNAVerse gate + inspect-gltf); full glTF validation pending generic AWE H2",
+            "optimization": "pending-platform-H1",
+            "notes": "Used exactly as exported. No NRVNAVerse optimizer exists by design; the generic AWE optimizer (H1) will produce revision 2."
+          },
+          "notes": "Revision 1 — the unchanged existing export, placed as the M1.0 Hub tracer."
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,2 @@
+# Runtime art (M1.0, docs/NRVNAVERSE_ASSET_PIPELINE.md): content-addressed binaries, never text.
+public/assets/art/*.glb binary
