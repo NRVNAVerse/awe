@@ -3,6 +3,7 @@
 import { sharedControlState } from "@oncyberio/engine/input";
 import { useEffect, useRef, useState } from "react";
 import { useInteractionMode } from "@/lib/interaction-mode";
+import { JoystickSurface, joystickGeometry } from "@/lib/input/touch-controls";
 
 type JoystickPosition = {
   x: number;
@@ -16,11 +17,6 @@ type JoystickMetrics = {
   innerInset: number;
   edgeOffset: number;
 };
-
-const DEADZONE = 0.26;
-const RESPONSE_EXPONENT = 1.75;
-const CARDINAL_ASSIST_RATIO = 0.35;
-const CARDINAL_ASSIST_MIN = 0.3;
 
 function getJoystickMetrics(): JoystickMetrics {
   if (typeof window === "undefined") {
@@ -62,36 +58,19 @@ function getJoystickMetrics(): JoystickMetrics {
   };
 }
 
-function applyCardinalAssist(x: number, y: number): JoystickPosition {
-  const magnitude = Math.hypot(x, y);
-
-  if (magnitude < CARDINAL_ASSIST_MIN) {
-    return { x, y };
-  }
-
-  const absX = Math.abs(x);
-  const absY = Math.abs(y);
-
-  if (absX > absY && absY <= absX * CARDINAL_ASSIST_RATIO) {
-    return { x: Math.sign(x) * magnitude, y: 0 };
-  }
-
-  if (absY > absX && absX <= absY * CARDINAL_ASSIST_RATIO) {
-    return { x: 0, y: Math.sign(y) * magnitude };
-  }
-
-  return { x, y };
-}
-
 export function TouchJoystick() {
-  const joystickRef = useRef<HTMLDivElement>(null);
-  const pointerIdRef = useRef<number | null>(null);
   // Shared shell interaction mode (2B.4C.2) — same detection the starter used, now app-wide.
   const enabled = useInteractionMode().touch;
   const [metrics, setMetrics] = useState<JoystickMetrics>(getJoystickMetrics);
-  const [thumbPosition, setThumbPosition] = useState<JoystickPosition>({
-    x: 0,
-    y: 0,
+  // Thumb offset as a fraction of the stick radius (screen space), as `VirtualJoystick` reports it.
+  const [thumb, setThumb] = useState<JoystickPosition>({ x: 0, y: 0 });
+  // Pointer ownership, deadzone, response curve and cardinal assist are the engine's
+  // `VirtualJoystick` (post-M0 input hardening): the first pointer owns the stick until it lifts or
+  // is cancelled, and a second finger — e.g. a camera swipe grazing the stick — changes nothing.
+  const surfaceRef = useRef<JoystickSurface | null>(null);
+  surfaceRef.current ??= new JoystickSurface({
+    publish: (x, y) => sharedControlState.touch.setJoystick(x, y),
+    showThumb: (x, y) => setThumb({ x, y }),
   });
 
   useEffect(() => {
@@ -108,65 +87,25 @@ export function TouchJoystick() {
 
     return () => {
       window.removeEventListener("resize", update);
+      surfaceRef.current?.dispose();
       sharedControlState.touch.setJoystick(0, 0);
     };
   }, []);
 
-  function updateJoystick(clientX: number, clientY: number) {
-    const joystick = joystickRef.current;
-
-    if (!joystick) {
-      return;
-    }
-
-    const rect = joystick.getBoundingClientRect();
-    const centerX = rect.left + rect.width / 2;
-    const centerY = rect.top + rect.height / 2;
-    const radius = rect.width / 2 - metrics.thumbSize / 2;
-
-    const dx = clientX - centerX;
-    const dy = clientY - centerY;
-    const distance = Math.hypot(dx, dy);
-    const normalizedDistance = Math.min(distance / radius, 1);
-    const adjustedDistance =
-      normalizedDistance <= DEADZONE
-        ? 0
-        : (normalizedDistance - DEADZONE) / (1 - DEADZONE);
-    const curvedDistance = adjustedDistance ** RESPONSE_EXPONENT;
-    const displayDistance = normalizedDistance <= DEADZONE ? 0 : normalizedDistance;
-    const directionX = distance > 0 ? dx / distance : 0;
-    const directionY = distance > 0 ? dy / distance : 0;
-    const displayVector = applyCardinalAssist(
-      directionX * displayDistance,
-      directionY * displayDistance,
-    );
-    const outputVector = applyCardinalAssist(
-      directionX * curvedDistance,
-      -directionY * curvedDistance,
-    );
-
-    setThumbPosition({
-      x: displayVector.x * radius,
-      y: displayVector.y * radius,
-    });
-
-    sharedControlState.touch.setJoystick(outputVector.x, outputVector.y);
-  }
-
-  function resetJoystick() {
-    pointerIdRef.current = null;
-    setThumbPosition({ x: 0, y: 0 });
-    sharedControlState.touch.setJoystick(0, 0);
+  function geometryOf(element: HTMLDivElement) {
+    return joystickGeometry(element.getBoundingClientRect(), metrics.thumbSize);
   }
 
   if (!enabled) {
     return null;
   }
 
+  const radius = metrics.stickSize / 2 - metrics.thumbSize / 2;
+
   return (
     <div className="pointer-events-none fixed inset-0 z-40">
       <div
-        ref={joystickRef}
+        data-touch-joystick=""
         className="pointer-events-auto fixed rounded-full border border-white/20 bg-black/20 shadow-[0_18px_50px_rgba(0,0,0,0.28)] backdrop-blur-md"
         style={{
           width: metrics.stickSize,
@@ -177,31 +116,25 @@ export function TouchJoystick() {
           touchAction: "none",
         }}
         onPointerDown={(event) => {
-          pointerIdRef.current = event.pointerId;
-          event.currentTarget.setPointerCapture(event.pointerId);
-          updateJoystick(event.clientX, event.clientY);
+          const element = event.currentTarget;
+          if (!surfaceRef.current!.down(event.pointerId, event.clientX, event.clientY, geometryOf(element))) {
+            return; // another pointer owns the stick: do not capture, do not move
+          }
+          element.setPointerCapture(event.pointerId);
         }}
         onPointerMove={(event) => {
-          if (pointerIdRef.current !== event.pointerId) {
-            return;
-          }
-
-          updateJoystick(event.clientX, event.clientY);
+          surfaceRef.current!.move(event.pointerId, event.clientX, event.clientY, geometryOf(event.currentTarget));
         }}
         onPointerUp={(event) => {
-          if (pointerIdRef.current !== event.pointerId) {
+          if (!surfaceRef.current!.up(event.pointerId)) {
             return;
           }
-
-          event.currentTarget.releasePointerCapture(event.pointerId);
-          resetJoystick();
+          if (event.currentTarget.hasPointerCapture(event.pointerId)) {
+            event.currentTarget.releasePointerCapture(event.pointerId);
+          }
         }}
         onPointerCancel={(event) => {
-          if (pointerIdRef.current !== event.pointerId) {
-            return;
-          }
-
-          resetJoystick();
+          surfaceRef.current!.cancel(event.pointerId);
         }}
       >
         <div
@@ -213,11 +146,12 @@ export function TouchJoystick() {
           style={{ inset: metrics.innerInset }}
         />
         <div
+          data-touch-joystick-thumb=""
           className="absolute left-1/2 top-1/2 rounded-full border border-white/30 bg-white/20 shadow-[0_10px_30px_rgba(0,0,0,0.35)] backdrop-blur-sm"
           style={{
             width: metrics.thumbSize,
             height: metrics.thumbSize,
-            transform: `translate(calc(-50% + ${thumbPosition.x}px), calc(-50% + ${thumbPosition.y}px))`,
+            transform: `translate(calc(-50% + ${thumb.x * radius}px), calc(-50% + ${thumb.y * radius}px))`,
           }}
         />
       </div>

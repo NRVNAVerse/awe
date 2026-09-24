@@ -6,18 +6,12 @@ import {
   type EnterSpaceOpts,
   AvatarComponent,
   createInputs,
-  Keyboard,
-  Gamepad,
-  Mouse,
-  Touch,
-  Custom,
-  Interactions,
-  Processors,
-  withProcessors,
 } from "@oncyberio/engine";
 import { Mover, ThirdPersonCameraRig, createMoverAnimStateMachine } from "@oncyberio/engine/controls";
 import type { MoverAnimLocomotionState } from "@oncyberio/engine/controls";
 import { Quaternion, Vector3 } from "three";
+import { GAMEPLAY_INPUTS } from "@/lib/input/gameplay-inputs";
+import { installInputDiagnostics } from "@/lib/input/input-diagnostics";
 import type { ChunkPayload } from "@/lib/spatial/chunk-payload";
 import { createComponentBatch } from "@/lib/spatial/component-batch";
 import type { SpawnPoint } from "@/lib/spatial/placement-registry";
@@ -53,35 +47,13 @@ import type { ChunkBatch, ChunkRuntime, SensorRuntime } from "@/lib/spatial/spat
  *   no public "session settled" signal; the runtime observes `Engine.sessionState`, which the
  *   upstream destroy handler settles a few microtasks after `space.destroy()`.
  *
- * This file is the only application module that imports `@oncyberio/engine`. It knows nothing
+ * This file is the only spatial module that imports `@oncyberio/engine` (the input map and the
+ * touch-control logic in `src/lib/input/` use `@oncyberio/engine/input` only). It knows nothing
  * about destination ids, gates or chunk selection; the adapter, orchestrator and portal
  * controller own those.
  */
 
-// --- Input definitions (identical to the official starter) ---
-const GAMEPLAY_INPUTS = {
-  Move: {
-    type: "vector2" as const,
-    bindings: [Keyboard.wasd(), Keyboard.arrows(), Gamepad.leftStick(), Gamepad.dpad(), Touch.joystick()],
-  },
-  Look: {
-    type: "vector2" as const,
-    bindings: [Mouse.pointerLockDelta(), withProcessors(Touch.delta(), Processors.scaleVector2(-1)), Gamepad.rightStick()],
-  },
-  Zoom: {
-    type: "value" as const,
-    bindings: [Mouse.wheel()],
-  },
-  Jump: {
-    type: "button" as const,
-    bindings: [Keyboard.button("Space"), Gamepad.button("A"), Custom.button("jump")],
-    interactions: [Interactions.press()],
-  },
-  Sprint: {
-    type: "button" as const,
-    bindings: [Keyboard.button("ShiftLeft"), Keyboard.button("ShiftRight"), Gamepad.button("LB")],
-  },
-} as const;
+// Input definitions: `@/lib/input/gameplay-inputs` (the starter's set, raw touch look).
 
 // --- Animation clip names (starter set; clips ship in public/assets/anims) ---
 const ANIMS = {
@@ -226,6 +198,7 @@ export class AweSpatialRuntime implements ChunkRuntime, SensorRuntime {
     this.player = player;
 
     this.inputs = createInputs(GAMEPLAY_INPUTS);
+    installInputDiagnostics();
 
     this.cameraRig = new ThirdPersonCameraRig({
       camera: Camera.current,

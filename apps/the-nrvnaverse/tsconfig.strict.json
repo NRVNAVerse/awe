@@ -7,5 +7,14 @@
     "incremental": false
   },
   "include": ["src/lib/**/*.ts", "src/hooks/**/*.ts", "test/**/*.ts", "scripts/**/*.mjs"],
-  "exclude": ["node_modules", "src/lib/spatial/awe-spatial-runtime.ts", "src/lib/app-store.ts", "test/app-store.test.ts"]
+  "exclude": [
+    "node_modules",
+    "src/lib/spatial/awe-spatial-runtime.ts",
+    "src/lib/app-store.ts",
+    "test/app-store.test.ts",
+    "src/lib/input/gameplay-inputs.ts",
+    "src/lib/input/touch-controls.ts",
+    "src/lib/input/input-diagnostics.ts",
+    "test/touch-input.test.ts"
+  ]
 }

@@ -11,7 +11,8 @@
     "test": "vitest run",
     "spatial:validate": "node scripts/spatial/cli.mjs validate",
     "spatial:generate": "node scripts/spatial/cli.mjs generate",
-    "spatial:check": "node scripts/spatial/cli.mjs check"
+    "spatial:check": "node scripts/spatial/cli.mjs check",
+    "browser:touch": "node scripts/browser/touch-regression.mjs"
   },
   "dependencies": {
     "@dimforge/rapier3d": "0.11.2",
