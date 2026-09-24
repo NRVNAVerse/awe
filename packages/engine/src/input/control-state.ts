@@ -422,8 +422,15 @@ interface TouchPoint {
  */
 export class TouchState {
   private _touches = new Map<number, TouchPoint>();
-  private _touchCount = 0;
-  private _primaryTouchId: number | null = null;
+  /**
+   * The one contact that owns camera look, claimed explicitly on touch start.
+   *
+   * Ownership is never inherited: when the owner lifts (or is cancelled) the
+   * seat is left empty until a *new* contact is placed. A finger that was
+   * already resting on the surface must not silently take the camera over and
+   * fling it by however far it has drifted since it landed.
+   */
+  private _lookTouchId: number | null = null;
 
   private _x = 0;
   private _y = 0;
@@ -498,17 +505,32 @@ export class TouchState {
   }
 
   /**
-   * Number of active touches.
+   * Number of contacts the engine is actually tracking on its own surface.
+   *
+   * This is deliberately *not* the browser's `TouchEvent.touches.length`: that
+   * list covers the whole document "regardless of target", so it also counts
+   * fingers on overlay UI (an on-screen joystick, a jump button) whose
+   * `touchend` is delivered to the overlay and never to the capture target. A
+   * count taken from it diverges from the tracked set on the first two-surface
+   * gesture and never converges again.
    */
   get touchCount(): number {
-    return this._touchCount;
+    return this._touches.size;
   }
 
   /**
    * Whether touch is currently active
    */
   get isTouching(): boolean {
-    return this._touchCount > 0;
+    return this._touches.size > 0;
+  }
+
+  /**
+   * Identifier of the contact that currently owns camera look, or `null` when
+   * the seat is empty. `position` and `delta` report that contact only.
+   */
+  get lookTouchId(): number | null {
+    return this._lookTouchId;
   }
 
   /**
@@ -518,15 +540,14 @@ export class TouchState {
     identifier: number,
     x: number,
     y: number,
-    countHint?: number,
+    _countHint?: number,
   ): void {
     if (!this._active) return;
 
     this._touches.set(identifier, { x, y });
-    this._touchCount = countHint ?? this._touches.size;
 
-    if (this._primaryTouchId == null || this._primaryTouchId === identifier) {
-      this._primaryTouchId = identifier;
+    if (this._lookTouchId == null || this._lookTouchId === identifier) {
+      this._lookTouchId = identifier;
       this._x = x;
       this._y = y;
     }
@@ -539,22 +560,27 @@ export class TouchState {
     identifier: number,
     x: number,
     y: number,
-    countHint?: number,
+    _countHint?: number,
   ): void {
     if (!this._active) return;
 
     const prev = this._touches.get(identifier);
     this._touches.set(identifier, { x, y });
-    this._touchCount = countHint ?? this._touches.size;
 
-    if (this._primaryTouchId == null) {
-      this._primaryTouchId = identifier;
+    if (this._lookTouchId == null) {
+      // Only a contact whose start we never saw may claim the empty seat --
+      // that is capture attaching mid-gesture, and refusing it would leave
+      // look dead until the finger lifts. A contact we are already tracking
+      // reached this point because the owner lifted out from under it, and
+      // inheriting there is the silent hand-off this class exists to prevent.
+      if (prev) return;
+      this._lookTouchId = identifier;
       this._x = x;
       this._y = y;
       return;
     }
 
-    if (this._primaryTouchId !== identifier) {
+    if (this._lookTouchId !== identifier) {
       return;
     }
 
@@ -574,28 +600,19 @@ export class TouchState {
     identifier: number,
     x = this._x,
     y = this._y,
-    countHint?: number,
+    _countHint?: number,
   ): void {
     if (!this._active) return;
 
     this._touches.delete(identifier);
-    this._touchCount = countHint ?? this._touches.size;
 
-    if (this._primaryTouchId !== identifier) {
+    if (this._lookTouchId !== identifier) {
       return;
     }
 
     this._x = x;
     this._y = y;
-
-    const nextTouch = this._touches.entries().next();
-    if (!nextTouch.done) {
-      this._primaryTouchId = nextTouch.value[0];
-      this._x = nextTouch.value[1].x;
-      this._y = nextTouch.value[1].y;
-    } else {
-      this._primaryTouchId = null;
-    }
+    this._lookTouchId = null;
   }
 
   /**
@@ -624,8 +641,7 @@ export class TouchState {
    */
   reset(): void {
     this._touches.clear();
-    this._touchCount = 0;
-    this._primaryTouchId = null;
+    this._lookTouchId = null;
 
     this._x = 0;
     this._y = 0;

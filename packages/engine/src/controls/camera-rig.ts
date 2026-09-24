@@ -16,13 +16,8 @@ const TWO_PI = Math.PI * 2;
 const MIN_POLAR_ANGLE = 0.1;
 const MAX_POLAR_ANGLE = Math.PI * 0.9;
 
-// Detect touch/mobile for sensitivity adjustments
+// Detect touch for sensitivity adjustments (magnitude only — never axis signs)
 const IS_TOUCH = typeof window !== "undefined" && "ontouchstart" in window;
-const IS_MOBILE =
-  typeof navigator !== "undefined" &&
-  /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-    navigator.userAgent
-  );
 
 // Fixed divisor for consistent sensitivity feel (matches old ThirdPersonCameraControls)
 const SENSITIVITY_DIVISOR = 80;
@@ -479,10 +474,9 @@ export class CameraRig {
       factorY *= 2;
       factorX *= 3;
     }
-    if (IS_MOBILE) {
-      effectiveDeltaX = -effectiveDeltaX;
-      effectiveDeltaY = -effectiveDeltaY;
-    }
+    // (The mobile-only negation that used to live here was removed with the
+    // one in `applyAxisDampening` — see the note there. The device class scales
+    // the deltas but never changes their sign.)
 
     effectiveDeltaX *= factorX;
     effectiveDeltaY *= factorY;
