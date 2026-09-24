@@ -55,6 +55,11 @@ export type {
   ControlStateCaptureMode,
   BrowserInputCaptureOptions,
 } from "./input-capture";
+export { VirtualJoystick } from "./virtual-joystick";
+export type {
+  VirtualJoystickOptions,
+  VirtualJoystickGeometry,
+} from "./virtual-joystick";
 
 // Bindings (device-based factories)
 export {
