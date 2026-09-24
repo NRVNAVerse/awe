@@ -10,8 +10,6 @@ import {
   Touch,
   Custom,
   Interactions,
-  Processors,
-  withProcessors,
 } from "@oncyberio/engine";
 import {
   Mover,
@@ -45,7 +43,7 @@ const GAMEPLAY_INPUTS = {
     type: "vector2" as const,
     bindings: [
       Mouse.pointerLockDelta(),
-      withProcessors(Touch.delta(), Processors.scaleVector2(-1)),
+      Touch.delta(),
       Gamepad.rightStick(),
     ],
   },

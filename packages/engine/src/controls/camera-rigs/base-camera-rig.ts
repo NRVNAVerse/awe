@@ -75,8 +75,11 @@ export function calculateRotationConversion(): RotationConversion {
     };
   }
 
-  // Touch sensitivity calibrated to iPhone 12 Pro (390x844)
-  const SPEED = -0.0043;
+  // Touch sensitivity calibrated to iPhone 12 Pro (390x844). A magnitude only:
+  // this used to be negative, a second mobile-only flip that cancelled the one
+  // `applyAxisDampening` applied, so the rigs built on it (first-person, fly)
+  // must keep a positive factor now that the dampening flip is gone.
+  const SPEED = 0.0043;
   const BASE_WIDTH = window.innerWidth / (ORIENTATION === PORTRAIT ? 390 : 844);
   const BASE_HEIGHT = window.innerHeight / (ORIENTATION === PORTRAIT ? 844 : 390);
 
@@ -112,14 +115,16 @@ export function applyAxisDampening(
     factorX *= 3;
   }
 
-  let dx = deltaX * factorX;
-  let dy = deltaY * factorY;
-
-  // Mobile inverts both axes
-  if (IS_MOBILE) {
-    dx = -dx;
-    dy = -dy;
-  }
+  // NOTE: this used to flip both axes when IS_MOBILE, which made `rotate()`
+  // mean the opposite thing on phones than on desktop. Games compensated with
+  // their own `scaleVector2(-1)` on the touch binding, so the two flips only
+  // cancelled on devices the UA parser actually recognised as mobile — an iPad
+  // reporting a desktop UA got a single flip and looked inverted on both axes.
+  // The device class now scales the deltas but never changes their sign
+  // (+x = look right, +y = look down); inversion belongs to the game's input
+  // bindings (`Processors.invertVector2`), not to a device quirk.
+  const dx = deltaX * factorX;
+  const dy = deltaY * factorY;
 
   return { dx, dy, factorX, factorY };
 }
