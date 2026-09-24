@@ -2,7 +2,7 @@ import { createRequire } from "node:module";
 import { describe, expect, it } from "vitest";
 import spatialIndexJson from "../public/data/spatial/spatial-index.json";
 import { CONTENT_ADDRESSED_OUTPUT, CONTENT_VERSION_PATTERN, DATA_URL_PREFIX, contentVersion } from "../scripts/spatial/pipeline.mjs";
-import nextConfig, { SPATIAL_CONTENT_VERSION, SPATIAL_IMMUTABLE_CACHE_CONTROL, SPATIAL_INDEX_CACHE_CONTROL, spatialDataHeaders } from "../next.config";
+import nextConfig, { SPATIAL_CONTENT_VERSION, SPATIAL_IMMUTABLE_CACHE_CONTROL, SPATIAL_INDEX_CACHE_CONTROL, deliveryHeaders, spatialDataHeaders } from "../next.config";
 
 /**
  * M0 Step 2B.4B.2 — HTTP cache policy for the generated spatial data (`next.config.ts`).
@@ -43,7 +43,9 @@ const artifactUrls = [spatialIndexJson.globalSceneUrl, ...Object.values(spatialI
 
 describe("next.config.ts — spatial data cache policy", () => {
   it("is wired into the exported config and declares exactly three rules, none conditioned on a query", async () => {
-    expect(nextConfig.headers).toBe(spatialDataHeaders);
+    // M1.0: the config serves the spatial rules plus the content-addressed runtime-art rule.
+    expect(nextConfig.headers).toBe(deliveryHeaders);
+    expect((await deliveryHeaders()).slice(0, 3)).toEqual(await spatialDataHeaders());
     const rules = await spatialDataHeaders();
     expect(rules.map((r) => r.source)).toEqual([
       "/data/spatial/spatial-index.json",
