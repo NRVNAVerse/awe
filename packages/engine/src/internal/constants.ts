@@ -62,6 +62,14 @@ if (FRONT_END) {
     CANVAS.style.top = 0;
     CANVAS.style.maxWidth = "100%";
     CANVAS.style.maxHeight = "100%";
+    // The browser must never claim a canvas-originating touch for panning or
+    // pinch-zoom. It is not just that the page would scroll: a second finger
+    // landing on a canvas with the default `touch-action` makes the pair a
+    // candidate pinch gesture, and when the browser takes the gesture it fires
+    // pointercancel on *every* captured pointer — including one an on-screen
+    // joystick holds on its own overlay. Movement then dies under a finger
+    // that never moved. three.js OrbitControls does the same, for this reason.
+    CANVAS.style.touchAction = "none";
     CANVAS.id = "game-canvas";
 }
 
