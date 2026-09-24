@@ -39,6 +39,14 @@ function getDefaultKeyboardTarget(): EventTarget | null {
  * Browser capture path for the input system.
  * Mouse and touch stay separate, keyboard remains event-driven, and gamepad is
  * polled once per input frame.
+ *
+ * Touch bookkeeping is confined to `changedTouches` — the contacts that this
+ * target actually owns. `TouchEvent.touches` is a document-wide list
+ * "regardless of target", so it also counts fingers on sibling overlay UI (an
+ * on-screen joystick, a jump button) whose `touchend` is delivered to the
+ * overlay and never here. Feeding it in as a touch count made the engine's
+ * count diverge from its tracked set on the first two-surface gesture and
+ * never converge again.
  */
 export class BrowserInputCapture implements ControlStateCaptureBackend {
   private readonly _target: BrowserInputCaptureOptions["target"];
@@ -189,7 +197,6 @@ export class BrowserInputCapture implements ControlStateCaptureBackend {
         touch.identifier,
         touch.clientX,
         touch.clientY,
-        event.touches.length,
       );
     }
   };
@@ -206,7 +213,6 @@ export class BrowserInputCapture implements ControlStateCaptureBackend {
         touch.identifier,
         touch.clientX,
         touch.clientY,
-        event.touches.length,
       );
     }
   };
@@ -223,7 +229,6 @@ export class BrowserInputCapture implements ControlStateCaptureBackend {
         touch.identifier,
         touch.clientX,
         touch.clientY,
-        event.touches.length,
       );
     }
   };
@@ -240,7 +245,6 @@ export class BrowserInputCapture implements ControlStateCaptureBackend {
         touch.identifier,
         touch.clientX,
         touch.clientY,
-        event.touches.length,
       );
     }
   };
