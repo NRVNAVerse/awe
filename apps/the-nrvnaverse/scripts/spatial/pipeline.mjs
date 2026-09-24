@@ -39,6 +39,11 @@
  *   removed by `cli.mjs` (the generator owns every file matching {@link CONTENT_ADDRESSED_OUTPUT}).
  *   The token is opaque to the runtime (nothing parses it) and is not identity (D-004): chunk
  *   keys, destination ids and the schema version are untouched.
+ * - Runtime assets (M1.0): an OPTIONAL, additive `assetRegistry` names the asset registry file
+ *   next to the config (`assets.mjs`, docs/NRVNAVERSE_ASSET_PIPELINE.md). A scene component names a
+ *   logical asset (`assetRef: "ast_…"`), never a binary URL; validation runs the NRVNAVerse rights /
+ *   provenance gate and generation replaces `assetRef` with the current revision's content-addressed
+ *   runtime URL in every generated artifact — so a new asset revision is a new chunk digest.
  *
  * This module has no I/O and no third-party dependencies (`node:crypto` only, for the content
  * digest). `cli.mjs` wires it to the file system; the vitest suite imports it directly.
@@ -49,6 +54,7 @@
  */
 
 import { createHash } from "node:crypto";
+import { assetExperimentalWarnings, assetGate, resolveAssetRefs, validateAssetRegistry } from "./assets.mjs";
 
 export const SPATIAL_SCHEMA_VERSION = 1;
 
@@ -99,7 +105,7 @@ export const CONTENT_ADDRESSED_OUTPUT = Object.freeze({
   chunk: /^spatial\/chunks\/([a-z0-9]+(?:-[a-z0-9]+)*)\.([0-9a-f]{32})\.json$/,
 });
 
-const CONFIG_KEYS = ["schemaVersion", "worldId", "scene", "global", "chunks", "placements", "portals"];
+const CONFIG_KEYS = ["schemaVersion", "worldId", "scene", "assetRegistry", "global", "chunks", "placements", "portals"];
 const GLOBAL_KEYS = ["componentIds"];
 const CHUNK_KEYS = ["key", "label", "componentIds"];
 const PLACEMENT_KEYS = ["destinationId", "chunkKey", "spawn"];
@@ -117,6 +123,7 @@ const POSITION_KEYS = ["x", "y", "z"];
  *   schemaVersion: number;
  *   worldId: string;
  *   scene: string;
+ *   assetRegistry?: string;
  *   global: { componentIds: string[] };
  *   chunks: ChunkConfig[];
  *   placements: PlacementConfig[];
@@ -125,7 +132,9 @@ const POSITION_KEYS = ["x", "y", "z"];
  * @typedef {{ components: Record<string, Record<string, unknown>>; [key: string]: unknown }} SceneFile
  * @typedef {{ id: string; status: string; spatialDestination: { platform: string; worldId?: string } | null }} DestinationRecord
  * @typedef {{ destinations: DestinationRecord[] }} DestinationsFile
- * @typedef {{ config: unknown; scene: unknown; destinations: unknown }} SpatialSourceInput
+ * @typedef {{ config: unknown; scene: unknown; destinations: unknown; assets?: unknown }} SpatialSourceInput
+ *   `assets` is the parsed asset registry named by `config.assetRegistry` (null / absent when the
+ *   config declares none or the file does not exist).
  * @typedef {{ code: string; path: string; message: string }} SpatialValidationError
  * @typedef {{ ok: true; errors: [] } | { ok: false; errors: SpatialValidationError[] }} SpatialValidationResult
  * @typedef {{
@@ -136,6 +145,7 @@ const POSITION_KEYS = ["x", "y", "z"];
  *   chunkKeys: string[];
  *   destinationIds: string[];
  *   portalComponentIds: string[];
+ *   assetIds: string[];
  * }} SpatialArtifacts
  *   `files` is keyed by output file name relative to `public/data/` — the content-addressed names
  *   for the global scene and the chunks. `versions` maps each content-addressed file name to its
@@ -203,6 +213,9 @@ export function validateSpatialSource(input) {
   if (!isNonEmptyString(config.worldId)) fail("invalid-world-id", "config.worldId", "worldId must be a non-empty string");
   if (!isNonEmptyString(config.scene) || !SAFE_FILE_NAME.test(config.scene)) {
     fail("invalid-scene-ref", "config.scene", "scene must be a plain .json file name next to the config");
+  }
+  if (config.assetRegistry !== undefined && (!isNonEmptyString(config.assetRegistry) || !SAFE_FILE_NAME.test(config.assetRegistry))) {
+    fail("invalid-asset-registry-ref", "config.assetRegistry", "assetRegistry must be a plain .json file name next to the config");
   }
 
   // --- scene ---
@@ -404,7 +417,49 @@ export function validateSpatialSource(input) {
     fail("world-id-mismatch", "config.worldId", `no THE NRVNAVerse destination declares worldId "${worldId}"`);
   }
 
+  // --- runtime assets (optional, additive; M1.0) ---
+  // A declared registry that is missing or invalid is reported once, above the references: gating
+  // each reference against it would only repeat the same problem as misleading follow-on errors.
+  const registry = loadedRegistry(config, input.assets, fail);
+  if (config.assetRegistry === undefined || registry !== null) {
+    for (const e of assetGate({ components: sceneComponents, registry }).errors) fail(e.code, e.path, e.message);
+  }
+
   return errors.length === 0 ? { ok: true, errors: [] } : { ok: false, errors };
+}
+
+/**
+ * The asset registry the config declares, structurally validated; null when none is declared or it
+ * is invalid (the reasons are reported through `fail`).
+ * @param {Record<string, unknown>} config
+ * @param {unknown} assets
+ * @param {(code: string, path: string, message: string) => void} fail
+ * @returns {import("./assets.mjs").AssetRegistry | null}
+ */
+function loadedRegistry(config, assets, fail) {
+  if (config.assetRegistry === undefined) return null;
+  if (assets === null || assets === undefined) {
+    fail("missing-asset-registry", "config.assetRegistry", `asset registry ${JSON.stringify(config.assetRegistry)} was declared but not found`);
+    return null;
+  }
+  const registryErrors = validateAssetRegistry(assets);
+  for (const e of registryErrors) fail(e.code, e.path, e.message);
+  return registryErrors.length === 0 ? /** @type {import("./assets.mjs").AssetRegistry} */ (assets) : null;
+}
+
+/**
+ * Non-fatal asset findings for a VALID source: internal-tracer notices and the M1 experimental
+ * warning bands (`assets.mjs`). Never fails anything; `spatial:check` prints them.
+ * @param {SpatialSourceInput} input
+ * @returns {import("./assets.mjs").AssetIssue[]}
+ */
+export function spatialAssetWarnings(input) {
+  const config = /** @type {SpatialConfig} */ (input.config);
+  const scene = /** @type {SceneFile} */ (input.scene);
+  if (config.assetRegistry === undefined || !isRecord(input.assets)) return [];
+  const registry = /** @type {import("./assets.mjs").AssetRegistry} */ (input.assets);
+  const gate = assetGate({ components: scene.components, registry });
+  return [...gate.warnings, ...assetExperimentalWarnings(registry, gate.referencedAssetIds)];
 }
 
 /**
@@ -508,14 +563,23 @@ export function generateSpatialArtifacts(input) {
     throw new Error(`spatial source is invalid:\n${formatSpatialErrors(result.errors)}`);
   }
   const config = /** @type {SpatialConfig} */ (input.config);
-  const scene = /** @type {SceneFile} */ (input.scene);
+  const authoredScene = /** @type {SceneFile} */ (input.scene);
+  // Runtime assets: every `assetRef` becomes the current revision's content-addressed URL in EVERY
+  // generated artifact (validation above guarantees each reference resolves).
+  const registry = config.assetRegistry === undefined ? null : /** @type {import("./assets.mjs").AssetRegistry} */ (input.assets);
+  const assetIds = assetGate({ components: authoredScene.components, registry }).referencedAssetIds;
+  const resolvedComponents = resolveAssetRefs(authoredScene.components, registry);
+  /** @type {SceneFile} */
+  const scene = /** @type {SceneFile} */ ({});
+  for (const [key, value] of Object.entries(authoredScene)) scene[key] = key === "components" ? resolvedComponents : value;
 
   /** @type {Record<string, string>} */
   const files = {};
   /** @type {Record<string, string>} content-addressed output file → token (global scene + chunks) */
   const versions = {};
 
-  // A. Compatibility full scene — exactly the authored scene. Validation/debugging output only
+  // A. Compatibility full scene — the authored scene with asset references resolved (identical to
+  //    the authored scene when it references no assets). Validation/debugging output only
   //    since Step 2B.2 (the runtime never requests it); fixed name, not content-addressed.
   files[OUTPUT.compatibilityScene] = serializeArtifact(scene);
 
@@ -591,6 +655,7 @@ export function generateSpatialArtifacts(input) {
     chunkKeys: chunks.map((c) => c.key),
     destinationIds: placements.map((p) => p.destinationId),
     portalComponentIds: portals.map((p) => p.componentId),
+    assetIds,
   };
 }
 

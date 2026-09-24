@@ -10,6 +10,12 @@
  *              additionally prints NON-FATAL initial M0 budget warnings (budgets.mjs: 64 KiB /
  *              64 components per runtime global-scene or chunk artifact — 2B.4C.2)
  *
+ * Runtime assets (M1.0, assets.mjs): `generate` and `check` also verify every referenced asset's
+ * current `repo-public` artifact byte-for-byte against the registry (size + full SHA-256) and fail on
+ * any unregistered file under `public/assets/art/`; `check` prints the internal-tracer notices and
+ * the M1 EXPERIMENTAL warning bands (never fatal). Runtime assets are placed by the asset pipeline,
+ * never generated or deleted by this tool.
+ *
  * Generated-output ownership (M0 Step 2B.4B.2). The global scene and every chunk are written under
  * content-addressed names (`spatial/global-scene.<token>.json`, `spatial/chunks/<key>.<token>.json`),
  * so a content change is a NEW file and the previous one becomes stale. `generate` therefore owns
@@ -25,11 +31,13 @@
  * the generated-output lifecycle in a scratch directory without touching the committed artifacts.
  */
 
+import { createHash } from "node:crypto";
 import { existsSync, mkdirSync, readdirSync, readFileSync, unlinkSync, writeFileSync } from "node:fs";
 import { dirname, join, relative, resolve, sep } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
+import { REPO_PUBLIC_ART_PREFIX, currentRevision, formatAssetIssues } from "./assets.mjs";
 import { formatSpatialBudgetWarning, spatialBudgetWarnings } from "./budgets.mjs";
-import { OUTPUT, formatSpatialErrors, generateSpatialArtifacts, isContentAddressedOutput, validateSpatialSource } from "./pipeline.mjs";
+import { OUTPUT, formatSpatialErrors, generateSpatialArtifacts, isContentAddressedOutput, spatialAssetWarnings, validateSpatialSource } from "./pipeline.mjs";
 
 const APP_ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "../..");
 
@@ -40,6 +48,8 @@ export const SOURCE_CONFIG = join(SOURCE_DIR, "spatial-config.m0.json");
 export const DESTINATIONS_FILE = resolve(APP_ROOT, "../../packages/nrvna-manifest/generated/destinations.json");
 /** Derived artifacts. Never edit by hand. */
 export const OUTPUT_DIR = join(APP_ROOT, "public", "data");
+/** Static root of the app; `repo-public` runtime assets live under `public/assets/art/` (M1.0). */
+export const PUBLIC_DIR = join(APP_ROOT, "public");
 
 const USAGE = `Usage: node scripts/spatial/cli.mjs <validate|generate|check>`;
 
@@ -56,7 +66,56 @@ export function loadSpatialSource() {
   if (!scenePath.startsWith(SOURCE_DIR + sep)) throw new Error(`scene reference escapes the source directory: ${sceneName}`);
   const scene = existsSync(scenePath) ? readJson(scenePath) : null;
   const destinations = readJson(DESTINATIONS_FILE);
-  return { config, scene, destinations };
+  // Optional asset registry (M1.0), named by the config next to it. A declared but missing file is
+  // reported by validation (`missing-asset-registry`), never silently ignored.
+  const registryName = typeof config === "object" && config !== null ? /** @type {any} */ (config).assetRegistry : undefined;
+  if (typeof registryName !== "string") return { config, scene, destinations };
+  const registryPath = join(SOURCE_DIR, registryName);
+  if (!registryPath.startsWith(SOURCE_DIR + sep)) throw new Error(`asset registry reference escapes the source directory: ${registryName}`);
+  const assets = existsSync(registryPath) ? readJson(registryPath) : null;
+  return { config, scene, destinations, assets };
+}
+
+/**
+ * Binary side of the asset gate (M1.0): every referenced asset's current `repo-public` artifact must
+ * exist under `public/` with exactly the registered byte count and full SHA-256, and every file in
+ * `public/assets/art/` must be the current artifact of a registered asset (nothing unregistered or
+ * stale ships). Runtime assets are never generated or deleted by this tool — they are placed by the
+ * asset pipeline and verified here.
+ * @param {import("./assets.mjs").AssetRegistry | null | undefined} registry
+ * @param {string[]} referencedAssetIds
+ * @param {string} publicDir
+ * @returns {{ ok: boolean; problems: string[] }}
+ */
+export function checkRuntimeAssets(registry, referencedAssetIds, publicDir = PUBLIC_DIR) {
+  /** @type {string[]} */
+  const problems = [];
+  /** @type {Set<string>} object keys that are allowed to exist */
+  const expected = new Set();
+  for (const assetId of referencedAssetIds) {
+    const record = registry?.assets[assetId];
+    const revision = record ? currentRevision(record) : null;
+    const artifact = revision?.artifact;
+    if (!artifact || artifact.storage.backend !== "repo-public") continue;
+    expected.add(artifact.storage.objectKey);
+    const path = join(publicDir, ...artifact.storage.objectKey.split("/"));
+    if (!existsSync(path)) {
+      problems.push(`missing runtime asset ${artifact.storage.objectKey} (${assetId} revision ${record?.currentRevision})`);
+      continue;
+    }
+    const bytes = readFileSync(path);
+    if (bytes.length !== artifact.bytes) problems.push(`runtime asset ${artifact.storage.objectKey} is ${bytes.length} bytes, registry says ${artifact.bytes}`);
+    const sha256 = createHash("sha256").update(bytes).digest("hex");
+    if (sha256 !== artifact.sha256) problems.push(`runtime asset ${artifact.storage.objectKey} has sha256 ${sha256}, registry says ${artifact.sha256}`);
+  }
+  const artDir = join(publicDir, ...REPO_PUBLIC_ART_PREFIX.split("/"));
+  if (existsSync(artDir)) {
+    for (const name of readdirSync(artDir).sort()) {
+      const key = `${REPO_PUBLIC_ART_PREFIX}/${name}`;
+      if (!expected.has(key)) problems.push(`unexpected file ${key} — not the current artifact of any referenced registered asset`);
+    }
+  }
+  return { ok: problems.length === 0, problems };
 }
 
 /**
@@ -173,7 +232,13 @@ function main(argv) {
       return 0;
     }
     case "generate": {
-      const artifacts = generateSpatialArtifacts(loadSpatialSource());
+      const source = loadSpatialSource();
+      const artifacts = generateSpatialArtifacts(source);
+      const assetCheck = checkRuntimeAssets(/** @type {any} */ (source.assets) ?? null, artifacts.assetIds);
+      if (!assetCheck.ok) {
+        console.error(assetCheck.problems.join("\n"));
+        return 1;
+      }
       const { written, unchanged } = writeArtifacts(artifacts.files);
       // Write first, remove second: a failed write leaves the previous generation intact.
       const { removed, leftovers } = removeStaleArtifacts(artifacts.files);
@@ -187,7 +252,13 @@ function main(argv) {
       return leftovers.length === 0 ? 0 : 1;
     }
     case "check": {
-      const artifacts = generateSpatialArtifacts(loadSpatialSource());
+      const source = loadSpatialSource();
+      const artifacts = generateSpatialArtifacts(source);
+      const assetCheck = checkRuntimeAssets(/** @type {any} */ (source.assets) ?? null, artifacts.assetIds);
+      if (!assetCheck.ok) {
+        console.error(assetCheck.problems.join("\n"));
+        return 1;
+      }
       const { upToDate, stale, unexpected } = checkArtifacts(artifacts.files);
       if (!upToDate) {
         if (stale.length) console.error(`stale generated files: ${stale.join(", ")}`);
@@ -195,6 +266,10 @@ function main(argv) {
         console.error(`run "pnpm --filter the-nrvnaverse spatial:generate" and commit the result`);
         return 1;
       }
+      // Runtime assets (M1.0): internal-tracer notices and M1 EXPERIMENTAL warning bands — never fatal.
+      const assetWarnings = spatialAssetWarnings(source);
+      if (assetWarnings.length) console.warn(formatAssetIssues(assetWarnings));
+      if (artifacts.assetIds.length) console.log(`runtime assets verified: ${artifacts.assetIds.join(", ")} (registry digest + bytes match the stored artifact)`);
       // Initial M0 warning budgets (2B.4C.2): reported, never fatal — see budgets.mjs.
       const warnings = spatialBudgetWarnings(artifacts);
       for (const warning of warnings) console.warn(formatSpatialBudgetWarning(warning));

@@ -50,11 +50,37 @@ export async function spatialDataHeaders(): Promise<HeaderRule[]> {
   ];
 }
 
+/**
+ * HTTP cache policy for content-addressed runtime art (M1.0, docs/NRVNAVERSE_ASSET_PIPELINE.md).
+ *
+ *   /assets/art/<assetId>.<first 32 hex of the artifact's SHA-256>.glb   immutable
+ *
+ * The rule matches exactly the `repo-public` object-key shape the asset registry enforces
+ * (`scripts/spatial/assets.mjs`: `REPO_PUBLIC_OBJECT_KEY`): the digest is in the path, so the bytes a
+ * URL serves are always the bytes that hash to it and a new revision is a new URL. Nothing else under
+ * `/assets` (the avatar animation clips, any unhashed file) becomes immutable.
+ */
+export const RUNTIME_ASSET_ID = "ast_[0-9abcdefghjkmnpqrstvwxyz]{16}";
+
+export async function runtimeAssetHeaders(): Promise<HeaderRule[]> {
+  return [
+    {
+      source: `/assets/art/:asset(${RUNTIME_ASSET_ID}).:version(${SPATIAL_CONTENT_VERSION}).glb`,
+      headers: [{ key: "Cache-Control", value: SPATIAL_IMMUTABLE_CACHE_CONTROL }],
+    },
+  ];
+}
+
+/** Every delivery rule: the spatial data (M0) plus content-addressed runtime art (M1.0). */
+export async function deliveryHeaders(): Promise<HeaderRule[]> {
+  return [...(await spatialDataHeaders()), ...(await runtimeAssetHeaders())];
+}
+
 const nextConfig: NextConfig = {
   transpilePackages: ["@nrvnaverse/manifest", "@oncyberio/engine", "@oncyberio/engine-edit"],
   serverExternalPackages: ["draco3dgltf", "sharp"],
   compiler,
-  headers: spatialDataHeaders,
+  headers: deliveryHeaders,
 };
 
 export default nextConfig;
