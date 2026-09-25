@@ -20,11 +20,18 @@
  *   one backend, `repo-public` (served from the app's `public/` directory). Production art moves to
  *   external content-addressed storage before M1.2; that is a new backend here, not a new identity.
  *
- * The rights gate is NRVNAVerse policy, not a generic AWE licensing system: an asset that a runtime
- * component references must be registered, have a runtime artifact, and must not be prohibited from
- * web redistribution; `production` use additionally requires cleared rights, resolved dependencies
- * and an approved review. `internal-tracer` use is allowed with incomplete provenance and is always
- * reported as a warning.
+ * The rights gate is NRVNAVerse policy, not a generic AWE licensing system:
+ * - a referenced asset must be registered, have a runtime artifact, not be prohibited from web
+ *   redistribution, not have restricted rights and not be rejected in review;
+ * - `production` use additionally requires cleared rights, web redistribution / commercial use /
+ *   modification all `allowed`, no unresolved dependency, a known origin and an APPROVED review that
+ *   names its human reviewer and time ({@link productionBlockers}). Nothing ever promotes an asset:
+ *   metadata is evidence for the human review, not the approval;
+ * - `internal-tracer` use requires the explicit `internal-tracer-accepted` review and is always
+ *   reported as a warning;
+ * - `repo-public` storage IS publication (a public repository): whatever the usage, its bytes need
+ *   cleared rights, allowed redistribution, a known origin and no unresolved dependency
+ *   ({@link publicationBlockers}). Uncleared or evaluative art therefore never enters Git.
  */
 
 export const ASSET_REGISTRY_SCHEMA_VERSION = 1;
@@ -43,7 +50,10 @@ export const ASSET_FORMATS = Object.freeze({ model: Object.freeze(["glb"]) });
 export const ASSET_COMPONENT_KINDS = Object.freeze({ model: "model" });
 
 export const ASSET_USAGES = Object.freeze(["internal-tracer", "production"]);
-export const ASSET_ORIGINS = Object.freeze(["self-authored", "commissioned", "licensed-third-party", "partner-supplied"]);
+/** `unknown` is recordable (never forced into a wrong claim) but is never production-eligible. */
+export const ASSET_ORIGINS = Object.freeze(["self-authored", "commissioned", "licensed-third-party", "partner-supplied", "unknown"]);
+/** Optional `provenance.creationContext`: how the work was made. Evidence for review, never a clearance. */
+export const CREATION_CONTEXTS = Object.freeze(["original", "tutorial-assisted", "derived", "unknown"]);
 export const RIGHTS_STATUSES = Object.freeze(["cleared", "unresolved", "restricted"]);
 export const PERMISSIONS = Object.freeze(["allowed", "prohibited", "unknown"]);
 export const DEPENDENCY_STATUSES = Object.freeze(["cleared", "unresolved", "removed"]);
@@ -128,6 +138,17 @@ function isNonEmptyString(value) {
  */
 function isNonNegativeInteger(value) {
   return typeof value === "number" && Number.isInteger(value) && value >= 0;
+}
+
+/** ISO 8601 date-time with an explicit offset, e.g. `2026-09-24T10:00:00-07:00` or `…Z`. */
+const REVIEW_TIMESTAMP = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}(?::\d{2}(?:\.\d+)?)?(?:Z|[+-]\d{2}:\d{2})$/;
+
+/**
+ * @param {unknown} value
+ * @returns {value is string}
+ */
+function isReviewTimestamp(value) {
+  return typeof value === "string" && REVIEW_TIMESTAMP.test(value) && !Number.isNaN(Date.parse(value));
 }
 
 /**
@@ -227,6 +248,7 @@ export function validateAssetRegistry(registry) {
       const p = asset.provenance;
       rejectUnexpected(p, PROVENANCE_KEYS, `${path}.provenance`, fail);
       requireOneOf(p.origin, ASSET_ORIGINS, `${path}.provenance.origin`, "invalid-provenance", fail);
+      if (p.creationContext !== undefined) requireOneOf(p.creationContext, CREATION_CONTEXTS, `${path}.provenance.creationContext`, "invalid-provenance", fail);
       if (!Array.isArray(p.dependencies)) {
         fail("invalid-provenance", `${path}.provenance.dependencies`, "dependencies must be an array (empty when the asset has none)");
       } else {
@@ -266,8 +288,17 @@ export function validateAssetRegistry(registry) {
     if (!isRecord(asset.review)) {
       fail("invalid-review", `${path}.review`, "review must be an object");
     } else {
-      rejectUnexpected(asset.review, REVIEW_KEYS, `${path}.review`, fail);
-      requireOneOf(asset.review.status, REVIEW_STATUSES, `${path}.review.status`, "invalid-review", fail);
+      const rv = asset.review;
+      rejectUnexpected(rv, REVIEW_KEYS, `${path}.review`, fail);
+      requireOneOf(rv.status, REVIEW_STATUSES, `${path}.review.status`, "invalid-review", fail);
+      if (rv.reviewedBy !== null && rv.reviewedBy !== undefined && !isNonEmptyString(rv.reviewedBy)) fail("invalid-review", `${path}.review.reviewedBy`, "reviewedBy must be a non-empty string or null");
+      if (rv.reviewedAt !== null && rv.reviewedAt !== undefined && !isReviewTimestamp(rv.reviewedAt)) fail("invalid-review", `${path}.review.reviewedAt`, "reviewedAt must be an ISO 8601 date-time (YYYY-MM-DDTHH:MM[:SS]±HH:MM or Z) or null");
+      // An approval is a human review EVENT: it names the reviewer and when. Provenance, licence
+      // metadata, passing tests or self-authorship are evidence for that review, never the approval.
+      if (rv.status === "approved") {
+        if (!isNonEmptyString(rv.reviewedBy)) fail("review-approval-unattributed", `${path}.review.reviewedBy`, "an approved review must name the human reviewer (reviewedBy)");
+        if (!isReviewTimestamp(rv.reviewedAt)) fail("review-approval-unattributed", `${path}.review.reviewedAt`, "an approved review must record when it happened (reviewedAt, ISO 8601 date-time)");
+      }
     }
 
     // revisions
@@ -292,8 +323,58 @@ export function validateAssetRegistry(registry) {
     if (isNonNegativeInteger(asset.currentRevision) && !(String(asset.currentRevision) in asset.revisions)) {
       fail("invalid-revision", `${path}.currentRevision`, `current revision ${asset.currentRevision} does not exist in revisions`);
     }
+
+    // `repo-public` bytes live in a PUBLIC Git repository and its deployed builds: committing them IS
+    // web redistribution, whatever `usage` says and whether or not anything references them yet.
+    // Uncleared, unresolved or unknown-provenance bytes may never be registered there.
+    const publicRevisions = Object.entries(asset.revisions).filter(([, r]) => isRecord(r) && isRecord(r.artifact) && isRecord(r.artifact.storage) && r.artifact.storage.backend === "repo-public");
+    if (publicRevisions.length) {
+      const blockers = publicationBlockers(asset);
+      if (blockers.length) {
+        for (const [number] of publicRevisions) {
+          fail("repo-public-uncleared", `${path}.revisions.${number}.artifact.storage`, `repo-public storage publishes the bytes in a public repository, but ${blockers.join("; ")}`);
+        }
+      }
+    }
   }
   return errors;
+}
+
+/**
+ * Why an asset's bytes may NOT be published (public repository / public web runtime). Empty = may be.
+ * Tolerates a structurally invalid record (the structural errors are reported separately).
+ * @param {Record<string, unknown>} asset
+ * @returns {string[]}
+ */
+export function publicationBlockers(asset) {
+  /** @type {string[]} */
+  const reasons = [];
+  const rights = isRecord(asset.rights) ? asset.rights : {};
+  const provenance = isRecord(asset.provenance) ? asset.provenance : {};
+  if (rights.status !== "cleared") reasons.push(`rights status is ${JSON.stringify(rights.status)}`);
+  if (rights.webRuntimeRedistribution !== "allowed") reasons.push(`webRuntimeRedistribution is ${JSON.stringify(rights.webRuntimeRedistribution)}`);
+  if (provenance.origin === "unknown") reasons.push(`provenance origin is "unknown"`);
+  const unresolved = Array.isArray(provenance.dependencies) ? provenance.dependencies.filter((d) => !isRecord(d) || (d.status !== "cleared" && d.status !== "removed")) : [];
+  if (unresolved.length) reasons.push(`${unresolved.length} unresolved dependenc${unresolved.length === 1 ? "y" : "ies"} (${unresolved.map((d) => (isRecord(d) ? String(d.id) : "?")).join(", ")})`);
+  return reasons;
+}
+
+/**
+ * Why an asset is NOT production-eligible. Empty = eligible. Production needs every publication
+ * condition, commercial use and modification explicitly `allowed`, and an attributed human approval.
+ * Nothing here ever promotes an asset: `usage: "production"` is an authored claim this function checks.
+ * @param {Record<string, unknown>} asset
+ * @returns {string[]}
+ */
+export function productionBlockers(asset) {
+  const reasons = publicationBlockers(asset);
+  const rights = isRecord(asset.rights) ? asset.rights : {};
+  const review = isRecord(asset.review) ? asset.review : {};
+  if (rights.commercialUse !== "allowed") reasons.push(`commercialUse is ${JSON.stringify(rights.commercialUse)}`);
+  if (rights.modification !== "allowed") reasons.push(`modification is ${JSON.stringify(rights.modification)}`);
+  if (review.status !== "approved") reasons.push(`review status is ${JSON.stringify(review.status)}`);
+  else if (!isNonEmptyString(review.reviewedBy) || !isReviewTimestamp(review.reviewedAt)) reasons.push("the approval does not name a human reviewer and a review time");
+  return reasons;
 }
 
 /**
@@ -360,6 +441,10 @@ export function assetGate({ components, registry }) {
       errors.push({ code: "unregistered-asset-url", path, message: `"${componentId}" is a ${String(component.type)} component without assetRef — runtime assets must be referenced through the asset registry, never by a raw URL` });
       continue;
     }
+    if (!(typeof component.type === "string" && component.type in ASSET_COMPONENT_KINDS)) {
+      errors.push({ code: "asset-ref-unsupported-component", path: `${path}.assetRef`, message: `"${componentId}" is a ${JSON.stringify(component.type)} component, which cannot carry a runtime asset (asset-bearing types: ${Object.keys(ASSET_COMPONENT_KINDS).join(", ")})` });
+      continue;
+    }
     if ("url" in component) errors.push({ code: "asset-ref-with-url", path: `${path}.url`, message: `"${componentId}" declares both assetRef and url — the URL is resolved from the registry at generate time` });
     if (typeof ref !== "string" || !ASSET_ID_PATTERN.test(ref)) {
       errors.push({ code: "invalid-asset-ref", path: `${path}.assetRef`, message: `assetRef ${JSON.stringify(ref)} is not an asset id (${ASSET_ID_PATTERN})` });
@@ -395,17 +480,19 @@ export function assetGate({ components, registry }) {
     if (record.review.status === "rejected") {
       errors.push({ code: "asset-review-rejected", path: `${path}.review.status`, message: `${assetId} (${record.name}) was rejected in review` });
     }
+    if (record.rights.status === "restricted") {
+      errors.push({ code: "asset-rights-restricted", path: `${path}.rights.status`, message: `${assetId} (${record.name}) has restricted rights and may not be referenced by the runtime` });
+    }
     if (record.usage === "production") {
-      /** @type {string[]} */
-      const reasons = [];
-      if (record.rights.status !== "cleared") reasons.push(`rights status is "${record.rights.status}"`);
-      if (record.rights.webRuntimeRedistribution !== "allowed") reasons.push(`webRuntimeRedistribution is "${record.rights.webRuntimeRedistribution}"`);
-      if (unresolvedDependencies.length) reasons.push(`${unresolvedDependencies.length} unresolved dependenc${unresolvedDependencies.length === 1 ? "y" : "ies"} (${unresolvedDependencies.map((d) => d.id).join(", ")})`);
-      if (record.review.status !== "approved") reasons.push(`review status is "${record.review.status}"`);
+      const reasons = productionBlockers(/** @type {Record<string, unknown>} */ (/** @type {unknown} */ (record)));
       if (reasons.length) {
         errors.push({ code: "asset-production-unresolved", path, message: `${assetId} (${record.name}) is marked production but ${reasons.join("; ")}` });
       }
     } else {
+      // Internal tracer: an explicit, recorded acceptance for engineering use — never implied.
+      if (record.review.status !== "internal-tracer-accepted") {
+        errors.push({ code: "asset-internal-tracer-unaccepted", path: `${path}.review.status`, message: `${assetId} (${record.name}) is an internal tracer but its review status is "${record.review.status}" (needs "internal-tracer-accepted")` });
+      }
       /** @type {string[]} */
       const open = [];
       if (record.rights.status !== "cleared") open.push(`rights ${record.rights.status}`);
@@ -478,6 +565,49 @@ export function resolveAssetRefs(components, registry) {
     out[componentId] = resolved;
   }
   return out;
+}
+
+/**
+ * Duplicate object keys in raw JSON text. `JSON.parse` silently keeps the LAST duplicate, so a registry
+ * that declares the same asset id (or revision) twice cannot be detected after parsing; the registry
+ * read boundary (`cli.mjs`) runs this on the raw text first. A small scanner, not a parser: it assumes
+ * the text is otherwise valid JSON (`JSON.parse` reports syntax errors).
+ * @param {string} text
+ * @returns {string[]} JSON-pointer-like paths of every repeated key, e.g. `/assets/ast_…`
+ */
+export function findDuplicateJsonKeys(text) {
+  /** @type {string[]} */
+  const duplicates = [];
+  /** @type {Array<{ keys: Set<string> | null; path: string; pending: string | null }>} one frame per open object / array */
+  const stack = [];
+  let i = 0;
+  while (i < text.length) {
+    const ch = text[i];
+    if (ch === '"') {
+      let j = i + 1;
+      while (j < text.length && text[j] !== '"') j += text[j] === "\\" ? 2 : 1;
+      const value = /** @type {string} */ (JSON.parse(text.slice(i, j + 1)));
+      i = j + 1;
+      let k = i;
+      while (k < text.length && /\s/.test(text[k])) k++;
+      const top = stack[stack.length - 1];
+      if (text[k] === ":" && top && top.keys) {
+        if (top.keys.has(value)) duplicates.push(`${top.path}/${value}`);
+        top.keys.add(value);
+        top.pending = value;
+      }
+      continue;
+    }
+    if (ch === "{" || ch === "[") {
+      const parent = stack[stack.length - 1];
+      const path = parent ? `${parent.path}/${parent.keys ? parent.pending ?? "" : "#"}` : "";
+      stack.push({ keys: ch === "{" ? new Set() : null, path, pending: null });
+    } else if (ch === "}" || ch === "]") {
+      stack.pop();
+    }
+    i++;
+  }
+  return duplicates;
 }
 
 /**

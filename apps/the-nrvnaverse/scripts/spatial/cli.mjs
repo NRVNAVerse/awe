@@ -14,7 +14,8 @@
  * current `repo-public` artifact byte-for-byte against the registry (size + full SHA-256) and fail on
  * any unregistered file under `public/assets/art/`; `check` prints the internal-tracer notices and
  * the M1 EXPERIMENTAL warning bands (never fatal). Runtime assets are placed by the asset pipeline,
- * never generated or deleted by this tool.
+ * never generated or deleted by this tool. The registry is read through {@link readAssetRegistry},
+ * which refuses duplicate JSON keys (a repeated asset id would otherwise collapse silently).
  *
  * Generated-output ownership (M0 Step 2B.4B.2). The global scene and every chunk are written under
  * content-addressed names (`spatial/global-scene.<token>.json`, `spatial/chunks/<key>.<token>.json`),
@@ -35,7 +36,7 @@ import { createHash } from "node:crypto";
 import { existsSync, mkdirSync, readdirSync, readFileSync, unlinkSync, writeFileSync } from "node:fs";
 import { dirname, join, relative, resolve, sep } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
-import { REPO_PUBLIC_ART_PREFIX, currentRevision, formatAssetIssues } from "./assets.mjs";
+import { REPO_PUBLIC_ART_PREFIX, currentRevision, findDuplicateJsonKeys, formatAssetIssues } from "./assets.mjs";
 import { formatSpatialBudgetWarning, spatialBudgetWarnings } from "./budgets.mjs";
 import { OUTPUT, formatSpatialErrors, generateSpatialArtifacts, isContentAddressedOutput, spatialAssetWarnings, validateSpatialSource } from "./pipeline.mjs";
 
@@ -72,8 +73,20 @@ export function loadSpatialSource() {
   if (typeof registryName !== "string") return { config, scene, destinations };
   const registryPath = join(SOURCE_DIR, registryName);
   if (!registryPath.startsWith(SOURCE_DIR + sep)) throw new Error(`asset registry reference escapes the source directory: ${registryName}`);
-  const assets = existsSync(registryPath) ? readJson(registryPath) : null;
+  const assets = existsSync(registryPath) ? readAssetRegistry(registryPath) : null;
   return { config, scene, destinations, assets };
+}
+
+/**
+ * Read the asset registry, refusing duplicate keys first: `JSON.parse` keeps the last of two equal
+ * asset ids / revisions silently, so a duplicate is only detectable in the raw text.
+ * @param {string} path
+ */
+export function readAssetRegistry(path) {
+  const text = readFileSync(path, "utf8");
+  const duplicates = findDuplicateJsonKeys(text);
+  if (duplicates.length) throw new Error(`asset registry ${relative(APP_ROOT, path)} repeats keys (JSON would keep only the last): ${duplicates.join(", ")}`);
+  return /** @type {unknown} */ (JSON.parse(text));
 }
 
 /**
