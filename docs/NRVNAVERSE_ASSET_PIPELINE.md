@@ -167,7 +167,7 @@ Remaining design (unchanged from the plan):
 | runtime URL | resolved at generate time, deterministic and environment-independent (a same-origin path mapped by hosting, or one fixed public base per backend in committed non-secret config — to be decided) | generator + committed backend config |
 | caching | objects served `public, max-age=31536000, immutable` with the right content type (CORS if cross-origin); a 404 must never be cached as immutable | hosting configuration |
 | upload | human-triggered pipeline step from a local working copy; credentials outside the repository | deployment tooling |
-| verification | re-download and check bytes + SHA-256 before the registry revision is committed; a release check re-verifies every referenced object; `spatial:check` stays offline | deployment tooling |
+| verification | re-download and check bytes + SHA-256 before the registry revision is committed (`asset:publish`); `release:check` / `spatial:check` stay offline — they re-validate source / config / registry invariants and the recorded publication evidence, and do **not** re-fetch or re-hash stored objects (a release-time object re-verification is not implemented) | deployment tooling |
 | order / source of truth | the registry defines which bytes; the store only holds them. Upload → verify → commit registry + regenerated chunks → deploy (the index revalidates) | deployment tooling |
 | rollback | `currentRevision` back → regenerate → deploy; objects are never overwritten | registry + generator |
 | retention | never delete an object referenced by a registry revision inside the retention window; old-client requests keep resolving | deployment tooling |

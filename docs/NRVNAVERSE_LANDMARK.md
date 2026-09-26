@@ -3,8 +3,8 @@
 | Field | Value |
 |---|---|
 | **Version** | 0.2 |
-| **Status** | M0 Complete |
-| **Current milestone** | M0 — Foundation (complete) |
+| **Status** | M0 Complete · M1.1 checkpoint VERIFIED on `feat/m1-asset-contract` (not yet integrated; M1 not complete) |
+| **Current milestone** | M1 — representative-art vertical slice (in progress; asset pipeline / hosting-readiness checkpoint M1.1 reached) |
 | **Landmark date** | 2026-09-20 |
 | **Canonical repository** | https://github.com/NRVNAVerse/awe (fork of https://github.com/oncyberio/awe) |
 | **Companion documents** | [NRVNAVERSE_OPERATING_GUIDE.md](./NRVNAVERSE_OPERATING_GUIDE.md) (project orientation / operating model — start there) · [DECISIONS.md](./DECISIONS.md) · [NRVNAVERSE_GOVERNANCE.md](./NRVNAVERSE_GOVERNANCE.md) (developer/agent governance) · [CLAUDE.md](../CLAUDE.md) (entry point) |
@@ -422,6 +422,25 @@ Read-only audit 2B.4C.1 (no repo change; emulated mobile matrix, content / boot 
 | Dependencies | None added; `package.json` dependency ranges and `pnpm-lock.yaml` unchanged. |
 | Status | **Independently reviewed, integrated into `nrvna/integration` by fast-forward (`dc07ee0` + `135ec86`), and accepted as part of M0 completion** (this Landmark v0.2). The feature branch is retained as history. |
 
+### NRVNAVerse implementation state — M1.0b / M1.1 checkpoint  [VERIFIED 2026-09-25 · feature branch `feat/m1-asset-contract`, GitHub CI green · not yet integrated into `nrvna/integration`]
+
+The production asset pipeline and hosting-readiness layer that the M1 art slice needs. Tooling and contracts only: **no production art is placed, nothing is deployed, no storage bucket or DNS exists.** Detail: [`NRVNAVERSE_ASSET_PIPELINE.md`](./NRVNAVERSE_ASSET_PIPELINE.md), [`NRVNAVERSE_R2_STORAGE.md`](./NRVNAVERSE_R2_STORAGE.md), [`NRVNAVERSE_HOSTING.md`](./NRVNAVERSE_HOSTING.md), [`NRVNAVERSE_DELIVERY_ROADMAP.md`](./NRVNAVERSE_DELIVERY_ROADMAP.md) (PROPOSED).
+
+| Item | State |
+|---|---|
+| Asset identity / revisions | Stable `ast_…` asset ids with numbered, immutable revisions (full SHA-256, bytes, format) in a committed registry; scene components name `assetRef`, never a URL; generation resolves the current revision's content-addressed URL |
+| Rights / publication policy | Provenance, rights and attributed review are validated; only cleared, approved `usage: production` assets are publishable to a public store (fail closed) |
+| AWE tooling adoption | H1 generic glTF optimizer and H2 validator / statistics adopted in `packages/tools` (generic, upstream-compatible) |
+| Storage | Provider-neutral `external-cas` backend (write-once, content-addressed `art/<assetId>/<sha256>.<format>`), committed non-secret `publicOrigin`; Cloudflare R2 is the first adapter. The SigV4 transport is **PROVISIONAL** until a live-storage security review |
+| Pipeline commands | `asset:prepare` (intake → optimized, validated, staged artifact) · `asset:publish` (write-once upload + full re-download SHA-256 verification) · `asset:register` (verified revision → registry) · `asset:place` (human-chosen placement into an ungated destination chunk) |
+| Gated delivery invariant | Chunks serving any gated destination carry no `assetRef`; enforced by `asset:place` and by canonical `validateSpatialSource` (`asset-in-gated-chunk`, gate-metadata driven) |
+| Measurement | `browser:perf` can measure an external production asset; no production art measured yet |
+| Visitor shell / web handoff | Diagnostics (prototype label, phase readouts, raw errors, spatial panel) only in dev builds or with `?debug=1`; visitors get product copy and a friendly error / retry state. Generated `web-destinations.json` handoff view derived from the manifests |
+| Hosting readiness | Fail-closed release build (`release:check`), `/api/health`, host configuration docs; `release:check` is offline — it re-validates source / config / registry invariants and recorded publication evidence, it does not re-fetch stored objects |
+| CI | `.github/workflows/nrvnaverse-spatial.yml` (manifests, app typecheck + tests, `spatial:check`, production build) executed successfully on GitHub at `724f47a` |
+| **Not done** | Live R2 bucket / credentials, `assets.nrvnaverse.com` DNS, `worlds.nrvnaverse.com` deployment / DNS, real Hub / Music production art, M1 visual work, real mobile release pass, first live |
+| Landmark version | Unchanged (0.2): the 0.3 bump is reserved for the completed M1 vertical slice (§15) |
+
 ### Development machine (informational)
 
 Windows 10 Home; Node v24.19.0; Git 2.46.2; Corepack 0.35.0; **pnpm 10.10.0 via Corepack** (shims in `%USERPROFILE%\.local\bin` because `C:\Program Files\nodejs` is not writable without elevation — see D-014). Local clone: `D:\NRVNAVerse\awe` on an **NTFS mechanical HDD**; pnpm content-addressable store at `D:\.pnpm-store`. Git HTTPS requires `http.sslbackend=schannel` on this machine (set repo-locally) because a local antivirus TLS proxy (Avast) breaks the OpenSSL backend. The same antivirus's real-time scanning plus the HDD make pnpm's link phase very slow (≈16 packages/min on first install; package downloads themselves complete in about a minute). An antivirus exclusion for `D:\NRVNAVerse` and `D:\.pnpm-store` would remove most of that cost but is a machine-level change for the machine owner to make, not a coding session.
@@ -435,7 +454,8 @@ Windows 10 Home; Node v24.19.0; Git 2.46.2; Corepack 0.35.0; **pnpm 10.10.0 via 
 | Real iOS / Android device validation | Open (post-M0) — all mobile evidence is EMULATED (headless Chrome, touch emulation, device metrics); physical safe areas, pull-to-refresh, double-tap zoom on HUD text, software keyboard, thermal / fps behaviour are unverified |
 | Representative-art asset / render budgets | Open (post-M0) — only warning-only JSON byte / component budgets exist; GLB / texture / draw-call / FPS / heap budgets are defined with the first representative art vertical slice |
 | Adaptive quality | Deferred by measurement (M0 Step 2B.4C) — re-decide with real art; D-009 (adaptive quality inside one product, no Lite product) unchanged |
-| Production deployment / hosting | Open (post-M0) — nothing is deployed; `worlds.nrvnaverse.com` is not wired; cache policy is verified only on `next start` locally (Governance rule 8 for any production change) |
+| Production deployment / hosting | Open — hosting-readiness layer exists (M1.1: fail-closed release build, `/api/health`, CI green) but nothing is deployed, no host is chosen, `worlds.nrvnaverse.com` is not wired; cache policy is verified only on `next start` locally (Governance rule 8 for any production change) |
+| Production asset storage | Open — `external-cas` / R2 adapter and `asset:publish` exist, but no bucket, credentials or `assets.nrvnaverse.com` DNS exist; the SigV4 transport is PROVISIONAL until a focused security / interoperability review or replacement by a maintained S3-compatible client, required before real credentials are used |
 | Partner authoring / worlds-plots architecture | Open (post-M0) — `TheCannaMan/awe` holds a pushed generic world / plots system classified INFORM (Operating Guide §6.4); a dedicated architecture review is a separate planning task |
 | Ghost experimental code requires review/testing | Open — commit message itself says "AI makes mistakes"; no tests for chunk/portal systems. Ghost's review is required before splitting/reworking, publishing refactors, or upstream contributions based on his work (D-013) |
 | Chunk transition behavior | Mitigated (M0 Step 2B.2) for THE NRVNAVerse app: stage-before-retire with rollback and latest-request-wins cancellation; portal-triggered travel (2B.3) uses the same path. **Repeat visits no longer pay a network round trip (M0 Step 2B.4B): content-addressed chunk/global-scene files (`<name>.<digest>.json`) are served `immutable` and revisits are browser disk-cache hits with 0 wire bytes; a stale URL can never be answered with new bytes (query-only versioning was rejected in review).** A first visit to a chunk still shows a short load (≈20–40 ms locally; ≈165 ms under a 150 ms-latency profile) — prefetch was measured and deliberately rejected for M0. Ghost's experimental unload-then-load manager remains unreviewed and unused |
@@ -450,7 +470,7 @@ Windows 10 Home; Node v24.19.0; Git 2.46.2; Corepack 0.35.0; **pnpm 10.10.0 via 
 | New workspace packages not yet in `pnpm-lock.yaml` | Closed — `importers` entries added in `44992f3`; `pnpm install --frozen-lockfile --offline` is up to date |
 | Engine load in a background tab | Known (unchanged by 2B.4A) — no `requestAnimationFrame` in a hidden tab stalls the upstream intro and trips the engine's 60 s `LOAD_TIMEOUT`; the app shows its error phase and a foreground reload recovers. Upstream behaviour, deliberately not touched by the lifecycle hardening; a resume-on-visibility strategy is a later decision |
 | Placement registry is hand-kept | Closed (M0 Step 2B.1) — placements and the scene are generated from one authoritative spatial source; `placements.m0.ts` removed; the spatial index is generated and keyed by stable id, never by coordinates |
-| Gated chunk payloads are statically served | Open (known non-M0 limitation) — `public/data/spatial/chunks/cannabis-21.<digest>.json` is a static file; "never fetched before the gate" is an implemented and tested application-layer rule (Step 2B.2), not a hosting-layer one, until a server-side enforcement design exists. Unchanged by 2B.4B: the content-addressed cannabis URL is served `immutable` like every artifact, which is delivery policy and neither authorises nor prefetches it (browser-verified: 0 cannabis requests); a content-addressed name is not authorisation |
+| Gated chunk payloads are statically served | Open (known non-M0 limitation) — `public/data/spatial/chunks/cannabis-21.<digest>.json` is a static file; "never fetched before the gate" is an implemented and tested application-layer rule (Step 2B.2), not a hosting-layer one, until a server-side enforcement design exists. Unchanged by 2B.4B: the content-addressed cannabis URL is served `immutable` like every artifact, which is delivery policy and neither authorises nor prefetches it (browser-verified: 0 cannabis requests); a content-addressed name is not authorisation. M1.1: gated chunks may carry no runtime asset (`assetRef`), enforced at canonical validation, so gated art is never publicly published |
 | Manifest `generate:check` fails on `core.autocrlf=true` checkouts | Closed (2026-09-19, `feat/m0-chunk-streaming`) — `manifests-fs.ts` now normalises line endings only when comparing on-disk files with fresh canonical LF output (write and check paths); canonical serialization unchanged; temp-directory tests cover LF, CRLF, real content and whitespace differences |
 | awe.box and open-source AWE are different runtimes | Confirmed — hosted awe.box worlds are not portable to this repo's runtime |
 | Ghost's PR #11 was closed unmerged upstream | Confirmed — future upstream contributions must be small, topical PRs |
@@ -484,7 +504,7 @@ Increment the Landmark version only at meaningful milestones, for example:
 |---|---|
 | 0.1 | Pre-M0 (historical, 2026-09-19) |
 | 0.2 | M0 complete (**this version**, 2026-09-20) |
-| 0.3 | M1 vertical slice (future; scope not yet defined in this repository) |
+| 0.3 | M1 vertical slice (in progress; M1.1 asset-pipeline / hosting-readiness checkpoint reached 2026-09-25 — bump when the slice is complete) |
 | 0.4 | First real partner pilot |
 | 0.5 | Web prototype |
 | 1.0 | Initial public release |
