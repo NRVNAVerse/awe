@@ -276,7 +276,7 @@ async function waitFor(cdp, expression, { timeout = 120_000, every = 250, label 
   }
 }
 
-const PLACED = `(() => { const ph = document.querySelector("header code")?.textContent; return ph && ["ready", "arrived", "gateRequired"].includes(ph) && globalThis.__nrvnaverseInput ? ph : null; })()`;
+const PLACED = `(() => { const ph = document.querySelector("header[data-app-phase]")?.getAttribute("data-app-phase"); return ph && ["ready", "arrived", "gateRequired"].includes(ph) && globalThis.__nrvnaverseInput ? ph : null; })()`;
 
 /**
  * A fresh page, placed in the world, with pointercancel counters on the touch controls.

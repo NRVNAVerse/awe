@@ -186,7 +186,7 @@ function summarizeNetwork(requests) {
 }
 
 // ------------------------------------------------------------------------------------ in-page probes
-const PLACED = `(() => { const ph = document.querySelector("header code")?.textContent; return ph && ["ready", "arrived", "gateRequired"].includes(ph) && globalThis.__nrvnaverseInput ? ph : null; })()`;
+const PLACED = `(() => { const ph = document.querySelector("header[data-app-phase]")?.getAttribute("data-app-phase"); return ph && ["ready", "arrived", "gateRequired"].includes(ph) && globalThis.__nrvnaverseInput ? ph : null; })()`;
 /** @param {string} id */
 const ASSET_LOADED = (id) => `(() => { const c = globalThis.$space?.components.byId(${JSON.stringify(id)}); if (!c) return false; let meshes = 0; c.traverse((o) => { if (o.isMesh) meshes++; }); return meshes > 0; })()`;
 
@@ -285,6 +285,9 @@ async function probeProfile(base, profile) {
     heap: await cdp.send("Runtime.getHeapUsage"), heapNote: "JS heap only (Runtime.getHeapUsage); GPU memory (textures, buffers) is not measured",
     measures: await cdp.eval(MEASURES),
   };
+  // Launch shell: a production visitor sees no engineering presentation (diagnostics gate off).
+  R.visitorShell = await cdp.eval(`(() => ({ debugNodes: document.querySelectorAll("[data-debug]").length, header: document.querySelector("header[data-app-phase]")?.innerText ?? null, prototypeText: /prototype|phase:/i.test(document.body.innerText) }))()`);
+  check(`${profile.name}: visitor shell shows no diagnostics (no [data-debug], no prototype / phase text)`, R.visitorShell.debugNodes === 0 && !R.visitorShell.prototypeText, R.visitorShell);
   R.renderer = await frameInfo(cdp);
   R.scene = await cdp.eval(SCENE);
   R.frameTiming = await cdp.eval(FRAME_TIMING);

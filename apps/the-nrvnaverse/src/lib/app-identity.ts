@@ -11,6 +11,8 @@ export const APP_IDENTITY = {
   ecosystem: "NRVNAVerse",
   spatialRoot: NRVNAVERSE_SPATIAL_ROOT,
   webRoot: NRVNAVERSE_WEB_ROOT,
-  /** Honest milestone label shown in the prototype UI. */
+  /** Visitor-facing line under the product name. */
+  tagline: "Explore the NRVNAVerse — districts, artists and culture in one connected world",
+  /** Honest engineering milestone label — shown only with diagnostics enabled (`useDebugMode`). */
   milestone: "M0 Foundation — architecture prototype complete",
 } as const;
