@@ -16,9 +16,11 @@
  *   key embeds the first 32 hex chars (the spatial pipeline's content-version length), so a new
  *   revision is a new immutable URL and — because the URL lands in the chunk payload — a new chunk
  *   digest.
- * - STORAGE: `storage.backend` decides where the bytes live and how the URL is formed. M1.0 knows
- *   one backend, `repo-public` (served from the app's `public/` directory). Production art moves to
- *   external content-addressed storage before M1.2; that is a new backend here, not a new identity.
+ * - STORAGE: `storage.backend` decides where the bytes live and how the URL is formed — the
+ *   provider-neutral contract in `storage.mjs`. `repo-public` (the app's `public/` directory) is
+ *   implemented; `external-cas` (production art, provider not chosen) validates in the registry but
+ *   its runtime resolution is adapter-pending, so a scene cannot reference it yet
+ *   (`asset-storage-unresolved`). A provider is a new adapter, never a new identity.
  *
  * The rights gate is NRVNAVerse policy, not a generic AWE licensing system:
  * - a referenced asset must be registered, have a runtime artifact, not be prohibited from web
@@ -37,14 +39,14 @@
  *   art therefore never enters Git, and automation never approves a publication.
  */
 
+import { STORAGE_BACKENDS, isRuntimeResolvable, objectKeyFor, runtimeAssetUrl, storageBackend } from "./storage.mjs";
+
 export const ASSET_REGISTRY_SCHEMA_VERSION = 1;
 
 /** Same alphabet and length as destination ids (`dst_`), different prefix. */
 export const ASSET_ID_PATTERN = /^ast_[0-9abcdefghjkmnpqrstvwxyz]{16}$/;
 /** Full lowercase SHA-256 of the runtime artifact bytes. */
 export const ASSET_SHA256_PATTERN = /^[0-9a-f]{64}$/;
-/** Length of the digest prefix embedded in object keys (matches the spatial content-version token). */
-export const ASSET_OBJECT_TOKEN_LENGTH = 32;
 
 export const ASSET_KINDS = Object.freeze(["model"]);
 /** Runtime formats per kind. */
@@ -62,12 +64,19 @@ export const PERMISSIONS = Object.freeze(["allowed", "prohibited", "unknown"]);
 export const DEPENDENCY_STATUSES = Object.freeze(["cleared", "unresolved", "removed"]);
 export const REVIEW_STATUSES = Object.freeze(["unreviewed", "internal-tracer-accepted", "approved", "rejected"]);
 
-/** Storage backends. Only `repo-public` exists in M1.0 (see the module comment). */
-export const STORAGE_BACKENDS = Object.freeze(["repo-public"]);
-/** `repo-public` object keys live under `public/assets/art/` and are served from `/assets/art/`. */
-export const REPO_PUBLIC_ART_PREFIX = "assets/art";
-/** A `repo-public` object key: `assets/art/<assetId>.<first 32 hex of sha256>.<format>`. */
-export const REPO_PUBLIC_OBJECT_KEY = /^assets\/art\/(ast_[0-9abcdefghjkmnpqrstvwxyz]{16})\.([0-9a-f]{32})\.(glb)$/;
+// Storage backends, object keys and runtime URL resolution are the provider-neutral storage contract
+// (`storage.mjs`); re-exported so existing callers keep one import.
+export {
+  ASSET_OBJECT_TOKEN_LENGTH,
+  EXTERNAL_CAS_OBJECT_KEY,
+  REPO_PUBLIC_ART_PREFIX,
+  REPO_PUBLIC_OBJECT_KEY,
+  STORAGE_BACKENDS,
+  STORAGE_BACKEND_CONTRACTS,
+  isRuntimeResolvable,
+  objectKeyFor,
+  runtimeAssetUrl,
+} from "./storage.mjs";
 
 /**
  * M1 EXPERIMENTAL warning bands — investigation triggers for the representative-art slice, never
@@ -205,16 +214,7 @@ function requireOneOf(value, allowed, path, code, fail) {
  * @param {string} format
  */
 export function repoPublicObjectKey(assetId, sha256, format) {
-  return `${REPO_PUBLIC_ART_PREFIX}/${assetId}.${sha256.slice(0, ASSET_OBJECT_TOKEN_LENGTH)}.${format}`;
-}
-
-/**
- * Runtime URL for a stored artifact. Storage decides the URL; identity never does.
- * @param {AssetStorage} storage
- */
-export function runtimeAssetUrl(storage) {
-  if (storage.backend === "repo-public") return `/${storage.objectKey}`;
-  throw new Error(`unsupported storage backend ${JSON.stringify(storage.backend)}`);
+  return objectKeyFor("repo-public", assetId, sha256, format);
 }
 
 /**
@@ -354,7 +354,7 @@ export function validateAssetRegistry(registry) {
     // - production art never uses repo-public (it lives in external content-addressed storage);
     // - uncleared, unresolved or unknown-provenance bytes are never registered there;
     // - the review must be `internal-tracer-accepted` with a named reviewer and a valid review time.
-    const publicRevisions = Object.entries(asset.revisions).filter(([, r]) => isRecord(r) && isRecord(r.artifact) && isRecord(r.artifact.storage) && r.artifact.storage.backend === "repo-public");
+    const publicRevisions = Object.entries(asset.revisions).filter(([, r]) => isRecord(r) && isRecord(r.artifact) && isRecord(r.artifact.storage) && typeof r.artifact.storage.backend === "string" && storageBackend(r.artifact.storage.backend)?.publishesToGit === true);
     for (const [number] of publicRevisions) {
       const spath = `${path}.revisions.${number}.artifact.storage`;
       if (asset.usage === "production") fail("repo-public-production", spath, "production art never uses repo-public storage (the public repository); it needs an external content-addressed backend");
@@ -439,12 +439,12 @@ function validateArtifact(assetId, kind, artifact, path, fail) {
   requireOneOf(format, formats, `${path}.format`, "invalid-artifact", fail);
   if (!isRecord(storage)) return fail("invalid-storage", `${path}.storage`, "storage must be an object { backend, objectKey }");
   rejectUnexpected(storage, STORAGE_KEYS, `${path}.storage`, fail);
-  if (typeof storage.backend !== "string" || !STORAGE_BACKENDS.includes(storage.backend)) {
-    return fail("unsupported-storage-backend", `${path}.storage.backend`, `storage backend ${JSON.stringify(storage.backend)} is not supported (M1.0 supports ${STORAGE_BACKENDS.join(", ")})`);
+  if (typeof storage.backend !== "string" || !storageBackend(storage.backend)) {
+    return fail("unsupported-storage-backend", `${path}.storage.backend`, `storage backend ${JSON.stringify(storage.backend)} is not supported (supported: ${STORAGE_BACKENDS.join(", ")})`);
   }
-  if (storage.backend === "repo-public" && typeof sha256 === "string" && ASSET_SHA256_PATTERN.test(sha256) && typeof format === "string") {
-    const expected = repoPublicObjectKey(assetId, sha256, format);
-    if (storage.objectKey !== expected) fail("invalid-object-key", `${path}.storage.objectKey`, `repo-public object key must be the content-addressed "${expected}", got ${JSON.stringify(storage.objectKey)}`);
+  if (typeof sha256 === "string" && ASSET_SHA256_PATTERN.test(sha256) && typeof format === "string") {
+    const expected = objectKeyFor(storage.backend, assetId, sha256, format);
+    if (storage.objectKey !== expected) fail("invalid-object-key", `${path}.storage.objectKey`, `${storage.backend} object key must be the content-addressed "${expected}", got ${JSON.stringify(storage.objectKey)}`);
   }
 }
 
@@ -517,6 +517,10 @@ export function assetGate({ components, registry }) {
     const revision = currentRevision(record);
     if (!revision || !revision.artifact) {
       errors.push({ code: "asset-missing-artifact", path: `${path}.revisions.${record.currentRevision}.artifact`, message: `${assetId} (${record.name}) is referenced but its current revision has no runtime artifact` });
+    } else if (!isRuntimeResolvable(revision.artifact.storage.backend)) {
+      // Registered and valid, but no runtime URL can be formed yet: refuse rather than generate a
+      // chunk that points at bytes nobody serves.
+      errors.push({ code: "asset-storage-unresolved", path: `${path}.revisions.${record.currentRevision}.artifact.storage.backend`, message: `${assetId} (${record.name}) is stored on "${revision.artifact.storage.backend}", whose runtime URL resolution is adapter-pending — it cannot be referenced by the runtime yet` });
     }
     if (record.rights.webRuntimeRedistribution === "prohibited") {
       errors.push({ code: "asset-redistribution-prohibited", path: `${path}.rights.webRuntimeRedistribution`, message: `${assetId} (${record.name}) may not be redistributed in a web runtime` });

@@ -6,10 +6,14 @@ import { join, resolve } from "node:path";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import {
   ASSET_ID_PATTERN,
+  EXTERNAL_CAS_OBJECT_KEY,
   REPO_PUBLIC_OBJECT_KEY,
+  STORAGE_BACKEND_CONTRACTS,
   assetGate,
   findDuplicateJsonKeys,
   isReviewTimestamp,
+  isRuntimeResolvable,
+  objectKeyFor,
   productionBlockers,
   publicationBlockers,
   publicationReviewBlockers,
@@ -388,8 +392,10 @@ describe("registry schema — strict and safe", () => {
   });
 
   it("rejects unsupported storage backends in the validator and the resolver", () => {
-    expect(registryCodes((a) => (a.revisions["1"].artifact.storage = { backend: "external-cas", objectKey: "x" }))).toEqual(["unsupported-storage-backend"]);
-    expect(() => runtimeAssetUrl({ backend: "external-cas", objectKey: "x" })).toThrow(/unsupported storage backend/);
+    for (const backend of ["s3", "__proto__", "Repo-Public"]) {
+      expect(registryCodes((a) => (a.revisions["1"].artifact.storage = { backend, objectKey: "x" })), backend).toEqual(["unsupported-storage-backend"]);
+      expect(() => runtimeAssetUrl({ backend, objectKey: "x" }), backend).toThrow(/unsupported storage backend/);
+    }
   });
 
   it("keeps unexpected-field rejection and the id / digest / size shapes", () => {
@@ -403,6 +409,61 @@ describe("registry schema — strict and safe", () => {
     })).toContain("invalid-rights");
     expect(registryCodes((_a, r) => (r.assets["Rock Monster"] = r.assets[ID]))).toContain("invalid-asset-id");
     expect(validateAssetRegistry(JSON.parse('{"schemaVersion":1,"assets":{"__proto__":{}}}')).map((e) => e.code)).toContain("invalid-asset-id");
+  });
+});
+
+describe("storage contract — provider-neutral external content-addressed backend", () => {
+  const EXTERNAL_KEY = `art/${ID}/${SHA}.glb`;
+  const onExternal = (d: Draft) => (asset(d).revisions["1"].artifact.storage = { backend: "external-cas", objectKey: EXTERNAL_KEY });
+
+  it("keys external objects by asset id + full SHA-256, exact match only", () => {
+    expect(objectKeyFor("external-cas", ID, SHA, "glb")).toBe(EXTERNAL_KEY);
+    expect(EXTERNAL_KEY).toMatch(EXTERNAL_CAS_OBJECT_KEY);
+    const registryOf = (objectKey: string) => {
+      const a = fixtureAsset();
+      a.revisions["1"].artifact.storage = { backend: "external-cas", objectKey };
+      return validateAssetRegistry({ schemaVersion: 1, assets: { [ID]: a } }).map((e) => e.code);
+    };
+    expect(registryOf(EXTERNAL_KEY)).toEqual([]);
+    for (const key of [KEY, `art/${ID}/${SHA.slice(0, 32)}.glb`, `art/${OTHER_ID}/${SHA}.glb`, `/${EXTERNAL_KEY}`, `art/${ID}/../${SHA}.glb`]) {
+      expect(registryOf(key), key).toEqual(["invalid-object-key"]);
+    }
+  });
+
+  it("is where production art lives: a cleared, approved production asset validates in the registry", () => {
+    const input = source((d) => {
+      asProduction(d);
+      onExternal(d);
+    });
+    expect(validateAssetRegistry(input.assets as unknown)).toEqual([]);
+    // Not a Git publication: an unreviewed, uncleared record may be staged there (never referenced).
+    const a = fixtureAsset();
+    Object.assign(a, { review: { status: "unreviewed", reviewedBy: null, reviewedAt: null } });
+    a.rights.status = "unresolved";
+    a.revisions["1"].artifact.storage = { backend: "external-cas", objectKey: EXTERNAL_KEY };
+    expect(validateAssetRegistry({ schemaVersion: 1, assets: { [ID]: a } })).toEqual([]);
+  });
+
+  it("cannot be referenced until its runtime resolution exists (adapter-pending), and the resolver refuses to guess", () => {
+    const input = source((d) => {
+      asProduction(d);
+      onExternal(d);
+    });
+    expect(codesOf(input)).toEqual(["asset-storage-unresolved"]);
+    expect(messagesOf(input)).toMatch(/adapter-pending/);
+    expect(isRuntimeResolvable("external-cas")).toBe(false);
+    expect(isRuntimeResolvable("repo-public")).toBe(true);
+    expect(() => runtimeAssetUrl({ backend: "external-cas", objectKey: EXTERNAL_KEY })).toThrow(/adapter pending/);
+    expect(STORAGE_BACKEND_CONTRACTS["external-cas"]).toMatchObject({ status: "adapter-pending", publishesToGit: false, allowsProduction: true });
+    expect(STORAGE_BACKEND_CONTRACTS["repo-public"]).toMatchObject({ status: "implemented", publishesToGit: true, allowsProduction: false });
+  });
+
+  it("moving bytes between backends changes only storage — asset id and revision are untouched", () => {
+    const repo = source();
+    const external = source(onExternal);
+    expect(Object.keys((external.assets as Mutable).assets)).toEqual(Object.keys((repo.assets as Mutable).assets));
+    const [r, e] = [asset(repo as unknown as Draft).revisions["1"].artifact, asset(external as unknown as Draft).revisions["1"].artifact];
+    expect({ ...e, storage: undefined }).toEqual({ ...r, storage: undefined });
   });
 });
 
