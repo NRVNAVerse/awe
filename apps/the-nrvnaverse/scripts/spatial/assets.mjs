@@ -29,9 +29,12 @@
  *   metadata is evidence for the human review, not the approval;
  * - `internal-tracer` use requires the explicit `internal-tracer-accepted` review and is always
  *   reported as a warning;
- * - `repo-public` storage IS publication (a public repository): whatever the usage, its bytes need
- *   cleared rights, allowed redistribution, a known origin and no unresolved dependency
- *   ({@link publicationBlockers}). Uncleared or evaluative art therefore never enters Git.
+ * - `repo-public` storage IS publication (a public repository), for cleared internal engineering
+ *   assets only: production art never uses it (`repo-public-production`); its bytes need cleared
+ *   rights, allowed redistribution, a known origin and no unresolved dependency
+ *   ({@link publicationBlockers}); and the publication needs a deliberate, attributed
+ *   `internal-tracer-accepted` review ({@link publicationReviewBlockers}). Uncleared or evaluative
+ *   art therefore never enters Git, and automation never approves a publication.
  */
 
 export const ASSET_REGISTRY_SCHEMA_VERSION = 1;
@@ -141,14 +144,35 @@ function isNonNegativeInteger(value) {
 }
 
 /** ISO 8601 date-time with an explicit offset, e.g. `2026-09-24T10:00:00-07:00` or `…Z`. */
-const REVIEW_TIMESTAMP = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}(?::\d{2}(?:\.\d+)?)?(?:Z|[+-]\d{2}:\d{2})$/;
+const REVIEW_TIMESTAMP = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})(?::(\d{2})(?:\.\d+)?)?(?:Z|[+-](\d{2}):(\d{2}))$/;
 
 /**
+ * A genuinely valid review time: the ISO shape AND a real calendar date, clock time and offset
+ * (`Date.parse` alone accepts e.g. `2026-02-30` by rolling it over).
  * @param {unknown} value
  * @returns {value is string}
  */
-function isReviewTimestamp(value) {
-  return typeof value === "string" && REVIEW_TIMESTAMP.test(value) && !Number.isNaN(Date.parse(value));
+export function isReviewTimestamp(value) {
+  if (typeof value !== "string") return false;
+  const m = REVIEW_TIMESTAMP.exec(value);
+  if (!m) return false;
+  const [year, month, day, hour, minute] = [m[1], m[2], m[3], m[4], m[5]].map(Number);
+  const second = m[6] === undefined ? 0 : Number(m[6]);
+  const daysInMonth = new Date(Date.UTC(year, month, 0)).getUTCDate();
+  if (month < 1 || month > 12 || day < 1 || day > daysInMonth) return false;
+  if (hour > 23 || minute > 59 || second > 59) return false;
+  if (m[7] !== undefined && (Number(m[7]) > 14 || Number(m[8]) > 59)) return false;
+  return !Number.isNaN(Date.parse(value));
+}
+
+/**
+ * A human-attestation field (`reviewedBy`): a name with at least one non-space character. It records
+ * WHO took the review decision; automation never fills it in.
+ * @param {unknown} value
+ * @returns {value is string}
+ */
+export function isAttestedReviewer(value) {
+  return typeof value === "string" && value.trim().length > 0;
 }
 
 /**
@@ -291,12 +315,12 @@ export function validateAssetRegistry(registry) {
       const rv = asset.review;
       rejectUnexpected(rv, REVIEW_KEYS, `${path}.review`, fail);
       requireOneOf(rv.status, REVIEW_STATUSES, `${path}.review.status`, "invalid-review", fail);
-      if (rv.reviewedBy !== null && rv.reviewedBy !== undefined && !isNonEmptyString(rv.reviewedBy)) fail("invalid-review", `${path}.review.reviewedBy`, "reviewedBy must be a non-empty string or null");
+      if (rv.reviewedBy !== null && rv.reviewedBy !== undefined && !isAttestedReviewer(rv.reviewedBy)) fail("invalid-review", `${path}.review.reviewedBy`, "reviewedBy must be a reviewer name (not blank) or null");
       if (rv.reviewedAt !== null && rv.reviewedAt !== undefined && !isReviewTimestamp(rv.reviewedAt)) fail("invalid-review", `${path}.review.reviewedAt`, "reviewedAt must be an ISO 8601 date-time (YYYY-MM-DDTHH:MM[:SS]±HH:MM or Z) or null");
       // An approval is a human review EVENT: it names the reviewer and when. Provenance, licence
       // metadata, passing tests or self-authorship are evidence for that review, never the approval.
       if (rv.status === "approved") {
-        if (!isNonEmptyString(rv.reviewedBy)) fail("review-approval-unattributed", `${path}.review.reviewedBy`, "an approved review must name the human reviewer (reviewedBy)");
+        if (!isAttestedReviewer(rv.reviewedBy)) fail("review-approval-unattributed", `${path}.review.reviewedBy`, "an approved review must name the human reviewer (reviewedBy)");
         if (!isReviewTimestamp(rv.reviewedAt)) fail("review-approval-unattributed", `${path}.review.reviewedAt`, "an approved review must record when it happened (reviewedAt, ISO 8601 date-time)");
       }
     }
@@ -325,16 +349,19 @@ export function validateAssetRegistry(registry) {
     }
 
     // `repo-public` bytes live in a PUBLIC Git repository and its deployed builds: committing them IS
-    // web redistribution, whatever `usage` says and whether or not anything references them yet.
-    // Uncleared, unresolved or unknown-provenance bytes may never be registered there.
+    // publication, whatever `usage` says and whether or not anything references them yet. It is for
+    // cleared INTERNAL ENGINEERING assets only, each published by a deliberate, attributed human review:
+    // - production art never uses repo-public (it lives in external content-addressed storage);
+    // - uncleared, unresolved or unknown-provenance bytes are never registered there;
+    // - the review must be `internal-tracer-accepted` with a named reviewer and a valid review time.
     const publicRevisions = Object.entries(asset.revisions).filter(([, r]) => isRecord(r) && isRecord(r.artifact) && isRecord(r.artifact.storage) && r.artifact.storage.backend === "repo-public");
-    if (publicRevisions.length) {
+    for (const [number] of publicRevisions) {
+      const spath = `${path}.revisions.${number}.artifact.storage`;
+      if (asset.usage === "production") fail("repo-public-production", spath, "production art never uses repo-public storage (the public repository); it needs an external content-addressed backend");
       const blockers = publicationBlockers(asset);
-      if (blockers.length) {
-        for (const [number] of publicRevisions) {
-          fail("repo-public-uncleared", `${path}.revisions.${number}.artifact.storage`, `repo-public storage publishes the bytes in a public repository, but ${blockers.join("; ")}`);
-        }
-      }
+      if (blockers.length) fail("repo-public-uncleared", spath, `repo-public storage publishes the bytes in a public repository, but ${blockers.join("; ")}`);
+      const unreviewed = publicationReviewBlockers(asset);
+      if (unreviewed.length) fail("repo-public-unreviewed", spath, `repo-public storage is a publication event and needs a deliberate human review, but ${unreviewed.join("; ")}`);
     }
   }
   return errors;
@@ -360,6 +387,24 @@ export function publicationBlockers(asset) {
 }
 
 /**
+ * Why a `repo-public` publication is not backed by a deliberate human review. Empty = it is.
+ * Publishing an internal engineering asset needs the explicit `internal-tracer-accepted` review that
+ * names its human reviewer (`reviewedBy`, a human-attestation field) and a genuinely valid time.
+ * Nothing automated may fill these in: a script that sets them forges the attestation.
+ * @param {Record<string, unknown>} asset
+ * @returns {string[]}
+ */
+export function publicationReviewBlockers(asset) {
+  /** @type {string[]} */
+  const reasons = [];
+  const review = isRecord(asset.review) ? asset.review : {};
+  if (review.status !== "internal-tracer-accepted") reasons.push(`review status is ${JSON.stringify(review.status)} (needs "internal-tracer-accepted")`);
+  if (!isAttestedReviewer(review.reviewedBy)) reasons.push("the review does not name its human reviewer (reviewedBy)");
+  if (!isReviewTimestamp(review.reviewedAt)) reasons.push("the review does not record a valid review time (reviewedAt, ISO 8601 date-time)");
+  return reasons;
+}
+
+/**
  * Why an asset is NOT production-eligible. Empty = eligible. Production needs every publication
  * condition, commercial use and modification explicitly `allowed`, and an attributed human approval.
  * Nothing here ever promotes an asset: `usage: "production"` is an authored claim this function checks.
@@ -373,7 +418,7 @@ export function productionBlockers(asset) {
   if (rights.commercialUse !== "allowed") reasons.push(`commercialUse is ${JSON.stringify(rights.commercialUse)}`);
   if (rights.modification !== "allowed") reasons.push(`modification is ${JSON.stringify(rights.modification)}`);
   if (review.status !== "approved") reasons.push(`review status is ${JSON.stringify(review.status)}`);
-  else if (!isNonEmptyString(review.reviewedBy) || !isReviewTimestamp(review.reviewedAt)) reasons.push("the approval does not name a human reviewer and a review time");
+  else if (!isAttestedReviewer(review.reviewedBy) || !isReviewTimestamp(review.reviewedAt)) reasons.push("the approval does not name a human reviewer and a review time");
   return reasons;
 }
 

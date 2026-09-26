@@ -9,8 +9,10 @@ import {
   REPO_PUBLIC_OBJECT_KEY,
   assetGate,
   findDuplicateJsonKeys,
+  isReviewTimestamp,
   productionBlockers,
   publicationBlockers,
+  publicationReviewBlockers,
   repoPublicObjectKey,
   resolveAssetRefs,
   runtimeAssetUrl,
@@ -44,12 +46,18 @@ const BYTES = Buffer.from("glTF synthetic fixture bytes — never a real model")
 const SHA = createHash("sha256").update(BYTES).digest("hex");
 const KEY = repoPublicObjectKey(ID, SHA, "glb");
 
-/** A production-eligible asset: every right explicit, attributed human approval, repo-public bytes. */
+const TRACER_REVIEW = { status: "internal-tracer-accepted", reviewedBy: "Fixture Reviewer", reviewedAt: "2026-09-24T10:00:00-07:00" };
+const APPROVED_REVIEW = { status: "approved", reviewedBy: "Fixture Reviewer", reviewedAt: "2026-09-24T10:00:00-07:00" };
+
+/**
+ * A publishable internal engineering asset: every right explicit, an attributed human
+ * `internal-tracer-accepted` review, repo-public bytes (the only publication a repo-public asset may be).
+ */
 function fixtureAsset(sha = SHA, bytes = BYTES.length, assetId = ID): Mutable {
   return {
     name: "Synthetic contract fixture",
     kind: "model",
-    usage: "production",
+    usage: "internal-tracer",
     currentRevision: 1,
     provenance: { origin: "self-authored", creationContext: "original", creator: "NRVNAVerse test suite", dependencies: [] },
     rights: {
@@ -63,7 +71,7 @@ function fixtureAsset(sha = SHA, bytes = BYTES.length, assetId = ID): Mutable {
       modification: "allowed",
       restrictions: [],
     },
-    review: { status: "approved", reviewedBy: "Fixture Reviewer", reviewedAt: "2026-09-24T10:00:00-07:00" },
+    review: { ...TRACER_REVIEW },
     revisions: {
       "1": { artifact: { sha256: sha, bytes, format: "glb", storage: { backend: "repo-public", objectKey: repoPublicObjectKey(assetId, sha, "glb") } }, stats: { triangles: 12 } },
     },
@@ -103,10 +111,16 @@ function messagesOf(input: SpatialSourceInput): string {
 const asset = (d: Draft, id = ID): Mutable => d.assets.assets[id];
 const component = (d: Draft): Mutable => d.scene.components[COMPONENT];
 
-/** Internal tracer whose bytes may still be public: cleared, redistributable, accepted for tracing. */
+/** Internal tracer whose bytes may be public: cleared, redistributable, accepted for tracing by a named human. */
 function asClearedTracer(d: Draft) {
   asset(d).usage = "internal-tracer";
-  asset(d).review = { status: "internal-tracer-accepted", reviewedBy: null, reviewedAt: null };
+  asset(d).review = { ...TRACER_REVIEW };
+}
+
+/** The same asset claimed as production with an attributed approval (production-eligible rights). */
+function asProduction(d: Draft) {
+  asset(d).usage = "production";
+  asset(d).review = { ...APPROVED_REVIEW };
 }
 
 describe("committed source — the clean contract ships no runtime asset", () => {
@@ -133,19 +147,26 @@ describe("committed source — the clean contract ships no runtime asset", () =>
 });
 
 describe("production rights rule — every right explicit, plus an attributed human approval", () => {
+  // The production rule is run on the registry directly: the only backend today is repo-public, which
+  // production art may never use, so the full validation always refuses these (repo-public-production).
   const productionCase = (label: string, mutate: (d: Draft) => void, reason: RegExp) =>
     it(label, () => {
-      const input = source(mutate);
-      // The production rule itself, run on the (possibly schema-refused) registry…
+      const input = source((d) => {
+        asProduction(d);
+        mutate(d);
+      });
       const gate = assetGate({ components: (input.scene as Mutable).components, registry: input.assets as AssetRegistry });
       expect(gate.errors.map((e) => e.code)).toEqual(["asset-production-unresolved"]);
       expect(gate.errors[0].message).toMatch(reason);
-      // …and the full validation refuses the source too: publication conditions are already refused
-      // by the repo-public schema rule, before the production rule is reached.
-      expect(codesOf(input).some((c) => c === "asset-production-unresolved" || c === "repo-public-uncleared")).toBe(true);
-      expect(messagesOf(input)).toMatch(reason);
+      expect(codesOf(input)).toContain("repo-public-production");
       expect(productionBlockers(asset(input as unknown as Draft)).join("; ")).toMatch(reason);
     });
+
+  it("a fully cleared, approved production asset passes the production rule (its storage is a separate rule)", () => {
+    const input = source(asProduction);
+    expect(productionBlockers(asset(input as unknown as Draft))).toEqual([]);
+    expect(assetGate({ components: (input.scene as Mutable).components, registry: input.assets as AssetRegistry }).errors).toEqual([]);
+  });
 
   productionCase("fails when commercial use is prohibited", (d) => (asset(d).rights.commercialUse = "prohibited"), /commercialUse is "prohibited"/);
   productionCase("fails when commercial use is unknown", (d) => (asset(d).rights.commercialUse = "unknown"), /commercialUse is "unknown"/);
@@ -163,13 +184,24 @@ describe("production rights rule — every right explicit, plus an attributed hu
   productionCase("fails while review is not approved", (d) => (asset(d).review = { status: "unreviewed", reviewedBy: null, reviewedAt: null }), /review status is "unreviewed"/);
 
   it("an approval without a named human reviewer, or without a review time, is refused", () => {
-    expect(codesOf(source((d) => (asset(d).review.reviewedBy = null)))).toEqual(["review-approval-unattributed"]);
-    expect(codesOf(source((d) => (asset(d).review.reviewedBy = "")))).toContain("review-approval-unattributed");
-    expect(codesOf(source((d) => (asset(d).review.reviewedAt = null)))).toEqual(["review-approval-unattributed"]);
-    expect(codesOf(source((d) => (asset(d).review.reviewedAt = "yesterday")))).toContain("review-approval-unattributed");
-    expect(codesOf(source((d) => (asset(d).review.reviewedAt = "2026-09-24")))).toContain("review-approval-unattributed");
+    // No stored bytes: only the approval itself is at stake.
+    const approvalCodes = (review: Mutable) => {
+      const a = fixtureAsset();
+      a.usage = "production";
+      a.review = { ...APPROVED_REVIEW, ...review };
+      a.revisions["1"].artifact = null;
+      return validateAssetRegistry({ schemaVersion: 1, assets: { [ID]: a } }).map((e) => e.code);
+    };
+    expect(approvalCodes({})).toEqual([]);
+    expect(approvalCodes({ reviewedBy: null })).toEqual(["review-approval-unattributed"]);
+    expect(approvalCodes({ reviewedBy: "" })).toContain("review-approval-unattributed");
+    expect(approvalCodes({ reviewedBy: "   " })).toContain("review-approval-unattributed");
+    expect(approvalCodes({ reviewedAt: null })).toEqual(["review-approval-unattributed"]);
+    expect(approvalCodes({ reviewedAt: "yesterday" })).toContain("review-approval-unattributed");
+    expect(approvalCodes({ reviewedAt: "2026-09-24" })).toContain("review-approval-unattributed");
+    expect(approvalCodes({ reviewedAt: "2026-02-30T10:00:00Z" })).toContain("review-approval-unattributed");
     // Defence in depth: the production rule re-checks the attribution even without the schema pass.
-    expect(productionBlockers({ ...asset(source() as unknown as Draft), review: { status: "approved", reviewedBy: null, reviewedAt: null } })).toEqual([
+    expect(productionBlockers({ ...asset(source(asProduction) as unknown as Draft), review: { status: "approved", reviewedBy: "  ", reviewedAt: null } })).toEqual([
       "the approval does not name a human reviewer and a review time",
     ]);
   });
@@ -186,20 +218,21 @@ describe("production rights rule — every right explicit, plus an attributed hu
     expect(codesOf(tracer)).toEqual([]);
     expect(spatialAssetWarnings(tracer).map((w) => w.code)).toContain("asset-internal-tracer");
     const approvedTracer = source((d) => {
-      asset(d).usage = "internal-tracer";
-    });
-    expect(codesOf(approvedTracer)).toEqual(["asset-internal-tracer-unaccepted"]);
+      asset(d).review = { ...APPROVED_REVIEW };
+    }) as unknown as Draft;
+    expect(assetGate({ components: approvedTracer.scene.components, registry: approvedTracer.assets as AssetRegistry }).errors.map((e) => e.code)).toEqual(["asset-internal-tracer-unaccepted"]);
   });
 });
 
 describe("internal-tracer rule", () => {
-  it("requires the explicit internal-tracer-accepted review", () => {
+  it("requires the explicit internal-tracer-accepted review (gate), which repo-public also demands (schema)", () => {
     for (const status of ["unreviewed", "approved"]) {
-      expect(codesOf(source((d) => {
+      const input = source((d) => {
         asClearedTracer(d);
         asset(d).review.status = status;
-        if (status === "approved") Object.assign(asset(d).review, { reviewedBy: "Fixture Reviewer", reviewedAt: "2026-09-24T10:00:00Z" });
-      })), status).toEqual(["asset-internal-tracer-unaccepted"]);
+      }) as unknown as Draft;
+      expect(assetGate({ components: input.scene.components, registry: input.assets as AssetRegistry }).errors.map((e) => e.code), status).toEqual(["asset-internal-tracer-unaccepted"]);
+      expect(codesOf(input as unknown as SpatialSourceInput), status).toEqual(["repo-public-unreviewed"]);
     }
   });
 
@@ -226,10 +259,8 @@ describe("internal-tracer rule", () => {
       asset(d).rights.status = "unresolved";
       asset(d).rights.webRuntimeRedistribution = "prohibited";
     })).toEqual(["asset-redistribution-prohibited"]);
-    expect(codesOf(source((d) => {
-      asClearedTracer(d);
-      asset(d).review.status = "rejected";
-    }))).toEqual(["asset-review-rejected", "asset-internal-tracer-unaccepted"]);
+    expect(gateCodes((d) => (asset(d).review.status = "rejected"))).toEqual(["asset-review-rejected", "asset-internal-tracer-unaccepted"]);
+    expect(codesOf(source((d) => (asset(d).review.status = "rejected")))).toEqual(["repo-public-unreviewed"]);
   });
 
   it("an uncleared tracer passes the gate only as a warned tracer — its bytes are what repo-public refuses", () => {
@@ -243,7 +274,7 @@ describe("internal-tracer rule", () => {
 describe("repo-public rule — committing bytes to the public repository is publication", () => {
   it("refuses the original M1.0 tracer shape: internal tracer, unresolved rights and dependencies, repo-public bytes", () => {
     const input = source((d) => {
-      asClearedTracer(d);
+      asset(d).review = { status: "internal-tracer-accepted", reviewedBy: null, reviewedAt: null };
       Object.assign(asset(d).rights, { status: "unresolved", commercialUse: "unknown", webRuntimeRedistribution: "unknown", modification: "unknown" });
       asset(d).provenance.creationContext = "tutorial-assisted";
       asset(d).provenance.dependencies = [
@@ -251,8 +282,9 @@ describe("repo-public rule — committing bytes to the public repository is publ
         { id: "texture-unknown", kind: "texture", description: "embedded texture of unknown origin", status: "unresolved" },
       ];
     });
-    expect(codesOf(input)).toEqual(["repo-public-uncleared"]);
+    expect(codesOf(input)).toEqual(["repo-public-uncleared", "repo-public-unreviewed"]);
     expect(messagesOf(input)).toMatch(/rights status is "unresolved"; webRuntimeRedistribution is "unknown"; 2 unresolved dependencies/);
+    expect(messagesOf(input)).toMatch(/does not name its human reviewer/);
   });
 
   it("applies to every repo-public revision, referenced or not, and to unknown origin", () => {
@@ -273,6 +305,50 @@ describe("repo-public rule — committing bytes to the public repository is publ
 
   it("a cleared asset is publishable", () => {
     expect(publicationBlockers(fixtureAsset())).toEqual([]);
+    expect(publicationReviewBlockers(fixtureAsset())).toEqual([]);
+  });
+});
+
+describe("public publication policy — production never repo-public; publication is an attributed human review", () => {
+  it("refuses production usage on repo-public storage, however cleared and approved", () => {
+    expect(codesOf(source(asProduction))).toEqual(["repo-public-production", "repo-public-unreviewed"]);
+    expect(messagesOf(source(asProduction))).toMatch(/production art never uses repo-public storage/);
+    // Every repo-public revision of a production asset is reported, referenced or not.
+    expect(codesOf(source((d) => {
+      asProduction(d);
+      asset(d).revisions["2"] = structuredClone(asset(d).revisions["1"]);
+    })).filter((c) => c === "repo-public-production")).toHaveLength(2);
+    // A production record with no stored bytes is not a publication.
+    const a = fixtureAsset();
+    Object.assign(a, { usage: "production", review: { ...APPROVED_REVIEW } });
+    a.revisions["1"].artifact = null;
+    expect(validateAssetRegistry({ schemaVersion: 1, assets: { [ID]: a } })).toEqual([]);
+  });
+
+  it("needs the explicit internal-tracer-accepted review", () => {
+    for (const status of ["unreviewed", "approved", "rejected"]) {
+      expect(codesOf(source((d) => (asset(d).review.status = status))), status).toEqual(["repo-public-unreviewed"]);
+    }
+    expect(messagesOf(source((d) => (asset(d).review.status = "unreviewed")))).toMatch(/review status is "unreviewed" \(needs "internal-tracer-accepted"\)/);
+  });
+
+  it("needs a human reviewer name: null, empty and whitespace-only are refused", () => {
+    expect(codesOf(source((d) => (asset(d).review.reviewedBy = null)))).toEqual(["repo-public-unreviewed"]);
+    expect(codesOf(source((d) => (asset(d).review.reviewedBy = "")))).toEqual(["invalid-review", "repo-public-unreviewed"]);
+    expect(codesOf(source((d) => (asset(d).review.reviewedBy = " \t ")))).toEqual(["invalid-review", "repo-public-unreviewed"]);
+    expect(publicationReviewBlockers({ ...fixtureAsset(), review: { ...TRACER_REVIEW, reviewedBy: "  " } })).toEqual(["the review does not name its human reviewer (reviewedBy)"]);
+  });
+
+  it("needs a genuinely valid ISO 8601 review time", () => {
+    expect(codesOf(source((d) => (asset(d).review.reviewedAt = null)))).toEqual(["repo-public-unreviewed"]);
+    for (const at of ["yesterday", "2026-09-24", "2026-09-24T10:00:00", "2026-02-30T10:00:00Z", "2026-13-01T00:00Z", "2026-09-24T24:00Z", "2026-09-24T10:60Z", "2026-09-24T10:00:61Z", "2026-09-24T10:00+15:00"]) {
+      expect(codesOf(source((d) => (asset(d).review.reviewedAt = at))), at).toEqual(["invalid-review", "repo-public-unreviewed"]);
+    }
+  });
+
+  it("isReviewTimestamp accepts real calendar instants only", () => {
+    for (const ok of ["2026-09-24T10:00:00-07:00", "2026-09-24T17:00Z", "2024-02-29T00:00:00.123Z", "2026-12-31T23:59:59+14:00"]) expect(isReviewTimestamp(ok), ok).toBe(true);
+    for (const bad of ["2026-02-29T00:00Z", "2026-04-31T00:00Z", "2026-00-10T00:00Z", "2026-09-00T00:00Z", " 2026-09-24T10:00Z", 1727200000000, null]) expect(isReviewTimestamp(bad), String(bad)).toBe(false);
   });
 });
 

@@ -77,9 +77,17 @@ Otherwise: `asset-production-unresolved`, listing every reason.
 
 For engineering use only. Requires the explicit `review.status: "internal-tracer-accepted"` (`asset-internal-tracer-unaccepted`); always reported as a warning (`asset-internal-tracer`). Because its bytes still need a storage backend, an uncleared tracer can only exist once a **non-public** backend exists — see §2.4.
 
-### 2.4 Repo-public rule — committing bytes is publication
+### 2.4 Repo-public rule — a public Git commit is publication
 
-`NRVNAVerse/awe` is a public repository: a committed binary is published immediately and stays retrievable from Git history. Therefore **every** revision whose artifact uses `repo-public` — referenced or not, whatever its `usage` — requires cleared rights, allowed web redistribution, a known origin and no unresolved dependency (`publicationBlockers()`, schema code `repo-public-uncleared`). Uncleared or evaluative art can never be registered in the repository.
+`NRVNAVerse/awe` is a public repository: **a committed binary is published** the moment it is pushed and stays retrievable from Git history. `repo-public` is therefore a **publication event**, reserved for cleared **internal engineering** assets. **Every** revision whose artifact uses `repo-public` — referenced or not — must satisfy all of:
+
+| Rule | Schema code |
+|---|---|
+| `usage` is not `production` — **production art never uses `repo-public`**; it lives in external content-addressed storage (§4) | `repo-public-production` |
+| cleared rights, `webRuntimeRedistribution: "allowed"`, a known origin, no unresolved dependency (`publicationBlockers()`) | `repo-public-uncleared` |
+| a deliberate human review (`publicationReviewBlockers()`): `review.status: "internal-tracer-accepted"`, `reviewedBy` a non-blank reviewer name, `reviewedAt` a genuinely valid ISO 8601 date-time with offset (real calendar date and clock time — `2026-02-30…` is refused) | `repo-public-unreviewed` |
+
+**`reviewedBy` is a human-attestation field**: it records the person who took the publication decision. **Automation must never fill in `reviewedBy` / `reviewedAt` or set a review status** — tooling (including the intake command, §5) may prepare a record for review, never approve its publication. Uncleared or evaluative art can never be registered in the repository. The same non-blank rule applies to an `approved` review's `reviewedBy`.
 
 ### 2.5 All gate outcomes
 
@@ -96,7 +104,7 @@ For engineering use only. Requires the explicit `review.status: "internal-tracer
 | `asset-review-rejected` | FAIL | `review.status: "rejected"` |
 | `asset-production-unresolved` | FAIL | §2.1 |
 | `asset-internal-tracer-unaccepted` | FAIL | §2.3 |
-| `repo-public-uncleared` | FAIL | §2.4 |
+| `repo-public-production` / `repo-public-uncleared` / `repo-public-unreviewed` | FAIL | §2.4 |
 | `review-approval-unattributed` | FAIL | §2.2 |
 | `invalid-object-key` / `unsupported-storage-backend` | FAIL | not the exact content-addressed key / a backend not implemented |
 | schema codes (`invalid-*`, `unexpected-field`) | FAIL | strict schema; `rights.status: "cleared"` is refused unless redistribution is `allowed` |
@@ -132,7 +140,7 @@ Every embedded third-party model, texture, animation or HDRI is its own `depende
 | Content | Policy |
 |---|---|
 | **Production / representative art** | **Never committed to Git.** Provider-neutral external content-addressed storage (§4) before M1.2 |
-| **Engineering fixtures** | Prefer bytes generated in memory or in a temp directory at test time (the asset tests do exactly this). A committed binary fixture only for a demonstrated testing need **and** tiny, purpose-built, fully cleared, free of third-party dependencies and documented — the repo-public rule (§2.4) enforces the rights part. None exists today |
+| **Engineering fixtures** | Prefer bytes generated in memory or in a temp directory at test time (the asset tests do exactly this). A committed binary fixture only for a demonstrated testing need **and** tiny, purpose-built, fully cleared, free of third-party dependencies, documented and published by an attributed human `internal-tracer-accepted` review — the repo-public rule (§2.4) enforces the rights and review parts. None exists today |
 | **Uncleared or evaluative art** | Never pushed; stays in local working copies |
 | **Git LFS** | Not used — it still publishes and adds quotas |
 
