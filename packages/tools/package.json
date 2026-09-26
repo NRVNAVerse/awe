@@ -6,7 +6,9 @@
   "main": "src/index.ts",
   "exports": {
     ".": "./src/index.ts",
-    "./space": "./src/space/index.ts"
+    "./space": "./src/space/index.ts",
+    "./gltf": "./src/gltf/index.ts",
+    "./gltf/container": "./src/gltf/gltf-container.ts"
   },
   "scripts": {
     "check": "tsc --noEmit",

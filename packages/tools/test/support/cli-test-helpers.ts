@@ -10,7 +10,12 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 export const packageDir = path.resolve(__dirname, "..", "..");
 export const repoRoot = path.resolve(packageDir, "..", "..");
 export const cliPath = path.resolve(packageDir, "src", "cli.ts");
-export const tsxPath = path.resolve(repoRoot, "node_modules", ".bin", "tsx");
+// On Windows `.bin/tsx` is a .cmd shim that spawnSync can't exec; run tsx's JS entry through node instead.
+export const tsxPath = process.platform === "win32"
+  ? path.resolve(repoRoot, "node_modules", "tsx", "dist", "cli.mjs")
+  : path.resolve(repoRoot, "node_modules", ".bin", "tsx");
+const spawnCommand = process.platform === "win32" ? process.execPath : tsxPath;
+const spawnPrefix = process.platform === "win32" ? [tsxPath] : [];
 export const artifactsDir = path.resolve(packageDir, "artifacts");
 
 export const soccerFieldFixture = path.join(artifactsDir, "soccer-field.glb");
@@ -44,7 +49,7 @@ export function runCli(
   cwd = repoRoot,
   input?: string,
 ): { stdout: string; exitCode: number } {
-  const result = spawnSync(tsxPath, [cliPath, ...args], {
+  const result = spawnSync(spawnCommand, [...spawnPrefix, cliPath, ...args], {
     cwd,
     input,
     stdio: "pipe",

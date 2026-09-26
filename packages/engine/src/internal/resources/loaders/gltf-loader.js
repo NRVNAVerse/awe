@@ -1251,6 +1251,12 @@ class GLTFTextureWebPExtension {
 
     detectSupport() {
         if (!this.isSupported) {
+            // headless (no DOM Image): images resolve to an empty texture anyway (see loadImageSource),
+            // so report support instead of probing — otherwise a WebP-only asset throws here
+            if (typeof Image === "undefined") {
+                this.isSupported = Promise.resolve(true);
+                return this.isSupported;
+            }
             this.isSupported = new Promise(function (resolve) {
                 const image = new Image();
 
@@ -1325,6 +1331,12 @@ class GLTFTextureAVIFExtension {
 
     detectSupport() {
         if (!this.isSupported) {
+            // headless (no DOM Image): images resolve to an empty texture anyway (see loadImageSource),
+            // so report support instead of probing — otherwise a WebP-only asset throws here
+            if (typeof Image === "undefined") {
+                this.isSupported = Promise.resolve(true);
+                return this.isSupported;
+            }
             this.isSupported = new Promise(function (resolve) {
                 const image = new Image();
 
