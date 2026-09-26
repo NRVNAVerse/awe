@@ -2,7 +2,7 @@
 
 | Field | Value |
 |---|---|
-| **Status** | Runtime asset contract **IMPLEMENTED and tested** (no runtime art is declared yet) · production binary storage **PLANNED** (before M1.2) · M1.0 tracer **EXPERIMENTAL, not integrated** (§8) |
+| **Status** | Runtime asset contract **IMPLEMENTED and tested** (no runtime art is declared yet) · M1.1 production intake (`asset:prepare`, §11) and provider-neutral storage contract (§4) **IMPLEMENTED and tested on synthetic data** · external storage adapter / runtime URL base **PENDING** (no provider chosen) · M1.0 tracer **EXPERIMENTAL, not integrated** (§8) |
 | **App** | `apps/the-nrvnaverse` |
 | **Builds on** | [`NRVNAVERSE_SPATIAL_DATA_PIPELINE.md`](./NRVNAVERSE_SPATIAL_DATA_PIPELINE.md) (§17) · [`NRVNAVERSE_SPATIAL_RUNTIME.md`](./NRVNAVERSE_SPATIAL_RUNTIME.md) |
 | **Related decisions** | D-004 (stable destination ids — the asset-id pattern *follows* it; D-004 itself governs destinations) · D-009 (mobile-first; budgets and adaptive quality from representative art) · D-014 (no dependency change) · D-016 (application-layer spatial pipeline) |
@@ -146,7 +146,18 @@ Every embedded third-party model, texture, animation or HDRI is its own `depende
 
 ---
 
-## 4. PLANNED — provider-neutral external storage (design only; no provider chosen)
+## 4. Provider-neutral external storage — contract IMPLEMENTED, adapter PENDING (no provider chosen)
+
+`scripts/spatial/storage.mjs` is the storage contract; the registry only ever records `{ backend, objectKey }`:
+
+| Backend | Status | Object key (exact match) | Git publication | Production art | Runtime URL |
+|---|---|---|---|---|---|
+| `repo-public` | implemented | `assets/art/<assetId>.<first 32 hex>.<format>` | **yes** | **never** (`repo-public-production`) | `/<objectKey>` |
+| `external-cas` | **adapter-pending** | `art/<assetId>/<full 64-hex sha256>.<format>` (write-once) | no | yes | `<one committed, non-secret public base>/<objectKey>` — base not chosen, so resolution is **refused** (`asset-storage-unresolved`) rather than guessed |
+
+An `external-cas` revision validates in the registry today (production records can be prepared and reviewed), but no scene can reference it until the adapter and public base exist. The I/O boundary is `StorageAdapter { put(objectKey, bytes, { sha256, contentType }) → { created, location }, verify(objectKey, { sha256, bytes }) → { ok, problem } }`: write-once (identical bytes = no-op, different bytes = error) and verify-by-re-hash. `scripts/asset-pipeline/staging.ts` implements it locally (`.asset-staging/objects/<objectKey>`, Git-ignored) with the same semantics, so an eventual upload is a copy of `objects/**` with no re-keying. Choosing a provider = one adapter + the public base; the registry, keys and ids do not change.
+
+Remaining design (unchanged from the plan):
 
 | Element | Contract | Lives in |
 |---|---|---|
@@ -196,11 +207,11 @@ Generic AWE capabilities belong to the platform lane (Operating Guide §5–§6)
 
 | HANDOFF DEPENDENCY | What NRVNAVerse needs | Blocking? |
 |---|---|---|
-| Model optimiser | an offline, deterministic GLB → GLB optimiser with a report (input / output digests, settings, compression used); its output becomes a new revision | blocking for production art; not for this contract |
-| glTF validator + statistics | machine-readable validation errors and statistics (triangles, texture dimensions, clip names, extensions) to replace self-declared `stats` | blocking for a production-grade gate |
+| Model optimiser | an offline, deterministic GLB → GLB optimiser with a report | **ADOPTED (M1.1)** — H1 `optimizeModel()` ported byte-identical from TheCannaMan/awe@120ec0c into `packages/tools/src/gltf`; consumed through `scripts/asset-pipeline/awe-gltf.ts` |
+| glTF validator + statistics | machine-readable validation errors and statistics | **ADOPTED (M1.1)** — H2 `validateModel()` (structural + AWE-runtime facts, *not* full Khronos conformance); prepared revisions now carry **derived** `stats` |
 | Animated-model disposal console error | `ClassicWrapper.stop(null)` logs `STOP Animation not found null` when an animated model is destroyed; removing it lets the probe drop its only allowlist entry | non-blocking |
 | `KHR_materials_unlit` on static (instanced-pipeline) models under the lit regime | confirmation or support before any baked-unlit static art | blocking only for that path |
-| Decoder / environment asset location | which decoders (Draco / meshopt / KTX2) and environment maps the engine loads, and whether their URLs are configurable for self-hosting | blocking for compressed art under a self-hosting policy |
+| Decoder / environment asset location | which decoders (Draco / meshopt / KTX2) and environment maps the engine loads, and whether their URLs are configurable for self-hosting | blocking for compressed art under a self-hosting policy — why the NRVNAVerse optimiser profile keeps **Draco off** by default (§11) |
 
 ---
 
@@ -245,3 +256,31 @@ A starting point, to be refined with the owner on the first representative asset
 - `test/cache-policy.test.ts` — the config serves `deliveryHeaders()` and the M0 spatial rules are unchanged.
 - `pnpm --filter the-nrvnaverse spatial:check` — verifies generated data and any referenced runtime asset, prints asset warnings.
 - `pnpm --filter the-nrvnaverse browser:perf` — §6.
+- `test/prepare-asset.test.ts` — M1.1 intake on **synthetic** in-memory GLBs (the AWE tools' own deterministic fixtures): seam load + report versions; ready end-to-end flow (optimised, derived stats, `external-cas` key, valid registry proposal, not yet referenceable); determinism; write-once staging + verify; truncated / non-glTF / external-resource input; optimiser skips (`not-smaller`, `already-compressed` meshopt → runtime blocker); never-approves, rights and dependency blockers, authored derived facts refused; internal-tracer acceptance; new revision numbering, `revision-exists`, `review-predates-revision`; CLI exit codes.
+- `packages/tools/test/{gltf-container,safe-optimize,validate-model,optimized-model-loads}.test.ts` — the adopted H1/H2 suites (the last loads optimiser output through the engine's real `GLTFLoader`).
+
+---
+
+## 11. CURRENT CONTRACT (M1.1) — production-asset intake: `asset:prepare`
+
+```
+pnpm --filter the-nrvnaverse asset:prepare <source.glb> <metadata.json> [--registry <registry.json>] [--out <dir>] [--draco]
+```
+
+Takes a **cleared** source GLB (a copy — never the library file) and authored intake metadata, and produces a deterministic "ready for upload" artifact plus a registry revision proposal. It **never** uploads, edits the committed registry or scene, targets `repo-public`, or sets / re-dates a review.
+
+| Step | Owner | What happens |
+|---|---|---|
+| validate source | AWE H2 | structural errors → `source-invalid`; not a GLB → `source-not-glb`; external URIs → `source-external-resources` (never fetched). Stops here |
+| optimise safely | AWE H1 | NRVNAVerse profile `{ draco: false, textures: "webp", maxTextureSize: 2048, quality: 90 }` (`--draco` opts in). Never bigger, never fails: a skip returns the exact source (`optimizer-skipped` warning, revision `pipeline.optimization: "skipped"` → `m1-unoptimized`) |
+| validate output | AWE H2 | the bytes that would ship; failure → `output-invalid` |
+| runtime policy | NRVNAVerse | an extension the AWE runtime marks `unsupported` / `partial` (meshopt, KTX2, VRM) → `runtime-unsupported-extension`; unknown to AWE → `runtime-unknown-extension`; `ignored` (e.g. punctual lights) → warning |
+| identity / metadata | NRVNAVerse | `assetId` authored once (`ast_…`) and kept; only `assetId, name, kind, usage, provenance, rights, review, notes` may be authored — digests, sizes and stats never are (`metadata-invalid`); the proposed record must pass the registry schema |
+| rights / review | NRVNAVerse | `usage: production` → every `productionBlockers()` reason (`production-unresolved`); internal tracer → needs `internal-tracer-accepted`. A new revision whose review equals the one on record → `review-predates-revision` (a human re-reviews the new bytes) |
+| revision / digest | NRVNAVerse | next revision number (1 for a new asset), full SHA-256 of the output, **derived** stats (`awe-validate-model@1`: instanced triangles, vertices, meshes, materials, textures, largest texture edge, animations, skins, extensions, bounds), pipeline provenance (source digest, profile, transforms); same bytes as an existing revision → `revision-exists` |
+| artifact | NRVNAVerse | `external-cas` key `art/<assetId>/<sha256>.glb`, staged write-once under `<out>/objects/<objectKey>` and re-verified |
+| M1 bands | NRVNAVerse | §2.6 warnings on the derived stats |
+
+Output: `<out>/objects/<objectKey>` and `<out>/prepared/<assetId>.r<revision>.json` (sorted keys, no wall-clock fields — byte-identical for identical inputs). Default `<out>` = `apps/the-nrvnaverse/.asset-staging/` (Git-ignored). Exit `0` ready · `2` blocked (report still written, every blocker listed) · `1` usage / I/O error.
+
+After `READY`: upload `objects/**` to the external store and verify there (**adapter pending**), commit the proposed record + revision, then reference it (`assetRef`) — which additionally needs the `external-cas` runtime URL base (`asset-storage-unresolved` until then).

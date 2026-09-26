@@ -13,7 +13,8 @@
     "spatial:generate": "node scripts/spatial/cli.mjs generate",
     "spatial:check": "node scripts/spatial/cli.mjs check",
     "browser:touch": "node scripts/browser/touch-regression.mjs",
-    "browser:perf": "node scripts/browser/perf-probe.mjs"
+    "browser:perf": "node scripts/browser/perf-probe.mjs",
+    "asset:prepare": "tsx scripts/asset-pipeline/cli.ts prepare"
   },
   "dependencies": {
     "@dimforge/rapier3d": "0.11.2",
