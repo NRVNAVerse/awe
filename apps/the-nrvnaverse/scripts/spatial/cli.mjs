@@ -282,7 +282,16 @@ function main(argv) {
       // Runtime assets (M1.0): internal-tracer notices and M1 EXPERIMENTAL warning bands — never fatal.
       const assetWarnings = spatialAssetWarnings(source);
       if (assetWarnings.length) console.warn(formatAssetIssues(assetWarnings));
-      if (artifacts.assetIds.length) console.log(`runtime assets verified: ${artifacts.assetIds.join(", ")} (registry digest + bytes match the stored artifact)`);
+      if (artifacts.assetIds.length) {
+        // Only repo-public bytes are local and re-hashed here; external-cas bytes were verified by a
+        // full re-download at asset:publish time and are never fetched by this offline check.
+        const reg = /** @type {any} */ (source.assets);
+        const backendOf = (/** @type {string} */ id) => currentRevision(reg.assets[id])?.artifact?.storage.backend;
+        const local = artifacts.assetIds.filter((id) => backendOf(id) === "repo-public");
+        const external = artifacts.assetIds.filter((id) => backendOf(id) !== "repo-public");
+        if (local.length) console.log(`runtime assets verified: ${local.join(", ")} (registry digest + bytes match the stored artifact)`);
+        if (external.length) console.log(`external runtime assets referenced: ${external.join(", ")} (bytes not checked offline — verified at asset:publish)`);
+      }
       // Initial M0 warning budgets (2B.4C.2): reported, never fatal — see budgets.mjs.
       const warnings = spatialBudgetWarnings(artifacts);
       for (const warning of warnings) console.warn(formatSpatialBudgetWarning(warning));

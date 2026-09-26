@@ -17,7 +17,8 @@
     "browser:perf": "node scripts/browser/perf-probe.mjs",
     "asset:prepare": "tsx scripts/asset-pipeline/cli.ts prepare",
     "asset:publish": "tsx scripts/asset-pipeline/cli.ts publish",
-    "asset:register": "tsx scripts/asset-pipeline/cli.ts register"
+    "asset:register": "tsx scripts/asset-pipeline/cli.ts register",
+    "asset:place": "tsx scripts/asset-pipeline/cli.ts place"
   },
   "dependencies": {
     "@dimforge/rapier3d": "0.11.2",

@@ -25,14 +25,21 @@
  * `spatial/source/<registry>.json` (declaring it in the spatial config the first time). Never adds
  * `assetRef` to a scene, never sets a review, never contacts storage.
  * Exit codes: 0 proposed / applied / already registered · 2 blocked · 1 usage / I/O error.
+ *
+ * place: `asset:place <assetId> --destination <dst_id> --component <id> --position x,y,z [--rotation x,y,z]
+ * [--scale x,y,z|s] [--name <text>] [--apply]` puts a registered, production-eligible asset into the
+ * destination's chunk as a `model` component with `assetRef` (never a URL). Default: proposal only;
+ * `--apply` writes the scene + config, regenerates spatial data and lists what changed.
+ * Exit codes: 0 proposed / applied / already placed · 2 blocked · 1 usage / I/O error.
  */
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
 import type { AssetRegistry } from "../spatial/assets.mjs";
-import { DESTINATIONS_FILE, SOURCE_CONFIG, SOURCE_DIR, loadSpatialSource, readAssetRegistry } from "../spatial/cli.mjs";
-import type { SpatialSourceInput } from "../spatial/pipeline.mjs";
+import { DESTINATIONS_FILE, OUTPUT_DIR, SOURCE_CONFIG, SOURCE_DIR, loadSpatialSource, readAssetRegistry, removeStaleArtifacts, writeArtifacts } from "../spatial/cli.mjs";
+import { generateSpatialArtifacts, type SpatialSourceInput } from "../spatial/pipeline.mjs";
+import { parseVec3, planPlacement, type Vec3 } from "./place-asset";
 import { REGISTER_REPORT_VERSION, applyRegistration, describeChanges, planRegistration, siblingsOf, type RegisterReport } from "./register-asset";
 import { prepareAsset, stablePrepareJson, stagePrepared } from "./prepare-asset";
 import { publishPrepared, stagingRootOf, type PublishOptions } from "./publish-asset";
@@ -221,14 +228,91 @@ export async function runRegister(argv: string[], inject: { sourceDir?: string; 
   return { exitCode: blocked ? 2 : 0, lines, reportPath };
 }
 
+/** The `place` command. `sourceDir` / `outputDir` are injectable for tests (default: the committed source + public/data). */
+export async function runPlace(argv: string[], inject: { sourceDir?: string; outputDir?: string } = {}): Promise<PrepareCommandResult> {
+  const USAGE = "usage: asset:place <assetId> --destination <dst_id> --component <component-id> --position x,y,z [--rotation x,y,z] [--scale x,y,z|s] [--name <text>] [--apply]";
+  const VALUED = ["--destination", "--component", "--position", "--rotation", "--scale", "--name"];
+  const opts: Record<string, string> = {};
+  const positional: string[] = [];
+  let apply = false;
+  for (let i = 0; i < argv.length; i++) {
+    const a = argv[i];
+    if (a === "--apply") apply = true;
+    else if (VALUED.includes(a)) {
+      const v = argv[++i];
+      if (v === undefined || opts[a] !== undefined) return { exitCode: 1, lines: [`${a} needs exactly one value`, USAGE], reportPath: null };
+      opts[a] = v;
+    } else if (a.startsWith("--")) return { exitCode: 1, lines: [`unknown option ${a} (placement never takes a URL)`, USAGE], reportPath: null };
+    else positional.push(a);
+  }
+  if (positional.length !== 1 || !opts["--destination"] || !opts["--component"] || !opts["--position"]) return { exitCode: 1, lines: [USAGE], reportPath: null };
+  const vec = (flag: string, uniform = false) => (opts[flag] === undefined ? undefined : parseVec3(opts[flag], { uniform }));
+  const position = vec("--position");
+  const rotation = vec("--rotation");
+  const scale = vec("--scale", true);
+  if (position === null || rotation === null || scale === null) return { exitCode: 2, lines: ["BLOCKED: [invalid-transform] --position / --rotation / --scale must be x,y,z finite numbers (scale may be one uniform number)"], reportPath: null };
+
+  const sourceDir = inject.sourceDir ?? SOURCE_DIR;
+  const configFile = inject.sourceDir ? join(sourceDir, "spatial-config.m0.json") : SOURCE_CONFIG;
+  const outputDir = inject.outputDir ?? OUTPUT_DIR;
+  let source: SpatialSourceInput;
+  let configText: string;
+  let sceneText: string;
+  try {
+    source = loadSourceFrom(sourceDir, configFile);
+    configText = readFileSync(configFile, "utf8");
+    sceneText = readFileSync(join(sourceDir, String((source.config as Record<string, unknown>).scene)), "utf8");
+  } catch (error) {
+    return { exitCode: 1, lines: [`cannot read the spatial source: ${(error as Error).message}`], reportPath: null };
+  }
+  const plan = planPlacement({
+    source,
+    sceneText,
+    configText,
+    request: { assetId: positional[0], destinationId: opts["--destination"], componentId: opts["--component"], position: position!, rotation, scale, name: opts["--name"] },
+  });
+
+  const p = plan.proposal;
+  const blocked = plan.blockers.length > 0;
+  const status = blocked ? "BLOCKED" : plan.alreadyPlaced ? "ALREADY-PLACED" : apply ? "APPLIED" : "PROPOSED (proposal — nothing changed; --apply to write)";
+  const lines = [`${status}: ${positional[0]}${p ? ` revision ${p.revision} → ${p.destinationName} (${p.destinationId}), chunk "${p.chunkKey}", component "${p.componentId}"` : ""}`];
+  if (p) {
+    const c = p.component as { position: Vec3; rotation: Vec3; scale: Vec3; name: string };
+    const v = (t: Vec3) => `${t.x},${t.y},${t.z}`;
+    lines.push(`asset    sha256 ${p.sha256}`);
+    lines.push(`url      ${p.runtimeUrl || "(unresolved)"}  (resolved at generate time from assetRef; never written to the source)`);
+    lines.push(`transform position ${v(c.position)} · rotation ${v(c.rotation)} rad · scale ${v(c.scale)} · name ${JSON.stringify(c.name)}`);
+  }
+  for (const s of plan.sourceChanges) lines.push(`source   ${s}`);
+  for (const g of plan.generatedChanges) lines.push(`generate ${g}`);
+  for (const b of plan.blockers) lines.push(`BLOCKER  [${b.code}] ${b.message}`);
+
+  if (!blocked && !plan.alreadyPlaced && apply && plan.nextSceneText && plan.nextConfigText && plan.nextFiles) {
+    writeFileSync(join(sourceDir, String((source.config as Record<string, unknown>).scene)), plan.nextSceneText);
+    writeFileSync(configFile, plan.nextConfigText);
+    // Regenerate from what is now on disk and prove it is exactly the planned generation.
+    const regenerated = generateSpatialArtifacts(loadSourceFrom(sourceDir, configFile));
+    if (JSON.stringify(regenerated.files) !== JSON.stringify(plan.nextFiles)) {
+      lines.push("FAILED   the regenerated spatial data differs from the plan — inspect the source change");
+      return { exitCode: 1, lines, reportPath: null };
+    }
+    const { written } = writeArtifacts(regenerated.files, outputDir);
+    const { removed } = removeStaleArtifacts(regenerated.files, outputDir);
+    for (const w of written) lines.push(`wrote    ${w}`);
+    for (const r of removed) lines.push(`removed  ${r} (previous content version)`);
+    lines.push("next     spatial:check, then build and ASSET_COMPONENT=" + (p?.componentId ?? "<id>") + " browser:perf; commit source + generated data");
+  } else if (!blocked && !plan.alreadyPlaced) lines.push("next     review, then run again with --apply");
+  return { exitCode: blocked ? 2 : 0, lines, reportPath: null };
+}
+
 const invokedDirectly = process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url);
 if (invokedDirectly) {
   const [command, ...rest] = process.argv.slice(2);
-  if (command !== "prepare" && command !== "publish" && command !== "register") {
+  if (command !== "prepare" && command !== "publish" && command !== "register" && command !== "place") {
     console.error("usage: cli.ts prepare <source.glb> <metadata.json> [--registry <registry.json>] [--out <dir>] [--draco]\n       cli.ts publish <prepare-report.json> [--dry-run]\n       cli.ts register <publish-report.json> [--apply]");
     process.exit(1);
   }
-  (command === "prepare" ? runPrepare(rest) : command === "publish" ? runPublish(rest) : runRegister(rest)).then(
+  (command === "prepare" ? runPrepare(rest) : command === "publish" ? runPublish(rest) : command === "register" ? runRegister(rest) : runPlace(rest)).then(
     (r) => {
       (r.exitCode === 0 ? console.log : console.error)(r.lines.join("\n"));
       process.exit(r.exitCode);

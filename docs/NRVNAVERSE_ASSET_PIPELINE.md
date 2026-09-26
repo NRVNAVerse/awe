@@ -283,7 +283,7 @@ Takes a **cleared** source GLB (a copy — never the library file) and authored 
 
 Output: `<out>/objects/<objectKey>` and `<out>/prepared/<assetId>.r<revision>.json` (sorted keys, no wall-clock fields — byte-identical for identical inputs). Default `<out>` = `apps/the-nrvnaverse/.asset-staging/` (Git-ignored). Exit `0` ready · `2` blocked (report still written, every blocker listed) · `1` usage / I/O error.
 
-After `READY`: `asset:publish <report>` (write-once to R2, verified), then `asset:register` (§12), then reference it (`assetRef`); it resolves to `https://assets.nrvnaverse.com/<objectKey>`.
+After `READY`: `asset:publish <report>` (write-once to R2, verified), then `asset:register` (§12), then `asset:place` (§13); it resolves to `https://assets.nrvnaverse.com/<objectKey>`.
 
 ---
 
@@ -309,3 +309,53 @@ It **never** contacts storage (the publish report's full-object SHA-256 is the e
 | `revision-conflict` / `duplicate-bytes` / `registry-conflict` | the revision number already holds other bytes; an existing revision would be rewritten; the same bytes under another number; kind or object-key clash |
 | `stale-review` | a review equal to (or older than) the one recorded for earlier bytes is carried onto a new revision |
 | `spatial-invalid` | the resulting spatial source fails validation |
+
+---
+
+## 13. CURRENT CONTRACT (M1.1) — placement: `asset:place`
+
+```
+pnpm --filter the-nrvnaverse asset:place <assetId> --destination <dst_id> --component <component-id>   --position x,y,z [--rotation x,y,z] [--scale x,y,z|s] [--name <text>]            # proposal (default)
+  … --apply                                                                       # write + regenerate
+```
+
+Places a **registered, production-eligible** asset into the chunk of one **destination** (stable `dst_` id → the config's `placements` → chunk key) as a `model` component that names it by **`assetRef`** — never a URL (the generator resolves it through the registry and the committed `assetStorage` origin). Rotation is in radians (the scene's convention); scale may be one uniform number.
+
+- **Proposal (default)** prints the asset and resolved current revision + SHA-256, destination / chunk / component id, the transform, the runtime URL that *would* resolve, the exact two source edits and the generated files that would change (`- hub.<old>.json`, `+ hub.<new>.json`, `~ spatial-index.json`, `~ static-scene.json`). Nothing is written.
+- **`--apply`** writes the minimum change — one component appended to `scene.m0.json`, one id appended to the chunk's `componentIds` in `spatial-config.m0.json` (verified by re-parsing; every other byte unchanged) — regenerates, proves the regeneration equals the plan, writes the new artifacts, removes the stale chunk version and lists both.
+- Re-running an identical placement → `ALREADY-PLACED`, nothing changes. A different placement under a used id → `duplicate-component` (placements are never overwritten).
+
+| Refused | When |
+|---|---|
+| `invalid-asset-id` / `unregistered-asset` / `no-artifact` | not an `ast_` id (URLs are rejected here), no registry, not registered, no current artifact |
+| `not-production` / `not-production-eligible` / `registry-invalid` | tracer usage, any `productionBlockers()` reason, schema failure |
+| `storage-unresolved` | the backend's runtime URL cannot be resolved (e.g. no committed `external-cas` origin) |
+| `unknown-destination` | not a `dst_` id, not active, or no spatial placement |
+| `gated-destination` | the chunk serves a gated destination (Cannabis 21 / NRVNA Farms): gated chunk JSON is not access-controlled, so art is never placed there |
+| `invalid-component-id` / `duplicate-component` | not kebab-case ≤ 64 chars; id already used anywhere |
+| `invalid-transform` / `invalid-name` | non-finite or out-of-bounds position (±10 000), rotation (±2π), scale (0.001–1000); bad name |
+| `spatial-invalid` / `unexpected-generated-change` | the result fails spatial validation, or anything but that chunk / the index / the compatibility scene would change |
+| unknown option (exit 1) | e.g. `--url` — placement never takes a URL |
+
+**Measuring a placed external asset.** `ASSET_COMPONENT=<component id> pnpm --filter the-nrvnaverse browser:perf` measures it against the no-art baseline (art GLBs under `/assets/art/` and `/art/<assetId>/<sha256>.glb` are recognised). Before the store exists, `ASSET_MIRROR=<asset:prepare --out dir>` serves the committed origin's requests from the staged, digest-named bytes with the production headers (CDP-fulfilled, so the warm-cache check is skipped for mirrored art and the result says `assetOrigin: "mirror"`); against the real origin, leave it unset.
+
+---
+
+## 14. The full production-art workflow
+
+```
+asset:prepare  → asset:publish  → asset:register  → asset:place  → spatial:check → build → ASSET_COMPONENT=<id> browser:perf → commit
+ (stage)          (R2, verified)   (registry)        (scene)        (generate is part of place --apply)
+```
+
+| HUMAN decides | AUTOMATION does |
+|---|---|
+| which asset (the source GLB, a copy — never the library file) | validates the source and the output (AWE H2) |
+| its provenance, rights and dependencies (the intake metadata) | optimises safely (AWE H1), hashes (SHA-256), derives stats |
+| the attributed review (`reviewedBy` / `reviewedAt`) — publication approval | stages bytes write-once and verifies them |
+| running `asset:publish` (the publication event) | publishes to `external-cas` write-once, re-downloads and re-hashes |
+| reviewing the registration proposal, then `--apply` | builds the exact registry revision, refuses conflicts / stale reviews / edited facts |
+| where it goes: destination, component id, transform; then `--apply` | applies exactly that placement, regenerates spatial data, lists what changed |
+| reviewing the perf numbers and committing | measures with `browser:perf` |
+
+Nothing in the automation column selects art, approves it, changes a review or rights, deploys, or changes DNS.
