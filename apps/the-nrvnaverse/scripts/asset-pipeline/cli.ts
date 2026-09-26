@@ -3,6 +3,7 @@
  *
  *   pnpm --filter the-nrvnaverse asset:prepare <source.glb> <metadata.json> [--registry <registry.json>] [--out <dir>] [--draco]
  *   pnpm --filter the-nrvnaverse asset:publish <out>/prepared/<assetId>.r<n>.json [--dry-run]
+ *   pnpm --filter the-nrvnaverse asset:register <out>/published/<assetId>.r<n>.json [--apply]
  *
  * prepare:
  * Validates the source, optimises it safely, validates the result, applies NRVNAVerse policy,
@@ -18,13 +19,21 @@
  * by full re-download. Writes `<out>/published/<assetId>.r<n>.json` (`.dry-run.json` with --dry-run,
  * which makes no network call at all). Never edits the registry, scenes, DNS or deployments.
  * Exit codes: 0 published / already published / planned · 2 blocked (nothing sent) · 1 failure.
+ *
+ * register: turns a VERIFIED publication into the exact committed registry revision. Default is a
+ * deterministic PROPOSAL (diff printed, report written, nothing changed); `--apply` writes
+ * `spatial/source/<registry>.json` (declaring it in the spatial config the first time). Never adds
+ * `assetRef` to a scene, never sets a review, never contacts storage.
+ * Exit codes: 0 proposed / applied / already registered · 2 blocked · 1 usage / I/O error.
  */
-import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
 import type { AssetRegistry } from "../spatial/assets.mjs";
-import { loadSpatialSource, readAssetRegistry } from "../spatial/cli.mjs";
+import { DESTINATIONS_FILE, SOURCE_CONFIG, SOURCE_DIR, loadSpatialSource, readAssetRegistry } from "../spatial/cli.mjs";
+import type { SpatialSourceInput } from "../spatial/pipeline.mjs";
+import { REGISTER_REPORT_VERSION, applyRegistration, describeChanges, planRegistration, siblingsOf, type RegisterReport } from "./register-asset";
 import { prepareAsset, stablePrepareJson, stagePrepared } from "./prepare-asset";
 import { publishPrepared, stagingRootOf, type PublishOptions } from "./publish-asset";
 import { localStagingAdapter } from "./staging";
@@ -145,14 +154,81 @@ export async function runPublish(argv: string[], inject: Partial<Pick<PublishOpt
   return { exitCode, lines, reportPath };
 }
 
+/** Read a spatial source directory the way `spatial:*` does (config, scene, destinations, declared registry). */
+function loadSourceFrom(sourceDir: string, configFile: string): SpatialSourceInput {
+  const config = JSON.parse(readFileSync(configFile, "utf8")) as Record<string, unknown>;
+  const scene = JSON.parse(readFileSync(join(sourceDir, String(config.scene)), "utf8"));
+  const destinations = JSON.parse(readFileSync(DESTINATIONS_FILE, "utf8"));
+  if (typeof config.assetRegistry !== "string") return { config, scene, destinations };
+  const registryPath = join(sourceDir, config.assetRegistry);
+  return { config, scene, destinations, assets: existsSync(registryPath) ? readAssetRegistry(registryPath) : null };
+}
+
+/** The `register` command. `sourceDir` / `configFile` are injectable for tests (default: the committed source). */
+export async function runRegister(argv: string[], inject: { sourceDir?: string; configFile?: string } = {}): Promise<PrepareCommandResult> {
+  const positional = argv.filter((a) => !a.startsWith("--"));
+  const unknown = argv.filter((a) => a.startsWith("--") && a !== "--apply");
+  if (unknown.length || positional.length !== 1) {
+    return { exitCode: 1, lines: [`${unknown.length ? `unknown option ${unknown[0]}\n` : ""}usage: asset:register <out>/published/<assetId>.r<n>.json [--apply]`], reportPath: null };
+  }
+  const apply = argv.includes("--apply");
+  const reportFile = resolve(positional[0]);
+  const sourceDir = inject.sourceDir ?? SOURCE_DIR;
+  const configFile = inject.configFile ?? (inject.sourceDir ? join(sourceDir, "spatial-config.m0.json") : SOURCE_CONFIG);
+  let publishReport: unknown;
+  let source: SpatialSourceInput;
+  try {
+    publishReport = JSON.parse(readFileSync(reportFile, "utf8"));
+    source = inject.sourceDir ? loadSourceFrom(sourceDir, configFile) : (loadSpatialSource() as SpatialSourceInput);
+  } catch (error) {
+    return { exitCode: 1, lines: [`cannot read input: ${(error as Error).message}`], reportPath: null };
+  }
+  const siblings = siblingsOf(reportFile, publishReport as never);
+  const prepareReport = siblings.prepareReport ? JSON.parse(readFileSync(siblings.prepareReport, "utf8")) : null;
+  const stagedBytes = siblings.stagedObject ? new Uint8Array(readFileSync(siblings.stagedObject)) : null;
+
+  const plan = await planRegistration({ publishReport, prepareReport, stagedBytes, source });
+  const blocked = plan.blockers.length > 0;
+  if (apply && !blocked && !plan.alreadyRegistered) applyRegistration(plan, sourceDir, configFile);
+  const status: RegisterReport["status"] = blocked ? "blocked" : plan.alreadyRegistered ? "already-registered" : apply ? "applied" : "proposed";
+  const report: RegisterReport = {
+    kind: "nrvnaverse-asset-register",
+    reportVersion: REGISTER_REPORT_VERSION,
+    mode: apply ? "apply" : "proposal",
+    status,
+    assetId: plan.assetId,
+    revision: plan.revision,
+    registryFile: plan.registryFile,
+    changes: plan.changes,
+    blockers: plan.blockers,
+    next:
+      status === "proposed"
+        ? ["review the diff, then run again with --apply"]
+        : status === "applied" || status === "already-registered"
+          ? ["commit the registry (and spatial config) change", "placement is separate: add a model component with assetRef in the scene, then spatial:generate / spatial:check"]
+          : ["resolve every blocker; nothing was changed"],
+  };
+  const name = `${plan.assetId ?? "unidentified"}.${plan.revision ? `r${plan.revision}` : "invalid"}${apply ? "" : ".proposal"}.json`;
+  const reportPath = join(dirname(dirname(reportFile)), "registered", name);
+  mkdirSync(dirname(reportPath), { recursive: true });
+  writeFileSync(reportPath, `${JSON.stringify(report, null, 2)}\n`);
+
+  const lines = [`${status.toUpperCase()}${apply ? "" : " (proposal — nothing changed; --apply to write)"}: ${plan.assetId ?? "(no asset)"}${plan.revision ? ` revision ${plan.revision}` : ""} → spatial/source/${plan.registryFile}`];
+  for (const line of describeChanges(plan.changes)) lines.push(`diff     ${line}`);
+  for (const b of plan.blockers) lines.push(`BLOCKER  [${b.code}] ${b.message}`);
+  lines.push(`report   ${reportPath}`);
+  for (const step of report.next) lines.push(`next     ${step}`);
+  return { exitCode: blocked ? 2 : 0, lines, reportPath };
+}
+
 const invokedDirectly = process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url);
 if (invokedDirectly) {
   const [command, ...rest] = process.argv.slice(2);
-  if (command !== "prepare" && command !== "publish") {
-    console.error("usage: cli.ts prepare <source.glb> <metadata.json> [--registry <registry.json>] [--out <dir>] [--draco]\n       cli.ts publish <prepare-report.json> [--dry-run]");
+  if (command !== "prepare" && command !== "publish" && command !== "register") {
+    console.error("usage: cli.ts prepare <source.glb> <metadata.json> [--registry <registry.json>] [--out <dir>] [--draco]\n       cli.ts publish <prepare-report.json> [--dry-run]\n       cli.ts register <publish-report.json> [--apply]");
     process.exit(1);
   }
-  (command === "prepare" ? runPrepare(rest) : runPublish(rest)).then(
+  (command === "prepare" ? runPrepare(rest) : command === "publish" ? runPublish(rest) : runRegister(rest)).then(
     (r) => {
       (r.exitCode === 0 ? console.log : console.error)(r.lines.join("\n"));
       process.exit(r.exitCode);

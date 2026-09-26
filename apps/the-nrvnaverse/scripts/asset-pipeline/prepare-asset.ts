@@ -133,7 +133,7 @@ const summarize = (r: AweModelReport): ValidationSummary => ({
 });
 
 /** Derived statistics recorded on the revision (replacing self-declared `stats`). */
-function statsOf(r: AweModelReport): Record<string, unknown> {
+export function statsOf(r: AweModelReport): Record<string, unknown> {
   const c = r.counts;
   const edge = Math.max(r.textures.maxWidth ?? 0, r.textures.maxHeight ?? 0);
   return {

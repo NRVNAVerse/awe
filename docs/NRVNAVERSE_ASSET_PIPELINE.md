@@ -283,4 +283,29 @@ Takes a **cleared** source GLB (a copy — never the library file) and authored 
 
 Output: `<out>/objects/<objectKey>` and `<out>/prepared/<assetId>.r<revision>.json` (sorted keys, no wall-clock fields — byte-identical for identical inputs). Default `<out>` = `apps/the-nrvnaverse/.asset-staging/` (Git-ignored). Exit `0` ready · `2` blocked (report still written, every blocker listed) · `1` usage / I/O error.
 
-After `READY`: `asset:publish <report>` (write-once to R2, verified), commit the proposed record + revision, then reference it (`assetRef`); it resolves to `https://assets.nrvnaverse.com/<objectKey>`.
+After `READY`: `asset:publish <report>` (write-once to R2, verified), then `asset:register` (§12), then reference it (`assetRef`); it resolves to `https://assets.nrvnaverse.com/<objectKey>`.
+
+---
+
+## 12. CURRENT CONTRACT (M1.1) — registration: `asset:register`
+
+```
+pnpm --filter the-nrvnaverse asset:register <out>/published/<assetId>.r<n>.json            # proposal (default)
+pnpm --filter the-nrvnaverse asset:register <out>/published/<assetId>.r<n>.json --apply    # write
+```
+
+Turns a **verified** publication into the exact committed registry revision. The default run prints a deterministic diff (`+ config.assetRegistry` the first time, `+ assets.<id>` / `~ …review` / `~ …currentRevision`, `+ assets.<id>.revisions.<n>  sha256 · bytes · external-cas:<key>`) and writes `<out>/registered/<id>.r<n>.proposal.json`; nothing in the repository changes. `--apply` writes `spatial/source/asset-registry.json` (canonical sorted JSON) and, the first time, declares it in `spatial-config.m0.json`. Re-applying is idempotent (`ALREADY-REGISTERED`). Exit `0` proposed / applied / already registered · `2` blocked · `1` usage.
+
+It **never** contacts storage (the publish report's full-object SHA-256 is the evidence), never creates or changes a review or rights metadata, and never places the asset: `assetRef` in a scene remains a separate, deliberate edit.
+
+| Refused (blocker) | When |
+|---|---|
+| `not-published` / `invalid-publish-report` / `unverified` | dry-run, planned, blocked or failed publication; no full-object SHA-256 verification |
+| `digest-mismatch` | verification ≠ published artifact ≠ registry revision ≠ staged bytes |
+| `delivery-headers` | verified object lacks `model/gltf-binary` / immutable Cache-Control |
+| `backend-mismatch` / `object-key-mismatch` / `origin-mismatch` | not `external-cas`, key ≠ `art/<id>/<sha256>.glb`, published runtime URL ≠ committed `assetStorage` origin |
+| `derived-facts-edited` / `staged-object-missing` | the revision differs from asset:prepare's proposal, or its stats differ from what AWE H2 re-derives from the staged bytes |
+| `not-production` / `not-production-eligible` / `registry-invalid` | not production, any `productionBlockers()` reason, schema failure |
+| `revision-conflict` / `duplicate-bytes` / `registry-conflict` | the revision number already holds other bytes; an existing revision would be rewritten; the same bytes under another number; kind or object-key clash |
+| `stale-review` | a review equal to (or older than) the one recorded for earlier bytes is carried onto a new revision |
+| `spatial-invalid` | the resulting spatial source fails validation |
