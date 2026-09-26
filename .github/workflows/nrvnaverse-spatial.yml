@@ -1,0 +1,70 @@
+# NRVNAVerse spatial app release checks (docs/NRVNAVERSE_HOSTING.md).
+#
+# Keeps a future deployment of THE NRVNAVerse (apps/the-nrvnaverse → worlds.nrvnaverse.com) from
+# accepting obviously broken code. Checks only what that release path depends on: the destination
+# manifests, the spatial app (incl. the asset pipeline and the adopted glTF tools it exercises) and a
+# production build. No deployment step, no secrets. Browser / device probes (browser:perf,
+# browser:touch, real phones) remain a separate release gate.
+name: nrvnaverse-spatial
+
+on:
+  push:
+    branches: ["nrvna/**", "feat/**", "fix/**", "contrib/**"]
+  pull_request:
+    branches: ["nrvna/integration", "main"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: nrvnaverse-spatial-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  release-checks:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      # D-014: Corepack-provided pnpm at the exact packageManager version, frozen lockfile.
+      - name: Enable Corepack
+        run: corepack enable
+
+      - name: Resolve pnpm store
+        id: pnpm-store
+        run: echo "path=$(pnpm store path --silent)" >> "$GITHUB_OUTPUT"
+
+      - uses: actions/cache@v4
+        with:
+          path: ${{ steps.pnpm-store.outputs.path }}
+          key: pnpm-store-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}
+          restore-keys: pnpm-store-${{ runner.os }}-
+
+      - name: Install (frozen lockfile)
+        run: pnpm install --frozen-lockfile
+
+      - name: Manifests — typecheck, tests, generated views up to date
+        run: |
+          pnpm --filter @nrvnaverse/manifest check
+          pnpm --filter @nrvnaverse/manifest test
+          pnpm --filter @nrvnaverse/manifest generate:check
+
+      - name: Spatial app — typecheck (normal + strict)
+        run: pnpm --filter the-nrvnaverse check
+
+      - name: Spatial app — tests
+        run: pnpm --filter the-nrvnaverse test
+
+      - name: Spatial data up to date
+        run: pnpm --filter the-nrvnaverse spatial:check
+
+      - name: Production build (fails closed on stale generated data)
+        run: pnpm --filter the-nrvnaverse build
+        env:
+          NEXT_TELEMETRY_DISABLED: "1"
