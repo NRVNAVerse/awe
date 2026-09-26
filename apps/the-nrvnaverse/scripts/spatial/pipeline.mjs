@@ -131,7 +131,7 @@ const POSITION_KEYS = ["x", "y", "z"];
  *   portals?: PortalConfig[];
  * }} SpatialConfig
  * @typedef {{ components: Record<string, Record<string, unknown>>; [key: string]: unknown }} SceneFile
- * @typedef {{ id: string; status: string; spatialDestination: { platform: string; worldId?: string } | null }} DestinationRecord
+ * @typedef {{ id: string; status: string; gates?: unknown[]; spatialDestination: { platform: string; worldId?: string } | null }} DestinationRecord
  * @typedef {{ destinations: DestinationRecord[] }} DestinationsFile
  * @typedef {{ config: unknown; scene: unknown; destinations: unknown; assets?: unknown }} SpatialSourceInput
  *   `assets` is the parsed asset registry named by `config.assetRegistry` (null / absent when the
@@ -428,6 +428,31 @@ export function validateSpatialSource(input) {
   const registry = loadedRegistry(config, input.assets, fail);
   if (config.assetRegistry === undefined || registry !== null) {
     for (const e of assetGate({ components: sceneComponents, registry, storage: storageConfigOf(config) }).errors) fail(e.code, e.path, e.message);
+  }
+
+  // --- gated delivery (M1 asset-delivery architecture) ---
+  // Chunk data and external-cas objects are publicly fetchable; nothing is access-controlled today.
+  // A chunk that serves ANY gated destination (manifest `gates.length > 0`) therefore never carries
+  // an `assetRef`. Gate truth comes from the manifest and chunk membership from the placements, so
+  // the rule holds for every future gated destination. `asset:place` refuses the same case up front.
+  /** @type {Map<string, string[]>} chunk key → gated destination ids it serves */
+  const gatedChunks = new Map();
+  if (Array.isArray(config.placements)) {
+    for (const placement of config.placements) {
+      if (!isRecord(placement) || !isNonEmptyString(placement.chunkKey) || !isNonEmptyString(placement.destinationId)) continue;
+      const destination = destinationById.get(placement.destinationId);
+      if (!destination || !Array.isArray(destination.gates) || destination.gates.length === 0) continue;
+      gatedChunks.set(placement.chunkKey, [...(gatedChunks.get(placement.chunkKey) ?? []), destination.id]);
+    }
+  }
+  for (const [componentId, component] of Object.entries(sceneComponents)) {
+    if (!("assetRef" in component)) continue;
+    const owner = owners.get(componentId);
+    if (owner === undefined || !owner.startsWith("chunk:")) continue;
+    const gatedIds = gatedChunks.get(owner.slice("chunk:".length));
+    if (gatedIds) {
+      fail("asset-in-gated-chunk", `scene.components.${componentId}.assetRef`, `"${componentId}" carries an assetRef in ${owner}, which serves gated destination(s) ${gatedIds.join(", ")}; gated chunk data is not access-controlled, so runtime assets are never delivered there`);
+    }
   }
 
   return errors.length === 0 ? { ok: true, errors: [] } : { ok: false, errors };

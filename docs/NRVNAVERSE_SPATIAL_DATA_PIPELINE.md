@@ -141,6 +141,8 @@ Determinism: no timestamps, no random ids, no machine paths, index keys sorted b
 
 Portal codes (2B.3, references only — the validator never copies gate truth): `invalid-portals` (present but not an array) · `invalid-portal` (entry not an object) · `unexpected-field` (any key beyond `componentId`, `chunkKey`, `destinationId`) · `invalid-component-ref` (missing / non-string componentId) · `duplicate-portal` (same component bound twice) · `unknown-component` · `global-portal-component` (a global component cannot be a portal) · `portal-chunk-mismatch` (component owned by another chunk than declared) · `unknown-chunk` · `portal-not-sensor` (collider not `enabled: true` + `isSensor: true`) · `invalid-destination-id` · `unknown-destination` · `portal-not-the-nrvnaverse` · `world-id-mismatch`. Multiple portals to one destination, same-chunk targets and gated targets are valid. Stale output is caught by `spatial:check` and by the test suite.
 
+Gated delivery (M1.1): `asset-in-gated-chunk` — a component carrying `assetRef` is owned by a chunk that serves (via `placements`) any destination whose manifest `gates` is non-empty. Chunk data and `external-cas` objects are not access-controlled under M1, so gated chunks carry no runtime assets; the rule reads gate metadata, never specific destination or chunk ids. `asset:place` refuses the same case up front (`gated-destination`).
+
 The validator reads the canonical generated destination set only to verify references; it never copies gates or metadata into the spatial source.
 
 ## 8. How to …
