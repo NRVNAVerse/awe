@@ -2,7 +2,7 @@
 
 | Field | Value |
 |---|---|
-| **Status** | Runtime asset contract **IMPLEMENTED and tested** (no runtime art is declared yet) · M1.1 production intake (`asset:prepare`, §11) and provider-neutral storage contract (§4) **IMPLEMENTED and tested on synthetic data** · external storage adapter / runtime URL base **PENDING** (no provider chosen) · M1.0 tracer **EXPERIMENTAL, not integrated** (§8) |
+| **Status** | Runtime asset contract **IMPLEMENTED and tested** (no runtime art is declared yet) · M1.1 production intake (`asset:prepare`, §11) and provider-neutral storage contract (§4) **IMPLEMENTED and tested on synthetic data** · `external-cas` on **Cloudflare R2** + `asset:publish` **IMPLEMENTED, tested without credentials**; bucket / domain / DNS **not created** ([`NRVNAVERSE_R2_STORAGE.md`](./NRVNAVERSE_R2_STORAGE.md)) · M1.0 tracer **EXPERIMENTAL, not integrated** (§8) |
 | **App** | `apps/the-nrvnaverse` |
 | **Builds on** | [`NRVNAVERSE_SPATIAL_DATA_PIPELINE.md`](./NRVNAVERSE_SPATIAL_DATA_PIPELINE.md) (§17) · [`NRVNAVERSE_SPATIAL_RUNTIME.md`](./NRVNAVERSE_SPATIAL_RUNTIME.md) |
 | **Related decisions** | D-004 (stable destination ids — the asset-id pattern *follows* it; D-004 itself governs destinations) · D-009 (mobile-first; budgets and adaptive quality from representative art) · D-014 (no dependency change) · D-016 (application-layer spatial pipeline) |
@@ -146,16 +146,16 @@ Every embedded third-party model, texture, animation or HDRI is its own `depende
 
 ---
 
-## 4. Provider-neutral external storage — contract IMPLEMENTED, adapter PENDING (no provider chosen)
+## 4. Provider-neutral external storage — contract + first adapter (Cloudflare R2) IMPLEMENTED
 
 `scripts/spatial/storage.mjs` is the storage contract; the registry only ever records `{ backend, objectKey }`:
 
 | Backend | Status | Object key (exact match) | Git publication | Production art | Runtime URL |
 |---|---|---|---|---|---|
 | `repo-public` | implemented | `assets/art/<assetId>.<first 32 hex>.<format>` | **yes** | **never** (`repo-public-production`) | `/<objectKey>` |
-| `external-cas` | **adapter-pending** | `art/<assetId>/<full 64-hex sha256>.<format>` (write-once) | no | yes | `<one committed, non-secret public base>/<objectKey>` — base not chosen, so resolution is **refused** (`asset-storage-unresolved`) rather than guessed |
+| `external-cas` | implemented (adapter: Cloudflare R2) | `art/<assetId>/<full 64-hex sha256>.<format>` (write-once) | no | yes | `<config.assetStorage["external-cas"].publicOrigin>/<objectKey>` = `https://assets.nrvnaverse.com/art/…`; no configured origin → **refused** (`asset-storage-unresolved`, fail closed) |
 
-An `external-cas` revision validates in the registry today (production records can be prepared and reviewed), but no scene can reference it until the adapter and public base exist. The I/O boundary is `StorageAdapter { put(objectKey, bytes, { sha256, contentType }) → { created, location }, verify(objectKey, { sha256, bytes }) → { ok, problem } }`: write-once (identical bytes = no-op, different bytes = error) and verify-by-re-hash. `scripts/asset-pipeline/staging.ts` implements it locally (`.asset-staging/objects/<objectKey>`, Git-ignored) with the same semantics, so an eventual upload is a copy of `objects/**` with no re-keying. Choosing a provider = one adapter + the public base; the registry, keys and ids do not change.
+The public origin is committed, non-secret configuration (`spatial-config.m0.json` → `assetStorage`), so generation stays deterministic; the registry never holds a host or bucket. Publication (`asset:publish`: write-once, full re-download SHA-256 verification) and the R2 bucket / CORS / cache contract are in [`NRVNAVERSE_R2_STORAGE.md`](./NRVNAVERSE_R2_STORAGE.md). The I/O boundary is `StorageAdapter { put(objectKey, bytes, { sha256, contentType }) → { created, location }, verify(objectKey, { sha256, bytes }) → { ok, problem } }`: write-once (identical bytes = no-op, different bytes = error) and verify-by-re-hash. `scripts/asset-pipeline/staging.ts` implements it locally (`.asset-staging/objects/<objectKey>`, Git-ignored) with the same semantics, so an eventual upload is a copy of `objects/**` with no re-keying. Choosing a provider = one adapter + the public base; the registry, keys and ids do not change.
 
 Remaining design (unchanged from the plan):
 
@@ -283,4 +283,4 @@ Takes a **cleared** source GLB (a copy — never the library file) and authored 
 
 Output: `<out>/objects/<objectKey>` and `<out>/prepared/<assetId>.r<revision>.json` (sorted keys, no wall-clock fields — byte-identical for identical inputs). Default `<out>` = `apps/the-nrvnaverse/.asset-staging/` (Git-ignored). Exit `0` ready · `2` blocked (report still written, every blocker listed) · `1` usage / I/O error.
 
-After `READY`: upload `objects/**` to the external store and verify there (**adapter pending**), commit the proposed record + revision, then reference it (`assetRef`) — which additionally needs the `external-cas` runtime URL base (`asset-storage-unresolved` until then).
+After `READY`: `asset:publish <report>` (write-once to R2, verified), commit the proposed record + revision, then reference it (`assetRef`); it resolves to `https://assets.nrvnaverse.com/<objectKey>`.
