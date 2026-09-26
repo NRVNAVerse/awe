@@ -525,4 +525,3 @@ export function stableReport(
   const { elapsedMs: _elapsedMs, ...rest } = report;
   return rest;
 }
-

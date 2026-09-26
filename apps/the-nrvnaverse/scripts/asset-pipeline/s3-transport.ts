@@ -1,4 +1,11 @@
 /**
+ * ============================================================================================
+ * PROVISIONAL UNTIL LIVE-STORAGE SECURITY REVIEW
+ *
+ * Before real production credentials are used, this implementation must either pass the planned
+ * focused security/interoperability review, or be replaced with a maintained S3-compatible client.
+ * ============================================================================================
+ *
  * A minimal S3-compatible object transport (AWS Signature Version 4 over `fetch`) for the
  * `external-cas` storage backend (M1.1 S1). Standard S3 API — `HeadObject`, `GetObject`, and a
  * conditional `PutObject` (`If-None-Match: *`) — so any S3-compatible store works behind it; the
