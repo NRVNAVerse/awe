@@ -21,6 +21,7 @@ import {
   resolveAssetRefs,
   runtimeAssetUrl,
   validateAssetRegistry,
+  validatePublicOrigin,
   type AssetRegistry,
 } from "../scripts/spatial/assets.mjs";
 import { checkRuntimeAssets, loadSpatialSource, readAssetRegistry } from "../scripts/spatial/cli.mjs";
@@ -444,18 +445,46 @@ describe("storage contract — provider-neutral external content-addressed backe
     expect(validateAssetRegistry({ schemaVersion: 1, assets: { [ID]: a } })).toEqual([]);
   });
 
-  it("cannot be referenced until its runtime resolution exists (adapter-pending), and the resolver refuses to guess", () => {
+  it("resolves through the COMMITTED public origin to https://assets.nrvnaverse.com/art/<assetId>/<sha256>.glb", () => {
+    expect((committed.config as Mutable).assetStorage).toEqual({ "external-cas": { publicOrigin: "https://assets.nrvnaverse.com" } });
     const input = source((d) => {
       asProduction(d);
       onExternal(d);
     });
-    expect(codesOf(input)).toEqual(["asset-storage-unresolved"]);
-    expect(messagesOf(input)).toMatch(/adapter-pending/);
-    expect(isRuntimeResolvable("external-cas")).toBe(false);
-    expect(isRuntimeResolvable("repo-public")).toBe(true);
-    expect(() => runtimeAssetUrl({ backend: "external-cas", objectKey: EXTERNAL_KEY })).toThrow(/adapter pending/);
-    expect(STORAGE_BACKEND_CONTRACTS["external-cas"]).toMatchObject({ status: "adapter-pending", publishesToGit: false, allowsProduction: true });
+    expect(codesOf(input)).toEqual([]);
+    const gen = generateSpatialArtifacts(input);
+    expect(JSON.parse(gen.files[gen.chunkFiles.hub]).components[COMPONENT].url).toBe(`https://assets.nrvnaverse.com/${EXTERNAL_KEY}`);
+    // The registry still records only backend + key: no bucket, vendor URL or origin.
+    expect(JSON.stringify(input.assets)).not.toMatch(/assets.nrvnaverse.com|r2|cloudflare/i);
+    expect(STORAGE_BACKEND_CONTRACTS["external-cas"]).toMatchObject({ status: "implemented", publishesToGit: false, allowsProduction: true, requiresPublicOrigin: true });
     expect(STORAGE_BACKEND_CONTRACTS["repo-public"]).toMatchObject({ status: "implemented", publishesToGit: true, allowsProduction: false });
+  });
+
+  it("fails closed without a configured public origin, and never guesses one", () => {
+    const input = source((d) => {
+      asProduction(d);
+      onExternal(d);
+      delete d.config.assetStorage;
+    });
+    expect(codesOf(input)).toEqual(["asset-storage-unresolved"]);
+    expect(messagesOf(input)).toMatch(/no public origin is configured/);
+    expect(isRuntimeResolvable("external-cas")).toBe(false);
+    expect(isRuntimeResolvable("external-cas", { "external-cas": { publicOrigin: "https://assets.nrvnaverse.com" } })).toBe(true);
+    expect(isRuntimeResolvable("repo-public")).toBe(true);
+    expect(() => runtimeAssetUrl({ backend: "external-cas", objectKey: EXTERNAL_KEY })).toThrow(/needs a configured public origin/);
+    expect(runtimeAssetUrl({ backend: "external-cas", objectKey: EXTERNAL_KEY }, { "external-cas": { publicOrigin: "https://assets.nrvnaverse.com" } })).toBe(`https://assets.nrvnaverse.com/${EXTERNAL_KEY}`);
+  });
+
+  it("validates the committed assetStorage block: bare https origins only, no credentials or unknown backends", () => {
+    const withStorage = (assetStorage: unknown) => codesOf(source((d) => (d.config.assetStorage = assetStorage)));
+    for (const origin of ["http://assets.nrvnaverse.com", "https://assets.nrvnaverse.com/", "https://assets.nrvnaverse.com/art", "https://pub-123.r2.dev", "https://a.b:8443", "https://u:p@assets.nrvnaverse.com", "assets.nrvnaverse.com", "", 42]) {
+      expect(withStorage({ "external-cas": { publicOrigin: origin } }), String(origin)).toContain("invalid-asset-storage");
+      expect(validatePublicOrigin(origin).ok, String(origin)).toBe(false);
+    }
+    expect(withStorage({ "external-cas": { publicOrigin: "https://assets.nrvnaverse.com", secretAccessKey: "x" } })).toContain("invalid-asset-storage");
+    expect(withStorage({ s3: { publicOrigin: "https://assets.nrvnaverse.com" } })).toContain("invalid-asset-storage");
+    expect(withStorage({ "repo-public": { publicOrigin: "https://assets.nrvnaverse.com" } })).toContain("invalid-asset-storage");
+    expect(validatePublicOrigin("https://assets.nrvnaverse.com")).toEqual({ ok: true, origin: "https://assets.nrvnaverse.com", problem: null });
   });
 
   it("moving bytes between backends changes only storage — asset id and revision are untouched", () => {

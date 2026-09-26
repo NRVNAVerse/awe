@@ -54,7 +54,7 @@
  */
 
 import { createHash } from "node:crypto";
-import { assetExperimentalWarnings, assetGate, resolveAssetRefs, validateAssetRegistry } from "./assets.mjs";
+import { assetExperimentalWarnings, assetGate, resolveAssetRefs, validateAssetRegistry, validateAssetStorageConfig } from "./assets.mjs";
 
 export const SPATIAL_SCHEMA_VERSION = 1;
 
@@ -105,7 +105,7 @@ export const CONTENT_ADDRESSED_OUTPUT = Object.freeze({
   chunk: /^spatial\/chunks\/([a-z0-9]+(?:-[a-z0-9]+)*)\.([0-9a-f]{32})\.json$/,
 });
 
-const CONFIG_KEYS = ["schemaVersion", "worldId", "scene", "assetRegistry", "global", "chunks", "placements", "portals"];
+const CONFIG_KEYS = ["schemaVersion", "worldId", "scene", "assetRegistry", "assetStorage", "global", "chunks", "placements", "portals"];
 const GLOBAL_KEYS = ["componentIds"];
 const CHUNK_KEYS = ["key", "label", "componentIds"];
 const PLACEMENT_KEYS = ["destinationId", "chunkKey", "spawn"];
@@ -124,6 +124,7 @@ const POSITION_KEYS = ["x", "y", "z"];
  *   worldId: string;
  *   scene: string;
  *   assetRegistry?: string;
+ *   assetStorage?: import("./storage.mjs").AssetStorageConfig;
  *   global: { componentIds: string[] };
  *   chunks: ChunkConfig[];
  *   placements: PlacementConfig[];
@@ -216,6 +217,10 @@ export function validateSpatialSource(input) {
   }
   if (config.assetRegistry !== undefined && (!isNonEmptyString(config.assetRegistry) || !SAFE_FILE_NAME.test(config.assetRegistry))) {
     fail("invalid-asset-registry-ref", "config.assetRegistry", "assetRegistry must be a plain .json file name next to the config");
+  }
+  // Committed, non-secret storage backend configuration (public runtime origins; never credentials).
+  if (config.assetStorage !== undefined) {
+    for (const p of validateAssetStorageConfig(config.assetStorage)) fail("invalid-asset-storage", p.path, p.message);
   }
 
   // --- scene ---
@@ -422,10 +427,19 @@ export function validateSpatialSource(input) {
   // each reference against it would only repeat the same problem as misleading follow-on errors.
   const registry = loadedRegistry(config, input.assets, fail);
   if (config.assetRegistry === undefined || registry !== null) {
-    for (const e of assetGate({ components: sceneComponents, registry }).errors) fail(e.code, e.path, e.message);
+    for (const e of assetGate({ components: sceneComponents, registry, storage: storageConfigOf(config) }).errors) fail(e.code, e.path, e.message);
   }
 
   return errors.length === 0 ? { ok: true, errors: [] } : { ok: false, errors };
+}
+
+/**
+ * The committed storage backend configuration, or null.
+ * @param {Record<string, unknown> | SpatialConfig} config
+ * @returns {import("./storage.mjs").AssetStorageConfig | null}
+ */
+function storageConfigOf(config) {
+  return isRecord(config.assetStorage) ? /** @type {import("./storage.mjs").AssetStorageConfig} */ (config.assetStorage) : null;
 }
 
 /**
@@ -458,7 +472,7 @@ export function spatialAssetWarnings(input) {
   const scene = /** @type {SceneFile} */ (input.scene);
   if (config.assetRegistry === undefined || !isRecord(input.assets)) return [];
   const registry = /** @type {import("./assets.mjs").AssetRegistry} */ (input.assets);
-  const gate = assetGate({ components: scene.components, registry });
+  const gate = assetGate({ components: scene.components, registry, storage: storageConfigOf(config) });
   return [...gate.warnings, ...assetExperimentalWarnings(registry, gate.referencedAssetIds)];
 }
 
@@ -567,8 +581,9 @@ export function generateSpatialArtifacts(input) {
   // Runtime assets: every `assetRef` becomes the current revision's content-addressed URL in EVERY
   // generated artifact (validation above guarantees each reference resolves).
   const registry = config.assetRegistry === undefined ? null : /** @type {import("./assets.mjs").AssetRegistry} */ (input.assets);
-  const assetIds = assetGate({ components: authoredScene.components, registry }).referencedAssetIds;
-  const resolvedComponents = resolveAssetRefs(authoredScene.components, registry);
+  const storage = storageConfigOf(config);
+  const assetIds = assetGate({ components: authoredScene.components, registry, storage }).referencedAssetIds;
+  const resolvedComponents = resolveAssetRefs(authoredScene.components, registry, storage);
   /** @type {SceneFile} */
   const scene = /** @type {SceneFile} */ ({});
   for (const [key, value] of Object.entries(authoredScene)) scene[key] = key === "components" ? resolvedComponents : value;

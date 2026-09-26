@@ -17,10 +17,10 @@
  *   revision is a new immutable URL and — because the URL lands in the chunk payload — a new chunk
  *   digest.
  * - STORAGE: `storage.backend` decides where the bytes live and how the URL is formed — the
- *   provider-neutral contract in `storage.mjs`. `repo-public` (the app's `public/` directory) is
- *   implemented; `external-cas` (production art, provider not chosen) validates in the registry but
- *   its runtime resolution is adapter-pending, so a scene cannot reference it yet
- *   (`asset-storage-unresolved`). A provider is a new adapter, never a new identity.
+ *   provider-neutral contract in `storage.mjs`. `repo-public` (the app's `public/` directory) and
+ *   `external-cas` (production art; first adapter Cloudflare R2) are implemented. An `external-cas`
+ *   reference resolves only with a committed public origin (`config.assetStorage`), otherwise it is
+ *   refused (`asset-storage-unresolved`). A provider is a new adapter, never a new identity.
  *
  * The rights gate is NRVNAVerse policy, not a generic AWE licensing system:
  * - a referenced asset must be registered, have a runtime artifact, not be prohibited from web
@@ -39,7 +39,7 @@
  *   art therefore never enters Git, and automation never approves a publication.
  */
 
-import { STORAGE_BACKENDS, isRuntimeResolvable, objectKeyFor, runtimeAssetUrl, storageBackend } from "./storage.mjs";
+import { STORAGE_BACKENDS, objectKeyFor, runtimeAssetUrl, runtimeResolutionProblem, storageBackend } from "./storage.mjs";
 
 export const ASSET_REGISTRY_SCHEMA_VERSION = 1;
 
@@ -74,6 +74,9 @@ export {
   STORAGE_BACKENDS,
   STORAGE_BACKEND_CONTRACTS,
   isRuntimeResolvable,
+  runtimeResolutionProblem,
+  validateAssetStorageConfig,
+  validatePublicOrigin,
   objectKeyFor,
   runtimeAssetUrl,
 } from "./storage.mjs";
@@ -468,10 +471,12 @@ export function assetBearingComponents(components) {
  * The rights / provenance gate for the assets the scene actually references.
  * `registry` must already have passed {@link validateAssetRegistry}.
  *
- * @param {{ components: Record<string, Record<string, unknown>>; registry: AssetRegistry | null }} input
+ * `storage` is the committed, non-secret backend configuration (`config.assetStorage`).
+ *
+ * @param {{ components: Record<string, Record<string, unknown>>; registry: AssetRegistry | null; storage?: import("./storage.mjs").AssetStorageConfig | null }} input
  * @returns {{ errors: AssetIssue[]; warnings: AssetIssue[]; referencedAssetIds: string[] }}
  */
-export function assetGate({ components, registry }) {
+export function assetGate({ components, registry, storage = null }) {
   /** @type {AssetIssue[]} */
   const errors = [];
   /** @type {AssetIssue[]} */
@@ -517,10 +522,10 @@ export function assetGate({ components, registry }) {
     const revision = currentRevision(record);
     if (!revision || !revision.artifact) {
       errors.push({ code: "asset-missing-artifact", path: `${path}.revisions.${record.currentRevision}.artifact`, message: `${assetId} (${record.name}) is referenced but its current revision has no runtime artifact` });
-    } else if (!isRuntimeResolvable(revision.artifact.storage.backend)) {
+    } else if (runtimeResolutionProblem(revision.artifact.storage.backend, storage) !== null) {
       // Registered and valid, but no runtime URL can be formed yet: refuse rather than generate a
       // chunk that points at bytes nobody serves.
-      errors.push({ code: "asset-storage-unresolved", path: `${path}.revisions.${record.currentRevision}.artifact.storage.backend`, message: `${assetId} (${record.name}) is stored on "${revision.artifact.storage.backend}", whose runtime URL resolution is adapter-pending — it cannot be referenced by the runtime yet` });
+      errors.push({ code: "asset-storage-unresolved", path: `${path}.revisions.${record.currentRevision}.artifact.storage.backend`, message: `${assetId} (${record.name}) is stored on "${revision.artifact.storage.backend}" but its runtime URL cannot be resolved (${runtimeResolutionProblem(revision.artifact.storage.backend, storage)}) — set config.assetStorage["${revision.artifact.storage.backend}"].publicOrigin` });
     }
     if (record.rights.webRuntimeRedistribution === "prohibited") {
       errors.push({ code: "asset-redistribution-prohibited", path: `${path}.rights.webRuntimeRedistribution`, message: `${assetId} (${record.name}) may not be redistributed in a web runtime` });
@@ -591,9 +596,10 @@ export function assetExperimentalWarnings(registry, assetIds) {
  *
  * @param {Record<string, Record<string, unknown>>} components
  * @param {AssetRegistry | null} registry
+ * @param {import("./storage.mjs").AssetStorageConfig | null} [storage]
  * @returns {Record<string, Record<string, unknown>>}
  */
-export function resolveAssetRefs(components, registry) {
+export function resolveAssetRefs(components, registry, storage = null) {
   /** @type {Record<string, Record<string, unknown>>} */
   const out = {};
   for (const [componentId, component] of Object.entries(components)) {
@@ -608,7 +614,7 @@ export function resolveAssetRefs(components, registry) {
     /** @type {Record<string, unknown>} */
     const resolved = {};
     for (const [key, value] of Object.entries(component)) {
-      if (key === "assetRef") resolved.url = runtimeAssetUrl(revision.artifact.storage);
+      if (key === "assetRef") resolved.url = runtimeAssetUrl(revision.artifact.storage, storage);
       else resolved[key] = value;
     }
     out[componentId] = resolved;

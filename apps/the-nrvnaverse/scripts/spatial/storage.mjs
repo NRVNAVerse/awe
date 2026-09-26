@@ -29,13 +29,19 @@ export const ASSET_OBJECT_TOKEN_LENGTH = 32;
 
 /**
  * @typedef {"implemented" | "adapter-pending"} StorageBackendStatus
+ * @typedef {{ publicOrigin?: string }} StorageBackendConfig
+ * @typedef {Record<string, StorageBackendConfig>} AssetStorageConfig
+ *   Committed, NON-SECRET per-backend configuration (the spatial config's `assetStorage`): today only
+ *   `external-cas.publicOrigin`. Credentials never live here.
  * @typedef {{
  *   status: StorageBackendStatus;
  *   publishesToGit: boolean;
  *   allowsProduction: boolean;
+ *   requiresPublicOrigin: boolean;
+ *   adapters: readonly string[];
  *   keyPattern: RegExp;
  *   objectKey: (assetId: string, sha256: string, format: string) => string;
- *   runtimeUrl: ((objectKey: string) => string) | null;
+ *   runtimeUrl: (objectKey: string, config: StorageBackendConfig | undefined) => string;
  *   description: string;
  * }} StorageBackendContract
  */
@@ -46,22 +52,30 @@ export const STORAGE_BACKEND_CONTRACTS = Object.freeze({
     status: "implemented",
     publishesToGit: true,
     allowsProduction: false,
+    requiresPublicOrigin: false,
+    adapters: Object.freeze(["repository"]),
     keyPattern: REPO_PUBLIC_OBJECT_KEY,
     objectKey: /** @type {StorageBackendContract["objectKey"]} */ ((assetId, sha256, format) => `${REPO_PUBLIC_ART_PREFIX}/${assetId}.${sha256.slice(0, ASSET_OBJECT_TOKEN_LENGTH)}.${format}`),
-    runtimeUrl: /** @type {(objectKey: string) => string} */ ((objectKey) => `/${objectKey}`),
+    runtimeUrl: /** @type {StorageBackendContract["runtimeUrl"]} */ ((objectKey) => `/${objectKey}`),
     description: "the app's public/ directory in the public repository — cleared internal engineering assets only",
   }),
   "external-cas": Object.freeze({
-    status: "adapter-pending",
+    status: "implemented",
     publishesToGit: false,
     allowsProduction: true,
+    requiresPublicOrigin: true,
+    // Concrete adapters behind this logical backend. The registry never names one.
+    adapters: Object.freeze(["cloudflare-r2"]),
     keyPattern: EXTERNAL_CAS_OBJECT_KEY,
     objectKey: /** @type {StorageBackendContract["objectKey"]} */ ((assetId, sha256, format) => `art/${assetId}/${sha256}.${format}`),
-    // Runtime URL = `<one committed, non-secret public base for this backend>/<objectKey>`. The base
-    // (a same-origin path mapped by hosting, or a CDN origin) is not chosen yet, so resolution is
-    // refused rather than guessed: nothing can generate a chunk that points at bytes nobody serves.
-    runtimeUrl: null,
-    description: "provider-neutral external content-addressed store for production art (provider not chosen)",
+    // Runtime URL = `<committed public origin>/<objectKey>`. No origin configured → refused (fail
+    // closed): nothing can generate a chunk that points at bytes nobody serves.
+    runtimeUrl: /** @type {StorageBackendContract["runtimeUrl"]} */ ((objectKey, config) => {
+      const origin = validatePublicOrigin(config?.publicOrigin);
+      if (!origin.ok) throw new Error(`external-cas runtime URL needs a configured public origin: ${origin.problem}`);
+      return `${origin.origin}/${objectKey}`;
+    }),
+    description: "provider-neutral external content-addressed store for production art (first adapter: Cloudflare R2)",
   }),
 });
 
@@ -90,23 +104,95 @@ export function objectKeyFor(backend, assetId, sha256, format) {
 }
 
 /**
- * Whether a runtime URL can be resolved for this backend today.
- * @param {string} backend
+ * A public runtime origin: `https://<host>` exactly — no path, query, fragment, credentials, port or
+ * trailing slash, and never a `*.r2.dev` development URL (production art is served from a custom
+ * domain with a cache rule, docs/NRVNAVERSE_R2_STORAGE.md).
+ * @param {unknown} value
+ * @returns {{ ok: true; origin: string; problem: null } | { ok: false; origin: null; problem: string }}
  */
-export function isRuntimeResolvable(backend) {
-  return storageBackend(backend)?.runtimeUrl != null;
+export function validatePublicOrigin(value) {
+  const bad = (/** @type {string} */ problem) => /** @type {const} */ ({ ok: false, origin: null, problem });
+  if (value === undefined || value === null || value === "") return bad("no public origin is configured");
+  if (typeof value !== "string") return bad(`public origin must be a string, got ${typeof value}`);
+  let url;
+  try {
+    url = new URL(value);
+  } catch {
+    return bad(`${JSON.stringify(value)} is not a URL`);
+  }
+  if (url.protocol !== "https:") return bad(`${JSON.stringify(value)} must use https`);
+  if (url.username || url.password || url.port || url.search || url.hash || url.pathname !== "/" || value.endsWith("/")) {
+    return bad(`${JSON.stringify(value)} must be a bare origin like https://assets.example.com (no path, query, port, credentials or trailing slash)`);
+  }
+  if (url.hostname === "r2.dev" || url.hostname.endsWith(".r2.dev")) return bad(`${JSON.stringify(value)} is an r2.dev development URL; production art uses a custom domain`);
+  if (url.origin !== value) return bad(`${JSON.stringify(value)} is not in canonical form (${url.origin})`);
+  return { ok: true, origin: url.origin, problem: null };
 }
 
 /**
- * Runtime URL for a stored artifact. Storage decides the URL; identity never does. Throws for an
- * unknown backend and for one whose runtime resolution is adapter-pending.
- * @param {{ backend: string; objectKey: string }} storage
+ * Why a runtime URL cannot be resolved for `backend` with this configuration; null = it can.
+ * @param {string} backend
+ * @param {AssetStorageConfig | null | undefined} [storageConfig]
+ * @returns {string | null}
  */
-export function runtimeAssetUrl(storage) {
+export function runtimeResolutionProblem(backend, storageConfig) {
+  const contract = storageBackend(backend);
+  if (!contract) return `unsupported storage backend ${JSON.stringify(backend)}`;
+  if (!contract.requiresPublicOrigin) return null;
+  const origin = validatePublicOrigin(storageConfig?.[backend]?.publicOrigin);
+  return origin.ok ? null : origin.problem;
+}
+
+/**
+ * Whether a runtime URL can be resolved for this backend with this configuration.
+ * @param {string} backend
+ * @param {AssetStorageConfig | null | undefined} [storageConfig]
+ */
+export function isRuntimeResolvable(backend, storageConfig) {
+  return runtimeResolutionProblem(backend, storageConfig) === null;
+}
+
+/**
+ * Runtime URL for a stored artifact. Storage decides the URL; identity never does. Throws (fails
+ * closed) for an unknown backend and for a backend whose public origin is not configured.
+ * @param {{ backend: string; objectKey: string }} storage
+ * @param {AssetStorageConfig | null | undefined} [storageConfig]
+ */
+export function runtimeAssetUrl(storage, storageConfig) {
   const contract = storageBackend(storage.backend);
   if (!contract) throw new Error(`unsupported storage backend ${JSON.stringify(storage.backend)}`);
-  if (!contract.runtimeUrl) throw new Error(`storage backend ${JSON.stringify(storage.backend)} has no runtime URL resolver yet (adapter pending)`);
-  return contract.runtimeUrl(storage.objectKey);
+  return contract.runtimeUrl(storage.objectKey, storageConfig?.[storage.backend]);
+}
+
+/**
+ * Structural validation of a committed `assetStorage` block. Returns problems (empty = valid).
+ * @param {unknown} value
+ * @returns {Array<{ path: string; message: string }>}
+ */
+export function validateAssetStorageConfig(value) {
+  /** @type {Array<{ path: string; message: string }>} */
+  const problems = [];
+  if (typeof value !== "object" || value === null || Array.isArray(value)) return [{ path: "config.assetStorage", message: "assetStorage must be an object keyed by storage backend" }];
+  for (const [backend, cfg] of Object.entries(value)) {
+    const path = `config.assetStorage.${backend}`;
+    const contract = storageBackend(backend);
+    if (!contract) {
+      problems.push({ path, message: `unsupported storage backend ${JSON.stringify(backend)}` });
+      continue;
+    }
+    if (typeof cfg !== "object" || cfg === null || Array.isArray(cfg)) {
+      problems.push({ path, message: "backend configuration must be an object" });
+      continue;
+    }
+    for (const key of Object.keys(cfg)) {
+      if (key !== "publicOrigin" || !contract.requiresPublicOrigin) problems.push({ path: `${path}.${key}`, message: `unexpected field "${key}" (credentials and bucket names never belong in committed config)` });
+    }
+    if (contract.requiresPublicOrigin) {
+      const origin = validatePublicOrigin(/** @type {Record<string, unknown>} */ (cfg).publicOrigin);
+      if (!origin.ok) problems.push({ path: `${path}.publicOrigin`, message: origin.problem });
+    }
+  }
+  return problems;
 }
 
 /**
@@ -124,3 +210,6 @@ export function runtimeAssetUrl(storage) {
 
 /** Content type per artifact format. */
 export const ARTIFACT_CONTENT_TYPES = Object.freeze({ glb: "model/gltf-binary" });
+
+/** Cache-Control for content-addressed, write-once runtime objects (same value as the spatial chunks). */
+export const IMMUTABLE_OBJECT_CACHE_CONTROL = "public, max-age=31536000, immutable";

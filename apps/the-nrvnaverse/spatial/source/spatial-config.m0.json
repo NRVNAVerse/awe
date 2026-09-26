@@ -2,6 +2,9 @@
   "schemaVersion": 1,
   "worldId": "the-nrvnaverse",
   "scene": "scene.m0.json",
+  "assetStorage": {
+    "external-cas": { "publicOrigin": "https://assets.nrvnaverse.com" }
+  },
   "global": {
     "componentIds": [
       "vrm-anims",
