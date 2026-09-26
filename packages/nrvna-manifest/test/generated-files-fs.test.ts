@@ -58,7 +58,7 @@ describe("generated files on disk", () => {
   it("a real content difference is still stale and gets rewritten as canonical LF", () => {
     writeAll((text, name) => (name === "directory.json" ? toCrlf(text.replace('"schemaVersion": 1', '"schemaVersion": 2')) : text));
     expect(checkGeneratedViews(views, dir)).toEqual({ upToDate: false, stale: ["directory.json"] });
-    expect(writeGeneratedViews(views, dir)).toEqual({ written: ["directory.json"], unchanged: ["destinations.json"] });
+    expect(writeGeneratedViews(views, dir)).toEqual({ written: ["directory.json"], unchanged: ["destinations.json", "web-destinations.json"] });
     expect(readFileSync(join(dir, "directory.json"), "utf8")).toBe(canonical["directory.json"]);
     expect(checkGeneratedViews(views, dir).upToDate).toBe(true);
   });

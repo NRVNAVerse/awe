@@ -1,5 +1,5 @@
 import { createDestinationIndex, destinationsInDistrict } from "./resolve";
-import { DESTINATION_SCHEMA_VERSION, spatialUrlFor, type Destination, type DestinationKind, type GateKind } from "./schema";
+import { DESTINATION_SCHEMA_VERSION, NRVNAVERSE_SPATIAL_ROOT, spatialUrlFor, type CommerceRef, type Destination, type DestinationKind, type GateKind } from "./schema";
 import { formatValidationErrors, validateDestinationSet } from "./validate";
 
 /**
@@ -57,12 +57,82 @@ export interface DirectoryDistrict extends DirectoryEntry {
   destinations: DirectoryEntry[];
 }
 
+/**
+ * `web-destinations.json` — the WEB handoff (www.nrvnaverse.com Explore pages, e.g. a Wix CMS
+ * import). Only web-facing fields: no auth roles, owner org ids, jurisdiction policy detail, analytics
+ * or schema internals. Gate policy is preserved, never bypassed: a gated destination is listed with
+ * `listing: "age-gated"` (the web must apply its own age gate before showing it) and has NO spatial
+ * deep link (`spatial.enterable: false`) — exactly as the world refuses entry today.
+ */
+export interface WebDestinationsFile {
+  schemaVersion: typeof DESTINATION_SCHEMA_VERSION;
+  /** What this file is for — derived, never edited by hand. */
+  purpose: string;
+  spatialRoot: string;
+  destinations: WebDestination[];
+}
+
+export interface WebDestination {
+  id: string;
+  slug: string;
+  name: string;
+  kind: DestinationKind;
+  description: string;
+  primaryDistrict: { id: string; slug: string; name: string } | null;
+  categories: string[];
+  /** Public tags (internal milestone markers such as `m0` / `placeholder` removed). */
+  tags: string[];
+  /** Placeholder content: the web should label it "coming soon", not present it as finished. */
+  placeholder: boolean;
+  listing: "public" | "age-gated";
+  gate: { kinds: GateKind[]; minimumAge: number | null } | null;
+  webUrl: string;
+  spatial: {
+    enterable: boolean;
+    /** `<spatial root>?destination=<id>&from=web&return=web`, or null for gated destinations. */
+    deepLink: string | null;
+  };
+  commerceRefs: CommerceRef[];
+  media: { thumbnailUrl: string | null; heroUrl: string | null };
+  updatedAt: string;
+}
+
 export interface GeneratedViews {
   "destinations.json": DestinationsFile;
   "directory.json": DirectoryFile;
+  "web-destinations.json": WebDestinationsFile;
 }
 
-export const GENERATED_FILE_NAMES = ["destinations.json", "directory.json"] as const;
+export const GENERATED_FILE_NAMES = ["destinations.json", "directory.json", "web-destinations.json"] as const;
+
+/** Tags that mark engineering milestones, not web-facing taxonomy. */
+const INTERNAL_TAGS = new Set(["m0", "placeholder"]);
+
+function toWebDestination(d: Destination, byId: Map<string, Destination>): WebDestination {
+  const gated = d.gates.length > 0;
+  const district = d.primaryDistrictId ? byId.get(d.primaryDistrictId) ?? null : null;
+  return {
+    id: d.id,
+    slug: d.slug,
+    name: d.name,
+    kind: d.kind,
+    description: d.description,
+    primaryDistrict: district ? { id: district.id, slug: district.slug, name: district.name } : null,
+    categories: [...d.categories],
+    tags: d.tags.filter((t) => !INTERNAL_TAGS.has(t)),
+    placeholder: d.tags.includes("placeholder"),
+    listing: gated ? "age-gated" : "public",
+    gate: gated ? { kinds: d.gates.map((g) => g.kind), minimumAge: d.ageRestriction?.minimumAge ?? null } : null,
+    webUrl: d.webUrl,
+    spatial: {
+      enterable: !gated && d.spatialDestination !== null,
+      deepLink: !gated && d.spatialDestination !== null ? `${spatialUrlFor(d.id)}&from=web&return=web` : null,
+    },
+    commerceRefs: d.commerceRefs.map((c) => ({ ...c })),
+    media: { thumbnailUrl: d.media.thumbnailUrl, heroUrl: d.media.heroUrl },
+    updatedAt: d.updatedAt,
+  };
+}
 
 function compareId<T extends { id: string }>(a: T, b: T): number {
   return a.id < b.id ? -1 : a.id > b.id ? 1 : 0;
@@ -125,7 +195,15 @@ export function generateViews(manifests: unknown[], labels?: string[]): Generate
     unassigned,
   };
 
-  return { "destinations.json": destinationsFile, "directory.json": directoryFile };
+  const byId = new Map(destinations.map((d) => [d.id, d] as const));
+  const webFile: WebDestinationsFile = {
+    schemaVersion: DESTINATION_SCHEMA_VERSION,
+    purpose: "WEB handoff for www.nrvnaverse.com Explore pages. Derived from packages/nrvna-manifest/manifests by `pnpm --filter @nrvnaverse/manifest generate`; never edit by hand.",
+    spatialRoot: NRVNAVERSE_SPATIAL_ROOT,
+    destinations: destinations.filter((d) => d.status === "active").map((d) => toWebDestination(d, byId)),
+  };
+
+  return { "destinations.json": destinationsFile, "directory.json": directoryFile, "web-destinations.json": webFile };
 }
 
 /** Canonical serialization: sorted keys, 2-space indent, trailing newline. */
