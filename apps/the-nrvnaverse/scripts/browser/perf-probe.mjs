@@ -29,13 +29,50 @@
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
-import { CHROME, buildFreshness, killTree, launchChrome, log, newPage, removeDir, sleep, startServer, waitFor } from "./cdp.mjs";
+import { APP_DIR, CHROME, buildFreshness, killTree, launchChrome, log, newPage, removeDir, sleep, startServer, waitFor } from "./cdp.mjs";
 
 const PORT = Number(process.env.PORT ?? 3301);
 const CDP_PORT = Number(process.env.CDP_PORT ?? 9336);
 const OUT_DIR = process.env.OUT_DIR ?? path.join(os.tmpdir(), "nrvnaverse-browser-perf");
 /** Optional scene component id of ONE runtime asset under test (in the Hub chunk). */
 const ASSET_COMPONENT = process.env.ASSET_COMPONENT || null;
+/**
+ * ASSET_MIRROR=<asset:prepare --out dir> (optional, local measurement only): serve requests for the
+ * committed external-cas public origin (config.assetStorage) from the staged, digest-named bytes in
+ * `<dir>/objects/<objectKey>`, with the production object headers (model/gltf-binary, immutable,
+ * ACAO *). Lets a PLACED external asset be measured before the store exists. CDP-fulfilled responses
+ * do not enter Chrome's HTTP cache, so the warm-cache checks skip mirrored art and the result is
+ * labelled `assetOrigin: "mirror"`. Unset (the default) = the real network.
+ */
+const ASSET_MIRROR = process.env.ASSET_MIRROR ? path.resolve(process.env.ASSET_MIRROR) : null;
+const EXTERNAL_ART_PATH = /^\/art\/ast_[0-9abcdefghjkmnpqrstvwxyz]{16}\/[0-9a-f]{64}\.glb$/;
+/** The committed external-cas public origin, or null. */
+function committedAssetOrigin() {
+  const config = JSON.parse(fs.readFileSync(path.join(APP_DIR, "spatial", "source", "spatial-config.m0.json"), "utf8"));
+  return config.assetStorage?.["external-cas"]?.publicOrigin ?? null;
+}
+
+/** @param {import("./cdp.mjs").CDP} cdp */
+async function enableAssetMirror(cdp) {
+  const origin = committedAssetOrigin();
+  if (!origin) throw new Error("ASSET_MIRROR is set but the spatial config declares no external-cas public origin");
+  await cdp.send("Fetch.enable", { patterns: [{ urlPattern: `${origin}/art/*`, requestStage: "Request" }] });
+  cdp.on("Fetch.requestPaused", (/** @type {any} */ p) => {
+    const key = new URL(p.request.url).pathname;
+    const file = EXTERNAL_ART_PATH.test(key) ? path.join(/** @type {string} */ (ASSET_MIRROR), "objects", ...key.slice(1).split("/")) : null;
+    const cors = { name: "Access-Control-Allow-Origin", value: "*" };
+    if (!file || !fs.existsSync(file)) {
+      void cdp.send("Fetch.fulfillRequest", { requestId: p.requestId, responseCode: 404, responseHeaders: [cors, { name: "Cache-Control", value: "no-store" }], body: "" });
+      return;
+    }
+    void cdp.send("Fetch.fulfillRequest", {
+      requestId: p.requestId,
+      responseCode: 200,
+      responseHeaders: [cors, { name: "Content-Type", value: "model/gltf-binary" }, { name: "Cache-Control", value: "public, max-age=31536000, immutable" }],
+      body: fs.readFileSync(file).toString("base64"),
+    });
+  });
+}
 const MUSIC_ID = "dst_gm3xs4a3tws7bgh3";
 const HUB_ID = "dst_7g19n1vm9ackw8a0";
 
@@ -142,7 +179,7 @@ function trackNetwork(cdp) {
 /** @param {string} url */
 function classify(url) {
   const u = url.split("?")[0];
-  if (u.endsWith(".glb") || u.endsWith(".gltf")) return u.includes("/assets/art/") ? "art-glb" : "other-glb";
+  if (u.endsWith(".glb") || u.endsWith(".gltf")) return u.includes("/assets/art/") || EXTERNAL_ART_PATH.test(pathOf(u)) ? "art-glb" : "other-glb";
   if (u.endsWith(".vrm")) return "avatar";
   if (u.endsWith(".hdr") || u.endsWith(".exr")) return "environment";
   if (u.includes("/data/spatial/")) return "spatial-json";
@@ -187,8 +224,13 @@ function summarizeNetwork(requests) {
 
 // ------------------------------------------------------------------------------------ in-page probes
 const PLACED = `(() => { const ph = document.querySelector("header[data-app-phase]")?.getAttribute("data-app-phase"); return ph && ["ready", "arrived", "gateRequired"].includes(ph) && globalThis.__nrvnaverseInput ? ph : null; })()`;
+// The model's render root, as the engine's model component picks it: CLASSIC models (animated /
+// unique) are children of the component; static models sharing a URL are INSTANCED and live in the
+// model factory's wrapper (model-component.ts), so counting the component's own children misses them.
 /** @param {string} id */
-const ASSET_LOADED = (id) => `(() => { const c = globalThis.$space?.components.byId(${JSON.stringify(id)}); if (!c) return false; let meshes = 0; c.traverse((o) => { if (o.isMesh) meshes++; }); return meshes > 0; })()`;
+const ASSET_ROOT = (id) => `const c = globalThis.$space?.components.byId(${JSON.stringify(id)}); const root = c && c._model ? (c._model.isClassic ? c : c._modelFactory?.instances?.[c._model.__cacheKey] ?? null) : null;`;
+/** @param {string} id */
+const ASSET_LOADED = (id) => `(() => { ${ASSET_ROOT(id)} if (!root) return false; let meshes = 0; root.traverse((o) => { if (o.isMesh) meshes++; }); return meshes > 0; })()`;
 
 // Wraps renderer.render so the probe can read the per-frame cumulative renderer.info (the engine
 // resets it once per frame, autoReset off) and the scene that was drawn.
@@ -211,13 +253,14 @@ const SCENE = `(() => { const s = globalThis.__probeScene; const space = globalT
     trianglesNote: "scene-graph triangles of every mesh (instanced x count), before frustum culling; renderer.frame.triangles is what was drawn" }; })()`;
 
 /** @param {string} id */
-const ASSET = (id) => `(() => { const c = globalThis.$space?.components.byId(${JSON.stringify(id)}); if (!c) return null; c.updateMatrixWorld(true);
+const ASSET = (id) => `(() => { ${ASSET_ROOT(id)} if (!root) return null; root.updateMatrixWorld(true);
   const min = [Infinity, Infinity, Infinity], max = [-Infinity, -Infinity, -Infinity]; const meshes = []; let triangles = 0;
-  c.traverse((o) => { if (!o.isMesh) return; const g = o.geometry; if (!g.boundingBox) g.computeBoundingBox(); const bb = g.boundingBox;
+  root.traverse((o) => { if (!o.isMesh) return; const g = o.geometry; if (!g.boundingBox) g.computeBoundingBox(); const bb = g.boundingBox;
     for (const x of [bb.min.x, bb.max.x]) for (const y of [bb.min.y, bb.max.y]) for (const z of [bb.min.z, bb.max.z]) { const v = bb.min.clone().set(x, y, z).applyMatrix4(o.matrixWorld); min[0] = Math.min(min[0], v.x); min[1] = Math.min(min[1], v.y); min[2] = Math.min(min[2], v.z); max[0] = Math.max(max[0], v.x); max[1] = Math.max(max[1], v.y); max[2] = Math.max(max[2], v.z); }
     const n = g.index ? g.index.count : g.attributes.position.count; triangles += Math.round(n / 3);
     const m = Array.isArray(o.material) ? o.material[0] : o.material; meshes.push({ type: o.type, skinned: !!o.isSkinnedMesh, materialType: m ? m.type : null, map: !!(m && m.map), castShadow: o.castShadow, receiveShadow: o.receiveShadow }); });
-  return { worldBounds: { min: min.map((v) => +v.toFixed(3)), max: max.map((v) => +v.toFixed(3)) }, boundsNote: "geometry bounding boxes (bind pose) transformed to world space, incl. node transforms; animation deforms around them", meshes, triangles }; })()`;
+  const instanced = !c._model.isClassic;
+  return { instanced, worldBounds: { min: min.map((v) => +v.toFixed(3)), max: max.map((v) => +v.toFixed(3)) }, boundsNote: instanced ? "INSTANCED model: bounds are the shared geometry in the factory wrapper's space, not this instance's placement" : "geometry bounding boxes (bind pose) transformed to world space, incl. node transforms; animation deforms around them", meshes, triangles }; })()`;
 
 const FRAME_TIMING = `new Promise((res) => { const times = []; let last = performance.now(); const t0 = last; const f = (t) => { times.push(t - last); last = t; if (t - t0 < 3000) requestAnimationFrame(f); else { times.shift(); times.sort((a, b) => a - b); const mean = times.reduce((s, v) => s + v, 0) / times.length;
   res({ frames: times.length, fps: +(1000 / mean).toFixed(1), meanMs: +mean.toFixed(2), p95Ms: +times[Math.floor(times.length * 0.95)].toFixed(2), note: "headless Chrome on the host GPU, usually vsync-capped — a relative indicator only, never a device measurement" }); } }; requestAnimationFrame(f); })`;
@@ -264,6 +307,7 @@ async function probeProfile(base, profile) {
   log("profile", profile.name);
   const cdp = await newPage(CDP_PORT);
   const requests = trackNetwork(cdp);
+  if (ASSET_MIRROR) await enableAssetMirror(cdp);
   await cdp.send("Network.clearBrowserCache");
   await emulate(cdp, profile);
   const t0 = Date.now();
@@ -351,7 +395,9 @@ async function probeProfile(base, profile) {
   const cold = R.network.cold;
   const warm = R.network.warmReload;
   const coldImmutable = new Set(cold.immutable.map((/** @type {{url:string}} */ r) => r.url));
-  const warmRepeat = [...requests.values()].filter((r) => coldImmutable.has(pathOf(r.url)));
+  // Mirrored (CDP-fulfilled) art never enters the HTTP cache; its caching is verified on the real origin.
+  const mirrored = (/** @type {string} */ url) => ASSET_MIRROR !== null && EXTERNAL_ART_PATH.test(pathOf(url));
+  const warmRepeat = [...requests.values()].filter((r) => coldImmutable.has(pathOf(r.url)) && !mirrored(r.url));
   check(`${profile.name}: world placed`, ["ready", "arrived", "gateRequired"].includes(phase), phase);
   check(`${profile.name}: no HTTP error responses (cold, warm)`, cold.httpErrors.length === 0 && warm.httpErrors.length === 0, [...cold.httpErrors, ...warm.httpErrors]);
   check(`${profile.name}: no failed requests (cold, warm)`, cold.failed.length === 0 && warm.failed.length === 0, [...cold.failed, ...warm.failed]);
@@ -363,7 +409,8 @@ async function probeProfile(base, profile) {
     const art = cold.art;
     check(`${profile.name}: asset GLB fetched exactly once, 200, immutable`, art.length === 1 && art[0].status === 200 && /immutable/.test(art[0].cacheControl ?? ""), art);
     check(`${profile.name}: asset rendered (mesh present, draw calls added)`, R.asset && R.asset.meshes.length > 0 && typeof R.asset.incremental.drawCalls === "number" && R.asset.incremental.drawCalls > 0, R.asset?.incremental);
-    check(`${profile.name}: warm reload serves the asset GLB from cache with no wire bytes`, warm.art.length === 1 && (warm.art[0].fromDiskCache || warm.art[0].fromMemoryCache) && warm.art[0].wireBytes < 1024, warm.art);
+    if (ASSET_MIRROR) R.assetOrigin = "mirror";
+    else check(`${profile.name}: warm reload serves the asset GLB from cache with no wire bytes`, warm.art.length === 1 && (warm.art[0].fromDiskCache || warm.art[0].fromMemoryCache) && warm.art[0].wireBytes < 1024, warm.art);
   } else {
     check(`${profile.name}: no runtime art requested (no asset under test)`, cold.art.length === 0, cold.art);
   }
