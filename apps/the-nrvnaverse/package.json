@@ -5,7 +5,8 @@
   "description": "THE NRVNAVerse — spatial interface application shell (worlds.nrvnaverse.com).",
   "scripts": {
     "dev": "next dev --turbopack",
-    "build": "next build --turbopack",
+    "build": "pnpm run release:check && next build --turbopack",
+    "release:check": "node scripts/spatial/cli.mjs check && tsx ../../packages/nrvna-manifest/src/node/cli.ts check",
     "start": "next start",
     "check": "tsc --noEmit && tsc --noEmit -p tsconfig.strict.json",
     "test": "vitest run",

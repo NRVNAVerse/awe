@@ -135,6 +135,7 @@ Ordering keeps 404s rare: a registry revision (and therefore a URL in a chunk) i
 
 ## 8. Known limits
 
+- **The S3 SigV4 transport is PROVISIONAL UNTIL LIVE-STORAGE SECURITY REVIEW.** Before production credentials are used, either (A) a focused review + live interoperability test of `s3-transport.ts`, or (B) swap it for a maintained standard S3 client behind `ObjectTransport`.
 - Not yet exercised against a live R2 bucket (no credentials exist). The transport is standard S3 SigV4 and matches AWS's reference signatures; the first real run is the §7 checklist.
 - Single-request `PUT` (no multipart). Fine for runtime GLBs well under R2's single-PUT limit; very large art would need multipart, which is out of scope.
 - `If-None-Match: *` conditional PUT is used where the store supports it; correctness does not depend on it (a present object is always verified, never overwritten).
