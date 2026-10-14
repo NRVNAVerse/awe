@@ -174,16 +174,16 @@
       "type": "lighting",
       "kit": "cyber",
       "enabled": true,
-      "intensity": 1,
+      "intensity": 1.15,
       "lightDirection": {
-        "x": 0.5,
-        "y": -1,
-        "z": 0.5
+        "x": 0.35,
+        "y": -0.55,
+        "z": 0.75
       },
       "lightPosition": {
-        "x": 50,
-        "y": 100,
-        "z": 50
+        "x": -35,
+        "y": 55,
+        "z": 75
       },
       "size": 260,
       "far": 400,
@@ -196,8 +196,15 @@
       "type": "background",
       "kit": "cyber",
       "options": {
-        "type": "color",
-        "color": "#0b1020"
+        "type": "sky",
+        "skyOpts": {
+          "turbidity": 6,
+          "rayleigh": 1.2,
+          "mieCoefficient": 0.008,
+          "mieDirectionalG": 0.85,
+          "azimuth": 205,
+          "elevation": 1.5
+        }
       }
     },
     "envmap": {
@@ -223,9 +230,9 @@
       "type": "fog",
       "kit": "cyber",
       "enabled": true,
-      "fadeColor": "#0b1020",
-      "near": 120,
-      "far": 600
+      "fadeColor": "#1a1826",
+      "near": 160,
+      "far": 760
     },
     "ground": {
       "name": "Ground",

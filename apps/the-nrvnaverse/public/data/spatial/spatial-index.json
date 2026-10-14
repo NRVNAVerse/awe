@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "worldId": "the-nrvnaverse",
-  "globalSceneUrl": "/data/spatial/global-scene.c1acc16bcc0dceb14da723dfd8ac0d77.json",
+  "globalSceneUrl": "/data/spatial/global-scene.44588422df1e0e4ddfc45921fecc95e3.json",
   "chunks": {
     "cannabis-21": {
       "dataUrl": "/data/spatial/chunks/cannabis-21.47ef62cb39981c5a64bfe91a5dea4f41.json"
@@ -10,7 +10,7 @@
       "dataUrl": "/data/spatial/chunks/fashion-culture.4cf8e4ca99a8bc9d19afc42e60816b24.json"
     },
     "hub": {
-      "dataUrl": "/data/spatial/chunks/hub.6f686bfd73cda5c0ac74c659407e3f5e.json"
+      "dataUrl": "/data/spatial/chunks/hub.22e0508a8b5c56dd72f875d53d0507f8.json"
     },
     "music": {
       "dataUrl": "/data/spatial/chunks/music.dffba466b06980f5e7adc5260538f70d.json"

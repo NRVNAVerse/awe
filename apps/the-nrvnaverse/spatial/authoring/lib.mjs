@@ -161,8 +161,9 @@ export function rampZ(id, x, zFrom, lowY, zTo, highY, width, opts = {}) {
 }
 
 /**
- * A walkable ramp along the X axis (`xFrom` low end). Positive rotation about +Z lifts the -X end
- * (x' = x·cosθ − y·sinθ, y' = x·sinθ + y·cosθ → the -X end rises for positive θ).
+ * A walkable ramp along the X axis (`xFrom` low end). Rotation about +Z: y' = x·sinθ + y·cosθ, so a
+ * POSITIVE θ lifts the +X end; a ramp rising toward -X therefore needs a negative θ (headless-verified
+ * after an inverted first version).
  * @param {string} id @param {number} z @param {number} xFrom @param {number} lowY @param {number} xTo @param {number} highY @param {number} width @param {MeshOpts & { thickness?: number }} [opts]
  */
 export function rampX(id, z, xFrom, lowY, xTo, highY, width, opts = {}) {
@@ -171,7 +172,7 @@ export function rampX(id, z, xFrom, lowY, xTo, highY, width, opts = {}) {
   const rise = highY - lowY;
   const length = Math.hypot(run, rise);
   const angle = Math.atan2(rise, Math.abs(run));
-  const rotZ = run < 0 ? angle : -angle;
+  const rotZ = run < 0 ? -angle : angle;
   const cx = (xFrom + xTo) / 2;
   const cyTop = (lowY + highY) / 2;
   const normalY = Math.cos(angle);

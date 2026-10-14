@@ -237,26 +237,28 @@ digest = first 32 lowercase hex chars (128 bits) of SHA-256 over the exact UTF-8
 
 2B.4B is **complete** with this correction; 2B.4C followed (§16 and the runtime doc §16). Landmark version unchanged (0.1); no new decision was needed — this changes physical delivery only, not a governing architecture decision.
 
-## 16. Initial M0 warning budgets (M0 Step 2B.4C.2)
+## 16. Warning budgets (M0 Step 2B.4C.2; raised for the M1 Hub composition, 2026-10-13)
 
 **What.** `pnpm --filter the-nrvnaverse spatial:check` evaluates two initial budgets against the runtime artifacts of the current generation and prints a warning per exceeded metric — **warning only**: the command still succeeds when the artifacts are otherwise valid and current, and stale / missing / unexpected artifacts fail exactly as before. Pure helper `scripts/spatial/budgets.mjs` (`SPATIAL_WARNING_BUDGETS`, `spatialBudgetWarnings`, `formatSpatialBudgetWarning`, `countArtifactComponents`); `cli.mjs` only calls it from `check`.
 
-| Scope | Metric | Initial M0 warning threshold |
+| Scope | Metric | Warning threshold |
 |---|---|---|
-| runtime global scene (`spatial/global-scene.<token>.json`) | serialized bytes (LF) | 64 KiB (65 536 bytes) |
-| runtime global scene | top-level components | 64 |
-| each runtime chunk (`spatial/chunks/<key>.<token>.json`) | serialized bytes (LF) | 64 KiB each |
-| each runtime chunk | top-level components | 64 each |
+| runtime global scene (`spatial/global-scene.<token>.json`) | serialized bytes (LF) | 128 KiB (131 072 bytes) — was 64 KiB until 2026-10-13 |
+| runtime global scene | top-level components | 96 (was 64) |
+| each runtime chunk (`spatial/chunks/<key>.<token>.json`) | serialized bytes (LF) | 128 KiB each — was 64 KiB |
+| each runtime chunk | top-level components | 96 each (was 64) |
 
 Not budgeted, deliberately: the compatibility full scene `static-scene.json` (not requested by the runtime) and `spatial-index.json` (the small version root). No asset, draw-call, triangle, texture, FPS or heap threshold exists.
 
-**Output.** A warning names the artifact and chunk, the actual value and the threshold, e.g. `budget warning: runtime chunk "music" spatial/chunks/music.<token>.json is 70 213 bytes (initial M0 warning threshold 65536 bytes) — warning only, check still succeeds`; a generation within budget prints `… (7 files, within initial budgets)`. Exit status is unchanged by warnings.
+**Output.** A warning names the artifact and chunk, the actual value and the threshold, e.g. `budget warning: runtime chunk "music" spatial/chunks/music.<token>.json is 70 213 bytes (M1 warning threshold 131072 bytes) — warning only, check still succeeds`; a generation within budget prints `… (7 files, within budget)`. Exit status is unchanged by warnings.
 
 **Evidence basis (2B.4C.1 audit, 2026-09-20, committed LF bytes).** Global scene 9 763 B / 7 components; chunks hub 9 288 B / 8, music 9 929 B / 9, fashion-culture 10 216 B / 9, cannabis-21 7 335 B / 7 (≈1.0–1.4 KB gzip on the wire each; the ungated initial Hub requirement index + global + hub is 21 868 B raw / 5 278 B wire). 64 KiB / 64 components is deliberately generous early-warning headroom — roughly 6–9× the current placeholder baseline, depending on metric and artifact — meant to expose accidental growth during M0. These thresholds are **warning-only** and are **not** network round-trip guarantees (the budget counts raw serialized bytes, whereas transfer depends on compression, protocol, RTT, cache state and congestion behaviour), **not** staging-time guarantees (component count is not a reliable predictor of staging cost once real GLBs, materials, textures, scripts or more expensive component types arrive), **not** production or world-capacity limits, and **not** representative-art budgets. The audit's staging observations — ≈8–15 ms warm and ≈28–48 ms under a 4× CPU slowdown for a 9-component placeholder chunk — are recorded as observations of the current placeholder components only and are not extrapolated to the thresholds. They must be re-evaluated at the first representative art vertical slice.
 
+**M1 raise (2026-10-13, `feat/m1-spatial-creative-overnight`).** The composed Central Hub (`spatial/authoring/hub.mjs`, 74 primitive components, ≈90 KiB LF) exceeded the 64 KiB / 64-component early-warning headroom that was sized against the M0 placeholder diagram, so both thresholds were doubled-ish to **128 KiB / 96 components** per runtime artifact. Still warning-only, still spatial JSON only; the reasoning above is unchanged. Most of the byte cost is the per-mesh geometry envelope the engine data contract carries (every mesh serialises box, sphere and cylinder params); a slimmer authored envelope is a later optimisation, not a budget question.
+
 **Observational baseline recorded, not enforced (same audit).** Cold Hub boot on a fresh browser profile transferred 3.77 MB in 76 requests, dominated by placeholder / upstream scene assets — the `studio` HDR envmap alone 1.61 MB (43 %), Next JS 0.87 MB, Rapier WASM 0.51 MB, the avatar VRMs 0.34 MB, 17 animation clips 0.12 MB — while the spatial JSON was 5.3 KB (0.14 %). The placeholder world renders with 13–15 draw calls and ≈6.9 k triangles, 22–23 geometries and 10 textures, 15–16 live components, and the browser JS heap stayed ≈44–50 MB (flat) across a ten-step travel loop. Asset / render budgets and any cold-boot time threshold are deferred until representative art exists.
 
-**Tests** (`test/spatial-budgets.test.ts`, 12): thresholds; the committed M0 generation emits no warning; a >64 KiB chunk / global artifact warns naming the artifact, actual bytes and threshold; >64 components warns (64 exactly does not); both metrics can warn and are ordered global-first then chunks by key; `static-scene.json` / the index are never budgeted; malformed text counts as zero components; an over-budget but current generation is up to date; stale / missing / unexpected artifacts still fail; the real `spatial:check` exits 0 for the committed artifacts and reports them within the initial budgets.
+**Tests** (`test/spatial-budgets.test.ts`, 12): thresholds; the committed generation emits no warning; a >128 KiB chunk / global artifact warns naming the artifact, actual bytes and threshold; >96 components warns (96 exactly does not); both metrics can warn and are ordered global-first then chunks by key; `static-scene.json` / the index are never budgeted; malformed text counts as zero components; an over-budget but current generation is up to date; stale / missing / unexpected artifacts still fail; the real `spatial:check` exits 0 for the committed artifacts and reports them within budget.
 
 ## 17. Runtime assets (M1.0)
 

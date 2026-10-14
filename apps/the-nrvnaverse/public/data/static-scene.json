@@ -174,16 +174,16 @@
       "type": "lighting",
       "kit": "cyber",
       "enabled": true,
-      "intensity": 1,
+      "intensity": 1.15,
       "lightDirection": {
-        "x": 0.5,
-        "y": -1,
-        "z": 0.5
+        "x": 0.35,
+        "y": -0.55,
+        "z": 0.75
       },
       "lightPosition": {
-        "x": 50,
-        "y": 100,
-        "z": 50
+        "x": -35,
+        "y": 55,
+        "z": 75
       },
       "size": 260,
       "far": 400,
@@ -196,8 +196,15 @@
       "type": "background",
       "kit": "cyber",
       "options": {
-        "type": "color",
-        "color": "#0b1020"
+        "type": "sky",
+        "skyOpts": {
+          "turbidity": 6,
+          "rayleigh": 1.2,
+          "mieCoefficient": 0.008,
+          "mieDirectionalG": 0.85,
+          "azimuth": 205,
+          "elevation": 1.5
+        }
       }
     },
     "envmap": {
@@ -223,9 +230,9 @@
       "type": "fog",
       "kit": "cyber",
       "enabled": true,
-      "fadeColor": "#0b1020",
-      "near": 120,
-      "far": 600
+      "fadeColor": "#1a1826",
+      "near": 160,
+      "far": 760
     },
     "ground": {
       "name": "Ground",
@@ -514,7 +521,7 @@
       "kit": "cyber",
       "position": {
         "x": -35,
-        "y": 0.1,
+        "y": 0.25,
         "z": 0
       },
       "rotation": {
@@ -543,7 +550,7 @@
         },
         "boxParams": {
           "width": 46,
-          "height": 0.2,
+          "height": 0.5,
           "depth": 4
         },
         "type": "box"
@@ -572,7 +579,7 @@
       "kit": "cyber",
       "position": {
         "x": 35,
-        "y": 0.1,
+        "y": 0.25,
         "z": 0
       },
       "rotation": {
@@ -601,7 +608,7 @@
         },
         "boxParams": {
           "width": 46,
-          "height": 0.2,
+          "height": 0.5,
           "depth": 4
         },
         "type": "box"
@@ -2529,14 +2536,14 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": 4.806,
-        "y": 6.254,
-        "z": -34.5
+        "x": 5.809,
+        "y": 6.253,
+        "z": -37.5
       },
       "rotation": {
         "x": 0,
         "y": 0,
-        "z": 0.1775
+        "z": -0.1631
       },
       "scale": {
         "x": 1,
@@ -2558,7 +2565,7 @@
           "openEnded": false
         },
         "boxParams": {
-          "width": 22.656,
+          "width": 24.627,
           "height": 0.5,
           "depth": 3
         },
@@ -2581,6 +2588,122 @@
         "tag": "m1-hub-route"
       }
     },
+    "hub-overlook-ramp-foot": {
+      "name": "Overlook ramp foot",
+      "id": "hub-overlook-ramp-foot",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 19,
+        "y": 4.25,
+        "z": -37.5
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 2,
+          "height": 0.5,
+          "depth": 3
+        },
+        "type": "box"
+      },
+      "color": "#a79d8a",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "hub-overlook-ramp-foot",
+        "tag": "m1-hub-route"
+      }
+    },
+    "hub-overlook-ramp-post": {
+      "name": "Overlook ramp post",
+      "id": "hub-overlook-ramp-post",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 6,
+        "y": 3.25,
+        "z": -37.5
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 0.45,
+          "radiusBottom": 0.45,
+          "height": 6.5,
+          "radialSegments": 16,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1,
+          "height": 1,
+          "depth": 1
+        },
+        "type": "cylinder"
+      },
+      "color": "#6b6559",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CYLINDER"
+      },
+      "script": {
+        "identifier": "hub-overlook-ramp-post",
+        "tag": "m1-hub-route"
+      }
+    },
     "hub-overlook-deck": {
       "name": "Overlook deck",
       "id": "hub-overlook-deck",
@@ -2589,7 +2712,7 @@
       "position": {
         "x": -13,
         "y": 8.25,
-        "z": -32
+        "z": -33.5
       },
       "rotation": {
         "x": 0,
@@ -2618,7 +2741,7 @@
         "boxParams": {
           "width": 14,
           "height": 0.5,
-          "depth": 8
+          "depth": 11
         },
         "type": "box"
       },
@@ -2704,8 +2827,8 @@
       "kit": "cyber",
       "position": {
         "x": -19.3,
-        "y": 6.25,
-        "z": -35.3
+        "y": 4,
+        "z": -38.3
       },
       "rotation": {
         "x": 0,
@@ -2726,7 +2849,7 @@
         "cylinderParams": {
           "radiusTop": 0.45,
           "radiusBottom": 0.45,
-          "height": 3.5,
+          "height": 8,
           "radialSegments": 16,
           "heightSegments": 1,
           "openEnded": false
@@ -2945,9 +3068,9 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": 2.4,
-        "y": 6.8,
-        "z": -35.4
+        "x": -17.6,
+        "y": 10.8,
+        "z": -38.5
       },
       "rotation": {
         "x": 0,
@@ -3003,9 +3126,9 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": 5.6,
-        "y": 6.8,
-        "z": -35.4
+        "x": -14.4,
+        "y": 10.8,
+        "z": -38.5
       },
       "rotation": {
         "x": 0,
@@ -3061,9 +3184,9 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": 4,
-        "y": 6.7,
-        "z": -35.4
+        "x": -16,
+        "y": 10.7,
+        "z": -38.5
       },
       "rotation": {
         "x": 0,
@@ -3127,9 +3250,9 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": 10.4,
-        "y": 6.8,
-        "z": -35.4
+        "x": -11.1,
+        "y": 10.8,
+        "z": -38.5
       },
       "rotation": {
         "x": 0,
@@ -3185,9 +3308,9 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": 13.6,
-        "y": 6.8,
-        "z": -35.4
+        "x": -7.9,
+        "y": 10.8,
+        "z": -38.5
       },
       "rotation": {
         "x": 0,
@@ -3243,9 +3366,9 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": 12,
-        "y": 6.7,
-        "z": -35.4
+        "x": -9.5,
+        "y": 10.7,
+        "z": -38.5
       },
       "rotation": {
         "x": 0,

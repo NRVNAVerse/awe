@@ -82,8 +82,9 @@ export function composeHub() {
   items.push(box("platform-hub", v(0, 0.25, 0), [24, 0.5, 24], { name: "Basin floor", color: PALETTE.basinFloor, tag: S.structure }));
   items.push(column("hub-basin-inlay", 0, 0, 0, 9, 0.51, { name: "Basin inlay ring", color: PALETTE.basinInlay, segments: 48, collider: "none", castShadow: false, tag: S.structure }));
   items.push(box("hub-forecourt", v(0, 0.25, -20), [24, 0.5, 16], { name: "Forecourt", color: PALETTE.basinFloor, tag: S.structure }));
-  items.push(box("path-west", v(-35, 0.1, 0), [46, 0.2, 4], { name: "Path Hub→Music", color: PALETTE.stoneDark, tag: S.route }));
-  items.push(box("path-east", v(35, 0.1, 0), [46, 0.2, 4], { name: "Path Hub→Fashion", color: PALETTE.stoneDark, tag: S.route }));
+  // Paths are flush with the basin top (0.5): a 0.3 m lip is unclimbable for the character controller (headless-verified).
+  items.push(box("path-west", v(-35, 0.25, 0), [46, 0.5, 4], { name: "Path Hub→Music", color: PALETTE.stoneDark, tag: S.route }));
+  items.push(box("path-east", v(35, 0.25, 0), [46, 0.5, 4], { name: "Path Hub→Fashion", color: PALETTE.stoneDark, tag: S.route }));
 
   // --- 2. The Core house (pavilion): open-roofed, entrance on the north (hidden from arrival) ----
   const pz = PAVILION_Z;
@@ -164,10 +165,15 @@ export function composeHub() {
   items.push(slab("hub-bench-rim-e", 4, TERRACE_TOP, -29.5, [3, 0.45, 0.9], { name: "Rim bench east", color: PALETTE.stoneLight, tag: S.route }));
 
   // --- 6. The Overlook: a deck one level up over the terrace's west end, with its lounge beneath --
-  items.push(rampX("hub-overlook-ramp", -34.5, 16, TERRACE_TOP, -6.3, OVERLOOK_TOP, 3, { name: "Overlook ramp", color: PALETTE.stone, tag: S.route }));
-  items.push(box("hub-overlook-deck", v(-13, OVERLOOK_TOP - 0.25, -32), [14, 0.5, 8], { name: "Overlook deck", color: PALETTE.stoneLight, tag: S.route }));
+  // The ramp runs OUTBOARD of the terrace (z -39..-36, north of its edge) so the terrace walk never
+  // passes under it (a 2 m headroom trap otherwise; headless-verified). Foot at x = 18 on the terrace
+  // level, top meets the deck's east face at x = -6 (0.3 m overlap). 9.3°.
+  items.push(rampX("hub-overlook-ramp", -37.5, 18, TERRACE_TOP, -6.3, OVERLOOK_TOP, 3, { name: "Overlook ramp", color: PALETTE.stone, tag: S.route }));
+  items.push(box("hub-overlook-ramp-foot", v(19, TERRACE_TOP - 0.25, -37.5), [2, 0.5, 3], { name: "Overlook ramp foot", color: PALETTE.stone, tag: S.route }));
+  items.push(column("hub-overlook-ramp-post", 6, 0, -37.5, 0.45, TERRACE_TOP + 2.0, { name: "Overlook ramp post", color: PALETTE.stoneDark, segments: 16, tag: S.route }));
+  items.push(box("hub-overlook-deck", v(-13, OVERLOOK_TOP - 0.25, -33.5), [14, 0.5, 11], { name: "Overlook deck", color: PALETTE.stoneLight, tag: S.route }));
   items.push(column("hub-overlook-post-s", -19.3, TERRACE_TOP, -28.7, 0.45, OVERLOOK_TOP - 0.5 - TERRACE_TOP, { name: "Overlook post south", color: PALETTE.stoneDark, segments: 16, tag: S.route }));
-  items.push(column("hub-overlook-post-n", -19.3, TERRACE_TOP, -35.3, 0.45, OVERLOOK_TOP - 0.5 - TERRACE_TOP, { name: "Overlook post north", color: PALETTE.stoneDark, segments: 16, tag: S.route }));
+  items.push(column("hub-overlook-post-n", -19.3, 0, -38.3, 0.45, OVERLOOK_TOP - 0.5, { name: "Overlook post north", color: PALETTE.stoneDark, segments: 16, tag: S.route }));
   items.push(slab("hub-bench-lounge", -14, TERRACE_TOP, -33.5, [3, 0.45, 0.9], { name: "Lounge bench", color: PALETTE.stoneLight, tag: S.route }));
   items.push(column("hub-overlook-lamp-post", -16.5, OVERLOOK_TOP, -30, 0.1, 1.3, { name: "Overlook lamp post", color: PALETTE.charcoal, segments: 8, collider: "none", tag: S.route }));
   items.push(
@@ -181,13 +187,14 @@ export function composeHub() {
     }),
   );
 
-  // --- 7. Dormant frames on the terrace's north edge: the world is larger than what is open ------
-  for (const [i, x] of [4, 12].entries()) {
+  // --- 7. Dormant frames on the overlook deck's north edge: the world is larger than what is open --
+  // (kept off the terrace's north strip, which is the overlook ramp's run; headless-verified)
+  for (const [i, x] of [-16, -9.5].entries()) {
     const k = `hub-dormant-${i + 1}`;
-    items.push(column(`${k}-post-w`, x - 1.6, TERRACE_TOP, -35.4, 0.3, 4.6, { name: `Dormant frame ${i + 1} post`, color: PALETTE.charcoal, segments: 12, tag: S.structure }));
-    items.push(column(`${k}-post-e`, x + 1.6, TERRACE_TOP, -35.4, 0.3, 4.6, { name: `Dormant frame ${i + 1} post`, color: PALETTE.charcoal, segments: 12, tag: S.structure }));
+    items.push(column(`${k}-post-w`, x - 1.6, OVERLOOK_TOP, -38.5, 0.3, 4.6, { name: `Dormant frame ${i + 1} post`, color: PALETTE.charcoal, segments: 12, tag: S.structure }));
+    items.push(column(`${k}-post-e`, x + 1.6, OVERLOOK_TOP, -38.5, 0.3, 4.6, { name: `Dormant frame ${i + 1} post`, color: PALETTE.charcoal, segments: 12, tag: S.structure }));
     items.push(
-      slab(`${k}-inset`, x, TERRACE_TOP + 0.2, -35.4, [2.6, 4.0, 0.2], {
+      slab(`${k}-inset`, x, OVERLOOK_TOP + 0.2, -38.5, [2.6, 4.0, 0.2], {
         name: `Dormant frame ${i + 1} inset`,
         color: "#101319",
         opacity: 0.92,
