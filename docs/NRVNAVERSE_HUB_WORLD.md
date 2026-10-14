@@ -105,3 +105,46 @@ The vault candidates inspected for these slots (none placed: rights unknown or t
 ## 8. Lessons carried in (reference repos, read-only)
 
 Glasshollow: hub + optional wings, vertical volume over footprint, hidden eyrie not visible from the door, benches/perches where the view is, lighting as orientation, no punitive discovery. Lantern Rock: ramps not stairs (the controller cannot climb even 10–30 cm), rooms ≥ 8 m for a 5 m camera rig, water breaks under fog (avoided), bloom blooms white UI (avoided), generated rather than sourced audio (not yet used here).
+
+---
+
+## 9. Music District — "the Soundstage"  [VERIFIED headless, same branch]
+
+Composer `spatial/authoring/music.mjs`; chunk `music`; destinations Music District `dst_gm3xs4a3tws7bgh3` (spawn (−70, 1, 6) facing −Z) and Placeholder Artist `dst_1qtfn9qjg9kf6jyd` (spawn (−70, 1, −34)).
+
+| Element | Ids | Notes |
+|---|---|---|
+| Floor of three lit rings | `platform-music`, `music-ring-1..3` | dark floor, concentric teal rings 10 / 7 / 4 m |
+| Processional path + speaker stacks | `path-music-north`, `music-stack-1..4` (+ `-band`) | 6 m wide, 16 m long; stacks at z −16 / −24 with pulsing teal bands |
+| Artist threshold | `portal-music-artist` (sensor, **moved to z −30**, end of the path), `music-gate-artist-post-{w,e}` | same-chunk teleport to the artist spawn 4 m beyond |
+| Stage | `platform-music-artist`, `music-stage-riser` (20 × 6, top 1.5), `music-stage-ramp-{w,e}` (9.5°), `music-fin-1..5` (+ `-ribbon`) | five charcoal fins on an 8.5 m arc, heights 8 / 11 / 13 / 11 / 8, teal glow ribbons |
+| Audience | `music-bench-{w,e}` | |
+| Hub gateway (east edge) | `music-gate-hub-*`, `portal-music-hub` | framed, labelled HUB |
+| Copy | `label-music` ("MUSIC DISTRICT" over the path mouth), `label-music-artist` ("Placeholder Artist" on the centre fin) | provisional names unchanged |
+| **Sound booth (optional overlook)** | `music-booth-ramp` (16.4°, west edge z −11 → 6), `music-booth-ramp-foot`, `music-booth-deck` (top 5.5), `music-booth-post`, `music-booth-desk`, `music-booth-console` (hologram), `music-booth-rail`; clue `music-stud-1..4` | behind-left of the arrival (the spawn faces north); the studs run beside the ramp to its north foot, never under it |
+
+Routes proven headless: processional walk; stage via the east ramp, down the west ramp; studs → booth ramp → deck; Hub gateway.
+
+## 10. Fashion / Culture District — "the Runway and the Loggia"  [VERIFIED headless, same branch]
+
+Composer `spatial/authoring/fashion.mjs`; chunk `fashion-culture`; destinations Fashion / Culture District `dst_9c4wxtpec8awsx1q` (spawn (70, 1, 6)) and Placeholder Brand `dst_tgfh5h5jvm3wj0w7` (spawn **moved to (70, 2, −36)**, the runway's north end).
+
+| Element | Ids | Notes |
+|---|---|---|
+| Court | `platform-fashion-culture`, `path-fashion-north` (apron), `platform-fashion-culture-brand` | travertine |
+| Runway | `fashion-runway` (4 × 20, top 1.5), `fashion-runway-ramp-{s,n}` (9.5°), `fashion-pylon-1..6` (+ `-band`), `fashion-bench-{w,e}` | rose bands pulse |
+| Brand threshold | `portal-fashion-brand` (sensor, **at z −33 on the runway**), `fashion-gate-brand-post-{w,e}` | seamless step into the loggia |
+| Loggia | `fashion-col-{w,e}1..4`, `fashion-roof` (24 × 13, top 7.1), `fashion-north-wall` (20 wide), `fashion-plinth-1..3` (empty), `fashion-frame-1..3` (empty) | future brand slots; nothing invented |
+| Roof terrace | `fashion-roof-ramp-foot`, `fashion-roof-ramp` (outboard, x 82.5..85.5, 15.4°), `fashion-roof-landing` (north-east corner), `fashion-roof-ramp-post`, `fashion-roof-bench`, `fashion-roof-lamp(-post)` | from the roof's north edge you look down into the atelier |
+| **Atelier (optional discovery)** | `fashion-atelier-floor` (24 × 12, z −64..−52), `fashion-atelier-wall-{n,e,w}` (west wall covers only the north half: the gap z −58.75..−54 is the entrance), `fashion-mannequin-1..5` (+ `-holo`), `fashion-atelier-line`; clue `fashion-stud-1..4` | reached round the north wall's west end (2 m passage at x 58..60); hidden from the arrival by the loggia and its wall |
+| Hub gateway (west edge) | `fashion-gate-hub-*`, `portal-fashion-hub` | |
+| Copy | `label-fashion-culture`, `label-fashion-culture-brand` (on the roof fascia) | provisional |
+
+Routes proven headless: runway up / down; loggia; roof ramp → landing → terrace; studs → atelier → between the pedestals; Hub gateway.
+
+## 11. Spoiler-light hints for a playtest (what to tell a visitor)
+
+- "Walk around the back of the thing with your name on it."
+- "There is a way up on both sides. Go up."
+- "In the Music District, turn around after you arrive."
+- "In the Fashion District, the gallery has a roof."

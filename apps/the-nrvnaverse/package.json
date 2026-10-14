@@ -18,7 +18,8 @@
     "asset:prepare": "tsx scripts/asset-pipeline/cli.ts prepare",
     "asset:publish": "tsx scripts/asset-pipeline/cli.ts publish",
     "asset:register": "tsx scripts/asset-pipeline/cli.ts register",
-    "asset:place": "tsx scripts/asset-pipeline/cli.ts place"
+    "asset:place": "tsx scripts/asset-pipeline/cli.ts place",
+    "browser:shots": "node scripts/browser/destination-shots.mjs"
   },
   "dependencies": {
     "@dimforge/rapier3d": "0.11.2",
