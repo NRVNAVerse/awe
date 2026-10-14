@@ -20,6 +20,7 @@ import { readFileSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { composeHub } from "./hub.mjs";
+import { composeMusic } from "./music.mjs";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const sourceDir = join(here, "..", "source");
@@ -27,7 +28,7 @@ const scenePath = join(sourceDir, "scene.m0.json");
 const configPath = join(sourceDir, "spatial-config.m0.json");
 
 /** chunk key → composer */
-const COMPOSERS = { hub: composeHub };
+const COMPOSERS = { hub: composeHub, music: composeMusic };
 
 /** @param {Record<string, unknown>} obj */
 const serialize = (obj) => JSON.stringify(obj, null, 2) + "\n";

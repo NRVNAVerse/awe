@@ -80,7 +80,7 @@ export function composeHub() {
 
   // --- 1. Ground: basin floor, inlay, forecourt, the two district paths ---------------------------
   items.push(box("platform-hub", v(0, 0.25, 0), [24, 0.5, 24], { name: "Basin floor", color: PALETTE.basinFloor, tag: S.structure }));
-  items.push(column("hub-basin-inlay", 0, 0, 0, 9, 0.51, { name: "Basin inlay ring", color: PALETTE.basinInlay, segments: 48, collider: "none", castShadow: false, tag: S.structure }));
+  items.push(column("hub-basin-inlay", 0, 0, 0, 9, 0.51, { name: "Basin inlay ring", color: "#5c5447", segments: 48, collider: "none", castShadow: false, tag: S.structure }));
   items.push(box("hub-forecourt", v(0, 0.25, -20), [24, 0.5, 16], { name: "Forecourt", color: PALETTE.basinFloor, tag: S.structure }));
   // Paths are flush with the basin top (0.5): a 0.3 m lip is unclimbable for the character controller (headless-verified).
   items.push(box("path-west", v(-35, 0.25, 0), [46, 0.5, 4], { name: "Path Hub→Music", color: PALETTE.stoneDark, tag: S.route }));
@@ -150,8 +150,8 @@ export function composeHub() {
   );
 
   // --- 4. Identity copy (arrival statement on the Core house's south face) -----------------------
-  items.push(label("label-hub", "THE NRVNAVerse", v(0, 3.3, pz + 5.52), { scale: 2.0, name: "Label THE NRVNAVerse", color: "#f3ead8" }));
-  items.push(label("hub-label-sub", "CENTRAL HUB", v(0, 1.75, pz + 5.52), { scale: 0.7, name: "Label Central Hub", color: PALETTE.warmLight, font: "aeonik-medium" }));
+  items.push(label("label-hub", "THE NRVNAVerse", v(0, 4.05, pz + 5.52), { scale: 2.0, name: "Label THE NRVNAVerse", color: "#f3ead8" }));
+  items.push(label("hub-label-sub", "CENTRAL HUB", v(0, 2.7, pz + 5.52), { scale: 0.7, name: "Label Central Hub", color: PALETTE.warmLight, font: "aeonik-medium" }));
 
   // --- 5. The Rim: solid terrace block, two ramps with landings, benches ------------------------
   items.push(box("hub-terrace", v(0, TERRACE_TOP / 2, -32), [40, TERRACE_TOP, 8], { name: "Rim terrace", color: PALETTE.stoneDark, tag: S.route }));
