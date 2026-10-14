@@ -102,8 +102,8 @@ export function composeMusic() {
   items.push(column("music-gate-hub-post-s", CX + 9, DATUM, 7.9, 0.45, 5, { name: "Hub gateway post south", color: PALETTE.stoneLight, segments: 16, tag: T.structure }));
   items.push(slab("music-gate-hub-lintel", CX + 9, DATUM + 5, 0, [1.2, 0.7, 17], { name: "Hub gateway lintel", color: PALETTE.stoneLight, tag: T.structure }));
   items.push(label("music-gate-hub-label", "HUB", v(CX + 8.3, DATUM + 6.6, 0), { scale: 0.95, name: "Label Hub gateway", color: PALETTE.warmLight, rotation: { x: 0, y: deg(-90), z: 0 } }));
-  items.push(column("music-gate-artist-post-w", CX - 3.5, DATUM, -5, 0.3, 3.6, { name: "Stage threshold post west", color: PALETTE.charcoal, segments: 12, tag: T.structure }));
-  items.push(column("music-gate-artist-post-e", CX + 3.5, DATUM, -5, 0.3, 3.6, { name: "Stage threshold post east", color: PALETTE.charcoal, segments: 12, tag: T.structure }));
+  items.push(column("music-gate-artist-post-w", CX - 3.5, DATUM, -30, 0.3, 3.6, { name: "Stage threshold post west", color: PALETTE.charcoal, segments: 12, tag: T.structure }));
+  items.push(column("music-gate-artist-post-e", CX + 3.5, DATUM, -30, 0.3, 3.6, { name: "Stage threshold post east", color: PALETTE.charcoal, segments: 12, tag: T.structure }));
 
   // --- 5. The sound booth: an overlook behind the arrival, west edge (hidden from the spawn) ----
   items.push(rampZ("music-booth-ramp", CX - 9.5, -11, DATUM, 6, DATUM + 5, 3, { name: "Booth ramp", color: PALETTE.stoneDark, tag: T.secret }));
@@ -140,7 +140,9 @@ export function composeMusic() {
 
   // --- 6. Portal sensors last (ids and sensor semantics unchanged from M0) ---------------------
   items.push(portal("portal-music-hub", "Portal Music District → Hub", v(CX + 9, 2, 0), [1, 3, 14], PALETTE.warmLight));
-  items.push(portal("portal-music-artist", "Portal Music District → Placeholder Artist", v(CX, 2, -5), [6, 3, 1], TEAL));
+  // Artist threshold at the END of the processional path (z -30): the walk past the speaker stacks is real,
+  // and the artist spawn (-70, 1, -34) is four metres beyond the sensor, facing the stage.
+  items.push(portal("portal-music-artist", "Portal Music District → Placeholder Artist", v(CX, 2, -30), [6, 3, 1], TEAL));
 
   const components = collect(items);
   return { components, componentIds: Object.keys(components) };

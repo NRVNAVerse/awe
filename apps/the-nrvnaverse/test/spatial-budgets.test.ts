@@ -59,17 +59,18 @@ describe("spatial warning budgets (2B.4C.2, raised for M1)", () => {
     expect(SPATIAL_WARNING_BUDGETS).toEqual({ artifactBytes: 131072, artifactComponents: 96 });
   });
 
-  it("the committed generation emits no warnings (Hub ≈90 KiB / 74 components; other chunks ≈7–10 KiB, 7–9 components)", () => {
+  it("the committed generation emits no warnings (composed Hub / Music / Fashion chunks ≈60–95 KiB, ≤ 80 components; cannabis-21 placeholder ≈7 KiB / 7)", () => {
     const gen = generation();
     expect(spatialBudgetWarnings(gen)).toEqual([]);
     const bytes = (name: string) => Buffer.byteLength(gen.files[name], "utf8");
     expect(bytes(gen.globalSceneFile)).toBeLessThan(16 * 1024);
     for (const key of gen.chunkKeys) {
-      const limitBytes = key === "hub" ? 128 * 1024 : 16 * 1024;
-      const limitComponents = key === "hub" ? 96 : 9;
-      expect(bytes(gen.chunkFiles[key]), key).toBeLessThan(limitBytes);
-      expect(countArtifactComponents(gen.files[gen.chunkFiles[key]]), key).toBeLessThanOrEqual(limitComponents);
+      expect(bytes(gen.chunkFiles[key]), key).toBeLessThan(128 * 1024);
+      expect(countArtifactComponents(gen.files[gen.chunkFiles[key]]), key).toBeLessThanOrEqual(96);
     }
+    // The gated placeholder chunk is untouched by the M1 composition.
+    expect(bytes(gen.chunkFiles["cannabis-21"])).toBeLessThan(16 * 1024);
+    expect(countArtifactComponents(gen.files[gen.chunkFiles["cannabis-21"]])).toBe(7);
     expect(countArtifactComponents(gen.files[gen.globalSceneFile])).toBe(7);
   });
 
@@ -103,11 +104,11 @@ describe("spatial warning budgets (2B.4C.2, raised for M1)", () => {
   });
 
   it("more than 96 components in a chunk warns on the component count (and only that chunk)", () => {
-    const gen = generation((d) => addComponents(d, 87, { chunkKey: "music" })); // 9 + 87 = 96 → exactly at the limit: no warning
+    const gen = generation((d) => addComponents(d, 89, { chunkKey: "cannabis-21" })); // 7 + 89 = 96 → exactly at the limit: no warning
     expect(spatialBudgetWarnings(gen)).toEqual([]);
-    const over = generation((d) => addComponents(d, 88, { chunkKey: "music" })); // 97
+    const over = generation((d) => addComponents(d, 90, { chunkKey: "cannabis-21" })); // 97
     const warnings = spatialBudgetWarnings(over);
-    expect(warnings.map((w) => [w.scope, w.chunkKey, w.metric, w.actual, w.threshold])).toEqual([["chunk", "music", "components", 97, 96]]);
+    expect(warnings.map((w) => [w.scope, w.chunkKey, w.metric, w.actual, w.threshold])).toEqual([["chunk", "cannabis-21", "components", 97, 96]]);
   });
 
   it("more than 96 global components warns on the global scene", () => {
@@ -126,11 +127,11 @@ describe("spatial warning budgets (2B.4C.2, raised for M1)", () => {
   });
 
   it("static-scene.json and spatial-index.json are never budgeted", () => {
-    const gen = generation((d) => addComponents(d, 64, { chunkKey: "music" }, 2 * 1024)); // ≈141 KiB: static scene grows past 128 KiB too
+    const gen = generation((d) => addComponents(d, 64, { chunkKey: "cannabis-21" }, 2 * 1024)); // ≈135 KiB, 71 components: one bytes warning; static scene grows past 128 KiB too
     expect(Buffer.byteLength(gen.files[OUTPUT.compatibilityScene], "utf8")).toBeGreaterThan(131072);
     const warnings = spatialBudgetWarnings(gen);
     expect(warnings.every((w) => w.artifact !== OUTPUT.compatibilityScene && w.artifact !== OUTPUT.spatialIndex)).toBe(true);
-    expect(warnings.map((w) => w.chunkKey)).toEqual(["music"]);
+    expect(warnings.map((w) => w.chunkKey)).toEqual(["cannabis-21"]);
   });
 
   it("countArtifactComponents tolerates malformed text (0) so a budget can never change a check outcome", () => {
