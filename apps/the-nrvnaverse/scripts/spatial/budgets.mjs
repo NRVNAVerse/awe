@@ -24,9 +24,9 @@
 /** Warning thresholds. Bytes are the serialized (LF) artifact text; counts are top-level components. */
 export const SPATIAL_WARNING_BUDGETS = Object.freeze({
   /** 64 KiB per runtime global-scene / chunk artifact. */
-  artifactBytes: 64 * 1024,
+  artifactBytes: 128 * 1024,
   /** 64 components per runtime global-scene / chunk artifact. */
-  artifactComponents: 64,
+  artifactComponents: 96,
 });
 
 /**
@@ -92,5 +92,5 @@ export function spatialBudgetWarnings(artifacts, budgets = SPATIAL_WARNING_BUDGE
 export function formatSpatialBudgetWarning(warning) {
   const what = warning.scope === "global" ? "runtime global scene" : `runtime chunk "${warning.chunkKey}"`;
   const unit = warning.metric === "bytes" ? "bytes" : "components";
-  return `budget warning: ${what} ${warning.artifact} is ${warning.actual} ${unit} (initial M0 warning threshold ${warning.threshold} ${unit}) — warning only, check still succeeds`;
+  return `budget warning: ${what} ${warning.artifact} is ${warning.actual} ${unit} (M1 warning threshold ${warning.threshold} ${unit}) — warning only, check still succeeds`;
 }

@@ -1,0 +1,4221 @@
+{
+  "schemaVersion": 1,
+  "worldId": "the-nrvnaverse",
+  "chunkKey": "hub",
+  "components": {
+    "platform-hub": {
+      "name": "Basin floor",
+      "id": "platform-hub",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 0,
+        "y": 0.25,
+        "z": 0
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 24,
+          "height": 0.5,
+          "depth": 24
+        },
+        "type": "box"
+      },
+      "color": "#2b2e35",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "platform-hub",
+        "tag": "m1-hub-structure"
+      }
+    },
+    "hub-basin-inlay": {
+      "name": "Basin inlay ring",
+      "id": "hub-basin-inlay",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 0,
+        "y": 0.255,
+        "z": 0
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 9,
+          "radiusBottom": 9,
+          "height": 0.51,
+          "radialSegments": 48,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1,
+          "height": 1,
+          "depth": 1
+        },
+        "type": "cylinder"
+      },
+      "color": "#4d4740",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CYLINDER"
+      },
+      "script": {
+        "identifier": "hub-basin-inlay",
+        "tag": "m1-hub-structure"
+      }
+    },
+    "hub-forecourt": {
+      "name": "Forecourt",
+      "id": "hub-forecourt",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 0,
+        "y": 0.25,
+        "z": -20
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 24,
+          "height": 0.5,
+          "depth": 16
+        },
+        "type": "box"
+      },
+      "color": "#2b2e35",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "hub-forecourt",
+        "tag": "m1-hub-structure"
+      }
+    },
+    "path-west": {
+      "name": "Path Hub→Music",
+      "id": "path-west",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -35,
+        "y": 0.1,
+        "z": 0
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 46,
+          "height": 0.2,
+          "depth": 4
+        },
+        "type": "box"
+      },
+      "color": "#6b6559",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "path-west",
+        "tag": "m1-hub-route"
+      }
+    },
+    "path-east": {
+      "name": "Path Hub→Fashion",
+      "id": "path-east",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 35,
+        "y": 0.1,
+        "z": 0
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 46,
+          "height": 0.2,
+          "depth": 4
+        },
+        "type": "box"
+      },
+      "color": "#6b6559",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "path-east",
+        "tag": "m1-hub-route"
+      }
+    },
+    "hub-core-wall-s": {
+      "name": "Core house south wall",
+      "id": "hub-core-wall-s",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 0,
+        "y": 3,
+        "z": -14
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 10,
+          "height": 5,
+          "depth": 1
+        },
+        "type": "box"
+      },
+      "color": "#a79d8a",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "hub-core-wall-s",
+        "tag": "m1-hub-landmark"
+      }
+    },
+    "hub-core-wall-w": {
+      "name": "Core house west wall",
+      "id": "hub-core-wall-w",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -4.5,
+        "y": 3,
+        "z": -19
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1,
+          "height": 5,
+          "depth": 9
+        },
+        "type": "box"
+      },
+      "color": "#a79d8a",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "hub-core-wall-w",
+        "tag": "m1-hub-landmark"
+      }
+    },
+    "hub-core-wall-e": {
+      "name": "Core house east wall",
+      "id": "hub-core-wall-e",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 4.5,
+        "y": 3,
+        "z": -19
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1,
+          "height": 5,
+          "depth": 9
+        },
+        "type": "box"
+      },
+      "color": "#a79d8a",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "hub-core-wall-e",
+        "tag": "m1-hub-landmark"
+      }
+    },
+    "hub-core-wall-nw": {
+      "name": "Core house north wall (west stub)",
+      "id": "hub-core-wall-nw",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -3.375,
+        "y": 3,
+        "z": -24
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 3.25,
+          "height": 5,
+          "depth": 1
+        },
+        "type": "box"
+      },
+      "color": "#a79d8a",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "hub-core-wall-nw",
+        "tag": "m1-hub-secret"
+      }
+    },
+    "hub-core-wall-ne": {
+      "name": "Core house north wall (east stub)",
+      "id": "hub-core-wall-ne",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 3.375,
+        "y": 3,
+        "z": -24
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 3.25,
+          "height": 5,
+          "depth": 1
+        },
+        "type": "box"
+      },
+      "color": "#a79d8a",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "hub-core-wall-ne",
+        "tag": "m1-hub-secret"
+      }
+    },
+    "hub-core-beam-s": {
+      "name": "Core house beam south",
+      "id": "hub-core-beam-s",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 0,
+        "y": 6,
+        "z": -14.5
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 10,
+          "height": 1,
+          "depth": 2
+        },
+        "type": "box"
+      },
+      "color": "#c9bfae",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "hub-core-beam-s",
+        "tag": "m1-hub-landmark"
+      }
+    },
+    "hub-core-beam-n": {
+      "name": "Core house beam north",
+      "id": "hub-core-beam-n",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 0,
+        "y": 6,
+        "z": -23.5
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 10,
+          "height": 1,
+          "depth": 2
+        },
+        "type": "box"
+      },
+      "color": "#c9bfae",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "hub-core-beam-n",
+        "tag": "m1-hub-landmark"
+      }
+    },
+    "hub-core-beam-w": {
+      "name": "Core house beam west",
+      "id": "hub-core-beam-w",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -4,
+        "y": 6,
+        "z": -19
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 2,
+          "height": 1,
+          "depth": 7
+        },
+        "type": "box"
+      },
+      "color": "#c9bfae",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "hub-core-beam-w",
+        "tag": "m1-hub-landmark"
+      }
+    },
+    "hub-core-beam-e": {
+      "name": "Core house beam east",
+      "id": "hub-core-beam-e",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 4,
+        "y": 6,
+        "z": -19
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 2,
+          "height": 1,
+          "depth": 7
+        },
+        "type": "box"
+      },
+      "color": "#c9bfae",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "hub-core-beam-e",
+        "tag": "m1-hub-landmark"
+      }
+    },
+    "hub-core-pillar-sw": {
+      "name": "Core house pillar sw",
+      "id": "hub-core-pillar-sw",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -5.3,
+        "y": 4.5,
+        "z": -13.7
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 0.65,
+          "radiusBottom": 0.65,
+          "height": 8,
+          "radialSegments": 20,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1,
+          "height": 1,
+          "depth": 1
+        },
+        "type": "cylinder"
+      },
+      "color": "#c9bfae",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CYLINDER"
+      },
+      "script": {
+        "identifier": "hub-core-pillar-sw",
+        "tag": "m1-hub-landmark"
+      }
+    },
+    "hub-core-pillar-se": {
+      "name": "Core house pillar se",
+      "id": "hub-core-pillar-se",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 5.3,
+        "y": 4.5,
+        "z": -13.7
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 0.65,
+          "radiusBottom": 0.65,
+          "height": 8,
+          "radialSegments": 20,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1,
+          "height": 1,
+          "depth": 1
+        },
+        "type": "cylinder"
+      },
+      "color": "#c9bfae",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CYLINDER"
+      },
+      "script": {
+        "identifier": "hub-core-pillar-se",
+        "tag": "m1-hub-landmark"
+      }
+    },
+    "hub-core-pillar-nw": {
+      "name": "Core house pillar nw",
+      "id": "hub-core-pillar-nw",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -5.3,
+        "y": 4.5,
+        "z": -24.3
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 0.65,
+          "radiusBottom": 0.65,
+          "height": 8,
+          "radialSegments": 20,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1,
+          "height": 1,
+          "depth": 1
+        },
+        "type": "cylinder"
+      },
+      "color": "#c9bfae",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CYLINDER"
+      },
+      "script": {
+        "identifier": "hub-core-pillar-nw",
+        "tag": "m1-hub-landmark"
+      }
+    },
+    "hub-core-pillar-ne": {
+      "name": "Core house pillar ne",
+      "id": "hub-core-pillar-ne",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 5.3,
+        "y": 4.5,
+        "z": -24.3
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 0.65,
+          "radiusBottom": 0.65,
+          "height": 8,
+          "radialSegments": 20,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1,
+          "height": 1,
+          "depth": 1
+        },
+        "type": "cylinder"
+      },
+      "color": "#c9bfae",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CYLINDER"
+      },
+      "script": {
+        "identifier": "hub-core-pillar-ne",
+        "tag": "m1-hub-landmark"
+      }
+    },
+    "hub-core-seat": {
+      "name": "Core seat ring",
+      "id": "hub-core-seat",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 0,
+        "y": 0.725,
+        "z": -19
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 2,
+          "radiusBottom": 2,
+          "height": 0.45,
+          "radialSegments": 40,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1,
+          "height": 1,
+          "depth": 1
+        },
+        "type": "cylinder"
+      },
+      "color": "#6b6559",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CYLINDER"
+      },
+      "script": {
+        "identifier": "hub-core-seat",
+        "tag": "m1-hub-secret"
+      }
+    },
+    "hub-spire-plinth": {
+      "name": "Spire plinth",
+      "id": "hub-spire-plinth",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 0,
+        "y": 1.25,
+        "z": -19
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1.2,
+          "radiusBottom": 1.2,
+          "height": 0.6,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1,
+          "height": 1,
+          "depth": 1
+        },
+        "type": "cylinder"
+      },
+      "color": "#c9bfae",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CYLINDER"
+      },
+      "script": {
+        "identifier": "hub-spire-plinth",
+        "tag": "m1-hub-landmark"
+      }
+    },
+    "hub-spire-fin-w": {
+      "name": "Spire fin west",
+      "id": "hub-spire-fin-w",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -0.85,
+        "y": 16.275,
+        "z": -19
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 0.35,
+          "height": 29.45,
+          "depth": 1.5
+        },
+        "type": "box"
+      },
+      "color": "#e9e3d6",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "hub-spire-fin-w",
+        "tag": "m1-hub-landmark"
+      }
+    },
+    "hub-spire-fin-e": {
+      "name": "Spire fin east",
+      "id": "hub-spire-fin-e",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 0.85,
+        "y": 16.275,
+        "z": -19
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 0.35,
+          "height": 29.45,
+          "depth": 1.5
+        },
+        "type": "box"
+      },
+      "color": "#e9e3d6",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "hub-spire-fin-e",
+        "tag": "m1-hub-landmark"
+      }
+    },
+    "hub-spire-fin-n": {
+      "name": "Spire fin north",
+      "id": "hub-spire-fin-n",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 0,
+        "y": 16.275,
+        "z": -19.85
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1.5,
+          "height": 29.45,
+          "depth": 0.35
+        },
+        "type": "box"
+      },
+      "color": "#e9e3d6",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "hub-spire-fin-n",
+        "tag": "m1-hub-landmark"
+      }
+    },
+    "hub-spire-fin-s": {
+      "name": "Spire fin south",
+      "id": "hub-spire-fin-s",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 0,
+        "y": 16.275,
+        "z": -18.15
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1.5,
+          "height": 29.45,
+          "depth": 0.35
+        },
+        "type": "box"
+      },
+      "color": "#e9e3d6",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "hub-spire-fin-s",
+        "tag": "m1-hub-landmark"
+      }
+    },
+    "hub-spire-core": {
+      "name": "Spire ember core",
+      "id": "hub-spire-core",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 0,
+        "y": 16.275,
+        "z": -19
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 0.42,
+          "radiusBottom": 0.42,
+          "height": 29.45,
+          "radialSegments": 16,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1,
+          "height": 1,
+          "depth": 1
+        },
+        "type": "cylinder"
+      },
+      "color": "#f5b24a",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "plugins": [
+        {
+          "id": "FresnelGlowPlugin",
+          "color": "#ffd98a",
+          "intensity": 1.6,
+          "power": 1.6,
+          "speed": 0.6,
+          "pulse": 1
+        }
+      ],
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CYLINDER"
+      },
+      "script": {
+        "identifier": "hub-spire-core",
+        "tag": "m1-hub-landmark"
+      }
+    },
+    "hub-spire-ring-1": {
+      "name": "Spire ring 1",
+      "id": "hub-spire-ring-1",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 0,
+        "y": 9.125,
+        "z": -19
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1.25,
+          "radiusBottom": 1.25,
+          "height": 0.25,
+          "radialSegments": 24,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1,
+          "height": 1,
+          "depth": 1
+        },
+        "type": "cylinder"
+      },
+      "color": "#ffd98a",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "plugins": [
+        {
+          "id": "PulsePlugin",
+          "color": "#f5b24a",
+          "intensity": 0.35,
+          "speed": 0.5
+        }
+      ],
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CYLINDER"
+      },
+      "script": {
+        "identifier": "hub-spire-ring-1",
+        "tag": "m1-hub-landmark"
+      }
+    },
+    "hub-spire-ring-2": {
+      "name": "Spire ring 2",
+      "id": "hub-spire-ring-2",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 0,
+        "y": 17.125,
+        "z": -19
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1.25,
+          "radiusBottom": 1.25,
+          "height": 0.25,
+          "radialSegments": 24,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1,
+          "height": 1,
+          "depth": 1
+        },
+        "type": "cylinder"
+      },
+      "color": "#ffd98a",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "plugins": [
+        {
+          "id": "PulsePlugin",
+          "color": "#f5b24a",
+          "intensity": 0.35,
+          "speed": 0.5
+        }
+      ],
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CYLINDER"
+      },
+      "script": {
+        "identifier": "hub-spire-ring-2",
+        "tag": "m1-hub-landmark"
+      }
+    },
+    "hub-spire-ring-3": {
+      "name": "Spire ring 3",
+      "id": "hub-spire-ring-3",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 0,
+        "y": 25.125,
+        "z": -19
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1.25,
+          "radiusBottom": 1.25,
+          "height": 0.25,
+          "radialSegments": 24,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1,
+          "height": 1,
+          "depth": 1
+        },
+        "type": "cylinder"
+      },
+      "color": "#ffd98a",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "plugins": [
+        {
+          "id": "PulsePlugin",
+          "color": "#f5b24a",
+          "intensity": 0.35,
+          "speed": 0.5
+        }
+      ],
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CYLINDER"
+      },
+      "script": {
+        "identifier": "hub-spire-ring-3",
+        "tag": "m1-hub-landmark"
+      }
+    },
+    "hub-spire-cap": {
+      "name": "Spire lantern cap",
+      "id": "hub-spire-cap",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 0,
+        "y": 31.9,
+        "z": -19
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1.1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1,
+          "height": 1,
+          "depth": 1
+        },
+        "type": "sphere"
+      },
+      "color": "#fff1cf",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "plugins": [
+        {
+          "id": "FresnelGlowPlugin",
+          "color": "#f5b24a",
+          "intensity": 2.2,
+          "power": 1.4,
+          "speed": 0.4,
+          "pulse": 1
+        }
+      ],
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "SPHERE"
+      },
+      "script": {
+        "identifier": "hub-spire-cap",
+        "tag": "m1-hub-landmark"
+      }
+    },
+    "label-hub": {
+      "name": "Label THE NRVNAVerse",
+      "id": "label-hub",
+      "type": "text",
+      "kit": "cyber",
+      "text": "THE NRVNAVerse",
+      "position": {
+        "x": 0,
+        "y": 3.3,
+        "z": -13.48
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 2,
+        "y": 2,
+        "z": 2
+      },
+      "align": "center",
+      "font": "aeonik-bold",
+      "lineHeight": 60,
+      "textColor": "#f3ead8",
+      "textTransform": "none",
+      "width": 900,
+      "opacity": 1
+    },
+    "hub-label-sub": {
+      "name": "Label Central Hub",
+      "id": "hub-label-sub",
+      "type": "text",
+      "kit": "cyber",
+      "text": "CENTRAL HUB",
+      "position": {
+        "x": 0,
+        "y": 1.75,
+        "z": -13.48
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 0.7,
+        "y": 0.7,
+        "z": 0.7
+      },
+      "align": "center",
+      "font": "aeonik-medium",
+      "lineHeight": 60,
+      "textColor": "#ffd98a",
+      "textTransform": "none",
+      "width": 900,
+      "opacity": 1
+    },
+    "hub-terrace": {
+      "name": "Rim terrace",
+      "id": "hub-terrace",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 0,
+        "y": 2.25,
+        "z": -32
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 40,
+          "height": 4.5,
+          "depth": 8
+        },
+        "type": "box"
+      },
+      "color": "#6b6559",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "hub-terrace",
+        "tag": "m1-hub-route"
+      }
+    },
+    "hub-landing-w": {
+      "name": "Ramp landing w",
+      "id": "hub-landing-w",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -14.5,
+        "y": 0.25,
+        "z": -8
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 5,
+          "height": 0.5,
+          "depth": 4
+        },
+        "type": "box"
+      },
+      "color": "#2b2e35",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "hub-landing-w",
+        "tag": "m1-hub-route"
+      }
+    },
+    "hub-ramp-w": {
+      "name": "Rim ramp w",
+      "id": "hub-ramp-w",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -14.5,
+        "y": 2.256,
+        "z": -19.054
+      },
+      "rotation": {
+        "x": 0.2187,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 5,
+          "height": 0.5,
+          "depth": 18.439
+        },
+        "type": "box"
+      },
+      "color": "#a79d8a",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "hub-ramp-w",
+        "tag": "m1-hub-route"
+      }
+    },
+    "hub-landing-e": {
+      "name": "Ramp landing e",
+      "id": "hub-landing-e",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 14.5,
+        "y": 0.25,
+        "z": -8
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 5,
+          "height": 0.5,
+          "depth": 4
+        },
+        "type": "box"
+      },
+      "color": "#2b2e35",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "hub-landing-e",
+        "tag": "m1-hub-route"
+      }
+    },
+    "hub-ramp-e": {
+      "name": "Rim ramp e",
+      "id": "hub-ramp-e",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 14.5,
+        "y": 2.256,
+        "z": -19.054
+      },
+      "rotation": {
+        "x": 0.2187,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 5,
+          "height": 0.5,
+          "depth": 18.439
+        },
+        "type": "box"
+      },
+      "color": "#a79d8a",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "hub-ramp-e",
+        "tag": "m1-hub-route"
+      }
+    },
+    "hub-bench-rim-w": {
+      "name": "Rim bench west",
+      "id": "hub-bench-rim-w",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -4,
+        "y": 4.725,
+        "z": -29.5
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 3,
+          "height": 0.45,
+          "depth": 0.9
+        },
+        "type": "box"
+      },
+      "color": "#c9bfae",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "hub-bench-rim-w",
+        "tag": "m1-hub-route"
+      }
+    },
+    "hub-bench-rim-e": {
+      "name": "Rim bench east",
+      "id": "hub-bench-rim-e",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 4,
+        "y": 4.725,
+        "z": -29.5
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 3,
+          "height": 0.45,
+          "depth": 0.9
+        },
+        "type": "box"
+      },
+      "color": "#c9bfae",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "hub-bench-rim-e",
+        "tag": "m1-hub-route"
+      }
+    },
+    "hub-overlook-ramp": {
+      "name": "Overlook ramp",
+      "id": "hub-overlook-ramp",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 4.806,
+        "y": 6.254,
+        "z": -34.5
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0.1775
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 22.656,
+          "height": 0.5,
+          "depth": 3
+        },
+        "type": "box"
+      },
+      "color": "#a79d8a",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "hub-overlook-ramp",
+        "tag": "m1-hub-route"
+      }
+    },
+    "hub-overlook-deck": {
+      "name": "Overlook deck",
+      "id": "hub-overlook-deck",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -13,
+        "y": 8.25,
+        "z": -32
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 14,
+          "height": 0.5,
+          "depth": 8
+        },
+        "type": "box"
+      },
+      "color": "#c9bfae",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "hub-overlook-deck",
+        "tag": "m1-hub-route"
+      }
+    },
+    "hub-overlook-post-s": {
+      "name": "Overlook post south",
+      "id": "hub-overlook-post-s",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -19.3,
+        "y": 6.25,
+        "z": -28.7
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 0.45,
+          "radiusBottom": 0.45,
+          "height": 3.5,
+          "radialSegments": 16,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1,
+          "height": 1,
+          "depth": 1
+        },
+        "type": "cylinder"
+      },
+      "color": "#6b6559",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CYLINDER"
+      },
+      "script": {
+        "identifier": "hub-overlook-post-s",
+        "tag": "m1-hub-route"
+      }
+    },
+    "hub-overlook-post-n": {
+      "name": "Overlook post north",
+      "id": "hub-overlook-post-n",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -19.3,
+        "y": 6.25,
+        "z": -35.3
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 0.45,
+          "radiusBottom": 0.45,
+          "height": 3.5,
+          "radialSegments": 16,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1,
+          "height": 1,
+          "depth": 1
+        },
+        "type": "cylinder"
+      },
+      "color": "#6b6559",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CYLINDER"
+      },
+      "script": {
+        "identifier": "hub-overlook-post-n",
+        "tag": "m1-hub-route"
+      }
+    },
+    "hub-bench-lounge": {
+      "name": "Lounge bench",
+      "id": "hub-bench-lounge",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -14,
+        "y": 4.725,
+        "z": -33.5
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 3,
+          "height": 0.45,
+          "depth": 0.9
+        },
+        "type": "box"
+      },
+      "color": "#c9bfae",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "hub-bench-lounge",
+        "tag": "m1-hub-route"
+      }
+    },
+    "hub-overlook-lamp-post": {
+      "name": "Overlook lamp post",
+      "id": "hub-overlook-lamp-post",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -16.5,
+        "y": 9.15,
+        "z": -30
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 0.1,
+          "radiusBottom": 0.1,
+          "height": 1.3,
+          "radialSegments": 8,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1,
+          "height": 1,
+          "depth": 1
+        },
+        "type": "cylinder"
+      },
+      "color": "#1c1f26",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CYLINDER"
+      },
+      "script": {
+        "identifier": "hub-overlook-lamp-post",
+        "tag": "m1-hub-route"
+      }
+    },
+    "hub-overlook-lamp": {
+      "name": "Overlook lamp",
+      "id": "hub-overlook-lamp",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -16.5,
+        "y": 10.1,
+        "z": -30
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 0.4,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1,
+          "height": 1,
+          "depth": 1
+        },
+        "type": "sphere"
+      },
+      "color": "#fff1cf",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": true,
+      "plugins": [
+        {
+          "id": "FresnelGlowPlugin",
+          "color": "#f5b24a",
+          "intensity": 1.8,
+          "power": 1.5,
+          "speed": 0.5,
+          "pulse": 1
+        }
+      ],
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "SPHERE"
+      },
+      "script": {
+        "identifier": "hub-overlook-lamp",
+        "tag": "m1-hub-route"
+      }
+    },
+    "hub-dormant-1-post-w": {
+      "name": "Dormant frame 1 post",
+      "id": "hub-dormant-1-post-w",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 2.4,
+        "y": 6.8,
+        "z": -35.4
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 0.3,
+          "radiusBottom": 0.3,
+          "height": 4.6,
+          "radialSegments": 12,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1,
+          "height": 1,
+          "depth": 1
+        },
+        "type": "cylinder"
+      },
+      "color": "#1c1f26",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CYLINDER"
+      },
+      "script": {
+        "identifier": "hub-dormant-1-post-w",
+        "tag": "m1-hub-structure"
+      }
+    },
+    "hub-dormant-1-post-e": {
+      "name": "Dormant frame 1 post",
+      "id": "hub-dormant-1-post-e",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 5.6,
+        "y": 6.8,
+        "z": -35.4
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 0.3,
+          "radiusBottom": 0.3,
+          "height": 4.6,
+          "radialSegments": 12,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1,
+          "height": 1,
+          "depth": 1
+        },
+        "type": "cylinder"
+      },
+      "color": "#1c1f26",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CYLINDER"
+      },
+      "script": {
+        "identifier": "hub-dormant-1-post-e",
+        "tag": "m1-hub-structure"
+      }
+    },
+    "hub-dormant-1-inset": {
+      "name": "Dormant frame 1 inset",
+      "id": "hub-dormant-1-inset",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 4,
+        "y": 6.7,
+        "z": -35.4
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 2.6,
+          "height": 4,
+          "depth": 0.2
+        },
+        "type": "box"
+      },
+      "color": "#101319",
+      "opacity": 0.92,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": true,
+      "plugins": [
+        {
+          "id": "PulsePlugin",
+          "color": "#f5b24a",
+          "intensity": 0.12,
+          "speed": 0.25
+        }
+      ],
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "hub-dormant-1-inset",
+        "tag": "m1-hub-structure"
+      }
+    },
+    "hub-dormant-2-post-w": {
+      "name": "Dormant frame 2 post",
+      "id": "hub-dormant-2-post-w",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 10.4,
+        "y": 6.8,
+        "z": -35.4
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 0.3,
+          "radiusBottom": 0.3,
+          "height": 4.6,
+          "radialSegments": 12,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1,
+          "height": 1,
+          "depth": 1
+        },
+        "type": "cylinder"
+      },
+      "color": "#1c1f26",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CYLINDER"
+      },
+      "script": {
+        "identifier": "hub-dormant-2-post-w",
+        "tag": "m1-hub-structure"
+      }
+    },
+    "hub-dormant-2-post-e": {
+      "name": "Dormant frame 2 post",
+      "id": "hub-dormant-2-post-e",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 13.6,
+        "y": 6.8,
+        "z": -35.4
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 0.3,
+          "radiusBottom": 0.3,
+          "height": 4.6,
+          "radialSegments": 12,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1,
+          "height": 1,
+          "depth": 1
+        },
+        "type": "cylinder"
+      },
+      "color": "#1c1f26",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CYLINDER"
+      },
+      "script": {
+        "identifier": "hub-dormant-2-post-e",
+        "tag": "m1-hub-structure"
+      }
+    },
+    "hub-dormant-2-inset": {
+      "name": "Dormant frame 2 inset",
+      "id": "hub-dormant-2-inset",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 12,
+        "y": 6.7,
+        "z": -35.4
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 2.6,
+          "height": 4,
+          "depth": 0.2
+        },
+        "type": "box"
+      },
+      "color": "#101319",
+      "opacity": 0.92,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": true,
+      "plugins": [
+        {
+          "id": "PulsePlugin",
+          "color": "#f5b24a",
+          "intensity": 0.12,
+          "speed": 0.25
+        }
+      ],
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "hub-dormant-2-inset",
+        "tag": "m1-hub-structure"
+      }
+    },
+    "hub-gate-music-post-n": {
+      "name": "Gateway music post north",
+      "id": "hub-gate-music-post-n",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -9,
+        "y": 3,
+        "z": -7.9
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 0.45,
+          "radiusBottom": 0.45,
+          "height": 5,
+          "radialSegments": 16,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1,
+          "height": 1,
+          "depth": 1
+        },
+        "type": "cylinder"
+      },
+      "color": "#c9bfae",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CYLINDER"
+      },
+      "script": {
+        "identifier": "hub-gate-music-post-n",
+        "tag": "m1-hub-structure"
+      }
+    },
+    "hub-gate-music-post-s": {
+      "name": "Gateway music post south",
+      "id": "hub-gate-music-post-s",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -9,
+        "y": 3,
+        "z": 7.9
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 0.45,
+          "radiusBottom": 0.45,
+          "height": 5,
+          "radialSegments": 16,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1,
+          "height": 1,
+          "depth": 1
+        },
+        "type": "cylinder"
+      },
+      "color": "#c9bfae",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CYLINDER"
+      },
+      "script": {
+        "identifier": "hub-gate-music-post-s",
+        "tag": "m1-hub-structure"
+      }
+    },
+    "hub-gate-music-lintel": {
+      "name": "Gateway music lintel",
+      "id": "hub-gate-music-lintel",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -9,
+        "y": 5.85,
+        "z": 0
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1.2,
+          "height": 0.7,
+          "depth": 17
+        },
+        "type": "box"
+      },
+      "color": "#c9bfae",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "hub-gate-music-lintel",
+        "tag": "m1-hub-structure"
+      }
+    },
+    "hub-gate-music-label": {
+      "name": "Label gateway music",
+      "id": "hub-gate-music-label",
+      "type": "text",
+      "kit": "cyber",
+      "text": "MUSIC",
+      "position": {
+        "x": -8.3,
+        "y": 7.1,
+        "z": 0
+      },
+      "rotation": {
+        "x": 0,
+        "y": 1.5708,
+        "z": 0
+      },
+      "scale": {
+        "x": 0.95,
+        "y": 0.95,
+        "z": 0.95
+      },
+      "align": "center",
+      "font": "aeonik-bold",
+      "lineHeight": 60,
+      "textColor": "#2fb8a6",
+      "textTransform": "none",
+      "width": 1200,
+      "opacity": 1
+    },
+    "hub-gate-fashion-post-n": {
+      "name": "Gateway fashion post north",
+      "id": "hub-gate-fashion-post-n",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 9,
+        "y": 3,
+        "z": -7.9
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 0.45,
+          "radiusBottom": 0.45,
+          "height": 5,
+          "radialSegments": 16,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1,
+          "height": 1,
+          "depth": 1
+        },
+        "type": "cylinder"
+      },
+      "color": "#c9bfae",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CYLINDER"
+      },
+      "script": {
+        "identifier": "hub-gate-fashion-post-n",
+        "tag": "m1-hub-structure"
+      }
+    },
+    "hub-gate-fashion-post-s": {
+      "name": "Gateway fashion post south",
+      "id": "hub-gate-fashion-post-s",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 9,
+        "y": 3,
+        "z": 7.9
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 0.45,
+          "radiusBottom": 0.45,
+          "height": 5,
+          "radialSegments": 16,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1,
+          "height": 1,
+          "depth": 1
+        },
+        "type": "cylinder"
+      },
+      "color": "#c9bfae",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CYLINDER"
+      },
+      "script": {
+        "identifier": "hub-gate-fashion-post-s",
+        "tag": "m1-hub-structure"
+      }
+    },
+    "hub-gate-fashion-lintel": {
+      "name": "Gateway fashion lintel",
+      "id": "hub-gate-fashion-lintel",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 9,
+        "y": 5.85,
+        "z": 0
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1.2,
+          "height": 0.7,
+          "depth": 17
+        },
+        "type": "box"
+      },
+      "color": "#c9bfae",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "hub-gate-fashion-lintel",
+        "tag": "m1-hub-structure"
+      }
+    },
+    "hub-gate-fashion-label": {
+      "name": "Label gateway fashion",
+      "id": "hub-gate-fashion-label",
+      "type": "text",
+      "kit": "cyber",
+      "text": "FASHION · CULTURE",
+      "position": {
+        "x": 8.3,
+        "y": 7.1,
+        "z": 0
+      },
+      "rotation": {
+        "x": 0,
+        "y": -1.5708,
+        "z": 0
+      },
+      "scale": {
+        "x": 0.95,
+        "y": 0.95,
+        "z": 0.95
+      },
+      "align": "center",
+      "font": "aeonik-bold",
+      "lineHeight": 60,
+      "textColor": "#d98c7a",
+      "textTransform": "none",
+      "width": 1200,
+      "opacity": 1
+    },
+    "hub-gate-cannabis-post-a": {
+      "name": "21+ gate post",
+      "id": "hub-gate-cannabis-post-a",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 10.62,
+        "y": 2.7,
+        "z": -11.62
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 0.4,
+          "radiusBottom": 0.4,
+          "height": 4.4,
+          "radialSegments": 12,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1,
+          "height": 1,
+          "depth": 1
+        },
+        "type": "cylinder"
+      },
+      "color": "#1c1f26",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CYLINDER"
+      },
+      "script": {
+        "identifier": "hub-gate-cannabis-post-a",
+        "tag": "m1-hub-structure"
+      }
+    },
+    "hub-gate-cannabis-post-b": {
+      "name": "21+ gate post",
+      "id": "hub-gate-cannabis-post-b",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 6.38,
+        "y": 2.7,
+        "z": -7.38
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 0.4,
+          "radiusBottom": 0.4,
+          "height": 4.4,
+          "radialSegments": 12,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1,
+          "height": 1,
+          "depth": 1
+        },
+        "type": "cylinder"
+      },
+      "color": "#1c1f26",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CYLINDER"
+      },
+      "script": {
+        "identifier": "hub-gate-cannabis-post-b",
+        "tag": "m1-hub-structure"
+      }
+    },
+    "hub-gate-cannabis-label": {
+      "name": "Label 21+ gate",
+      "id": "hub-gate-cannabis-label",
+      "type": "text",
+      "kit": "cyber",
+      "text": "21+",
+      "position": {
+        "x": 8,
+        "y": 5,
+        "z": -9
+      },
+      "rotation": {
+        "x": 0,
+        "y": -0.7854,
+        "z": 0
+      },
+      "scale": {
+        "x": 0.8,
+        "y": 0.8,
+        "z": 0.8
+      },
+      "align": "center",
+      "font": "aeonik-bold",
+      "lineHeight": 60,
+      "textColor": "#8a6a2a",
+      "textTransform": "none",
+      "width": 900,
+      "opacity": 1
+    },
+    "hub-stud-1": {
+      "name": "Floor stud 1",
+      "id": "hub-stud-1",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 8.5,
+        "y": 0.505,
+        "z": -13.5
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 0.24,
+          "radiusBottom": 0.24,
+          "height": 0.03,
+          "radialSegments": 12,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1,
+          "height": 1,
+          "depth": 1
+        },
+        "type": "cylinder"
+      },
+      "color": "#ffd98a",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "plugins": [
+        {
+          "id": "PulsePlugin",
+          "color": "#f5b24a",
+          "intensity": 0.5,
+          "speed": 0.45
+        }
+      ],
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CYLINDER"
+      },
+      "script": {
+        "identifier": "hub-stud-1",
+        "tag": "m1-hub-clue"
+      }
+    },
+    "hub-stud-2": {
+      "name": "Floor stud 2",
+      "id": "hub-stud-2",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 7.2,
+        "y": 0.505,
+        "z": -16.5
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 0.24,
+          "radiusBottom": 0.24,
+          "height": 0.03,
+          "radialSegments": 12,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1,
+          "height": 1,
+          "depth": 1
+        },
+        "type": "cylinder"
+      },
+      "color": "#ffd98a",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "plugins": [
+        {
+          "id": "PulsePlugin",
+          "color": "#f5b24a",
+          "intensity": 0.5,
+          "speed": 0.45
+        }
+      ],
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CYLINDER"
+      },
+      "script": {
+        "identifier": "hub-stud-2",
+        "tag": "m1-hub-clue"
+      }
+    },
+    "hub-stud-3": {
+      "name": "Floor stud 3",
+      "id": "hub-stud-3",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 7,
+        "y": 0.505,
+        "z": -19.5
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 0.24,
+          "radiusBottom": 0.24,
+          "height": 0.03,
+          "radialSegments": 12,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1,
+          "height": 1,
+          "depth": 1
+        },
+        "type": "cylinder"
+      },
+      "color": "#ffd98a",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "plugins": [
+        {
+          "id": "PulsePlugin",
+          "color": "#f5b24a",
+          "intensity": 0.5,
+          "speed": 0.45
+        }
+      ],
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CYLINDER"
+      },
+      "script": {
+        "identifier": "hub-stud-3",
+        "tag": "m1-hub-clue"
+      }
+    },
+    "hub-stud-4": {
+      "name": "Floor stud 4",
+      "id": "hub-stud-4",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 7,
+        "y": 0.505,
+        "z": -22.5
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 0.24,
+          "radiusBottom": 0.24,
+          "height": 0.03,
+          "radialSegments": 12,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1,
+          "height": 1,
+          "depth": 1
+        },
+        "type": "cylinder"
+      },
+      "color": "#ffd98a",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "plugins": [
+        {
+          "id": "PulsePlugin",
+          "color": "#f5b24a",
+          "intensity": 0.5,
+          "speed": 0.45
+        }
+      ],
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CYLINDER"
+      },
+      "script": {
+        "identifier": "hub-stud-4",
+        "tag": "m1-hub-clue"
+      }
+    },
+    "hub-stud-5": {
+      "name": "Floor stud 5",
+      "id": "hub-stud-5",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 5.4,
+        "y": 0.505,
+        "z": -25.8
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 0.24,
+          "radiusBottom": 0.24,
+          "height": 0.03,
+          "radialSegments": 12,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1,
+          "height": 1,
+          "depth": 1
+        },
+        "type": "cylinder"
+      },
+      "color": "#ffd98a",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "plugins": [
+        {
+          "id": "PulsePlugin",
+          "color": "#f5b24a",
+          "intensity": 0.5,
+          "speed": 0.45
+        }
+      ],
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CYLINDER"
+      },
+      "script": {
+        "identifier": "hub-stud-5",
+        "tag": "m1-hub-clue"
+      }
+    },
+    "hub-stud-6": {
+      "name": "Floor stud 6",
+      "id": "hub-stud-6",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 2.4,
+        "y": 0.505,
+        "z": -26.2
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 0.24,
+          "radiusBottom": 0.24,
+          "height": 0.03,
+          "radialSegments": 12,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1,
+          "height": 1,
+          "depth": 1
+        },
+        "type": "cylinder"
+      },
+      "color": "#ffd98a",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "plugins": [
+        {
+          "id": "PulsePlugin",
+          "color": "#f5b24a",
+          "intensity": 0.5,
+          "speed": 0.45
+        }
+      ],
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CYLINDER"
+      },
+      "script": {
+        "identifier": "hub-stud-6",
+        "tag": "m1-hub-clue"
+      }
+    },
+    "hub-stud-7": {
+      "name": "Floor stud 7",
+      "id": "hub-stud-7",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 0,
+        "y": 0.505,
+        "z": -25.1
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 0.24,
+          "radiusBottom": 0.24,
+          "height": 0.03,
+          "radialSegments": 12,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1,
+          "height": 1,
+          "depth": 1
+        },
+        "type": "cylinder"
+      },
+      "color": "#ffd98a",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "plugins": [
+        {
+          "id": "PulsePlugin",
+          "color": "#f5b24a",
+          "intensity": 0.5,
+          "speed": 0.45
+        }
+      ],
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CYLINDER"
+      },
+      "script": {
+        "identifier": "hub-stud-7",
+        "tag": "m1-hub-clue"
+      }
+    },
+    "hub-core-mirror": {
+      "name": "Core mirror floor",
+      "id": "hub-core-mirror",
+      "type": "reflector",
+      "kit": "cyber",
+      "position": {
+        "x": 0,
+        "y": 0.52,
+        "z": -19
+      },
+      "scale": {
+        "x": 8,
+        "z": 9
+      },
+      "normalmap": {
+        "enabled": false
+      },
+      "color": "#1a1d26",
+      "opacity": 1,
+      "blur": true,
+      "script": {
+        "identifier": "hub-core-mirror",
+        "tag": "m1-hub-secret"
+      }
+    },
+    "hub-core-line": {
+      "name": "Core inscription",
+      "id": "hub-core-line",
+      "type": "text",
+      "kit": "cyber",
+      "text": "you are at the centre",
+      "position": {
+        "x": 0,
+        "y": 2.7,
+        "z": -14.55
+      },
+      "rotation": {
+        "x": 0,
+        "y": 3.1416,
+        "z": 0
+      },
+      "scale": {
+        "x": 0.7,
+        "y": 0.7,
+        "z": 0.7
+      },
+      "align": "center",
+      "font": "playfair-italic",
+      "lineHeight": 60,
+      "textColor": "#ffd98a",
+      "textTransform": "none",
+      "width": 1200,
+      "opacity": 1
+    },
+    "portal-hub-music": {
+      "name": "Portal Hub → Music District",
+      "id": "portal-hub-music",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -9,
+        "y": 2,
+        "z": 0
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1,
+          "height": 3,
+          "depth": 14
+        },
+        "type": "box"
+      },
+      "color": "#2fb8a6",
+      "opacity": 0.22,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE",
+        "isSensor": true
+      },
+      "script": {
+        "identifier": "portal-hub-music",
+        "tag": "m0-portal"
+      }
+    },
+    "portal-hub-fashion": {
+      "name": "Portal Hub → Fashion / Culture District",
+      "id": "portal-hub-fashion",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 9,
+        "y": 2,
+        "z": 0
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1,
+          "height": 3,
+          "depth": 14
+        },
+        "type": "box"
+      },
+      "color": "#d98c7a",
+      "opacity": 0.22,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE",
+        "isSensor": true
+      },
+      "script": {
+        "identifier": "portal-hub-fashion",
+        "tag": "m0-portal"
+      }
+    },
+    "portal-hub-cannabis": {
+      "name": "Portal Hub → 21+ Cannabis District (gated)",
+      "id": "portal-hub-cannabis",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 8.5,
+        "y": 2,
+        "z": -9.5
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0.7854,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 6,
+          "height": 3,
+          "depth": 1
+        },
+        "type": "box"
+      },
+      "color": "#8a6a2a",
+      "opacity": 0.22,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE",
+        "isSensor": true
+      },
+      "script": {
+        "identifier": "portal-hub-cannabis",
+        "tag": "m0-portal"
+      }
+    }
+  }
+}

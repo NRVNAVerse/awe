@@ -295,7 +295,7 @@ function main(argv) {
       // Initial M0 warning budgets (2B.4C.2): reported, never fatal — see budgets.mjs.
       const warnings = spatialBudgetWarnings(artifacts);
       for (const warning of warnings) console.warn(formatSpatialBudgetWarning(warning));
-      console.log(`generated spatial artifacts up to date (${Object.keys(artifacts.files).length} files${warnings.length ? `, ${warnings.length} budget warning${warnings.length === 1 ? "" : "s"}` : ", within initial budgets"})`);
+      console.log(`generated spatial artifacts up to date (${Object.keys(artifacts.files).length} files${warnings.length ? `, ${warnings.length} budget warning${warnings.length === 1 ? "" : "s"}` : ", within budget"})`);
       return 0;
     }
     case "--help":

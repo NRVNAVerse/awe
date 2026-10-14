@@ -3,7 +3,9 @@
   "worldId": "the-nrvnaverse",
   "scene": "scene.m0.json",
   "assetStorage": {
-    "external-cas": { "publicOrigin": "https://assets.nrvnaverse.com" }
+    "external-cas": {
+      "publicOrigin": "https://assets.nrvnaverse.com"
+    }
   },
   "global": {
     "componentIds": [
@@ -22,10 +24,76 @@
       "label": "Hub",
       "componentIds": [
         "platform-hub",
-        "marker-hub",
-        "label-hub",
+        "hub-basin-inlay",
+        "hub-forecourt",
         "path-west",
         "path-east",
+        "hub-core-wall-s",
+        "hub-core-wall-w",
+        "hub-core-wall-e",
+        "hub-core-wall-nw",
+        "hub-core-wall-ne",
+        "hub-core-beam-s",
+        "hub-core-beam-n",
+        "hub-core-beam-w",
+        "hub-core-beam-e",
+        "hub-core-pillar-sw",
+        "hub-core-pillar-se",
+        "hub-core-pillar-nw",
+        "hub-core-pillar-ne",
+        "hub-core-seat",
+        "hub-spire-plinth",
+        "hub-spire-fin-w",
+        "hub-spire-fin-e",
+        "hub-spire-fin-n",
+        "hub-spire-fin-s",
+        "hub-spire-core",
+        "hub-spire-ring-1",
+        "hub-spire-ring-2",
+        "hub-spire-ring-3",
+        "hub-spire-cap",
+        "label-hub",
+        "hub-label-sub",
+        "hub-terrace",
+        "hub-landing-w",
+        "hub-ramp-w",
+        "hub-landing-e",
+        "hub-ramp-e",
+        "hub-bench-rim-w",
+        "hub-bench-rim-e",
+        "hub-overlook-ramp",
+        "hub-overlook-deck",
+        "hub-overlook-post-s",
+        "hub-overlook-post-n",
+        "hub-bench-lounge",
+        "hub-overlook-lamp-post",
+        "hub-overlook-lamp",
+        "hub-dormant-1-post-w",
+        "hub-dormant-1-post-e",
+        "hub-dormant-1-inset",
+        "hub-dormant-2-post-w",
+        "hub-dormant-2-post-e",
+        "hub-dormant-2-inset",
+        "hub-gate-music-post-n",
+        "hub-gate-music-post-s",
+        "hub-gate-music-lintel",
+        "hub-gate-music-label",
+        "hub-gate-fashion-post-n",
+        "hub-gate-fashion-post-s",
+        "hub-gate-fashion-lintel",
+        "hub-gate-fashion-label",
+        "hub-gate-cannabis-post-a",
+        "hub-gate-cannabis-post-b",
+        "hub-gate-cannabis-label",
+        "hub-stud-1",
+        "hub-stud-2",
+        "hub-stud-3",
+        "hub-stud-4",
+        "hub-stud-5",
+        "hub-stud-6",
+        "hub-stud-7",
+        "hub-core-mirror",
+        "hub-core-line",
         "portal-hub-music",
         "portal-hub-fashion",
         "portal-hub-cannabis"
@@ -79,46 +147,123 @@
     {
       "destinationId": "dst_7g19n1vm9ackw8a0",
       "chunkKey": "hub",
-      "spawn": { "position": { "x": 0, "y": 1, "z": 6 }, "yaw": 0 }
+      "spawn": {
+        "position": {
+          "x": 0,
+          "y": 1,
+          "z": 6
+        },
+        "yaw": 0
+      }
     },
     {
       "destinationId": "dst_gm3xs4a3tws7bgh3",
       "chunkKey": "music",
-      "spawn": { "position": { "x": -70, "y": 1, "z": 6 }, "yaw": 0 }
+      "spawn": {
+        "position": {
+          "x": -70,
+          "y": 1,
+          "z": 6
+        },
+        "yaw": 0
+      }
     },
     {
       "destinationId": "dst_1qtfn9qjg9kf6jyd",
       "chunkKey": "music",
-      "spawn": { "position": { "x": -70, "y": 1, "z": -34 }, "yaw": 0 }
+      "spawn": {
+        "position": {
+          "x": -70,
+          "y": 1,
+          "z": -34
+        },
+        "yaw": 0
+      }
     },
     {
       "destinationId": "dst_9c4wxtpec8awsx1q",
       "chunkKey": "fashion-culture",
-      "spawn": { "position": { "x": 70, "y": 1, "z": 6 }, "yaw": 0 }
+      "spawn": {
+        "position": {
+          "x": 70,
+          "y": 1,
+          "z": 6
+        },
+        "yaw": 0
+      }
     },
     {
       "destinationId": "dst_tgfh5h5jvm3wj0w7",
       "chunkKey": "fashion-culture",
-      "spawn": { "position": { "x": 70, "y": 1, "z": -34 }, "yaw": 0 }
+      "spawn": {
+        "position": {
+          "x": 70,
+          "y": 1,
+          "z": -34
+        },
+        "yaw": 0
+      }
     },
     {
       "destinationId": "dst_441dtdafq3e3ehjn",
       "chunkKey": "cannabis-21",
-      "spawn": { "position": { "x": 0, "y": 1, "z": -114 }, "yaw": 0 }
+      "spawn": {
+        "position": {
+          "x": 0,
+          "y": 1,
+          "z": -114
+        },
+        "yaw": 0
+      }
     },
     {
       "destinationId": "dst_vfkz626za0vra89j",
       "chunkKey": "cannabis-21",
-      "spawn": { "position": { "x": 0, "y": 1, "z": -154 }, "yaw": 0 }
+      "spawn": {
+        "position": {
+          "x": 0,
+          "y": 1,
+          "z": -154
+        },
+        "yaw": 0
+      }
     }
   ],
   "portals": [
-    { "componentId": "portal-hub-music", "chunkKey": "hub", "destinationId": "dst_gm3xs4a3tws7bgh3" },
-    { "componentId": "portal-hub-fashion", "chunkKey": "hub", "destinationId": "dst_9c4wxtpec8awsx1q" },
-    { "componentId": "portal-hub-cannabis", "chunkKey": "hub", "destinationId": "dst_441dtdafq3e3ehjn" },
-    { "componentId": "portal-music-hub", "chunkKey": "music", "destinationId": "dst_7g19n1vm9ackw8a0" },
-    { "componentId": "portal-music-artist", "chunkKey": "music", "destinationId": "dst_1qtfn9qjg9kf6jyd" },
-    { "componentId": "portal-fashion-hub", "chunkKey": "fashion-culture", "destinationId": "dst_7g19n1vm9ackw8a0" },
-    { "componentId": "portal-fashion-brand", "chunkKey": "fashion-culture", "destinationId": "dst_tgfh5h5jvm3wj0w7" }
+    {
+      "componentId": "portal-hub-music",
+      "chunkKey": "hub",
+      "destinationId": "dst_gm3xs4a3tws7bgh3"
+    },
+    {
+      "componentId": "portal-hub-fashion",
+      "chunkKey": "hub",
+      "destinationId": "dst_9c4wxtpec8awsx1q"
+    },
+    {
+      "componentId": "portal-hub-cannabis",
+      "chunkKey": "hub",
+      "destinationId": "dst_441dtdafq3e3ehjn"
+    },
+    {
+      "componentId": "portal-music-hub",
+      "chunkKey": "music",
+      "destinationId": "dst_7g19n1vm9ackw8a0"
+    },
+    {
+      "componentId": "portal-music-artist",
+      "chunkKey": "music",
+      "destinationId": "dst_1qtfn9qjg9kf6jyd"
+    },
+    {
+      "componentId": "portal-fashion-hub",
+      "chunkKey": "fashion-culture",
+      "destinationId": "dst_7g19n1vm9ackw8a0"
+    },
+    {
+      "componentId": "portal-fashion-brand",
+      "chunkKey": "fashion-culture",
+      "destinationId": "dst_tgfh5h5jvm3wj0w7"
+    }
   ]
 }
