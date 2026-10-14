@@ -156,7 +156,7 @@ export function composeFashion() {
   }
 
   // --- 5. Copy and gateways ------------------------------------------------------------------
-  items.push(label("label-fashion-culture", "FASHION · CULTURE", v(CX, 9.2, -13.5), { scale: 1.5, name: "Label Fashion / Culture District", color: ROSE, width: 1600 }));
+  items.push(label("label-fashion-culture", "FASHION / CULTURE", v(CX, 9.2, -13.5), { scale: 1.5, name: "Label Fashion / Culture District", color: ROSE, width: 1600 }));
   items.push(label("label-fashion-culture-brand", "Placeholder Fashion / Culture Brand", v(CX, ROOF_TOP - 1.0, -40.8), { scale: 0.9, name: "Label Placeholder Brand", color: "#3a3330", width: 1800 }));
   items.push(column("fashion-gate-hub-post-n", CX - 9, DATUM, -7.9, 0.45, 5, { name: "Hub gateway post north", color: TRAVERTINE_DARK, segments: 16, tag: T.structure }));
   items.push(column("fashion-gate-hub-post-s", CX - 9, DATUM, 7.9, 0.45, 5, { name: "Hub gateway post south", color: TRAVERTINE_DARK, segments: 16, tag: T.structure }));

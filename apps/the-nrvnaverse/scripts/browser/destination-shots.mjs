@@ -5,9 +5,9 @@
 //   pnpm --filter the-nrvnaverse browser:shots            # desktop 1280x800
 //   OUT_DIR=<dir> PORT=<port> ... browser:shots
 //
-// Also turns the camera (drag-look) for a second frame per destination so the overlooks / secondary
-// structures behind the spawn are documented. Evidence only: nothing is asserted beyond "the world was
-// placed"; PNGs land in OUT_DIR (default: OS temp dir), never in the repository.
+// Evidence only: nothing is asserted beyond "the world was placed"; PNGs land in OUT_DIR (default: OS
+// temp dir), never in the repository. The frame is the arrival view (desktop mouse-look needs pointer
+// lock, which headless CDP does not grant, so no second angle is captured).
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
@@ -33,17 +33,6 @@ async function shot(cdp, name) {
   log("shot", file);
 }
 
-async function dragLook(cdp, dx, dy) {
-  // pointer-lock-free look: the app's raw touch/mouse Look path reads canvas drags
-  const x = 500, y = 400;
-  await cdp.send("Input.dispatchMouseEvent", { type: "mousePressed", x, y, button: "left", clickCount: 1 });
-  for (let i = 1; i <= 12; i++) {
-    await cdp.send("Input.dispatchMouseEvent", { type: "mouseMoved", x: x + (dx * i) / 12, y: y + (dy * i) / 12, button: "left" });
-    await sleep(16);
-  }
-  await cdp.send("Input.dispatchMouseEvent", { type: "mouseReleased", x: x + dx, y: y + dy, button: "left", clickCount: 1 });
-}
-
 async function main() {
   fs.mkdirSync(OUT_DIR, { recursive: true });
   const server = await startServer(PORT);
@@ -58,9 +47,6 @@ async function main() {
       await waitFor(cdp, PLACED, { label: `placed ${d.slug}` });
       await sleep(2500);
       await shot(cdp, `${d.slug}-arrival`);
-      await dragLook(cdp, 640, 0); // turn roughly 180°
-      await sleep(600);
-      await shot(cdp, `${d.slug}-behind`);
     }
     await cdp.close?.();
   } finally {

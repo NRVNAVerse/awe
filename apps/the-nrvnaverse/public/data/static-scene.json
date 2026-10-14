@@ -3808,7 +3808,7 @@
       "id": "hub-gate-fashion-label",
       "type": "text",
       "kit": "cyber",
-      "text": "FASHION · CULTURE",
+      "text": "FASHION / CULTURE",
       "position": {
         "x": 8.3,
         "y": 7.1,
@@ -11339,7 +11339,7 @@
       "id": "label-fashion-culture",
       "type": "text",
       "kit": "cyber",
-      "text": "FASHION · CULTURE",
+      "text": "FASHION / CULTURE",
       "position": {
         "x": 70,
         "y": 9.2,

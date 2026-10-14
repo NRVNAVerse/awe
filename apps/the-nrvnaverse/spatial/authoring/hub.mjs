@@ -208,7 +208,7 @@ export function composeHub() {
   // --- 8. District gateways (west: Music, east: Fashion / Culture) -----------------------------
   const gateways = [
     { k: "music", x: -9, color: PALETTE.music, text: "MUSIC", rotY: 90 },
-    { k: "fashion", x: 9, color: PALETTE.fashion, text: "FASHION · CULTURE", rotY: -90 },
+    { k: "fashion", x: 9, color: PALETTE.fashion, text: "FASHION / CULTURE", rotY: -90 },
   ];
   for (const g of gateways) {
     items.push(column(`hub-gate-${g.k}-post-n`, g.x, DATUM, -7.9, 0.45, 5, { name: `Gateway ${g.k} post north`, color: PALETTE.stoneLight, segments: 16, tag: S.structure }));
