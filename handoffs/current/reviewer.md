@@ -469,3 +469,138 @@ End with:
 
 Do not merge.
 Do not deploy.
+
+## Real artist pilot context — Eddie Anthony
+
+The owner works directly with Seattle artist **Eddie Anthony** and has explicitly stated that Eddie will be incorporated into NRVNAVerse. Treat Eddie as a strong candidate for the **first real artist pilot** for the Music District / venue / WEB↔SPATIAL model.
+
+A private owner-controlled Eddie Anthony website/store repository exists and was reviewed by the planner before this handoff. If the local environment has authenticated read access, it may be inspected **read-only** for additional context. Do not modify it during this campaign. Do not copy private assets, source files, audio, photography, store credentials, operational data or unpublished content into this public NRVNAVerse repository without explicit owner authorization and provenance review.
+
+The following high-level product/creative findings are safe context for this campaign:
+
+### Eddie's existing web product has a strong music→merch→world grammar
+
+The artist storefront is explicitly built around:
+
+> **Merch from the songs.**
+
+Products are attached to tracks rather than presented as an unrelated clothing catalog. Song pages connect the track, music playback and the physical piece that came from it.
+
+This is directly useful to NRVNAVerse because an Eddie destination should not become a generic artist bio room.
+
+Potential spatial translation:
+- song → spatial object / area / visual state;
+- track → performance or environmental beat;
+- song → merch/web surface;
+- collection/drop → temporary spatial presentation;
+- retired drop → archive / memory / hidden-room material.
+
+Do not implement all of these mechanically; use the principle to shape the experience.
+
+### Existing web interaction patterns worth learning from
+
+The Eddie site already uses:
+- a persistent site-wide music player;
+- playback continuity across page navigation;
+- audio-reactive visual bars driven by real frequency data;
+- track-specific merchandising;
+- a full songs/discography page;
+- limited-duration music-linked drops;
+- a self-building **Vault** archive for retired drops;
+- professional lookbook/editorial photography;
+- cross-document transitions intended to make navigation feel continuous rather than like hard page changes.
+
+These are **reference patterns**, not code to copy into AWE.
+
+They reinforce several already accepted NRVNAVerse directions:
+- music should be an active system, not background decoration;
+- WEB↔SPATIAL transitions should feel continuous;
+- artist merchandise can be contextual to music rather than a detached store;
+- archives/retired drops can become exploration/history;
+- audio-reactive environments are a natural Music District capability;
+- artist-specific web surfaces inside/adjacent to spatial destinations can have real utility.
+
+### Brand / visual context
+
+The Eddie site's current visual system uses:
+- near-black ink;
+- warm bone/off-white;
+- warm gold accent;
+- bold condensed display type with clean grotesk/mono support;
+- studio and dive-bar photography;
+- Seattle identity.
+
+This happens to coexist naturally with NRVNAVerse's black/gold premium language, but do **not** erase Eddie's identity by making his destination simply another NRVNAVerse-branded room.
+
+Treat the artist destination as:
+- clearly inside the NRVNAVerse ecosystem;
+- clearly Eddie's space once crossed into.
+
+### Existing content architecture
+
+The current artist web system ties together:
+- songs;
+- artist story;
+- merchandise;
+- drops;
+- retired-drop archive;
+- lookbook/editorial imagery;
+- press;
+- persistent playback.
+
+This makes Eddie a particularly strong first proof for the accepted D-020 WEB↔SPATIAL seam.
+
+A future Eddie spatial destination could plausibly contain contextual windows/thresholds to:
+- a song page;
+- current merch/drop;
+- discography;
+- lookbook;
+- event page;
+- artist story.
+
+The canonical website/store remains the owner of those web surfaces.
+
+### Venue/event implications
+
+Because the owner works directly with Eddie, use him as a **design reality check** for the Music venue system.
+
+Ask:
+- Would an artist actually want to perform here?
+- Can the same artist use multiple venue templates for different releases/events?
+- Can a track or release temporarily reskin/reactively configure a stage without requiring a new world?
+- Can visitors move from Eddie's web/song/merch context into the exact spatial event?
+- Can spatial attendees move back to the exact relevant web context?
+- Can the environment create value even when no live concert is happening?
+
+A strong proof would make the venue useful for:
+- live/hosted performance;
+- release listening event;
+- merch/drop reveal;
+- fan/community gathering;
+- persistent artist destination between events.
+
+### Experience ideas worth testing, not requirements
+
+If evidence and current AWE capabilities support them, consider:
+- audio-reactive stage/environment state;
+- a track-driven visual beat or room-state change;
+- a spatial **Vault/archive** concept inspired by retired drops;
+- a lookbook/gallery area that feels spatial rather than like hanging screenshots on walls;
+- a contextual website window tied to the artist/song/event;
+- a hidden or secondary route that reveals archival/song context;
+- a stage configuration that demonstrates how one artist could select different venue templates for different events.
+
+Do not force any of these if they weaken the stronger campaign priorities.
+
+### Rights / publication boundary
+
+Direct collaboration does **not** automatically prove that every file in a private collaborator repository is cleared for republication in the public NRVNAVerse repository.
+
+For this campaign:
+- use the private artist repo for understanding and design context;
+- do not copy private binaries or proprietary source into NRVNAVerse;
+- if a specific photo/audio/logo/web asset would materially improve the prototype, record it as a candidate and continue with a placeholder/local-only proof;
+- ask the owner later for explicit publication/transfer approval where needed.
+
+This preserves the ability to build boldly without accidentally publishing collaborator material.
+
