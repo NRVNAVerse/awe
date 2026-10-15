@@ -234,3 +234,5 @@ For a host, the eventual target is:
 > “I chose the room that fit my event, configured the event, and NRVNAVerse handled where visitors needed to go.”
 
 > **M1 proof (2026-10-15, `feat/m1-spatial-experience-overnight`):** the Music floor is the concourse, The Club is the first independently loadable venue room (own chunk, own `venue` destination), the marquee / lit door are config-driven (`TONIGHT`), and eight vault venue candidates were audited with SIC — see `NRVNAVERSE_HUB_WORLD.md` §13 and the campaign record. Still PLANNED: event records, hosted-event selection, a curated template library.
+
+> **WEB↔SPATIAL proof (2026-10-15):** thresholds (sensor → stable id, never travel) open an application-owned web window on a same-origin `/web-context/<id>` page derived from the manifests; the canonical page opens in a new tab so the world never leaves. The engine in-world `iframe` was evaluated and deferred (absolute-URL requirement, frame-policy dependence) — runtime doc §18. Still PLANNED: event records, hosted-event selection, a cross-origin session seam.

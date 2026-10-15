@@ -7,16 +7,16 @@
       "dataUrl": "/data/spatial/chunks/cannabis-21.47ef62cb39981c5a64bfe91a5dea4f41.json"
     },
     "fashion-culture": {
-      "dataUrl": "/data/spatial/chunks/fashion-culture.3c1d1257aeb8e764b5f7c1ea72d5eb52.json"
+      "dataUrl": "/data/spatial/chunks/fashion-culture.4f77b37fdba6abdaa4c34709d05ed85d.json"
     },
     "hub": {
       "dataUrl": "/data/spatial/chunks/hub.9de77b85398a5165d576fefcdc5b6da4.json"
     },
     "music": {
-      "dataUrl": "/data/spatial/chunks/music.23281f0593089ebc0e1ad4a4d7808233.json"
+      "dataUrl": "/data/spatial/chunks/music.89d30c08f748b5c5496c391e9d3e8c41.json"
     },
     "music-club": {
-      "dataUrl": "/data/spatial/chunks/music-club.2085ddeee4c0e7662586db7349c21a5e.json"
+      "dataUrl": "/data/spatial/chunks/music-club.6619f34ae21c64cb29db18bbb458e1c6.json"
     }
   },
   "destinations": {
@@ -613,6 +613,20 @@
           }
         ]
       }
+    }
+  },
+  "thresholds": {
+    "club-threshold-bar": {
+      "chunkKey": "music-club",
+      "destinationId": "dst_gqq90k2404cy9nf0"
+    },
+    "fashion-threshold-brand": {
+      "chunkKey": "fashion-culture",
+      "destinationId": "dst_tgfh5h5jvm3wj0w7"
+    },
+    "music-threshold-club": {
+      "chunkKey": "music",
+      "destinationId": "dst_gqq90k2404cy9nf0"
     }
   }
 }

@@ -242,6 +242,9 @@ export function composeFashion() {
   items.push(zone("fashion-zone-loggia", v(CX, DATUM + 2, -47.5), [16, 4, 11], { name: "Zone loggia", tag: T.zone }));
   items.push(zone("fashion-zone-roof", v(CX + 2, ROOF_TOP + 1.5, -47.5), [28, 3, 13], { name: "Zone roof terrace", tag: T.zone }));
   items.push(zone("fashion-zone-atelier", v(CX, DATUM + 2, -58.75), [13, 4, 9.5], { name: "Zone atelier", tag: T.zone }));
+  // WEB↔SPATIAL threshold (D-020): in front of the three empty wall frames — the brand's canonical
+  // web context is the "label" of the gallery until real work hangs here.
+  items.push(zone("fashion-threshold-brand", v(CX, DATUM + 1.5, -50.5), [10, 3, 4], { name: "Threshold: the brand on the web", tag: T.zone }));
 
   // --- 6. Portal sensors last (ids and sensor semantics unchanged from M0) --------------------
   items.push(portal("portal-fashion-hub", "Portal Fashion / Culture District → Hub", v(CX - 9, 2, 0), [1, 3, 14], PALETTE.warmLight));
@@ -284,5 +287,10 @@ export function composeFashion() {
     { afterSeconds: 0.9, show: ["fashion-frame-3-lit"] },
   ]);
 
-  return { components, componentIds: Object.keys(components), experience: x.build() };
+  return {
+    components,
+    componentIds: Object.keys(components),
+    experience: x.build(),
+    thresholds: [{ sensorId: "fashion-threshold-brand", destinationId: PLACEHOLDER_BRAND_ID }],
+  };
 }

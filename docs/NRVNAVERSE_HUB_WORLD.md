@@ -209,3 +209,17 @@ Vault venue audition (SIC `inspect_asset`, read-only; rights per the Vault Organ
 | `Blend Files/megacity night lounge v1.1.glb` | 29 × 56 × 52 m, 140 tris, 7 KB | owner's own | **reject** (a blocking shell, no detail) |
 
 Rights labels follow the brief (CLEARED / LIKELY NEEDS REVIEW / UNKNOWN / RESTRICTED); nothing here is cleared for production, so every verdict is a library candidate, not a placement.
+
+---
+
+## 14. Thresholds — where the web shows through  [VERIFIED headless + SIC, `feat/m1-spatial-experience-overnight`; D-020 proof]
+
+A threshold is an invisible sensor strip bound to a stable id; standing in it opens the web window (bottom-left) with that destination's canonical web context, served by THE NRVNAVerse itself from the manifests (`/web-context/<id>`), with the canonical nrvnaverse.com link opening in a new tab so the world never leaves. Step out and it closes; close it by hand and it stays closed until you come back. Runtime doc §18, pipeline doc §18.
+
+| Threshold | Sensor (hidden) | Surfaces | Placement rationale |
+|---|---|---|---|
+| Concourse, in front of the Club door and under the marquee | `music-threshold-club` (x −69..−61, z 7..14; the portal is at z 15.5) | The Club | "see what's on before you go in" — where a visitor stops to read the marquee; a strip inside the passage was crossed in 0.2 s (browser-tuned) |
+| In front of the gallery frames | `fashion-threshold-brand` (x 65..75, z −52.5..−48.5) | Placeholder Brand | the brand's web page is the gallery's label until real work hangs there |
+| The Club's bar | `club-threshold-bar` (x −63.7..−61.1, z 66.5..75.5) | The Club | the room's own web face; the natural spot for a future event / drop surface |
+
+Design rules: a threshold never travels (a portal does); thresholds and portals are separate sensors (validated); thresholds never overlap a portal (SIC `intersects`: separated); no URL lives in the world data — the manifest's `webUrl` is looked up at display time. Spoiler-light hint: "stand in a doorway and look down-left."

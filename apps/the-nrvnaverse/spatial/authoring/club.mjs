@@ -226,6 +226,9 @@ export function composeClub() {
   // --- 6. Experience zones (dance floor; stage) ------------------------------------------------
   items.push(zone("club-zone-floor", v(CX, DATUM + 1.5, FLOOR_Z), [6, 3, 6], { name: "Zone dance floor", tag: T.zone }));
   items.push(zone("club-zone-stage", v(CX, DATUM + 2.1, CZ - 8), [10, 3, 4], { name: "Zone stage", tag: T.zone }));
+  // WEB↔SPATIAL threshold (D-020): at the bar — the room's own canonical web context (what this room
+  // is on the web), the natural place for a future event / drop surface.
+  items.push(zone("club-threshold-bar", v(CX + 7.6, DATUM + 1.5, CZ + 1), [2.6, 3, 9], { name: "Threshold: this room on the web (bar)", tag: T.zone }));
 
   // --- 7. Portal sensor last: the door back to the concourse (Music District) -----------------
   items.push(portal("portal-club-music", "Portal The Club → Music District", v(DOOR_X, 2, CZ + ROOM_D / 2 + 0.9), [4, 3, 1], PALETTE.warmLight));
@@ -248,5 +251,10 @@ export function composeClub() {
   // Stepping onto the stage brings the console live and a spot down; the spot lifts when you step off.
   x.zone("club-stage", "club-zone-stage", { enter: { show: ["club-console-live", "club-stage-spot"] }, exit: { hide: ["club-stage-spot"] } });
 
-  return { components, componentIds: Object.keys(components), experience: x.build() };
+  return {
+    components,
+    componentIds: Object.keys(components),
+    experience: x.build(),
+    thresholds: [{ sensorId: "club-threshold-bar", destinationId: CLUB_ID }],
+  };
 }

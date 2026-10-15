@@ -105,11 +105,14 @@ export const CONTENT_ADDRESSED_OUTPUT = Object.freeze({
   chunk: /^spatial\/chunks\/([a-z0-9]+(?:-[a-z0-9]+)*)\.([0-9a-f]{32})\.json$/,
 });
 
-const CONFIG_KEYS = ["schemaVersion", "worldId", "scene", "assetRegistry", "assetStorage", "global", "chunks", "placements", "portals", "experience"];
+const CONFIG_KEYS = ["schemaVersion", "worldId", "scene", "assetRegistry", "assetStorage", "global", "chunks", "placements", "portals", "experience", "thresholds"];
 const GLOBAL_KEYS = ["componentIds"];
 const CHUNK_KEYS = ["key", "label", "componentIds"];
 const PLACEMENT_KEYS = ["destinationId", "chunkKey", "spawn"];
 const PORTAL_KEYS = ["componentId", "chunkKey", "destinationId"];
+// WEB↔SPATIAL thresholds (M1 experience campaign, D-020): a sensor → the stable id whose canonical
+// web context is surfaced while the visitor stands in it. Same shape as a portal; never travels.
+const THRESHOLD_KEYS = ["componentId", "chunkKey", "destinationId"];
 const SPAWN_KEYS = ["position", "yaw"];
 const POSITION_KEYS = ["x", "y", "z"];
 // Experience bindings (M1 experience campaign): visibility effects over authored component ids,
@@ -130,6 +133,7 @@ const EXPERIENCE_BEAT_MAX_SECONDS = 30;
  * @typedef {{ key: string; label: string; componentIds: string[] }} ChunkConfig
  * @typedef {{ destinationId: string; chunkKey: string; spawn: Spawn }} PlacementConfig
  * @typedef {{ componentId: string; chunkKey: string; destinationId: string }} PortalConfig
+ * @typedef {{ componentId: string; chunkKey: string; destinationId: string }} ThresholdConfig
  * @typedef {{ show?: string[]; hide?: string[] }} ExperienceEffect
  * @typedef {{ afterSeconds: number; show?: string[]; hide?: string[] }} ExperienceBeat
  * @typedef {{ id: string; chunkKey: string; sensorId: string; enter?: ExperienceEffect; exit?: ExperienceEffect }} ExperienceZoneConfig
@@ -146,6 +150,7 @@ const EXPERIENCE_BEAT_MAX_SECONDS = 30;
  *   placements: PlacementConfig[];
  *   portals?: PortalConfig[];
  *   experience?: ExperienceConfig;
+ *   thresholds?: ThresholdConfig[];
  * }} SpatialConfig
  * @typedef {{ components: Record<string, Record<string, unknown>>; [key: string]: unknown }} SceneFile
  * @typedef {{ id: string; status: string; gates?: unknown[]; spatialDestination: { platform: string; worldId?: string } | null }} DestinationRecord
@@ -165,6 +170,7 @@ const EXPERIENCE_BEAT_MAX_SECONDS = 30;
  *   portalComponentIds: string[];
  *   experienceZoneIds: string[];
  *   experienceArrivalIds: string[];
+ *   thresholdComponentIds: string[];
  *   assetIds: string[];
  * }} SpatialArtifacts
  *   `files` is keyed by output file name relative to `public/data/` — the content-addressed names
@@ -458,6 +464,63 @@ export function validateSpatialSource(input) {
 
   if (config.experience !== undefined) {
     validateExperience(config.experience, { sceneComponents, owners, chunkKeys, destinationById, placementChunk, placedIds, activeWorldDestinationIds, portalIds: portalComponentIds, worldId }, fail);
+  }
+
+  // --- WEB↔SPATIAL thresholds (optional, additive; M1 experience campaign, D-020) ---
+  // physical sensor component → stable destination id whose canonical WEB context is shown while the
+  // visitor stands in the sensor. References only, like a portal: the component must be authored,
+  // owned by the declared chunk, an enabled sensor and NOT a portal sensor (a portal travels, a
+  // threshold never does); the destination must be a canonical THE NRVNAVerse destination of this
+  // world (placed or not — the web context exists either way). No URL is ever stored here: the
+  // manifest's `webUrl` is resolved at runtime from the stable id.
+  if (config.thresholds !== undefined) {
+    if (!Array.isArray(config.thresholds)) {
+      fail("invalid-thresholds", "config.thresholds", "thresholds must be an array of { componentId, chunkKey, destinationId }");
+    } else {
+      /** @type {Set<string>} */
+      const thresholdIds = new Set();
+      config.thresholds.forEach((threshold, i) => {
+        const path = `config.thresholds[${i}]`;
+        if (!isRecord(threshold)) return fail("invalid-threshold", path, "threshold must be an object { componentId, chunkKey, destinationId }");
+        for (const key of Object.keys(threshold)) {
+          if (!THRESHOLD_KEYS.includes(key)) fail("unexpected-field", `${path}.${key}`, `unexpected field "${key}" — a threshold is componentId → chunkKey → destinationId only (no URLs, coordinates or metadata)`);
+        }
+        const { componentId, chunkKey, destinationId } = threshold;
+        if (!isNonEmptyString(componentId)) {
+          fail("invalid-component-ref", `${path}.componentId`, "threshold componentId must be a non-empty string");
+        } else if (thresholdIds.has(componentId)) {
+          fail("duplicate-threshold", `${path}.componentId`, `threshold component "${componentId}" is bound more than once`);
+        } else {
+          thresholdIds.add(componentId);
+          const component = sceneComponents[componentId];
+          const owner = owners.get(componentId);
+          if (!component) {
+            fail("unknown-component", `${path}.componentId`, `threshold component "${componentId}" does not exist in the scene`);
+          } else {
+            if (portalComponentIds.has(componentId)) fail("threshold-is-portal", `${path}.componentId`, `threshold component "${componentId}" is a portal sensor; a portal travels and a threshold never does`);
+            if (owner === "global") fail("global-threshold-component", `${path}.componentId`, `threshold component "${componentId}" is global; a threshold belongs to the chunk in which it is encountered`);
+            if (!isEnabledSensor(component)) fail("threshold-not-sensor", `${path}.componentId`, `threshold component "${componentId}" must have an enabled collider with isSensor: true`);
+          }
+          if (!isNonEmptyString(chunkKey) || !chunkKeys.has(chunkKey)) {
+            fail("unknown-chunk", `${path}.chunkKey`, `chunk ${JSON.stringify(chunkKey)} is not declared in config.chunks`);
+          } else if (component && owner !== undefined && owner !== "global" && owner !== `chunk:${chunkKey}`) {
+            fail("threshold-chunk-mismatch", `${path}.chunkKey`, `threshold component "${componentId}" is owned by ${owner}, not by chunk "${chunkKey}"`);
+          }
+        }
+        if (!isNonEmptyString(destinationId) || !DESTINATION_ID_PATTERN.test(destinationId)) {
+          fail("invalid-destination-id", `${path}.destinationId`, `destinationId ${JSON.stringify(destinationId)} is not a stable destination id`);
+        } else {
+          const destination = destinationById.get(destinationId);
+          if (!destination) {
+            fail("unknown-destination", `${path}.destinationId`, `threshold destination "${destinationId}" does not exist in the canonical destination set`);
+          } else if (!destination.spatialDestination || destination.spatialDestination.platform !== THE_NRVNAVERSE_PLATFORM) {
+            fail("threshold-not-the-nrvnaverse", `${path}.destinationId`, `threshold destination "${destinationId}" is not a THE NRVNAVerse spatial destination`);
+          } else if (worldId !== null && destination.spatialDestination.worldId !== worldId) {
+            fail("world-id-mismatch", `${path}.destinationId`, `threshold destination "${destinationId}" belongs to world ${JSON.stringify(destination.spatialDestination.worldId)}, config world is "${worldId}"`);
+          }
+        }
+      });
+    }
   }
   if (worldId !== null && destinationById.size > 0 && worldDestinations === 0) {
     fail("world-id-mismatch", "config.worldId", `no THE NRVNAVerse destination declares worldId "${worldId}"`);
@@ -910,6 +973,15 @@ export function generateSpatialArtifacts(input) {
     portalIndex[portal.componentId] = { chunkKey: portal.chunkKey, destinationId: portal.destinationId };
   }
 
+  // G. Threshold bindings — physical sensor component → stable destination id whose web context is
+  //    shown (keyed by the sensor id like a portal; sorted; no URL, no coordinates).
+  const thresholds = [...(config.thresholds ?? [])].sort((a, b) => compareStrings(a.componentId, b.componentId));
+  /** @type {Record<string, { chunkKey: string; destinationId: string }>} */
+  const thresholdIndex = {};
+  for (const threshold of thresholds) {
+    thresholdIndex[threshold.componentId] = { chunkKey: threshold.chunkKey, destinationId: threshold.destinationId };
+  }
+
   // F. Experience bindings — hidden-on-stage sets per chunk, zones keyed by zone id and arrivals
   //    keyed by arrival id, every list sorted for determinism. Component ids only: no coordinates
   //    (the zone sensor geometry lives in the chunk payload), no gates, no metadata.
@@ -923,6 +995,7 @@ export function generateSpatialArtifacts(input) {
     destinations: destinationIndex,
     portals: portalIndex,
     experience: experienceIndex,
+    thresholds: thresholdIndex,
   });
 
   return {
@@ -935,6 +1008,7 @@ export function generateSpatialArtifacts(input) {
     portalComponentIds: portals.map((p) => p.componentId),
     experienceZoneIds: Object.keys(experienceIndex.zones),
     experienceArrivalIds: Object.keys(experienceIndex.arrivals),
+    thresholdComponentIds: thresholds.map((t) => t.componentId),
     assetIds,
   };
 }

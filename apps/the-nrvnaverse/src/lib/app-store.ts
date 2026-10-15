@@ -17,6 +17,8 @@ import {
 } from "@/lib/app-state";
 import { FetchDestinationSource, type DestinationDataSource } from "@/lib/destination-source";
 import { ExperienceController, type ExperienceTrigger } from "@/lib/experience/experience-controller";
+import { ThresholdController } from "@/lib/web/threshold-controller";
+import { resetWebContext, setThresholdContext } from "@/lib/web/web-context-store";
 import { AweSpatialAdapter } from "@/lib/spatial/awe-spatial-adapter";
 import { FetchChunkDataSource, type ChunkDataSource } from "@/lib/spatial/chunk-data-source";
 import { ChunkOrchestrator } from "@/lib/spatial/chunk-orchestrator";
@@ -45,8 +47,10 @@ export interface SpatialDiagnostics {
   boundZones: number;
   /** Last experience effect applied (zone enter / exit or arrival beat; development diagnostics). */
   lastExperience: ExperienceTrigger | null;
+  /** WEB↔SPATIAL thresholds currently bound (those owned by the active chunk). */
+  boundThresholds: number;
 }
-const IDLE_DIAGNOSTICS: SpatialDiagnostics = { adapterName: null, phase: "idle", destinationId: null, runtimeReady: false, activeChunkKey: null, boundPortals: 0, lastPortal: null, boundZones: 0, lastExperience: null };
+const IDLE_DIAGNOSTICS: SpatialDiagnostics = { adapterName: null, phase: "idle", destinationId: null, runtimeReady: false, activeChunkKey: null, boundPortals: 0, lastPortal: null, boundZones: 0, lastExperience: null, boundThresholds: 0 };
 export const spatialDiagnostics = new Store<SpatialDiagnostics>(IDLE_DIAGNOSTICS);
 
 /**
@@ -104,6 +108,7 @@ interface AppRun {
   orchestrator: ChunkOrchestrator | null;
   portals: PortalController | null;
   experience: ExperienceController | null;
+  thresholds: ThresholdController | null;
   adapter: AweSpatialAdapter | null;
   unsubscribePhase: (() => void) | null;
   popstateBound: boolean;
@@ -180,6 +185,7 @@ function createRun(): AppRun {
     orchestrator: null,
     portals: null,
     experience: null,
+    thresholds: null,
     adapter: null,
     unsubscribePhase: null,
     popstateBound: false,
@@ -232,13 +238,15 @@ async function executeBoot(current: AppRun, options: BootOptions): Promise<void>
     // Experience bindings (zones, arrival beats, hidden-on-stage sets) — visibility only, never travel.
     current.experience = new ExperienceController({ experience: spatialIndex.experience, runtime: bootRuntime, onTrigger: () => refreshDiagnostics() });
     current.experience.install();
+    // WEB↔SPATIAL thresholds (D-020): a sensor → the stable id whose canonical web context the shell surfaces. Never travel.
+    current.thresholds = new ThresholdController({ thresholds: spatialIndex.thresholds, sensors: bootRuntime, onThreshold: (destinationId, trigger) => setThresholdContext(destinationId, trigger?.componentId ?? null) });
 
     // Official AWE boots from the global scene only (avatar, animations, environment, ground).
     await bootRuntime.init({ sceneUrl: spatialIndex.globalSceneUrl });
     if (current.disposeRequested) return;
     if (process.env.NODE_ENV !== "production") {
       // Dev-only handle for browser debugging (never used by application code).
-      (globalThis as Record<string, unknown>).__nrvnaverse = { runtime: bootRuntime, adapter, orchestrator, portals: current.portals, experience: current.experience };
+      (globalThis as Record<string, unknown>).__nrvnaverse = { runtime: bootRuntime, adapter, orchestrator, portals: current.portals, experience: current.experience, thresholds: current.thresholds };
     }
     perfMark("engine-ready");
     perfMeasure("boot→engine-ready", "app-boot", "engine-ready");
@@ -318,6 +326,7 @@ function syncExperience(destinationId: string | null, fromChunkKey: string | nul
   const current = run;
   const chunkKey = current?.orchestrator?.activeChunkKey ?? null;
   current?.experience?.activate(chunkKey);
+  current?.thresholds?.activate(chunkKey);
   if (destinationId && chunkKey) current?.experience?.onArrival({ destinationId, chunkKey, fromChunkKey });
 }
 
@@ -344,6 +353,7 @@ function refreshDiagnostics(phase?: SpatialTravelPhase, destinationId?: string |
     lastPortal: current?.portals?.lastTrigger ?? null,
     boundZones: current?.experience?.boundZoneIds.length ?? 0,
     lastExperience: current?.experience?.lastTrigger ?? null,
+    boundThresholds: current?.thresholds?.boundComponentIds.length ?? 0,
   }));
 }
 
@@ -458,6 +468,8 @@ async function teardown(current: AppRun, options: { keepAppState: boolean }): Pr
   current.portals = null;
   attempt("dispose experience", () => current.experience?.dispose());
   current.experience = null;
+  attempt("dispose thresholds", () => current.thresholds?.dispose());
+  current.thresholds = null;
   attempt("dispose adapter", () => current.adapter?.dispose());
   current.adapter = null;
   await attemptAsync("dispose orchestrator", () => current.orchestrator?.dispose());
@@ -489,6 +501,7 @@ async function attemptAsync(step: string, fn: () => void | Promise<void>): Promi
 
 function resetStores(): void {
   spatialDiagnostics.update(IDLE_DIAGNOSTICS);
+  resetWebContext();
   appStore.update(bootState());
 }
 
@@ -505,6 +518,11 @@ export function currentPortals(): PortalController | null {
 /** Diagnostics/tests: the experience controller of the booted app. */
 export function currentExperience(): ExperienceController | null {
   return run?.experience ?? null;
+}
+
+/** Diagnostics/tests/UI: the threshold controller of the booted app. */
+export function currentThresholds(): ThresholdController | null {
+  return run?.thresholds ?? null;
 }
 
 /** Test-only: full teardown of whatever run exists (booting, running or disposing) and store reset. */

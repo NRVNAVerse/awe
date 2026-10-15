@@ -144,6 +144,7 @@ describe("spatial CLI — generated-output ownership with content-addressed name
       // Experience bindings follow their components: zones re-own, the hidden sets merge (one entry per chunk),
       // and a "return from fashion-culture" arrival rule has no chunk to come from any more.
       for (const z of d.config.experience.zones) if (z.chunkKey === "fashion-culture") z.chunkKey = "hub";
+      for (const t of d.config.thresholds) if (t.chunkKey === "fashion-culture") t.chunkKey = "hub";
       d.config.experience.arrivals = d.config.experience.arrivals.filter((a: Mutable) => a.fromChunkKey !== "fashion-culture");
       const hidden: Mutable[] = d.config.experience.hidden;
       const fashionHidden = hidden.find((h) => h.chunkKey === "fashion-culture");

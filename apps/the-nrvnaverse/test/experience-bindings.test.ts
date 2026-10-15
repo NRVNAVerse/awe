@@ -48,7 +48,7 @@ describe("spatial source — experience bindings validate and generate determini
   it("generates the experience section keyed by zone / arrival id with sorted lists, independent of authoring order", () => {
     const artifacts = generateSpatialArtifacts(source());
     const index = JSON.parse(artifacts.files[OUTPUT.spatialIndex]);
-    expect(Object.keys(index)).toEqual(["schemaVersion", "worldId", "globalSceneUrl", "chunks", "destinations", "portals", "experience"]);
+    expect(Object.keys(index)).toEqual(["schemaVersion", "worldId", "globalSceneUrl", "chunks", "destinations", "portals", "experience", "thresholds"]);
     expect(Object.keys(index.experience)).toEqual(["hidden", "zones", "arrivals"]);
     expect(Object.keys(index.experience.zones)).toEqual(ZONE_IDS);
     expect(Object.keys(index.experience.arrivals)).toEqual(ARRIVAL_IDS);

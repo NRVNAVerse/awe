@@ -15,6 +15,7 @@ import { Notices } from "@/components/notices";
 import { SpatialPanel } from "@/components/spatial-panel";
 import { TouchJoystick } from "@/components/touch-joystick";
 import { TravelBanner } from "@/components/travel-banner";
+import { WebWindow } from "@/components/web-window";
 
 /** Desktop line — unchanged since Step 2A. */
 export const DESKTOP_INSTRUCTIONS = "WASD / arrows move · Shift sprint · Space jump · click canvas for mouse look, Esc to release";
@@ -187,6 +188,8 @@ export function AppShell() {
 
           {settled && !panelOpen && <TouchJoystick />}
           {settled && !panelOpen && <JumpButton />}
+          {/* WEB↔SPATIAL threshold window (D-020): shown while the visitor stands in a threshold; hidden behind the open directory on phones. */}
+          {settled && (!panelOpen || !mode.mobile) && <WebWindow index={state.loaded.index} />}
         </>
       )}
     </div>

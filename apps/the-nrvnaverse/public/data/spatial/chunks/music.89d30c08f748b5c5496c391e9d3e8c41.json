@@ -1,15 +1,15 @@
 {
   "schemaVersion": 1,
   "worldId": "the-nrvnaverse",
-  "chunkKey": "fashion-culture",
+  "chunkKey": "music",
   "components": {
-    "platform-fashion-culture": {
-      "name": "Court floor",
-      "id": "platform-fashion-culture",
+    "platform-music": {
+      "name": "Soundstage floor",
+      "id": "platform-music",
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": 70,
+        "x": -70,
         "y": 0.25,
         "z": 0
       },
@@ -44,7 +44,7 @@
         },
         "type": "box"
       },
-      "color": "#cfc6b4",
+      "color": "#1f2229",
       "opacity": 1,
       "display": true,
       "renderMode": "default",
@@ -57,17 +57,191 @@
         "colliderType": "CUBE"
       },
       "script": {
-        "identifier": "platform-fashion-culture",
-        "tag": "m1-fashion-structure"
+        "identifier": "platform-music",
+        "tag": "m1-music-structure"
       }
     },
-    "path-fashion-north": {
-      "name": "Runway apron",
-      "id": "path-fashion-north",
+    "music-ring-1": {
+      "name": "Floor ring 1",
+      "id": "music-ring-1",
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": 70,
+        "x": -70,
+        "y": 0.253,
+        "z": 0
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 10,
+          "radiusBottom": 10,
+          "height": 0.505,
+          "radialSegments": 48,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1,
+          "height": 1,
+          "depth": 1
+        },
+        "type": "cylinder"
+      },
+      "color": "#23313a",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CYLINDER"
+      },
+      "script": {
+        "identifier": "music-ring-1",
+        "tag": "m1-music-structure"
+      }
+    },
+    "music-ring-2": {
+      "name": "Floor ring 2",
+      "id": "music-ring-2",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -70,
+        "y": 0.255,
+        "z": 0
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 7,
+          "radiusBottom": 7,
+          "height": 0.509,
+          "radialSegments": 48,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1,
+          "height": 1,
+          "depth": 1
+        },
+        "type": "cylinder"
+      },
+      "color": "#1d3b3b",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CYLINDER"
+      },
+      "script": {
+        "identifier": "music-ring-2",
+        "tag": "m1-music-structure"
+      }
+    },
+    "music-ring-3": {
+      "name": "Floor ring 3",
+      "id": "music-ring-3",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -70,
+        "y": 0.257,
+        "z": 0
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 4,
+          "radiusBottom": 4,
+          "height": 0.513,
+          "radialSegments": 48,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1,
+          "height": 1,
+          "depth": 1
+        },
+        "type": "cylinder"
+      },
+      "color": "#176f66",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CYLINDER"
+      },
+      "script": {
+        "identifier": "music-ring-3",
+        "tag": "m1-music-structure"
+      }
+    },
+    "path-music-north": {
+      "name": "Processional path",
+      "id": "path-music-north",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -70,
         "y": 0.25,
         "z": -20
       },
@@ -96,13 +270,13 @@
           "openEnded": false
         },
         "boxParams": {
-          "width": 8,
+          "width": 6,
           "height": 0.5,
           "depth": 16
         },
         "type": "box"
       },
-      "color": "#b3a995",
+      "color": "#1f2229",
       "opacity": 1,
       "display": true,
       "renderMode": "default",
@@ -115,17 +289,17 @@
         "colliderType": "CUBE"
       },
       "script": {
-        "identifier": "path-fashion-north",
-        "tag": "m1-fashion-route"
+        "identifier": "path-music-north",
+        "tag": "m1-music-route"
       }
     },
-    "platform-fashion-culture-brand": {
-      "name": "Loggia floor",
-      "id": "platform-fashion-culture-brand",
+    "platform-music-artist": {
+      "name": "Stage floor",
+      "id": "platform-music-artist",
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": 70,
+        "x": -70,
         "y": 0.25,
         "z": -40
       },
@@ -160,7 +334,7 @@
         },
         "type": "box"
       },
-      "color": "#cfc6b4",
+      "color": "#1f2229",
       "opacity": 1,
       "display": true,
       "renderMode": "default",
@@ -173,19 +347,19 @@
         "colliderType": "CUBE"
       },
       "script": {
-        "identifier": "platform-fashion-culture-brand",
-        "tag": "m1-fashion-structure"
+        "identifier": "platform-music-artist",
+        "tag": "m1-music-structure"
       }
     },
-    "fashion-runway": {
-      "name": "Runway",
-      "id": "fashion-runway",
+    "music-stack-1": {
+      "name": "Speaker stack 1",
+      "id": "music-stack-1",
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": 70,
-        "y": 1,
-        "z": -22
+        "x": -74.5,
+        "y": 2.6,
+        "z": -16
       },
       "rotation": {
         "x": 0,
@@ -212,13 +386,13 @@
           "openEnded": false
         },
         "boxParams": {
-          "width": 4,
-          "height": 1,
-          "depth": 20
+          "width": 1.4,
+          "height": 4.2,
+          "depth": 1.4
         },
         "type": "box"
       },
-      "color": "#e8e1d2",
+      "color": "#1c1f26",
       "opacity": 1,
       "display": true,
       "renderMode": "default",
@@ -231,22 +405,22 @@
         "colliderType": "CUBE"
       },
       "script": {
-        "identifier": "fashion-runway",
-        "tag": "m1-fashion-runway"
+        "identifier": "music-stack-1",
+        "tag": "m1-music-structure"
       }
     },
-    "fashion-runway-ramp-s": {
-      "name": "Runway ramp south",
-      "id": "fashion-runway-ramp-s",
+    "music-stack-1-band": {
+      "name": "Speaker stack 1 band",
+      "id": "music-stack-1-band",
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": 70,
-        "y": 0.753,
-        "z": -9.041
+        "x": -74.5,
+        "y": 2.65,
+        "z": -16
       },
       "rotation": {
-        "x": 0.1651,
+        "x": 0,
         "y": 0,
         "z": 0
       },
@@ -270,41 +444,117 @@
           "openEnded": false
         },
         "boxParams": {
-          "width": 4,
+          "width": 1.5,
+          "height": 0.3,
+          "depth": 1.5
+        },
+        "type": "box"
+      },
+      "color": "#2fb8a6",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": true,
+      "plugins": [
+        {
+          "id": "PulsePlugin",
+          "color": "#2fb8a6",
+          "intensity": 0.6,
+          "speed": 1.1
+        }
+      ],
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "music-stack-1-band",
+        "tag": "m1-music-structure"
+      }
+    },
+    "music-stack-1-band-lit": {
+      "name": "Speaker stack 1 band (lit)",
+      "id": "music-stack-1-band-lit",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -74.5,
+        "y": 2.65,
+        "z": -16
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1.6,
           "height": 0.5,
-          "depth": 6.083
+          "depth": 1.6
         },
         "type": "box"
       },
-      "color": "#e8e1d2",
+      "color": "#8ff2e4",
       "opacity": 1,
       "display": true,
       "renderMode": "default",
       "wireframe": false,
-      "castShadow": true,
-      "receiveShadow": true,
+      "castShadow": false,
+      "receiveShadow": false,
+      "plugins": [
+        {
+          "id": "FresnelGlowPlugin",
+          "color": "#2fb8a6",
+          "intensity": 2.2,
+          "power": 1.2,
+          "speed": 1.4,
+          "pulse": 1
+        }
+      ],
       "collider": {
-        "enabled": true,
+        "enabled": false,
         "rigidbodyType": "FIXED",
         "colliderType": "CUBE"
       },
       "script": {
-        "identifier": "fashion-runway-ramp-s",
-        "tag": "m1-fashion-runway"
+        "identifier": "music-stack-1-band-lit",
+        "tag": "m1-music-reactive"
       }
     },
-    "fashion-runway-ramp-n": {
-      "name": "Runway ramp north",
-      "id": "fashion-runway-ramp-n",
+    "music-stack-2": {
+      "name": "Speaker stack 2",
+      "id": "music-stack-2",
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": 70,
-        "y": 0.753,
-        "z": -34.959
+        "x": -65.5,
+        "y": 2.6,
+        "z": -16
       },
       "rotation": {
-        "x": -0.1651,
+        "x": 0,
         "y": 0,
         "z": 0
       },
@@ -328,1190 +578,172 @@
           "openEnded": false
         },
         "boxParams": {
-          "width": 4,
+          "width": 1.4,
+          "height": 4.2,
+          "depth": 1.4
+        },
+        "type": "box"
+      },
+      "color": "#1c1f26",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "music-stack-2",
+        "tag": "m1-music-structure"
+      }
+    },
+    "music-stack-2-band": {
+      "name": "Speaker stack 2 band",
+      "id": "music-stack-2-band",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -65.5,
+        "y": 2.65,
+        "z": -16
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1.5,
+          "height": 0.3,
+          "depth": 1.5
+        },
+        "type": "box"
+      },
+      "color": "#2fb8a6",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": true,
+      "plugins": [
+        {
+          "id": "PulsePlugin",
+          "color": "#2fb8a6",
+          "intensity": 0.6,
+          "speed": 1.1
+        }
+      ],
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "music-stack-2-band",
+        "tag": "m1-music-structure"
+      }
+    },
+    "music-stack-2-band-lit": {
+      "name": "Speaker stack 2 band (lit)",
+      "id": "music-stack-2-band-lit",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -65.5,
+        "y": 2.65,
+        "z": -16
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1.6,
           "height": 0.5,
-          "depth": 6.083
+          "depth": 1.6
         },
         "type": "box"
       },
-      "color": "#e8e1d2",
+      "color": "#8ff2e4",
       "opacity": 1,
       "display": true,
       "renderMode": "default",
       "wireframe": false,
-      "castShadow": true,
-      "receiveShadow": true,
+      "castShadow": false,
+      "receiveShadow": false,
+      "plugins": [
+        {
+          "id": "FresnelGlowPlugin",
+          "color": "#2fb8a6",
+          "intensity": 2.2,
+          "power": 1.2,
+          "speed": 1.4,
+          "pulse": 1
+        }
+      ],
       "collider": {
-        "enabled": true,
+        "enabled": false,
         "rigidbodyType": "FIXED",
         "colliderType": "CUBE"
       },
       "script": {
-        "identifier": "fashion-runway-ramp-n",
-        "tag": "m1-fashion-runway"
+        "identifier": "music-stack-2-band-lit",
+        "tag": "m1-music-reactive"
       }
     },
-    "fashion-pylon-1": {
-      "name": "Pylon 1",
-      "id": "fashion-pylon-1",
+    "music-stack-3": {
+      "name": "Speaker stack 3",
+      "id": "music-stack-3",
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": 65,
-        "y": 4.5,
-        "z": -14
-      },
-      "rotation": {
-        "x": 0,
-        "y": 0,
-        "z": 0
-      },
-      "scale": {
-        "x": 1,
-        "y": 1,
-        "z": 1
-      },
-      "geometry": {
-        "sphereParams": {
-          "radius": 1,
-          "widthSegments": 32,
-          "heightSegments": 32
-        },
-        "cylinderParams": {
-          "radiusTop": 0.4,
-          "radiusBottom": 0.4,
-          "height": 8,
-          "radialSegments": 16,
-          "heightSegments": 1,
-          "openEnded": false
-        },
-        "boxParams": {
-          "width": 1,
-          "height": 1,
-          "depth": 1
-        },
-        "type": "cylinder"
-      },
-      "color": "#b3a995",
-      "opacity": 1,
-      "display": true,
-      "renderMode": "default",
-      "wireframe": false,
-      "castShadow": true,
-      "receiveShadow": true,
-      "collider": {
-        "enabled": true,
-        "rigidbodyType": "FIXED",
-        "colliderType": "CYLINDER"
-      },
-      "script": {
-        "identifier": "fashion-pylon-1",
-        "tag": "m1-fashion-runway"
-      }
-    },
-    "fashion-pylon-1-band": {
-      "name": "Pylon 1 band",
-      "id": "fashion-pylon-1-band",
-      "type": "mesh",
-      "kit": "cyber",
-      "position": {
-        "x": 65,
-        "y": 5.875,
-        "z": -14
-      },
-      "rotation": {
-        "x": 0,
-        "y": 0,
-        "z": 0
-      },
-      "scale": {
-        "x": 1,
-        "y": 1,
-        "z": 1
-      },
-      "geometry": {
-        "sphereParams": {
-          "radius": 1,
-          "widthSegments": 32,
-          "heightSegments": 32
-        },
-        "cylinderParams": {
-          "radiusTop": 0.48,
-          "radiusBottom": 0.48,
-          "height": 0.35,
-          "radialSegments": 16,
-          "heightSegments": 1,
-          "openEnded": false
-        },
-        "boxParams": {
-          "width": 1,
-          "height": 1,
-          "depth": 1
-        },
-        "type": "cylinder"
-      },
-      "color": "#d98c7a",
-      "opacity": 1,
-      "display": true,
-      "renderMode": "default",
-      "wireframe": false,
-      "castShadow": false,
-      "receiveShadow": true,
-      "plugins": [
-        {
-          "id": "PulsePlugin",
-          "color": "#d98c7a",
-          "intensity": 0.5,
-          "speed": 0.7
-        }
-      ],
-      "collider": {
-        "enabled": false,
-        "rigidbodyType": "FIXED",
-        "colliderType": "CYLINDER"
-      },
-      "script": {
-        "identifier": "fashion-pylon-1-band",
-        "tag": "m1-fashion-runway"
-      }
-    },
-    "fashion-pylon-1-band-lit": {
-      "name": "Pylon 1 band (lit)",
-      "id": "fashion-pylon-1-band-lit",
-      "type": "mesh",
-      "kit": "cyber",
-      "position": {
-        "x": 65,
-        "y": 5.875,
-        "z": -14
-      },
-      "rotation": {
-        "x": 0,
-        "y": 0,
-        "z": 0
-      },
-      "scale": {
-        "x": 1,
-        "y": 1,
-        "z": 1
-      },
-      "geometry": {
-        "sphereParams": {
-          "radius": 1,
-          "widthSegments": 32,
-          "heightSegments": 32
-        },
-        "cylinderParams": {
-          "radiusTop": 0.56,
-          "radiusBottom": 0.56,
-          "height": 0.75,
-          "radialSegments": 16,
-          "heightSegments": 1,
-          "openEnded": false
-        },
-        "boxParams": {
-          "width": 1,
-          "height": 1,
-          "depth": 1
-        },
-        "type": "cylinder"
-      },
-      "color": "#ffd2c4",
-      "opacity": 1,
-      "display": true,
-      "renderMode": "default",
-      "wireframe": false,
-      "castShadow": false,
-      "receiveShadow": false,
-      "plugins": [
-        {
-          "id": "FresnelGlowPlugin",
-          "color": "#d98c7a",
-          "intensity": 2.2,
-          "power": 1.2,
-          "speed": 1.2,
-          "pulse": 1
-        }
-      ],
-      "collider": {
-        "enabled": false,
-        "rigidbodyType": "FIXED",
-        "colliderType": "CYLINDER"
-      },
-      "script": {
-        "identifier": "fashion-pylon-1-band-lit",
-        "tag": "m1-fashion-reactive"
-      }
-    },
-    "fashion-pylon-2": {
-      "name": "Pylon 2",
-      "id": "fashion-pylon-2",
-      "type": "mesh",
-      "kit": "cyber",
-      "position": {
-        "x": 75,
-        "y": 4.5,
-        "z": -14
-      },
-      "rotation": {
-        "x": 0,
-        "y": 0,
-        "z": 0
-      },
-      "scale": {
-        "x": 1,
-        "y": 1,
-        "z": 1
-      },
-      "geometry": {
-        "sphereParams": {
-          "radius": 1,
-          "widthSegments": 32,
-          "heightSegments": 32
-        },
-        "cylinderParams": {
-          "radiusTop": 0.4,
-          "radiusBottom": 0.4,
-          "height": 8,
-          "radialSegments": 16,
-          "heightSegments": 1,
-          "openEnded": false
-        },
-        "boxParams": {
-          "width": 1,
-          "height": 1,
-          "depth": 1
-        },
-        "type": "cylinder"
-      },
-      "color": "#b3a995",
-      "opacity": 1,
-      "display": true,
-      "renderMode": "default",
-      "wireframe": false,
-      "castShadow": true,
-      "receiveShadow": true,
-      "collider": {
-        "enabled": true,
-        "rigidbodyType": "FIXED",
-        "colliderType": "CYLINDER"
-      },
-      "script": {
-        "identifier": "fashion-pylon-2",
-        "tag": "m1-fashion-runway"
-      }
-    },
-    "fashion-pylon-2-band": {
-      "name": "Pylon 2 band",
-      "id": "fashion-pylon-2-band",
-      "type": "mesh",
-      "kit": "cyber",
-      "position": {
-        "x": 75,
-        "y": 5.875,
-        "z": -14
-      },
-      "rotation": {
-        "x": 0,
-        "y": 0,
-        "z": 0
-      },
-      "scale": {
-        "x": 1,
-        "y": 1,
-        "z": 1
-      },
-      "geometry": {
-        "sphereParams": {
-          "radius": 1,
-          "widthSegments": 32,
-          "heightSegments": 32
-        },
-        "cylinderParams": {
-          "radiusTop": 0.48,
-          "radiusBottom": 0.48,
-          "height": 0.35,
-          "radialSegments": 16,
-          "heightSegments": 1,
-          "openEnded": false
-        },
-        "boxParams": {
-          "width": 1,
-          "height": 1,
-          "depth": 1
-        },
-        "type": "cylinder"
-      },
-      "color": "#d98c7a",
-      "opacity": 1,
-      "display": true,
-      "renderMode": "default",
-      "wireframe": false,
-      "castShadow": false,
-      "receiveShadow": true,
-      "plugins": [
-        {
-          "id": "PulsePlugin",
-          "color": "#d98c7a",
-          "intensity": 0.5,
-          "speed": 0.7
-        }
-      ],
-      "collider": {
-        "enabled": false,
-        "rigidbodyType": "FIXED",
-        "colliderType": "CYLINDER"
-      },
-      "script": {
-        "identifier": "fashion-pylon-2-band",
-        "tag": "m1-fashion-runway"
-      }
-    },
-    "fashion-pylon-2-band-lit": {
-      "name": "Pylon 2 band (lit)",
-      "id": "fashion-pylon-2-band-lit",
-      "type": "mesh",
-      "kit": "cyber",
-      "position": {
-        "x": 75,
-        "y": 5.875,
-        "z": -14
-      },
-      "rotation": {
-        "x": 0,
-        "y": 0,
-        "z": 0
-      },
-      "scale": {
-        "x": 1,
-        "y": 1,
-        "z": 1
-      },
-      "geometry": {
-        "sphereParams": {
-          "radius": 1,
-          "widthSegments": 32,
-          "heightSegments": 32
-        },
-        "cylinderParams": {
-          "radiusTop": 0.56,
-          "radiusBottom": 0.56,
-          "height": 0.75,
-          "radialSegments": 16,
-          "heightSegments": 1,
-          "openEnded": false
-        },
-        "boxParams": {
-          "width": 1,
-          "height": 1,
-          "depth": 1
-        },
-        "type": "cylinder"
-      },
-      "color": "#ffd2c4",
-      "opacity": 1,
-      "display": true,
-      "renderMode": "default",
-      "wireframe": false,
-      "castShadow": false,
-      "receiveShadow": false,
-      "plugins": [
-        {
-          "id": "FresnelGlowPlugin",
-          "color": "#d98c7a",
-          "intensity": 2.2,
-          "power": 1.2,
-          "speed": 1.2,
-          "pulse": 1
-        }
-      ],
-      "collider": {
-        "enabled": false,
-        "rigidbodyType": "FIXED",
-        "colliderType": "CYLINDER"
-      },
-      "script": {
-        "identifier": "fashion-pylon-2-band-lit",
-        "tag": "m1-fashion-reactive"
-      }
-    },
-    "fashion-pylon-3": {
-      "name": "Pylon 3",
-      "id": "fashion-pylon-3",
-      "type": "mesh",
-      "kit": "cyber",
-      "position": {
-        "x": 65,
-        "y": 4.5,
-        "z": -22
-      },
-      "rotation": {
-        "x": 0,
-        "y": 0,
-        "z": 0
-      },
-      "scale": {
-        "x": 1,
-        "y": 1,
-        "z": 1
-      },
-      "geometry": {
-        "sphereParams": {
-          "radius": 1,
-          "widthSegments": 32,
-          "heightSegments": 32
-        },
-        "cylinderParams": {
-          "radiusTop": 0.4,
-          "radiusBottom": 0.4,
-          "height": 8,
-          "radialSegments": 16,
-          "heightSegments": 1,
-          "openEnded": false
-        },
-        "boxParams": {
-          "width": 1,
-          "height": 1,
-          "depth": 1
-        },
-        "type": "cylinder"
-      },
-      "color": "#b3a995",
-      "opacity": 1,
-      "display": true,
-      "renderMode": "default",
-      "wireframe": false,
-      "castShadow": true,
-      "receiveShadow": true,
-      "collider": {
-        "enabled": true,
-        "rigidbodyType": "FIXED",
-        "colliderType": "CYLINDER"
-      },
-      "script": {
-        "identifier": "fashion-pylon-3",
-        "tag": "m1-fashion-runway"
-      }
-    },
-    "fashion-pylon-3-band": {
-      "name": "Pylon 3 band",
-      "id": "fashion-pylon-3-band",
-      "type": "mesh",
-      "kit": "cyber",
-      "position": {
-        "x": 65,
-        "y": 5.875,
-        "z": -22
-      },
-      "rotation": {
-        "x": 0,
-        "y": 0,
-        "z": 0
-      },
-      "scale": {
-        "x": 1,
-        "y": 1,
-        "z": 1
-      },
-      "geometry": {
-        "sphereParams": {
-          "radius": 1,
-          "widthSegments": 32,
-          "heightSegments": 32
-        },
-        "cylinderParams": {
-          "radiusTop": 0.48,
-          "radiusBottom": 0.48,
-          "height": 0.35,
-          "radialSegments": 16,
-          "heightSegments": 1,
-          "openEnded": false
-        },
-        "boxParams": {
-          "width": 1,
-          "height": 1,
-          "depth": 1
-        },
-        "type": "cylinder"
-      },
-      "color": "#d98c7a",
-      "opacity": 1,
-      "display": true,
-      "renderMode": "default",
-      "wireframe": false,
-      "castShadow": false,
-      "receiveShadow": true,
-      "plugins": [
-        {
-          "id": "PulsePlugin",
-          "color": "#d98c7a",
-          "intensity": 0.5,
-          "speed": 0.7
-        }
-      ],
-      "collider": {
-        "enabled": false,
-        "rigidbodyType": "FIXED",
-        "colliderType": "CYLINDER"
-      },
-      "script": {
-        "identifier": "fashion-pylon-3-band",
-        "tag": "m1-fashion-runway"
-      }
-    },
-    "fashion-pylon-3-band-lit": {
-      "name": "Pylon 3 band (lit)",
-      "id": "fashion-pylon-3-band-lit",
-      "type": "mesh",
-      "kit": "cyber",
-      "position": {
-        "x": 65,
-        "y": 5.875,
-        "z": -22
-      },
-      "rotation": {
-        "x": 0,
-        "y": 0,
-        "z": 0
-      },
-      "scale": {
-        "x": 1,
-        "y": 1,
-        "z": 1
-      },
-      "geometry": {
-        "sphereParams": {
-          "radius": 1,
-          "widthSegments": 32,
-          "heightSegments": 32
-        },
-        "cylinderParams": {
-          "radiusTop": 0.56,
-          "radiusBottom": 0.56,
-          "height": 0.75,
-          "radialSegments": 16,
-          "heightSegments": 1,
-          "openEnded": false
-        },
-        "boxParams": {
-          "width": 1,
-          "height": 1,
-          "depth": 1
-        },
-        "type": "cylinder"
-      },
-      "color": "#ffd2c4",
-      "opacity": 1,
-      "display": true,
-      "renderMode": "default",
-      "wireframe": false,
-      "castShadow": false,
-      "receiveShadow": false,
-      "plugins": [
-        {
-          "id": "FresnelGlowPlugin",
-          "color": "#d98c7a",
-          "intensity": 2.2,
-          "power": 1.2,
-          "speed": 1.2,
-          "pulse": 1
-        }
-      ],
-      "collider": {
-        "enabled": false,
-        "rigidbodyType": "FIXED",
-        "colliderType": "CYLINDER"
-      },
-      "script": {
-        "identifier": "fashion-pylon-3-band-lit",
-        "tag": "m1-fashion-reactive"
-      }
-    },
-    "fashion-pylon-4": {
-      "name": "Pylon 4",
-      "id": "fashion-pylon-4",
-      "type": "mesh",
-      "kit": "cyber",
-      "position": {
-        "x": 75,
-        "y": 4.5,
-        "z": -22
-      },
-      "rotation": {
-        "x": 0,
-        "y": 0,
-        "z": 0
-      },
-      "scale": {
-        "x": 1,
-        "y": 1,
-        "z": 1
-      },
-      "geometry": {
-        "sphereParams": {
-          "radius": 1,
-          "widthSegments": 32,
-          "heightSegments": 32
-        },
-        "cylinderParams": {
-          "radiusTop": 0.4,
-          "radiusBottom": 0.4,
-          "height": 8,
-          "radialSegments": 16,
-          "heightSegments": 1,
-          "openEnded": false
-        },
-        "boxParams": {
-          "width": 1,
-          "height": 1,
-          "depth": 1
-        },
-        "type": "cylinder"
-      },
-      "color": "#b3a995",
-      "opacity": 1,
-      "display": true,
-      "renderMode": "default",
-      "wireframe": false,
-      "castShadow": true,
-      "receiveShadow": true,
-      "collider": {
-        "enabled": true,
-        "rigidbodyType": "FIXED",
-        "colliderType": "CYLINDER"
-      },
-      "script": {
-        "identifier": "fashion-pylon-4",
-        "tag": "m1-fashion-runway"
-      }
-    },
-    "fashion-pylon-4-band": {
-      "name": "Pylon 4 band",
-      "id": "fashion-pylon-4-band",
-      "type": "mesh",
-      "kit": "cyber",
-      "position": {
-        "x": 75,
-        "y": 5.875,
-        "z": -22
-      },
-      "rotation": {
-        "x": 0,
-        "y": 0,
-        "z": 0
-      },
-      "scale": {
-        "x": 1,
-        "y": 1,
-        "z": 1
-      },
-      "geometry": {
-        "sphereParams": {
-          "radius": 1,
-          "widthSegments": 32,
-          "heightSegments": 32
-        },
-        "cylinderParams": {
-          "radiusTop": 0.48,
-          "radiusBottom": 0.48,
-          "height": 0.35,
-          "radialSegments": 16,
-          "heightSegments": 1,
-          "openEnded": false
-        },
-        "boxParams": {
-          "width": 1,
-          "height": 1,
-          "depth": 1
-        },
-        "type": "cylinder"
-      },
-      "color": "#d98c7a",
-      "opacity": 1,
-      "display": true,
-      "renderMode": "default",
-      "wireframe": false,
-      "castShadow": false,
-      "receiveShadow": true,
-      "plugins": [
-        {
-          "id": "PulsePlugin",
-          "color": "#d98c7a",
-          "intensity": 0.5,
-          "speed": 0.7
-        }
-      ],
-      "collider": {
-        "enabled": false,
-        "rigidbodyType": "FIXED",
-        "colliderType": "CYLINDER"
-      },
-      "script": {
-        "identifier": "fashion-pylon-4-band",
-        "tag": "m1-fashion-runway"
-      }
-    },
-    "fashion-pylon-4-band-lit": {
-      "name": "Pylon 4 band (lit)",
-      "id": "fashion-pylon-4-band-lit",
-      "type": "mesh",
-      "kit": "cyber",
-      "position": {
-        "x": 75,
-        "y": 5.875,
-        "z": -22
-      },
-      "rotation": {
-        "x": 0,
-        "y": 0,
-        "z": 0
-      },
-      "scale": {
-        "x": 1,
-        "y": 1,
-        "z": 1
-      },
-      "geometry": {
-        "sphereParams": {
-          "radius": 1,
-          "widthSegments": 32,
-          "heightSegments": 32
-        },
-        "cylinderParams": {
-          "radiusTop": 0.56,
-          "radiusBottom": 0.56,
-          "height": 0.75,
-          "radialSegments": 16,
-          "heightSegments": 1,
-          "openEnded": false
-        },
-        "boxParams": {
-          "width": 1,
-          "height": 1,
-          "depth": 1
-        },
-        "type": "cylinder"
-      },
-      "color": "#ffd2c4",
-      "opacity": 1,
-      "display": true,
-      "renderMode": "default",
-      "wireframe": false,
-      "castShadow": false,
-      "receiveShadow": false,
-      "plugins": [
-        {
-          "id": "FresnelGlowPlugin",
-          "color": "#d98c7a",
-          "intensity": 2.2,
-          "power": 1.2,
-          "speed": 1.2,
-          "pulse": 1
-        }
-      ],
-      "collider": {
-        "enabled": false,
-        "rigidbodyType": "FIXED",
-        "colliderType": "CYLINDER"
-      },
-      "script": {
-        "identifier": "fashion-pylon-4-band-lit",
-        "tag": "m1-fashion-reactive"
-      }
-    },
-    "fashion-pylon-5": {
-      "name": "Pylon 5",
-      "id": "fashion-pylon-5",
-      "type": "mesh",
-      "kit": "cyber",
-      "position": {
-        "x": 65,
-        "y": 4.5,
-        "z": -30
-      },
-      "rotation": {
-        "x": 0,
-        "y": 0,
-        "z": 0
-      },
-      "scale": {
-        "x": 1,
-        "y": 1,
-        "z": 1
-      },
-      "geometry": {
-        "sphereParams": {
-          "radius": 1,
-          "widthSegments": 32,
-          "heightSegments": 32
-        },
-        "cylinderParams": {
-          "radiusTop": 0.4,
-          "radiusBottom": 0.4,
-          "height": 8,
-          "radialSegments": 16,
-          "heightSegments": 1,
-          "openEnded": false
-        },
-        "boxParams": {
-          "width": 1,
-          "height": 1,
-          "depth": 1
-        },
-        "type": "cylinder"
-      },
-      "color": "#b3a995",
-      "opacity": 1,
-      "display": true,
-      "renderMode": "default",
-      "wireframe": false,
-      "castShadow": true,
-      "receiveShadow": true,
-      "collider": {
-        "enabled": true,
-        "rigidbodyType": "FIXED",
-        "colliderType": "CYLINDER"
-      },
-      "script": {
-        "identifier": "fashion-pylon-5",
-        "tag": "m1-fashion-runway"
-      }
-    },
-    "fashion-pylon-5-band": {
-      "name": "Pylon 5 band",
-      "id": "fashion-pylon-5-band",
-      "type": "mesh",
-      "kit": "cyber",
-      "position": {
-        "x": 65,
-        "y": 5.875,
-        "z": -30
-      },
-      "rotation": {
-        "x": 0,
-        "y": 0,
-        "z": 0
-      },
-      "scale": {
-        "x": 1,
-        "y": 1,
-        "z": 1
-      },
-      "geometry": {
-        "sphereParams": {
-          "radius": 1,
-          "widthSegments": 32,
-          "heightSegments": 32
-        },
-        "cylinderParams": {
-          "radiusTop": 0.48,
-          "radiusBottom": 0.48,
-          "height": 0.35,
-          "radialSegments": 16,
-          "heightSegments": 1,
-          "openEnded": false
-        },
-        "boxParams": {
-          "width": 1,
-          "height": 1,
-          "depth": 1
-        },
-        "type": "cylinder"
-      },
-      "color": "#d98c7a",
-      "opacity": 1,
-      "display": true,
-      "renderMode": "default",
-      "wireframe": false,
-      "castShadow": false,
-      "receiveShadow": true,
-      "plugins": [
-        {
-          "id": "PulsePlugin",
-          "color": "#d98c7a",
-          "intensity": 0.5,
-          "speed": 0.7
-        }
-      ],
-      "collider": {
-        "enabled": false,
-        "rigidbodyType": "FIXED",
-        "colliderType": "CYLINDER"
-      },
-      "script": {
-        "identifier": "fashion-pylon-5-band",
-        "tag": "m1-fashion-runway"
-      }
-    },
-    "fashion-pylon-5-band-lit": {
-      "name": "Pylon 5 band (lit)",
-      "id": "fashion-pylon-5-band-lit",
-      "type": "mesh",
-      "kit": "cyber",
-      "position": {
-        "x": 65,
-        "y": 5.875,
-        "z": -30
-      },
-      "rotation": {
-        "x": 0,
-        "y": 0,
-        "z": 0
-      },
-      "scale": {
-        "x": 1,
-        "y": 1,
-        "z": 1
-      },
-      "geometry": {
-        "sphereParams": {
-          "radius": 1,
-          "widthSegments": 32,
-          "heightSegments": 32
-        },
-        "cylinderParams": {
-          "radiusTop": 0.56,
-          "radiusBottom": 0.56,
-          "height": 0.75,
-          "radialSegments": 16,
-          "heightSegments": 1,
-          "openEnded": false
-        },
-        "boxParams": {
-          "width": 1,
-          "height": 1,
-          "depth": 1
-        },
-        "type": "cylinder"
-      },
-      "color": "#ffd2c4",
-      "opacity": 1,
-      "display": true,
-      "renderMode": "default",
-      "wireframe": false,
-      "castShadow": false,
-      "receiveShadow": false,
-      "plugins": [
-        {
-          "id": "FresnelGlowPlugin",
-          "color": "#d98c7a",
-          "intensity": 2.2,
-          "power": 1.2,
-          "speed": 1.2,
-          "pulse": 1
-        }
-      ],
-      "collider": {
-        "enabled": false,
-        "rigidbodyType": "FIXED",
-        "colliderType": "CYLINDER"
-      },
-      "script": {
-        "identifier": "fashion-pylon-5-band-lit",
-        "tag": "m1-fashion-reactive"
-      }
-    },
-    "fashion-pylon-6": {
-      "name": "Pylon 6",
-      "id": "fashion-pylon-6",
-      "type": "mesh",
-      "kit": "cyber",
-      "position": {
-        "x": 75,
-        "y": 4.5,
-        "z": -30
-      },
-      "rotation": {
-        "x": 0,
-        "y": 0,
-        "z": 0
-      },
-      "scale": {
-        "x": 1,
-        "y": 1,
-        "z": 1
-      },
-      "geometry": {
-        "sphereParams": {
-          "radius": 1,
-          "widthSegments": 32,
-          "heightSegments": 32
-        },
-        "cylinderParams": {
-          "radiusTop": 0.4,
-          "radiusBottom": 0.4,
-          "height": 8,
-          "radialSegments": 16,
-          "heightSegments": 1,
-          "openEnded": false
-        },
-        "boxParams": {
-          "width": 1,
-          "height": 1,
-          "depth": 1
-        },
-        "type": "cylinder"
-      },
-      "color": "#b3a995",
-      "opacity": 1,
-      "display": true,
-      "renderMode": "default",
-      "wireframe": false,
-      "castShadow": true,
-      "receiveShadow": true,
-      "collider": {
-        "enabled": true,
-        "rigidbodyType": "FIXED",
-        "colliderType": "CYLINDER"
-      },
-      "script": {
-        "identifier": "fashion-pylon-6",
-        "tag": "m1-fashion-runway"
-      }
-    },
-    "fashion-pylon-6-band": {
-      "name": "Pylon 6 band",
-      "id": "fashion-pylon-6-band",
-      "type": "mesh",
-      "kit": "cyber",
-      "position": {
-        "x": 75,
-        "y": 5.875,
-        "z": -30
-      },
-      "rotation": {
-        "x": 0,
-        "y": 0,
-        "z": 0
-      },
-      "scale": {
-        "x": 1,
-        "y": 1,
-        "z": 1
-      },
-      "geometry": {
-        "sphereParams": {
-          "radius": 1,
-          "widthSegments": 32,
-          "heightSegments": 32
-        },
-        "cylinderParams": {
-          "radiusTop": 0.48,
-          "radiusBottom": 0.48,
-          "height": 0.35,
-          "radialSegments": 16,
-          "heightSegments": 1,
-          "openEnded": false
-        },
-        "boxParams": {
-          "width": 1,
-          "height": 1,
-          "depth": 1
-        },
-        "type": "cylinder"
-      },
-      "color": "#d98c7a",
-      "opacity": 1,
-      "display": true,
-      "renderMode": "default",
-      "wireframe": false,
-      "castShadow": false,
-      "receiveShadow": true,
-      "plugins": [
-        {
-          "id": "PulsePlugin",
-          "color": "#d98c7a",
-          "intensity": 0.5,
-          "speed": 0.7
-        }
-      ],
-      "collider": {
-        "enabled": false,
-        "rigidbodyType": "FIXED",
-        "colliderType": "CYLINDER"
-      },
-      "script": {
-        "identifier": "fashion-pylon-6-band",
-        "tag": "m1-fashion-runway"
-      }
-    },
-    "fashion-pylon-6-band-lit": {
-      "name": "Pylon 6 band (lit)",
-      "id": "fashion-pylon-6-band-lit",
-      "type": "mesh",
-      "kit": "cyber",
-      "position": {
-        "x": 75,
-        "y": 5.875,
-        "z": -30
-      },
-      "rotation": {
-        "x": 0,
-        "y": 0,
-        "z": 0
-      },
-      "scale": {
-        "x": 1,
-        "y": 1,
-        "z": 1
-      },
-      "geometry": {
-        "sphereParams": {
-          "radius": 1,
-          "widthSegments": 32,
-          "heightSegments": 32
-        },
-        "cylinderParams": {
-          "radiusTop": 0.56,
-          "radiusBottom": 0.56,
-          "height": 0.75,
-          "radialSegments": 16,
-          "heightSegments": 1,
-          "openEnded": false
-        },
-        "boxParams": {
-          "width": 1,
-          "height": 1,
-          "depth": 1
-        },
-        "type": "cylinder"
-      },
-      "color": "#ffd2c4",
-      "opacity": 1,
-      "display": true,
-      "renderMode": "default",
-      "wireframe": false,
-      "castShadow": false,
-      "receiveShadow": false,
-      "plugins": [
-        {
-          "id": "FresnelGlowPlugin",
-          "color": "#d98c7a",
-          "intensity": 2.2,
-          "power": 1.2,
-          "speed": 1.2,
-          "pulse": 1
-        }
-      ],
-      "collider": {
-        "enabled": false,
-        "rigidbodyType": "FIXED",
-        "colliderType": "CYLINDER"
-      },
-      "script": {
-        "identifier": "fashion-pylon-6-band-lit",
-        "tag": "m1-fashion-reactive"
-      }
-    },
-    "fashion-bench-w": {
-      "name": "Runway bench west",
-      "id": "fashion-bench-w",
-      "type": "mesh",
-      "kit": "cyber",
-      "position": {
-        "x": 61,
-        "y": 0.725,
-        "z": -22
+        "x": -74.5,
+        "y": 2.6,
+        "z": -24
       },
       "rotation": {
         "x": 0,
@@ -1538,13 +770,13 @@
           "openEnded": false
         },
         "boxParams": {
-          "width": 0.9,
-          "height": 0.45,
-          "depth": 3
+          "width": 1.4,
+          "height": 4.2,
+          "depth": 1.4
         },
         "type": "box"
       },
-      "color": "#b3a995",
+      "color": "#1c1f26",
       "opacity": 1,
       "display": true,
       "renderMode": "default",
@@ -1557,19 +789,19 @@
         "colliderType": "CUBE"
       },
       "script": {
-        "identifier": "fashion-bench-w",
-        "tag": "m1-fashion-route"
+        "identifier": "music-stack-3",
+        "tag": "m1-music-structure"
       }
     },
-    "fashion-bench-e": {
-      "name": "Runway bench east",
-      "id": "fashion-bench-e",
+    "music-stack-3-band": {
+      "name": "Speaker stack 3 band",
+      "id": "music-stack-3-band",
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": 79,
-        "y": 0.725,
-        "z": -22
+        "x": -74.5,
+        "y": 2.65,
+        "z": -24
       },
       "rotation": {
         "x": 0,
@@ -1596,38 +828,46 @@
           "openEnded": false
         },
         "boxParams": {
-          "width": 0.9,
-          "height": 0.45,
-          "depth": 3
+          "width": 1.5,
+          "height": 0.3,
+          "depth": 1.5
         },
         "type": "box"
       },
-      "color": "#b3a995",
+      "color": "#2fb8a6",
       "opacity": 1,
       "display": true,
       "renderMode": "default",
       "wireframe": false,
-      "castShadow": true,
+      "castShadow": false,
       "receiveShadow": true,
+      "plugins": [
+        {
+          "id": "PulsePlugin",
+          "color": "#2fb8a6",
+          "intensity": 0.6,
+          "speed": 1.1
+        }
+      ],
       "collider": {
-        "enabled": true,
+        "enabled": false,
         "rigidbodyType": "FIXED",
         "colliderType": "CUBE"
       },
       "script": {
-        "identifier": "fashion-bench-e",
-        "tag": "m1-fashion-route"
+        "identifier": "music-stack-3-band",
+        "tag": "m1-music-structure"
       }
     },
-    "fashion-col-w1": {
-      "name": "Loggia column west 1",
-      "id": "fashion-col-w1",
+    "music-stack-3-band-lit": {
+      "name": "Speaker stack 3 band (lit)",
+      "id": "music-stack-3-band-lit",
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": 62,
-        "y": 3.5,
-        "z": -42.5
+        "x": -74.5,
+        "y": 2.65,
+        "z": -24
       },
       "rotation": {
         "x": 0,
@@ -1646,21 +886,89 @@
           "heightSegments": 32
         },
         "cylinderParams": {
-          "radiusTop": 0.5,
-          "radiusBottom": 0.5,
-          "height": 6,
-          "radialSegments": 20,
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
           "heightSegments": 1,
           "openEnded": false
         },
         "boxParams": {
-          "width": 1,
-          "height": 1,
-          "depth": 1
+          "width": 1.6,
+          "height": 0.5,
+          "depth": 1.6
         },
-        "type": "cylinder"
+        "type": "box"
       },
-      "color": "#cfc6b4",
+      "color": "#8ff2e4",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "plugins": [
+        {
+          "id": "FresnelGlowPlugin",
+          "color": "#2fb8a6",
+          "intensity": 2.2,
+          "power": 1.2,
+          "speed": 1.4,
+          "pulse": 1
+        }
+      ],
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "music-stack-3-band-lit",
+        "tag": "m1-music-reactive"
+      }
+    },
+    "music-stack-4": {
+      "name": "Speaker stack 4",
+      "id": "music-stack-4",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -65.5,
+        "y": 2.6,
+        "z": -24
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1.4,
+          "height": 4.2,
+          "depth": 1.4
+        },
+        "type": "box"
+      },
+      "color": "#1c1f26",
       "opacity": 1,
       "display": true,
       "renderMode": "default",
@@ -1670,486 +978,156 @@
       "collider": {
         "enabled": true,
         "rigidbodyType": "FIXED",
-        "colliderType": "CYLINDER"
+        "colliderType": "CUBE"
       },
       "script": {
-        "identifier": "fashion-col-w1",
-        "tag": "m1-fashion-loggia"
+        "identifier": "music-stack-4",
+        "tag": "m1-music-structure"
       }
     },
-    "fashion-col-w2": {
-      "name": "Loggia column west 2",
-      "id": "fashion-col-w2",
+    "music-stack-4-band": {
+      "name": "Speaker stack 4 band",
+      "id": "music-stack-4-band",
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": 62,
-        "y": 3.5,
+        "x": -65.5,
+        "y": 2.65,
+        "z": -24
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1.5,
+          "height": 0.3,
+          "depth": 1.5
+        },
+        "type": "box"
+      },
+      "color": "#2fb8a6",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": true,
+      "plugins": [
+        {
+          "id": "PulsePlugin",
+          "color": "#2fb8a6",
+          "intensity": 0.6,
+          "speed": 1.1
+        }
+      ],
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "music-stack-4-band",
+        "tag": "m1-music-structure"
+      }
+    },
+    "music-stack-4-band-lit": {
+      "name": "Speaker stack 4 band (lit)",
+      "id": "music-stack-4-band-lit",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -65.5,
+        "y": 2.65,
+        "z": -24
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1.6,
+          "height": 0.5,
+          "depth": 1.6
+        },
+        "type": "box"
+      },
+      "color": "#8ff2e4",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "plugins": [
+        {
+          "id": "FresnelGlowPlugin",
+          "color": "#2fb8a6",
+          "intensity": 2.2,
+          "power": 1.2,
+          "speed": 1.4,
+          "pulse": 1
+        }
+      ],
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "music-stack-4-band-lit",
+        "tag": "m1-music-reactive"
+      }
+    },
+    "music-stage-riser": {
+      "name": "Stage riser",
+      "id": "music-stage-riser",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -70,
+        "y": 1,
         "z": -46
-      },
-      "rotation": {
-        "x": 0,
-        "y": 0,
-        "z": 0
-      },
-      "scale": {
-        "x": 1,
-        "y": 1,
-        "z": 1
-      },
-      "geometry": {
-        "sphereParams": {
-          "radius": 1,
-          "widthSegments": 32,
-          "heightSegments": 32
-        },
-        "cylinderParams": {
-          "radiusTop": 0.5,
-          "radiusBottom": 0.5,
-          "height": 6,
-          "radialSegments": 20,
-          "heightSegments": 1,
-          "openEnded": false
-        },
-        "boxParams": {
-          "width": 1,
-          "height": 1,
-          "depth": 1
-        },
-        "type": "cylinder"
-      },
-      "color": "#cfc6b4",
-      "opacity": 1,
-      "display": true,
-      "renderMode": "default",
-      "wireframe": false,
-      "castShadow": true,
-      "receiveShadow": true,
-      "collider": {
-        "enabled": true,
-        "rigidbodyType": "FIXED",
-        "colliderType": "CYLINDER"
-      },
-      "script": {
-        "identifier": "fashion-col-w2",
-        "tag": "m1-fashion-loggia"
-      }
-    },
-    "fashion-col-w3": {
-      "name": "Loggia column west 3",
-      "id": "fashion-col-w3",
-      "type": "mesh",
-      "kit": "cyber",
-      "position": {
-        "x": 62,
-        "y": 3.5,
-        "z": -49.5
-      },
-      "rotation": {
-        "x": 0,
-        "y": 0,
-        "z": 0
-      },
-      "scale": {
-        "x": 1,
-        "y": 1,
-        "z": 1
-      },
-      "geometry": {
-        "sphereParams": {
-          "radius": 1,
-          "widthSegments": 32,
-          "heightSegments": 32
-        },
-        "cylinderParams": {
-          "radiusTop": 0.5,
-          "radiusBottom": 0.5,
-          "height": 6,
-          "radialSegments": 20,
-          "heightSegments": 1,
-          "openEnded": false
-        },
-        "boxParams": {
-          "width": 1,
-          "height": 1,
-          "depth": 1
-        },
-        "type": "cylinder"
-      },
-      "color": "#cfc6b4",
-      "opacity": 1,
-      "display": true,
-      "renderMode": "default",
-      "wireframe": false,
-      "castShadow": true,
-      "receiveShadow": true,
-      "collider": {
-        "enabled": true,
-        "rigidbodyType": "FIXED",
-        "colliderType": "CYLINDER"
-      },
-      "script": {
-        "identifier": "fashion-col-w3",
-        "tag": "m1-fashion-loggia"
-      }
-    },
-    "fashion-col-w4": {
-      "name": "Loggia column west 4",
-      "id": "fashion-col-w4",
-      "type": "mesh",
-      "kit": "cyber",
-      "position": {
-        "x": 62,
-        "y": 3.5,
-        "z": -53
-      },
-      "rotation": {
-        "x": 0,
-        "y": 0,
-        "z": 0
-      },
-      "scale": {
-        "x": 1,
-        "y": 1,
-        "z": 1
-      },
-      "geometry": {
-        "sphereParams": {
-          "radius": 1,
-          "widthSegments": 32,
-          "heightSegments": 32
-        },
-        "cylinderParams": {
-          "radiusTop": 0.5,
-          "radiusBottom": 0.5,
-          "height": 6,
-          "radialSegments": 20,
-          "heightSegments": 1,
-          "openEnded": false
-        },
-        "boxParams": {
-          "width": 1,
-          "height": 1,
-          "depth": 1
-        },
-        "type": "cylinder"
-      },
-      "color": "#cfc6b4",
-      "opacity": 1,
-      "display": true,
-      "renderMode": "default",
-      "wireframe": false,
-      "castShadow": true,
-      "receiveShadow": true,
-      "collider": {
-        "enabled": true,
-        "rigidbodyType": "FIXED",
-        "colliderType": "CYLINDER"
-      },
-      "script": {
-        "identifier": "fashion-col-w4",
-        "tag": "m1-fashion-loggia"
-      }
-    },
-    "fashion-col-e1": {
-      "name": "Loggia column east 1",
-      "id": "fashion-col-e1",
-      "type": "mesh",
-      "kit": "cyber",
-      "position": {
-        "x": 78,
-        "y": 3.5,
-        "z": -42.5
-      },
-      "rotation": {
-        "x": 0,
-        "y": 0,
-        "z": 0
-      },
-      "scale": {
-        "x": 1,
-        "y": 1,
-        "z": 1
-      },
-      "geometry": {
-        "sphereParams": {
-          "radius": 1,
-          "widthSegments": 32,
-          "heightSegments": 32
-        },
-        "cylinderParams": {
-          "radiusTop": 0.5,
-          "radiusBottom": 0.5,
-          "height": 6,
-          "radialSegments": 20,
-          "heightSegments": 1,
-          "openEnded": false
-        },
-        "boxParams": {
-          "width": 1,
-          "height": 1,
-          "depth": 1
-        },
-        "type": "cylinder"
-      },
-      "color": "#cfc6b4",
-      "opacity": 1,
-      "display": true,
-      "renderMode": "default",
-      "wireframe": false,
-      "castShadow": true,
-      "receiveShadow": true,
-      "collider": {
-        "enabled": true,
-        "rigidbodyType": "FIXED",
-        "colliderType": "CYLINDER"
-      },
-      "script": {
-        "identifier": "fashion-col-e1",
-        "tag": "m1-fashion-loggia"
-      }
-    },
-    "fashion-col-e2": {
-      "name": "Loggia column east 2",
-      "id": "fashion-col-e2",
-      "type": "mesh",
-      "kit": "cyber",
-      "position": {
-        "x": 78,
-        "y": 3.5,
-        "z": -46
-      },
-      "rotation": {
-        "x": 0,
-        "y": 0,
-        "z": 0
-      },
-      "scale": {
-        "x": 1,
-        "y": 1,
-        "z": 1
-      },
-      "geometry": {
-        "sphereParams": {
-          "radius": 1,
-          "widthSegments": 32,
-          "heightSegments": 32
-        },
-        "cylinderParams": {
-          "radiusTop": 0.5,
-          "radiusBottom": 0.5,
-          "height": 6,
-          "radialSegments": 20,
-          "heightSegments": 1,
-          "openEnded": false
-        },
-        "boxParams": {
-          "width": 1,
-          "height": 1,
-          "depth": 1
-        },
-        "type": "cylinder"
-      },
-      "color": "#cfc6b4",
-      "opacity": 1,
-      "display": true,
-      "renderMode": "default",
-      "wireframe": false,
-      "castShadow": true,
-      "receiveShadow": true,
-      "collider": {
-        "enabled": true,
-        "rigidbodyType": "FIXED",
-        "colliderType": "CYLINDER"
-      },
-      "script": {
-        "identifier": "fashion-col-e2",
-        "tag": "m1-fashion-loggia"
-      }
-    },
-    "fashion-col-e3": {
-      "name": "Loggia column east 3",
-      "id": "fashion-col-e3",
-      "type": "mesh",
-      "kit": "cyber",
-      "position": {
-        "x": 78,
-        "y": 3.5,
-        "z": -49.5
-      },
-      "rotation": {
-        "x": 0,
-        "y": 0,
-        "z": 0
-      },
-      "scale": {
-        "x": 1,
-        "y": 1,
-        "z": 1
-      },
-      "geometry": {
-        "sphereParams": {
-          "radius": 1,
-          "widthSegments": 32,
-          "heightSegments": 32
-        },
-        "cylinderParams": {
-          "radiusTop": 0.5,
-          "radiusBottom": 0.5,
-          "height": 6,
-          "radialSegments": 20,
-          "heightSegments": 1,
-          "openEnded": false
-        },
-        "boxParams": {
-          "width": 1,
-          "height": 1,
-          "depth": 1
-        },
-        "type": "cylinder"
-      },
-      "color": "#cfc6b4",
-      "opacity": 1,
-      "display": true,
-      "renderMode": "default",
-      "wireframe": false,
-      "castShadow": true,
-      "receiveShadow": true,
-      "collider": {
-        "enabled": true,
-        "rigidbodyType": "FIXED",
-        "colliderType": "CYLINDER"
-      },
-      "script": {
-        "identifier": "fashion-col-e3",
-        "tag": "m1-fashion-loggia"
-      }
-    },
-    "fashion-col-e4": {
-      "name": "Loggia column east 4",
-      "id": "fashion-col-e4",
-      "type": "mesh",
-      "kit": "cyber",
-      "position": {
-        "x": 78,
-        "y": 3.5,
-        "z": -53
-      },
-      "rotation": {
-        "x": 0,
-        "y": 0,
-        "z": 0
-      },
-      "scale": {
-        "x": 1,
-        "y": 1,
-        "z": 1
-      },
-      "geometry": {
-        "sphereParams": {
-          "radius": 1,
-          "widthSegments": 32,
-          "heightSegments": 32
-        },
-        "cylinderParams": {
-          "radiusTop": 0.5,
-          "radiusBottom": 0.5,
-          "height": 6,
-          "radialSegments": 20,
-          "heightSegments": 1,
-          "openEnded": false
-        },
-        "boxParams": {
-          "width": 1,
-          "height": 1,
-          "depth": 1
-        },
-        "type": "cylinder"
-      },
-      "color": "#cfc6b4",
-      "opacity": 1,
-      "display": true,
-      "renderMode": "default",
-      "wireframe": false,
-      "castShadow": true,
-      "receiveShadow": true,
-      "collider": {
-        "enabled": true,
-        "rigidbodyType": "FIXED",
-        "colliderType": "CYLINDER"
-      },
-      "script": {
-        "identifier": "fashion-col-e4",
-        "tag": "m1-fashion-loggia"
-      }
-    },
-    "fashion-roof": {
-      "name": "Loggia roof / terrace",
-      "id": "fashion-roof",
-      "type": "mesh",
-      "kit": "cyber",
-      "position": {
-        "x": 70,
-        "y": 6.8,
-        "z": -47.5
-      },
-      "rotation": {
-        "x": 0,
-        "y": 0,
-        "z": 0
-      },
-      "scale": {
-        "x": 1,
-        "y": 1,
-        "z": 1
-      },
-      "geometry": {
-        "sphereParams": {
-          "radius": 1,
-          "widthSegments": 32,
-          "heightSegments": 32
-        },
-        "cylinderParams": {
-          "radiusTop": 1,
-          "radiusBottom": 1,
-          "height": 1,
-          "radialSegments": 32,
-          "heightSegments": 1,
-          "openEnded": false
-        },
-        "boxParams": {
-          "width": 24,
-          "height": 0.6,
-          "depth": 13
-        },
-        "type": "box"
-      },
-      "color": "#cfc6b4",
-      "opacity": 1,
-      "display": true,
-      "renderMode": "default",
-      "wireframe": false,
-      "castShadow": true,
-      "receiveShadow": true,
-      "collider": {
-        "enabled": true,
-        "rigidbodyType": "FIXED",
-        "colliderType": "CUBE"
-      },
-      "script": {
-        "identifier": "fashion-roof",
-        "tag": "m1-fashion-loggia"
-      }
-    },
-    "fashion-north-wall": {
-      "name": "Loggia north wall",
-      "id": "fashion-north-wall",
-      "type": "mesh",
-      "kit": "cyber",
-      "position": {
-        "x": 70,
-        "y": 3.5,
-        "z": -53.75
       },
       "rotation": {
         "x": 0,
@@ -2177,646 +1155,12 @@
         },
         "boxParams": {
           "width": 20,
-          "height": 6,
-          "depth": 0.5
-        },
-        "type": "box"
-      },
-      "color": "#b3a995",
-      "opacity": 1,
-      "display": true,
-      "renderMode": "default",
-      "wireframe": false,
-      "castShadow": true,
-      "receiveShadow": true,
-      "collider": {
-        "enabled": true,
-        "rigidbodyType": "FIXED",
-        "colliderType": "CUBE"
-      },
-      "script": {
-        "identifier": "fashion-north-wall",
-        "tag": "m1-fashion-loggia"
-      }
-    },
-    "fashion-plinth-1": {
-      "name": "Display plinth 1 (empty)",
-      "id": "fashion-plinth-1",
-      "type": "mesh",
-      "kit": "cyber",
-      "position": {
-        "x": 64,
-        "y": 1,
-        "z": -47.5
-      },
-      "rotation": {
-        "x": 0,
-        "y": 0,
-        "z": 0
-      },
-      "scale": {
-        "x": 1,
-        "y": 1,
-        "z": 1
-      },
-      "geometry": {
-        "sphereParams": {
-          "radius": 1,
-          "widthSegments": 32,
-          "heightSegments": 32
-        },
-        "cylinderParams": {
-          "radiusTop": 1,
-          "radiusBottom": 1,
           "height": 1,
-          "radialSegments": 32,
-          "heightSegments": 1,
-          "openEnded": false
-        },
-        "boxParams": {
-          "width": 1.2,
-          "height": 1,
-          "depth": 1.2
-        },
-        "type": "box"
-      },
-      "color": "#e8e1d2",
-      "opacity": 1,
-      "display": true,
-      "renderMode": "default",
-      "wireframe": false,
-      "castShadow": true,
-      "receiveShadow": true,
-      "collider": {
-        "enabled": true,
-        "rigidbodyType": "FIXED",
-        "colliderType": "CUBE"
-      },
-      "script": {
-        "identifier": "fashion-plinth-1",
-        "tag": "m1-fashion-loggia"
-      }
-    },
-    "fashion-frame-1": {
-      "name": "Wall frame 1 (empty)",
-      "id": "fashion-frame-1",
-      "type": "mesh",
-      "kit": "cyber",
-      "position": {
-        "x": 64,
-        "y": 3.5,
-        "z": -53.4
-      },
-      "rotation": {
-        "x": 0,
-        "y": 0,
-        "z": 0
-      },
-      "scale": {
-        "x": 1,
-        "y": 1,
-        "z": 1
-      },
-      "geometry": {
-        "sphereParams": {
-          "radius": 1,
-          "widthSegments": 32,
-          "heightSegments": 32
-        },
-        "cylinderParams": {
-          "radiusTop": 1,
-          "radiusBottom": 1,
-          "height": 1,
-          "radialSegments": 32,
-          "heightSegments": 1,
-          "openEnded": false
-        },
-        "boxParams": {
-          "width": 2.4,
-          "height": 3.2,
-          "depth": 0.1
-        },
-        "type": "box"
-      },
-      "color": "#1c1a20",
-      "opacity": 0.9,
-      "display": true,
-      "renderMode": "default",
-      "wireframe": false,
-      "castShadow": false,
-      "receiveShadow": true,
-      "plugins": [
-        {
-          "id": "PulsePlugin",
-          "color": "#d98c7a",
-          "intensity": 0.1,
-          "speed": 0.3
-        }
-      ],
-      "collider": {
-        "enabled": true,
-        "rigidbodyType": "FIXED",
-        "colliderType": "CUBE"
-      },
-      "script": {
-        "identifier": "fashion-frame-1",
-        "tag": "m1-fashion-loggia"
-      }
-    },
-    "fashion-frame-1-lit": {
-      "name": "Wall frame 1 rim (lit)",
-      "id": "fashion-frame-1-lit",
-      "type": "mesh",
-      "kit": "cyber",
-      "position": {
-        "x": 64,
-        "y": 3.5,
-        "z": -53.33
-      },
-      "rotation": {
-        "x": 0,
-        "y": 0,
-        "z": 0
-      },
-      "scale": {
-        "x": 1,
-        "y": 1,
-        "z": 1
-      },
-      "geometry": {
-        "sphereParams": {
-          "radius": 1,
-          "widthSegments": 32,
-          "heightSegments": 32
-        },
-        "cylinderParams": {
-          "radiusTop": 1,
-          "radiusBottom": 1,
-          "height": 1,
-          "radialSegments": 32,
-          "heightSegments": 1,
-          "openEnded": false
-        },
-        "boxParams": {
-          "width": 2.6,
-          "height": 3.4,
-          "depth": 0.06
-        },
-        "type": "box"
-      },
-      "color": "#ffd2c4",
-      "opacity": 0.8,
-      "display": true,
-      "renderMode": "default",
-      "wireframe": false,
-      "castShadow": false,
-      "receiveShadow": false,
-      "plugins": [
-        {
-          "id": "FresnelGlowPlugin",
-          "color": "#d98c7a",
-          "intensity": 2,
-          "power": 1.3,
-          "speed": 0.9,
-          "pulse": 1
-        }
-      ],
-      "collider": {
-        "enabled": false,
-        "rigidbodyType": "FIXED",
-        "colliderType": "CUBE"
-      },
-      "script": {
-        "identifier": "fashion-frame-1-lit",
-        "tag": "m1-fashion-reactive"
-      }
-    },
-    "fashion-plinth-2": {
-      "name": "Display plinth 2 (empty)",
-      "id": "fashion-plinth-2",
-      "type": "mesh",
-      "kit": "cyber",
-      "position": {
-        "x": 70,
-        "y": 1,
-        "z": -47.5
-      },
-      "rotation": {
-        "x": 0,
-        "y": 0,
-        "z": 0
-      },
-      "scale": {
-        "x": 1,
-        "y": 1,
-        "z": 1
-      },
-      "geometry": {
-        "sphereParams": {
-          "radius": 1,
-          "widthSegments": 32,
-          "heightSegments": 32
-        },
-        "cylinderParams": {
-          "radiusTop": 1,
-          "radiusBottom": 1,
-          "height": 1,
-          "radialSegments": 32,
-          "heightSegments": 1,
-          "openEnded": false
-        },
-        "boxParams": {
-          "width": 1.2,
-          "height": 1,
-          "depth": 1.2
-        },
-        "type": "box"
-      },
-      "color": "#e8e1d2",
-      "opacity": 1,
-      "display": true,
-      "renderMode": "default",
-      "wireframe": false,
-      "castShadow": true,
-      "receiveShadow": true,
-      "collider": {
-        "enabled": true,
-        "rigidbodyType": "FIXED",
-        "colliderType": "CUBE"
-      },
-      "script": {
-        "identifier": "fashion-plinth-2",
-        "tag": "m1-fashion-loggia"
-      }
-    },
-    "fashion-frame-2": {
-      "name": "Wall frame 2 (empty)",
-      "id": "fashion-frame-2",
-      "type": "mesh",
-      "kit": "cyber",
-      "position": {
-        "x": 70,
-        "y": 3.5,
-        "z": -53.4
-      },
-      "rotation": {
-        "x": 0,
-        "y": 0,
-        "z": 0
-      },
-      "scale": {
-        "x": 1,
-        "y": 1,
-        "z": 1
-      },
-      "geometry": {
-        "sphereParams": {
-          "radius": 1,
-          "widthSegments": 32,
-          "heightSegments": 32
-        },
-        "cylinderParams": {
-          "radiusTop": 1,
-          "radiusBottom": 1,
-          "height": 1,
-          "radialSegments": 32,
-          "heightSegments": 1,
-          "openEnded": false
-        },
-        "boxParams": {
-          "width": 2.4,
-          "height": 3.2,
-          "depth": 0.1
-        },
-        "type": "box"
-      },
-      "color": "#1c1a20",
-      "opacity": 0.9,
-      "display": true,
-      "renderMode": "default",
-      "wireframe": false,
-      "castShadow": false,
-      "receiveShadow": true,
-      "plugins": [
-        {
-          "id": "PulsePlugin",
-          "color": "#d98c7a",
-          "intensity": 0.1,
-          "speed": 0.3
-        }
-      ],
-      "collider": {
-        "enabled": true,
-        "rigidbodyType": "FIXED",
-        "colliderType": "CUBE"
-      },
-      "script": {
-        "identifier": "fashion-frame-2",
-        "tag": "m1-fashion-loggia"
-      }
-    },
-    "fashion-frame-2-lit": {
-      "name": "Wall frame 2 rim (lit)",
-      "id": "fashion-frame-2-lit",
-      "type": "mesh",
-      "kit": "cyber",
-      "position": {
-        "x": 70,
-        "y": 3.5,
-        "z": -53.33
-      },
-      "rotation": {
-        "x": 0,
-        "y": 0,
-        "z": 0
-      },
-      "scale": {
-        "x": 1,
-        "y": 1,
-        "z": 1
-      },
-      "geometry": {
-        "sphereParams": {
-          "radius": 1,
-          "widthSegments": 32,
-          "heightSegments": 32
-        },
-        "cylinderParams": {
-          "radiusTop": 1,
-          "radiusBottom": 1,
-          "height": 1,
-          "radialSegments": 32,
-          "heightSegments": 1,
-          "openEnded": false
-        },
-        "boxParams": {
-          "width": 2.6,
-          "height": 3.4,
-          "depth": 0.06
-        },
-        "type": "box"
-      },
-      "color": "#ffd2c4",
-      "opacity": 0.8,
-      "display": true,
-      "renderMode": "default",
-      "wireframe": false,
-      "castShadow": false,
-      "receiveShadow": false,
-      "plugins": [
-        {
-          "id": "FresnelGlowPlugin",
-          "color": "#d98c7a",
-          "intensity": 2,
-          "power": 1.3,
-          "speed": 0.9,
-          "pulse": 1
-        }
-      ],
-      "collider": {
-        "enabled": false,
-        "rigidbodyType": "FIXED",
-        "colliderType": "CUBE"
-      },
-      "script": {
-        "identifier": "fashion-frame-2-lit",
-        "tag": "m1-fashion-reactive"
-      }
-    },
-    "fashion-plinth-3": {
-      "name": "Display plinth 3 (empty)",
-      "id": "fashion-plinth-3",
-      "type": "mesh",
-      "kit": "cyber",
-      "position": {
-        "x": 76,
-        "y": 1,
-        "z": -47.5
-      },
-      "rotation": {
-        "x": 0,
-        "y": 0,
-        "z": 0
-      },
-      "scale": {
-        "x": 1,
-        "y": 1,
-        "z": 1
-      },
-      "geometry": {
-        "sphereParams": {
-          "radius": 1,
-          "widthSegments": 32,
-          "heightSegments": 32
-        },
-        "cylinderParams": {
-          "radiusTop": 1,
-          "radiusBottom": 1,
-          "height": 1,
-          "radialSegments": 32,
-          "heightSegments": 1,
-          "openEnded": false
-        },
-        "boxParams": {
-          "width": 1.2,
-          "height": 1,
-          "depth": 1.2
-        },
-        "type": "box"
-      },
-      "color": "#e8e1d2",
-      "opacity": 1,
-      "display": true,
-      "renderMode": "default",
-      "wireframe": false,
-      "castShadow": true,
-      "receiveShadow": true,
-      "collider": {
-        "enabled": true,
-        "rigidbodyType": "FIXED",
-        "colliderType": "CUBE"
-      },
-      "script": {
-        "identifier": "fashion-plinth-3",
-        "tag": "m1-fashion-loggia"
-      }
-    },
-    "fashion-frame-3": {
-      "name": "Wall frame 3 (empty)",
-      "id": "fashion-frame-3",
-      "type": "mesh",
-      "kit": "cyber",
-      "position": {
-        "x": 76,
-        "y": 3.5,
-        "z": -53.4
-      },
-      "rotation": {
-        "x": 0,
-        "y": 0,
-        "z": 0
-      },
-      "scale": {
-        "x": 1,
-        "y": 1,
-        "z": 1
-      },
-      "geometry": {
-        "sphereParams": {
-          "radius": 1,
-          "widthSegments": 32,
-          "heightSegments": 32
-        },
-        "cylinderParams": {
-          "radiusTop": 1,
-          "radiusBottom": 1,
-          "height": 1,
-          "radialSegments": 32,
-          "heightSegments": 1,
-          "openEnded": false
-        },
-        "boxParams": {
-          "width": 2.4,
-          "height": 3.2,
-          "depth": 0.1
-        },
-        "type": "box"
-      },
-      "color": "#1c1a20",
-      "opacity": 0.9,
-      "display": true,
-      "renderMode": "default",
-      "wireframe": false,
-      "castShadow": false,
-      "receiveShadow": true,
-      "plugins": [
-        {
-          "id": "PulsePlugin",
-          "color": "#d98c7a",
-          "intensity": 0.1,
-          "speed": 0.3
-        }
-      ],
-      "collider": {
-        "enabled": true,
-        "rigidbodyType": "FIXED",
-        "colliderType": "CUBE"
-      },
-      "script": {
-        "identifier": "fashion-frame-3",
-        "tag": "m1-fashion-loggia"
-      }
-    },
-    "fashion-frame-3-lit": {
-      "name": "Wall frame 3 rim (lit)",
-      "id": "fashion-frame-3-lit",
-      "type": "mesh",
-      "kit": "cyber",
-      "position": {
-        "x": 76,
-        "y": 3.5,
-        "z": -53.33
-      },
-      "rotation": {
-        "x": 0,
-        "y": 0,
-        "z": 0
-      },
-      "scale": {
-        "x": 1,
-        "y": 1,
-        "z": 1
-      },
-      "geometry": {
-        "sphereParams": {
-          "radius": 1,
-          "widthSegments": 32,
-          "heightSegments": 32
-        },
-        "cylinderParams": {
-          "radiusTop": 1,
-          "radiusBottom": 1,
-          "height": 1,
-          "radialSegments": 32,
-          "heightSegments": 1,
-          "openEnded": false
-        },
-        "boxParams": {
-          "width": 2.6,
-          "height": 3.4,
-          "depth": 0.06
-        },
-        "type": "box"
-      },
-      "color": "#ffd2c4",
-      "opacity": 0.8,
-      "display": true,
-      "renderMode": "default",
-      "wireframe": false,
-      "castShadow": false,
-      "receiveShadow": false,
-      "plugins": [
-        {
-          "id": "FresnelGlowPlugin",
-          "color": "#d98c7a",
-          "intensity": 2,
-          "power": 1.3,
-          "speed": 0.9,
-          "pulse": 1
-        }
-      ],
-      "collider": {
-        "enabled": false,
-        "rigidbodyType": "FIXED",
-        "colliderType": "CUBE"
-      },
-      "script": {
-        "identifier": "fashion-frame-3-lit",
-        "tag": "m1-fashion-reactive"
-      }
-    },
-    "fashion-roof-ramp-foot": {
-      "name": "Roof ramp foot",
-      "id": "fashion-roof-ramp-foot",
-      "type": "mesh",
-      "kit": "cyber",
-      "position": {
-        "x": 82.5,
-        "y": 0.25,
-        "z": -27
-      },
-      "rotation": {
-        "x": 0,
-        "y": 0,
-        "z": 0
-      },
-      "scale": {
-        "x": 1,
-        "y": 1,
-        "z": 1
-      },
-      "geometry": {
-        "sphereParams": {
-          "radius": 1,
-          "widthSegments": 32,
-          "heightSegments": 32
-        },
-        "cylinderParams": {
-          "radiusTop": 1,
-          "radiusBottom": 1,
-          "height": 1,
-          "radialSegments": 32,
-          "heightSegments": 1,
-          "openEnded": false
-        },
-        "boxParams": {
-          "width": 4,
-          "height": 0.5,
           "depth": 6
         },
         "type": "box"
       },
-      "color": "#b3a995",
+      "color": "#6b6559",
       "opacity": 1,
       "display": true,
       "renderMode": "default",
@@ -2829,22 +1173,22 @@
         "colliderType": "CUBE"
       },
       "script": {
-        "identifier": "fashion-roof-ramp-foot",
-        "tag": "m1-fashion-route"
+        "identifier": "music-stage-riser",
+        "tag": "m1-music-stage"
       }
     },
-    "fashion-roof-ramp": {
-      "name": "Roof terrace ramp",
-      "id": "fashion-roof-ramp",
+    "music-stage-ramp-w": {
+      "name": "Stage ramp west",
+      "id": "music-stage-ramp-w",
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": 84,
-        "y": 3.559,
-        "z": -40.066
+        "x": -78.5,
+        "y": 0.753,
+        "z": -40.535
       },
       "rotation": {
-        "x": 0.2684,
+        "x": 0.1419,
         "y": 0,
         "z": 0
       },
@@ -2870,11 +1214,11 @@
         "boxParams": {
           "width": 3,
           "height": 0.5,
-          "depth": 24.891
+          "depth": 7.071
         },
         "type": "box"
       },
-      "color": "#b3a995",
+      "color": "#6b6559",
       "opacity": 1,
       "display": true,
       "renderMode": "default",
@@ -2887,138 +1231,22 @@
         "colliderType": "CUBE"
       },
       "script": {
-        "identifier": "fashion-roof-ramp",
-        "tag": "m1-fashion-route"
+        "identifier": "music-stage-ramp-w",
+        "tag": "m1-music-route"
       }
     },
-    "fashion-roof-landing": {
-      "name": "Roof ramp landing",
-      "id": "fashion-roof-landing",
+    "music-stage-ramp-e": {
+      "name": "Stage ramp east",
+      "id": "music-stage-ramp-e",
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": 83.25,
-        "y": 6.8,
-        "z": -53
+        "x": -61.5,
+        "y": 0.753,
+        "z": -40.535
       },
       "rotation": {
-        "x": 0,
-        "y": 0,
-        "z": 0
-      },
-      "scale": {
-        "x": 1,
-        "y": 1,
-        "z": 1
-      },
-      "geometry": {
-        "sphereParams": {
-          "radius": 1,
-          "widthSegments": 32,
-          "heightSegments": 32
-        },
-        "cylinderParams": {
-          "radiusTop": 1,
-          "radiusBottom": 1,
-          "height": 1,
-          "radialSegments": 32,
-          "heightSegments": 1,
-          "openEnded": false
-        },
-        "boxParams": {
-          "width": 4.5,
-          "height": 0.6,
-          "depth": 2
-        },
-        "type": "box"
-      },
-      "color": "#b3a995",
-      "opacity": 1,
-      "display": true,
-      "renderMode": "default",
-      "wireframe": false,
-      "castShadow": true,
-      "receiveShadow": true,
-      "collider": {
-        "enabled": true,
-        "rigidbodyType": "FIXED",
-        "colliderType": "CUBE"
-      },
-      "script": {
-        "identifier": "fashion-roof-landing",
-        "tag": "m1-fashion-route"
-      }
-    },
-    "fashion-roof-ramp-post": {
-      "name": "Roof ramp post",
-      "id": "fashion-roof-ramp-post",
-      "type": "mesh",
-      "kit": "cyber",
-      "position": {
-        "x": 84,
-        "y": 1.7,
-        "z": -40
-      },
-      "rotation": {
-        "x": 0,
-        "y": 0,
-        "z": 0
-      },
-      "scale": {
-        "x": 1,
-        "y": 1,
-        "z": 1
-      },
-      "geometry": {
-        "sphereParams": {
-          "radius": 1,
-          "widthSegments": 32,
-          "heightSegments": 32
-        },
-        "cylinderParams": {
-          "radiusTop": 0.4,
-          "radiusBottom": 0.4,
-          "height": 3.4,
-          "radialSegments": 12,
-          "heightSegments": 1,
-          "openEnded": false
-        },
-        "boxParams": {
-          "width": 1,
-          "height": 1,
-          "depth": 1
-        },
-        "type": "cylinder"
-      },
-      "color": "#b3a995",
-      "opacity": 1,
-      "display": true,
-      "renderMode": "default",
-      "wireframe": false,
-      "castShadow": true,
-      "receiveShadow": true,
-      "collider": {
-        "enabled": true,
-        "rigidbodyType": "FIXED",
-        "colliderType": "CYLINDER"
-      },
-      "script": {
-        "identifier": "fashion-roof-ramp-post",
-        "tag": "m1-fashion-route"
-      }
-    },
-    "fashion-roof-bench": {
-      "name": "Roof bench",
-      "id": "fashion-roof-bench",
-      "type": "mesh",
-      "kit": "cyber",
-      "position": {
-        "x": 66,
-        "y": 7.325,
-        "z": -46
-      },
-      "rotation": {
-        "x": 0,
+        "x": 0.1419,
         "y": 0,
         "z": 0
       },
@@ -3043,12 +1271,12 @@
         },
         "boxParams": {
           "width": 3,
-          "height": 0.45,
-          "depth": 0.9
+          "height": 0.5,
+          "depth": 7.071
         },
         "type": "box"
       },
-      "color": "#b3a995",
+      "color": "#6b6559",
       "opacity": 1,
       "display": true,
       "renderMode": "default",
@@ -3061,23 +1289,23 @@
         "colliderType": "CUBE"
       },
       "script": {
-        "identifier": "fashion-roof-bench",
-        "tag": "m1-fashion-route"
+        "identifier": "music-stage-ramp-e",
+        "tag": "m1-music-route"
       }
     },
-    "fashion-roof-lamp-post": {
-      "name": "Roof lamp post",
-      "id": "fashion-roof-lamp-post",
+    "music-fin-1": {
+      "name": "Stage fin 1",
+      "id": "music-fin-1",
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": 76,
-        "y": 7.75,
-        "z": -44
+        "x": -76.511,
+        "y": 4.5,
+        "z": -52.464
       },
       "rotation": {
         "x": 0,
-        "y": 0,
+        "y": 0.8727,
         "z": 0
       },
       "scale": {
@@ -3092,19 +1320,19 @@
           "heightSegments": 32
         },
         "cylinderParams": {
-          "radiusTop": 0.1,
-          "radiusBottom": 0.1,
-          "height": 1.3,
-          "radialSegments": 8,
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
           "heightSegments": 1,
           "openEnded": false
         },
         "boxParams": {
-          "width": 1,
-          "height": 1,
-          "depth": 1
+          "width": 2.6,
+          "height": 8,
+          "depth": 0.6
         },
-        "type": "cylinder"
+        "type": "box"
       },
       "color": "#1c1f26",
       "opacity": 1,
@@ -3114,28 +1342,28 @@
       "castShadow": true,
       "receiveShadow": true,
       "collider": {
-        "enabled": false,
+        "enabled": true,
         "rigidbodyType": "FIXED",
-        "colliderType": "CYLINDER"
+        "colliderType": "CUBE"
       },
       "script": {
-        "identifier": "fashion-roof-lamp-post",
-        "tag": "m1-fashion-route"
+        "identifier": "music-fin-1",
+        "tag": "m1-music-stage"
       }
     },
-    "fashion-roof-lamp": {
-      "name": "Roof lamp (dim)",
-      "id": "fashion-roof-lamp",
+    "music-fin-1-ribbon": {
+      "name": "Stage fin 1 ribbon",
+      "id": "music-fin-1-ribbon",
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": 76,
-        "y": 8.7,
-        "z": -44
+        "x": -76.511,
+        "y": 5.075,
+        "z": -52.464
       },
       "rotation": {
         "x": 0,
-        "y": 0,
+        "y": 0.8727,
         "z": 0
       },
       "scale": {
@@ -3145,7 +1373,7 @@
       },
       "geometry": {
         "sphereParams": {
-          "radius": 0.4,
+          "radius": 1,
           "widthSegments": 32,
           "heightSegments": 32
         },
@@ -3158,79 +1386,13 @@
           "openEnded": false
         },
         "boxParams": {
-          "width": 1,
-          "height": 1,
-          "depth": 1
+          "width": 2.7,
+          "height": 0.35,
+          "depth": 0.7
         },
-        "type": "sphere"
+        "type": "box"
       },
-      "color": "#6b4a44",
-      "opacity": 1,
-      "display": true,
-      "renderMode": "default",
-      "wireframe": false,
-      "castShadow": false,
-      "receiveShadow": true,
-      "plugins": [
-        {
-          "id": "PulsePlugin",
-          "color": "#d98c7a",
-          "intensity": 0.25,
-          "speed": 0.4
-        }
-      ],
-      "collider": {
-        "enabled": false,
-        "rigidbodyType": "FIXED",
-        "colliderType": "SPHERE"
-      },
-      "script": {
-        "identifier": "fashion-roof-lamp",
-        "tag": "m1-fashion-route"
-      }
-    },
-    "fashion-roof-lamp-lit": {
-      "name": "Roof lamp (lit)",
-      "id": "fashion-roof-lamp-lit",
-      "type": "mesh",
-      "kit": "cyber",
-      "position": {
-        "x": 76,
-        "y": 8.7,
-        "z": -44
-      },
-      "rotation": {
-        "x": 0,
-        "y": 0,
-        "z": 0
-      },
-      "scale": {
-        "x": 1,
-        "y": 1,
-        "z": 1
-      },
-      "geometry": {
-        "sphereParams": {
-          "radius": 0.46,
-          "widthSegments": 32,
-          "heightSegments": 32
-        },
-        "cylinderParams": {
-          "radiusTop": 1,
-          "radiusBottom": 1,
-          "height": 1,
-          "radialSegments": 32,
-          "heightSegments": 1,
-          "openEnded": false
-        },
-        "boxParams": {
-          "width": 1,
-          "height": 1,
-          "depth": 1
-        },
-        "type": "sphere"
-      },
-      "color": "#fff1cf",
+      "color": "#2fb8a6",
       "opacity": 1,
       "display": true,
       "renderMode": "default",
@@ -3240,32 +1402,876 @@
       "plugins": [
         {
           "id": "FresnelGlowPlugin",
-          "color": "#d98c7a",
-          "intensity": 2.2,
-          "power": 1.4,
-          "speed": 0.5,
+          "color": "#2fb8a6",
+          "intensity": 1.4,
+          "power": 1.5,
+          "speed": 0.8,
           "pulse": 1
         }
       ],
       "collider": {
         "enabled": false,
         "rigidbodyType": "FIXED",
-        "colliderType": "SPHERE"
+        "colliderType": "CUBE"
       },
       "script": {
-        "identifier": "fashion-roof-lamp-lit",
-        "tag": "m1-fashion-reactive"
+        "identifier": "music-fin-1-ribbon",
+        "tag": "m1-music-stage"
       }
     },
-    "fashion-roof-lamp-pool": {
-      "name": "Roof lamp light pool",
-      "id": "fashion-roof-lamp-pool",
+    "music-fin-1-blade": {
+      "name": "Stage fin 1 blade (lit)",
+      "id": "music-fin-1-blade",
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": 76,
-        "y": 7.115,
-        "z": -44
+        "x": -76.511,
+        "y": 4.5,
+        "z": -52.464
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0.8727,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 0.9,
+          "height": 6.08,
+          "depth": 0.72
+        },
+        "type": "box"
+      },
+      "color": "#bffbf2",
+      "opacity": 0.7,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "plugins": [
+        {
+          "id": "FresnelGlowPlugin",
+          "color": "#2fb8a6",
+          "intensity": 2.2,
+          "power": 1.1,
+          "speed": 1.2,
+          "pulse": 1
+        }
+      ],
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "music-fin-1-blade",
+        "tag": "m1-music-reactive"
+      }
+    },
+    "music-fin-2": {
+      "name": "Stage fin 2",
+      "id": "music-fin-2",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -73.592,
+        "y": 6,
+        "z": -54.704
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0.4363,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 2.6,
+          "height": 11,
+          "depth": 0.6
+        },
+        "type": "box"
+      },
+      "color": "#1c1f26",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "music-fin-2",
+        "tag": "m1-music-stage"
+      }
+    },
+    "music-fin-2-ribbon": {
+      "name": "Stage fin 2 ribbon",
+      "id": "music-fin-2-ribbon",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -73.592,
+        "y": 6.725,
+        "z": -54.704
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0.4363,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 2.7,
+          "height": 0.35,
+          "depth": 0.7
+        },
+        "type": "box"
+      },
+      "color": "#2fb8a6",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": true,
+      "plugins": [
+        {
+          "id": "FresnelGlowPlugin",
+          "color": "#2fb8a6",
+          "intensity": 1.4,
+          "power": 1.5,
+          "speed": 0.8,
+          "pulse": 1
+        }
+      ],
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "music-fin-2-ribbon",
+        "tag": "m1-music-stage"
+      }
+    },
+    "music-fin-2-blade": {
+      "name": "Stage fin 2 blade (lit)",
+      "id": "music-fin-2-blade",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -73.592,
+        "y": 6,
+        "z": -54.704
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0.4363,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 0.9,
+          "height": 8.36,
+          "depth": 0.72
+        },
+        "type": "box"
+      },
+      "color": "#bffbf2",
+      "opacity": 0.7,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "plugins": [
+        {
+          "id": "FresnelGlowPlugin",
+          "color": "#2fb8a6",
+          "intensity": 2.2,
+          "power": 1.1,
+          "speed": 1.2,
+          "pulse": 1
+        }
+      ],
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "music-fin-2-blade",
+        "tag": "m1-music-reactive"
+      }
+    },
+    "music-fin-3": {
+      "name": "Stage fin 3",
+      "id": "music-fin-3",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -70,
+        "y": 7,
+        "z": -55.5
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 2.6,
+          "height": 13,
+          "depth": 0.6
+        },
+        "type": "box"
+      },
+      "color": "#1c1f26",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "music-fin-3",
+        "tag": "m1-music-stage"
+      }
+    },
+    "music-fin-3-ribbon": {
+      "name": "Stage fin 3 ribbon",
+      "id": "music-fin-3-ribbon",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -70,
+        "y": 7.825,
+        "z": -55.5
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 2.7,
+          "height": 0.35,
+          "depth": 0.7
+        },
+        "type": "box"
+      },
+      "color": "#2fb8a6",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": true,
+      "plugins": [
+        {
+          "id": "FresnelGlowPlugin",
+          "color": "#2fb8a6",
+          "intensity": 1.4,
+          "power": 1.5,
+          "speed": 0.8,
+          "pulse": 1
+        }
+      ],
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "music-fin-3-ribbon",
+        "tag": "m1-music-stage"
+      }
+    },
+    "music-fin-3-blade": {
+      "name": "Stage fin 3 blade (lit)",
+      "id": "music-fin-3-blade",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -70,
+        "y": 7,
+        "z": -55.5
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 0.9,
+          "height": 9.88,
+          "depth": 0.72
+        },
+        "type": "box"
+      },
+      "color": "#bffbf2",
+      "opacity": 0.7,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "plugins": [
+        {
+          "id": "FresnelGlowPlugin",
+          "color": "#2fb8a6",
+          "intensity": 2.2,
+          "power": 1.1,
+          "speed": 1.2,
+          "pulse": 1
+        }
+      ],
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "music-fin-3-blade",
+        "tag": "m1-music-reactive"
+      }
+    },
+    "music-fin-4": {
+      "name": "Stage fin 4",
+      "id": "music-fin-4",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -66.408,
+        "y": 6,
+        "z": -54.704
+      },
+      "rotation": {
+        "x": 0,
+        "y": -0.4363,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 2.6,
+          "height": 11,
+          "depth": 0.6
+        },
+        "type": "box"
+      },
+      "color": "#1c1f26",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "music-fin-4",
+        "tag": "m1-music-stage"
+      }
+    },
+    "music-fin-4-ribbon": {
+      "name": "Stage fin 4 ribbon",
+      "id": "music-fin-4-ribbon",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -66.408,
+        "y": 6.725,
+        "z": -54.704
+      },
+      "rotation": {
+        "x": 0,
+        "y": -0.4363,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 2.7,
+          "height": 0.35,
+          "depth": 0.7
+        },
+        "type": "box"
+      },
+      "color": "#2fb8a6",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": true,
+      "plugins": [
+        {
+          "id": "FresnelGlowPlugin",
+          "color": "#2fb8a6",
+          "intensity": 1.4,
+          "power": 1.5,
+          "speed": 0.8,
+          "pulse": 1
+        }
+      ],
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "music-fin-4-ribbon",
+        "tag": "m1-music-stage"
+      }
+    },
+    "music-fin-4-blade": {
+      "name": "Stage fin 4 blade (lit)",
+      "id": "music-fin-4-blade",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -66.408,
+        "y": 6,
+        "z": -54.704
+      },
+      "rotation": {
+        "x": 0,
+        "y": -0.4363,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 0.9,
+          "height": 8.36,
+          "depth": 0.72
+        },
+        "type": "box"
+      },
+      "color": "#bffbf2",
+      "opacity": 0.7,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "plugins": [
+        {
+          "id": "FresnelGlowPlugin",
+          "color": "#2fb8a6",
+          "intensity": 2.2,
+          "power": 1.1,
+          "speed": 1.2,
+          "pulse": 1
+        }
+      ],
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "music-fin-4-blade",
+        "tag": "m1-music-reactive"
+      }
+    },
+    "music-fin-5": {
+      "name": "Stage fin 5",
+      "id": "music-fin-5",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -63.489,
+        "y": 4.5,
+        "z": -52.464
+      },
+      "rotation": {
+        "x": 0,
+        "y": -0.8727,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 2.6,
+          "height": 8,
+          "depth": 0.6
+        },
+        "type": "box"
+      },
+      "color": "#1c1f26",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "music-fin-5",
+        "tag": "m1-music-stage"
+      }
+    },
+    "music-fin-5-ribbon": {
+      "name": "Stage fin 5 ribbon",
+      "id": "music-fin-5-ribbon",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -63.489,
+        "y": 5.075,
+        "z": -52.464
+      },
+      "rotation": {
+        "x": 0,
+        "y": -0.8727,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 2.7,
+          "height": 0.35,
+          "depth": 0.7
+        },
+        "type": "box"
+      },
+      "color": "#2fb8a6",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": true,
+      "plugins": [
+        {
+          "id": "FresnelGlowPlugin",
+          "color": "#2fb8a6",
+          "intensity": 1.4,
+          "power": 1.5,
+          "speed": 0.8,
+          "pulse": 1
+        }
+      ],
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "music-fin-5-ribbon",
+        "tag": "m1-music-stage"
+      }
+    },
+    "music-fin-5-blade": {
+      "name": "Stage fin 5 blade (lit)",
+      "id": "music-fin-5-blade",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -63.489,
+        "y": 4.5,
+        "z": -52.464
+      },
+      "rotation": {
+        "x": 0,
+        "y": -0.8727,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 0.9,
+          "height": 6.08,
+          "depth": 0.72
+        },
+        "type": "box"
+      },
+      "color": "#bffbf2",
+      "opacity": 0.7,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "plugins": [
+        {
+          "id": "FresnelGlowPlugin",
+          "color": "#2fb8a6",
+          "intensity": 2.2,
+          "power": 1.1,
+          "speed": 1.2,
+          "pulse": 1
+        }
+      ],
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "music-fin-5-blade",
+        "tag": "m1-music-reactive"
+      }
+    },
+    "music-stage-wash": {
+      "name": "Stage wash (lit)",
+      "id": "music-stage-wash",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -70,
+        "y": 1.515,
+        "z": -46.6
       },
       "rotation": {
         "x": 0,
@@ -3287,950 +2293,6 @@
           "radiusTop": 2.6,
           "radiusBottom": 2.6,
           "height": 0.02,
-          "radialSegments": 32,
-          "heightSegments": 1,
-          "openEnded": false
-        },
-        "boxParams": {
-          "width": 1,
-          "height": 1,
-          "depth": 1
-        },
-        "type": "cylinder"
-      },
-      "color": "#d98c7a",
-      "opacity": 0.3,
-      "display": true,
-      "renderMode": "default",
-      "wireframe": false,
-      "castShadow": false,
-      "receiveShadow": false,
-      "collider": {
-        "enabled": false,
-        "rigidbodyType": "FIXED",
-        "colliderType": "CYLINDER"
-      },
-      "script": {
-        "identifier": "fashion-roof-lamp-pool",
-        "tag": "m1-fashion-reactive"
-      }
-    },
-    "fashion-atelier-floor": {
-      "name": "Atelier floor",
-      "id": "fashion-atelier-floor",
-      "type": "mesh",
-      "kit": "cyber",
-      "position": {
-        "x": 70,
-        "y": 0.25,
-        "z": -58
-      },
-      "rotation": {
-        "x": 0,
-        "y": 0,
-        "z": 0
-      },
-      "scale": {
-        "x": 1,
-        "y": 1,
-        "z": 1
-      },
-      "geometry": {
-        "sphereParams": {
-          "radius": 1,
-          "widthSegments": 32,
-          "heightSegments": 32
-        },
-        "cylinderParams": {
-          "radiusTop": 1,
-          "radiusBottom": 1,
-          "height": 1,
-          "radialSegments": 32,
-          "heightSegments": 1,
-          "openEnded": false
-        },
-        "boxParams": {
-          "width": 24,
-          "height": 0.5,
-          "depth": 12
-        },
-        "type": "box"
-      },
-      "color": "#b3a995",
-      "opacity": 1,
-      "display": true,
-      "renderMode": "default",
-      "wireframe": false,
-      "castShadow": true,
-      "receiveShadow": true,
-      "collider": {
-        "enabled": true,
-        "rigidbodyType": "FIXED",
-        "colliderType": "CUBE"
-      },
-      "script": {
-        "identifier": "fashion-atelier-floor",
-        "tag": "m1-fashion-secret"
-      }
-    },
-    "fashion-atelier-wall-n": {
-      "name": "Atelier north wall",
-      "id": "fashion-atelier-wall-n",
-      "type": "mesh",
-      "kit": "cyber",
-      "position": {
-        "x": 70,
-        "y": 3,
-        "z": -63.75
-      },
-      "rotation": {
-        "x": 0,
-        "y": 0,
-        "z": 0
-      },
-      "scale": {
-        "x": 1,
-        "y": 1,
-        "z": 1
-      },
-      "geometry": {
-        "sphereParams": {
-          "radius": 1,
-          "widthSegments": 32,
-          "heightSegments": 32
-        },
-        "cylinderParams": {
-          "radiusTop": 1,
-          "radiusBottom": 1,
-          "height": 1,
-          "radialSegments": 32,
-          "heightSegments": 1,
-          "openEnded": false
-        },
-        "boxParams": {
-          "width": 14,
-          "height": 5,
-          "depth": 0.5
-        },
-        "type": "box"
-      },
-      "color": "#b3a995",
-      "opacity": 1,
-      "display": true,
-      "renderMode": "default",
-      "wireframe": false,
-      "castShadow": true,
-      "receiveShadow": true,
-      "collider": {
-        "enabled": true,
-        "rigidbodyType": "FIXED",
-        "colliderType": "CUBE"
-      },
-      "script": {
-        "identifier": "fashion-atelier-wall-n",
-        "tag": "m1-fashion-secret"
-      }
-    },
-    "fashion-atelier-wall-e": {
-      "name": "Atelier east wall",
-      "id": "fashion-atelier-wall-e",
-      "type": "mesh",
-      "kit": "cyber",
-      "position": {
-        "x": 76.75,
-        "y": 3,
-        "z": -59
-      },
-      "rotation": {
-        "x": 0,
-        "y": 0,
-        "z": 0
-      },
-      "scale": {
-        "x": 1,
-        "y": 1,
-        "z": 1
-      },
-      "geometry": {
-        "sphereParams": {
-          "radius": 1,
-          "widthSegments": 32,
-          "heightSegments": 32
-        },
-        "cylinderParams": {
-          "radiusTop": 1,
-          "radiusBottom": 1,
-          "height": 1,
-          "radialSegments": 32,
-          "heightSegments": 1,
-          "openEnded": false
-        },
-        "boxParams": {
-          "width": 0.5,
-          "height": 5,
-          "depth": 10
-        },
-        "type": "box"
-      },
-      "color": "#b3a995",
-      "opacity": 1,
-      "display": true,
-      "renderMode": "default",
-      "wireframe": false,
-      "castShadow": true,
-      "receiveShadow": true,
-      "collider": {
-        "enabled": true,
-        "rigidbodyType": "FIXED",
-        "colliderType": "CUBE"
-      },
-      "script": {
-        "identifier": "fashion-atelier-wall-e",
-        "tag": "m1-fashion-secret"
-      }
-    },
-    "fashion-atelier-wall-w": {
-      "name": "Atelier west wall (north half; the gap is the entrance)",
-      "id": "fashion-atelier-wall-w",
-      "type": "mesh",
-      "kit": "cyber",
-      "position": {
-        "x": 63.25,
-        "y": 3,
-        "z": -61.25
-      },
-      "rotation": {
-        "x": 0,
-        "y": 0,
-        "z": 0
-      },
-      "scale": {
-        "x": 1,
-        "y": 1,
-        "z": 1
-      },
-      "geometry": {
-        "sphereParams": {
-          "radius": 1,
-          "widthSegments": 32,
-          "heightSegments": 32
-        },
-        "cylinderParams": {
-          "radiusTop": 1,
-          "radiusBottom": 1,
-          "height": 1,
-          "radialSegments": 32,
-          "heightSegments": 1,
-          "openEnded": false
-        },
-        "boxParams": {
-          "width": 0.5,
-          "height": 5,
-          "depth": 5
-        },
-        "type": "box"
-      },
-      "color": "#b3a995",
-      "opacity": 1,
-      "display": true,
-      "renderMode": "default",
-      "wireframe": false,
-      "castShadow": true,
-      "receiveShadow": true,
-      "collider": {
-        "enabled": true,
-        "rigidbodyType": "FIXED",
-        "colliderType": "CUBE"
-      },
-      "script": {
-        "identifier": "fashion-atelier-wall-w",
-        "tag": "m1-fashion-secret"
-      }
-    },
-    "fashion-mannequin-1": {
-      "name": "Mannequin pedestal 1",
-      "id": "fashion-mannequin-1",
-      "type": "mesh",
-      "kit": "cyber",
-      "position": {
-        "x": 70,
-        "y": 1.1,
-        "z": -56.2
-      },
-      "rotation": {
-        "x": 0,
-        "y": 0,
-        "z": 0
-      },
-      "scale": {
-        "x": 1,
-        "y": 1,
-        "z": 1
-      },
-      "geometry": {
-        "sphereParams": {
-          "radius": 1,
-          "widthSegments": 32,
-          "heightSegments": 32
-        },
-        "cylinderParams": {
-          "radiusTop": 0.35,
-          "radiusBottom": 0.35,
-          "height": 1.2,
-          "radialSegments": 16,
-          "heightSegments": 1,
-          "openEnded": false
-        },
-        "boxParams": {
-          "width": 1,
-          "height": 1,
-          "depth": 1
-        },
-        "type": "cylinder"
-      },
-      "color": "#e8e1d2",
-      "opacity": 1,
-      "display": true,
-      "renderMode": "default",
-      "wireframe": false,
-      "castShadow": true,
-      "receiveShadow": true,
-      "collider": {
-        "enabled": true,
-        "rigidbodyType": "FIXED",
-        "colliderType": "CYLINDER"
-      },
-      "script": {
-        "identifier": "fashion-mannequin-1",
-        "tag": "m1-fashion-secret"
-      }
-    },
-    "fashion-mannequin-1-holo": {
-      "name": "Mannequin hologram 1",
-      "id": "fashion-mannequin-1-holo",
-      "type": "mesh",
-      "kit": "cyber",
-      "position": {
-        "x": 70,
-        "y": 2.5,
-        "z": -56.2
-      },
-      "rotation": {
-        "x": 0,
-        "y": 0,
-        "z": 0
-      },
-      "scale": {
-        "x": 1,
-        "y": 1,
-        "z": 1
-      },
-      "geometry": {
-        "sphereParams": {
-          "radius": 0.38,
-          "widthSegments": 32,
-          "heightSegments": 32
-        },
-        "cylinderParams": {
-          "radiusTop": 1,
-          "radiusBottom": 1,
-          "height": 1,
-          "radialSegments": 32,
-          "heightSegments": 1,
-          "openEnded": false
-        },
-        "boxParams": {
-          "width": 1,
-          "height": 1,
-          "depth": 1
-        },
-        "type": "sphere"
-      },
-      "color": "#d98c7a",
-      "opacity": 0.85,
-      "display": true,
-      "renderMode": "default",
-      "wireframe": false,
-      "castShadow": false,
-      "receiveShadow": true,
-      "plugins": [
-        {
-          "id": "HologramPlugin",
-          "color": "#d98c7a",
-          "scanDensity": 36,
-          "scanSpeed": 2,
-          "flickerStrength": 0.05
-        }
-      ],
-      "collider": {
-        "enabled": false,
-        "rigidbodyType": "FIXED",
-        "colliderType": "SPHERE"
-      },
-      "script": {
-        "identifier": "fashion-mannequin-1-holo",
-        "tag": "m1-fashion-secret"
-      }
-    },
-    "fashion-mannequin-2": {
-      "name": "Mannequin pedestal 2",
-      "id": "fashion-mannequin-2",
-      "type": "mesh",
-      "kit": "cyber",
-      "position": {
-        "x": 72.663,
-        "y": 1.1,
-        "z": -58.135
-      },
-      "rotation": {
-        "x": 0,
-        "y": 0,
-        "z": 0
-      },
-      "scale": {
-        "x": 1,
-        "y": 1,
-        "z": 1
-      },
-      "geometry": {
-        "sphereParams": {
-          "radius": 1,
-          "widthSegments": 32,
-          "heightSegments": 32
-        },
-        "cylinderParams": {
-          "radiusTop": 0.35,
-          "radiusBottom": 0.35,
-          "height": 1.2,
-          "radialSegments": 16,
-          "heightSegments": 1,
-          "openEnded": false
-        },
-        "boxParams": {
-          "width": 1,
-          "height": 1,
-          "depth": 1
-        },
-        "type": "cylinder"
-      },
-      "color": "#e8e1d2",
-      "opacity": 1,
-      "display": true,
-      "renderMode": "default",
-      "wireframe": false,
-      "castShadow": true,
-      "receiveShadow": true,
-      "collider": {
-        "enabled": true,
-        "rigidbodyType": "FIXED",
-        "colliderType": "CYLINDER"
-      },
-      "script": {
-        "identifier": "fashion-mannequin-2",
-        "tag": "m1-fashion-secret"
-      }
-    },
-    "fashion-mannequin-2-holo": {
-      "name": "Mannequin hologram 2",
-      "id": "fashion-mannequin-2-holo",
-      "type": "mesh",
-      "kit": "cyber",
-      "position": {
-        "x": 72.663,
-        "y": 2.5,
-        "z": -58.135
-      },
-      "rotation": {
-        "x": 0,
-        "y": 0,
-        "z": 0
-      },
-      "scale": {
-        "x": 1,
-        "y": 1,
-        "z": 1
-      },
-      "geometry": {
-        "sphereParams": {
-          "radius": 0.38,
-          "widthSegments": 32,
-          "heightSegments": 32
-        },
-        "cylinderParams": {
-          "radiusTop": 1,
-          "radiusBottom": 1,
-          "height": 1,
-          "radialSegments": 32,
-          "heightSegments": 1,
-          "openEnded": false
-        },
-        "boxParams": {
-          "width": 1,
-          "height": 1,
-          "depth": 1
-        },
-        "type": "sphere"
-      },
-      "color": "#d98c7a",
-      "opacity": 0.85,
-      "display": true,
-      "renderMode": "default",
-      "wireframe": false,
-      "castShadow": false,
-      "receiveShadow": true,
-      "plugins": [
-        {
-          "id": "HologramPlugin",
-          "color": "#d98c7a",
-          "scanDensity": 36,
-          "scanSpeed": 2,
-          "flickerStrength": 0.05
-        }
-      ],
-      "collider": {
-        "enabled": false,
-        "rigidbodyType": "FIXED",
-        "colliderType": "SPHERE"
-      },
-      "script": {
-        "identifier": "fashion-mannequin-2-holo",
-        "tag": "m1-fashion-secret"
-      }
-    },
-    "fashion-mannequin-3": {
-      "name": "Mannequin pedestal 3",
-      "id": "fashion-mannequin-3",
-      "type": "mesh",
-      "kit": "cyber",
-      "position": {
-        "x": 71.646,
-        "y": 1.1,
-        "z": -61.265
-      },
-      "rotation": {
-        "x": 0,
-        "y": 0,
-        "z": 0
-      },
-      "scale": {
-        "x": 1,
-        "y": 1,
-        "z": 1
-      },
-      "geometry": {
-        "sphereParams": {
-          "radius": 1,
-          "widthSegments": 32,
-          "heightSegments": 32
-        },
-        "cylinderParams": {
-          "radiusTop": 0.35,
-          "radiusBottom": 0.35,
-          "height": 1.2,
-          "radialSegments": 16,
-          "heightSegments": 1,
-          "openEnded": false
-        },
-        "boxParams": {
-          "width": 1,
-          "height": 1,
-          "depth": 1
-        },
-        "type": "cylinder"
-      },
-      "color": "#e8e1d2",
-      "opacity": 1,
-      "display": true,
-      "renderMode": "default",
-      "wireframe": false,
-      "castShadow": true,
-      "receiveShadow": true,
-      "collider": {
-        "enabled": true,
-        "rigidbodyType": "FIXED",
-        "colliderType": "CYLINDER"
-      },
-      "script": {
-        "identifier": "fashion-mannequin-3",
-        "tag": "m1-fashion-secret"
-      }
-    },
-    "fashion-mannequin-3-holo": {
-      "name": "Mannequin hologram 3",
-      "id": "fashion-mannequin-3-holo",
-      "type": "mesh",
-      "kit": "cyber",
-      "position": {
-        "x": 71.646,
-        "y": 2.5,
-        "z": -61.265
-      },
-      "rotation": {
-        "x": 0,
-        "y": 0,
-        "z": 0
-      },
-      "scale": {
-        "x": 1,
-        "y": 1,
-        "z": 1
-      },
-      "geometry": {
-        "sphereParams": {
-          "radius": 0.38,
-          "widthSegments": 32,
-          "heightSegments": 32
-        },
-        "cylinderParams": {
-          "radiusTop": 1,
-          "radiusBottom": 1,
-          "height": 1,
-          "radialSegments": 32,
-          "heightSegments": 1,
-          "openEnded": false
-        },
-        "boxParams": {
-          "width": 1,
-          "height": 1,
-          "depth": 1
-        },
-        "type": "sphere"
-      },
-      "color": "#d98c7a",
-      "opacity": 0.85,
-      "display": true,
-      "renderMode": "default",
-      "wireframe": false,
-      "castShadow": false,
-      "receiveShadow": true,
-      "plugins": [
-        {
-          "id": "HologramPlugin",
-          "color": "#d98c7a",
-          "scanDensity": 36,
-          "scanSpeed": 2,
-          "flickerStrength": 0.05
-        }
-      ],
-      "collider": {
-        "enabled": false,
-        "rigidbodyType": "FIXED",
-        "colliderType": "SPHERE"
-      },
-      "script": {
-        "identifier": "fashion-mannequin-3-holo",
-        "tag": "m1-fashion-secret"
-      }
-    },
-    "fashion-mannequin-4": {
-      "name": "Mannequin pedestal 4",
-      "id": "fashion-mannequin-4",
-      "type": "mesh",
-      "kit": "cyber",
-      "position": {
-        "x": 68.354,
-        "y": 1.1,
-        "z": -61.265
-      },
-      "rotation": {
-        "x": 0,
-        "y": 0,
-        "z": 0
-      },
-      "scale": {
-        "x": 1,
-        "y": 1,
-        "z": 1
-      },
-      "geometry": {
-        "sphereParams": {
-          "radius": 1,
-          "widthSegments": 32,
-          "heightSegments": 32
-        },
-        "cylinderParams": {
-          "radiusTop": 0.35,
-          "radiusBottom": 0.35,
-          "height": 1.2,
-          "radialSegments": 16,
-          "heightSegments": 1,
-          "openEnded": false
-        },
-        "boxParams": {
-          "width": 1,
-          "height": 1,
-          "depth": 1
-        },
-        "type": "cylinder"
-      },
-      "color": "#e8e1d2",
-      "opacity": 1,
-      "display": true,
-      "renderMode": "default",
-      "wireframe": false,
-      "castShadow": true,
-      "receiveShadow": true,
-      "collider": {
-        "enabled": true,
-        "rigidbodyType": "FIXED",
-        "colliderType": "CYLINDER"
-      },
-      "script": {
-        "identifier": "fashion-mannequin-4",
-        "tag": "m1-fashion-secret"
-      }
-    },
-    "fashion-mannequin-4-holo": {
-      "name": "Mannequin hologram 4",
-      "id": "fashion-mannequin-4-holo",
-      "type": "mesh",
-      "kit": "cyber",
-      "position": {
-        "x": 68.354,
-        "y": 2.5,
-        "z": -61.265
-      },
-      "rotation": {
-        "x": 0,
-        "y": 0,
-        "z": 0
-      },
-      "scale": {
-        "x": 1,
-        "y": 1,
-        "z": 1
-      },
-      "geometry": {
-        "sphereParams": {
-          "radius": 0.38,
-          "widthSegments": 32,
-          "heightSegments": 32
-        },
-        "cylinderParams": {
-          "radiusTop": 1,
-          "radiusBottom": 1,
-          "height": 1,
-          "radialSegments": 32,
-          "heightSegments": 1,
-          "openEnded": false
-        },
-        "boxParams": {
-          "width": 1,
-          "height": 1,
-          "depth": 1
-        },
-        "type": "sphere"
-      },
-      "color": "#d98c7a",
-      "opacity": 0.85,
-      "display": true,
-      "renderMode": "default",
-      "wireframe": false,
-      "castShadow": false,
-      "receiveShadow": true,
-      "plugins": [
-        {
-          "id": "HologramPlugin",
-          "color": "#d98c7a",
-          "scanDensity": 36,
-          "scanSpeed": 2,
-          "flickerStrength": 0.05
-        }
-      ],
-      "collider": {
-        "enabled": false,
-        "rigidbodyType": "FIXED",
-        "colliderType": "SPHERE"
-      },
-      "script": {
-        "identifier": "fashion-mannequin-4-holo",
-        "tag": "m1-fashion-secret"
-      }
-    },
-    "fashion-mannequin-5": {
-      "name": "Mannequin pedestal 5",
-      "id": "fashion-mannequin-5",
-      "type": "mesh",
-      "kit": "cyber",
-      "position": {
-        "x": 67.337,
-        "y": 1.1,
-        "z": -58.135
-      },
-      "rotation": {
-        "x": 0,
-        "y": 0,
-        "z": 0
-      },
-      "scale": {
-        "x": 1,
-        "y": 1,
-        "z": 1
-      },
-      "geometry": {
-        "sphereParams": {
-          "radius": 1,
-          "widthSegments": 32,
-          "heightSegments": 32
-        },
-        "cylinderParams": {
-          "radiusTop": 0.35,
-          "radiusBottom": 0.35,
-          "height": 1.2,
-          "radialSegments": 16,
-          "heightSegments": 1,
-          "openEnded": false
-        },
-        "boxParams": {
-          "width": 1,
-          "height": 1,
-          "depth": 1
-        },
-        "type": "cylinder"
-      },
-      "color": "#e8e1d2",
-      "opacity": 1,
-      "display": true,
-      "renderMode": "default",
-      "wireframe": false,
-      "castShadow": true,
-      "receiveShadow": true,
-      "collider": {
-        "enabled": true,
-        "rigidbodyType": "FIXED",
-        "colliderType": "CYLINDER"
-      },
-      "script": {
-        "identifier": "fashion-mannequin-5",
-        "tag": "m1-fashion-secret"
-      }
-    },
-    "fashion-mannequin-5-holo": {
-      "name": "Mannequin hologram 5",
-      "id": "fashion-mannequin-5-holo",
-      "type": "mesh",
-      "kit": "cyber",
-      "position": {
-        "x": 67.337,
-        "y": 2.5,
-        "z": -58.135
-      },
-      "rotation": {
-        "x": 0,
-        "y": 0,
-        "z": 0
-      },
-      "scale": {
-        "x": 1,
-        "y": 1,
-        "z": 1
-      },
-      "geometry": {
-        "sphereParams": {
-          "radius": 0.38,
-          "widthSegments": 32,
-          "heightSegments": 32
-        },
-        "cylinderParams": {
-          "radiusTop": 1,
-          "radiusBottom": 1,
-          "height": 1,
-          "radialSegments": 32,
-          "heightSegments": 1,
-          "openEnded": false
-        },
-        "boxParams": {
-          "width": 1,
-          "height": 1,
-          "depth": 1
-        },
-        "type": "sphere"
-      },
-      "color": "#d98c7a",
-      "opacity": 0.85,
-      "display": true,
-      "renderMode": "default",
-      "wireframe": false,
-      "castShadow": false,
-      "receiveShadow": true,
-      "plugins": [
-        {
-          "id": "HologramPlugin",
-          "color": "#d98c7a",
-          "scanDensity": 36,
-          "scanSpeed": 2,
-          "flickerStrength": 0.05
-        }
-      ],
-      "collider": {
-        "enabled": false,
-        "rigidbodyType": "FIXED",
-        "colliderType": "SPHERE"
-      },
-      "script": {
-        "identifier": "fashion-mannequin-5-holo",
-        "tag": "m1-fashion-secret"
-      }
-    },
-    "fashion-atelier-line": {
-      "name": "Atelier inscription",
-      "id": "fashion-atelier-line",
-      "type": "text",
-      "kit": "cyber",
-      "text": "the atelier is quiet — nothing is hung yet",
-      "position": {
-        "x": 70,
-        "y": 2.6,
-        "z": -63.45
-      },
-      "rotation": {
-        "x": 0,
-        "y": 0,
-        "z": 0
-      },
-      "scale": {
-        "x": 0.6,
-        "y": 0.6,
-        "z": 0.6
-      },
-      "align": "center",
-      "font": "playfair-italic",
-      "lineHeight": 60,
-      "textColor": "#d98c7a",
-      "textTransform": "none",
-      "width": 1600,
-      "opacity": 1
-    },
-    "fashion-atelier-ring": {
-      "name": "Atelier ring (inside)",
-      "id": "fashion-atelier-ring",
-      "type": "mesh",
-      "kit": "cyber",
-      "position": {
-        "x": 70,
-        "y": 0.54,
-        "z": -59
-      },
-      "rotation": {
-        "x": 0,
-        "y": 0,
-        "z": 0
-      },
-      "scale": {
-        "x": 1,
-        "y": 1,
-        "z": 1
-      },
-      "geometry": {
-        "sphereParams": {
-          "radius": 1,
-          "widthSegments": 32,
-          "heightSegments": 32
-        },
-        "cylinderParams": {
-          "radiusTop": 3.6,
-          "radiusBottom": 3.6,
-          "height": 0.02,
           "radialSegments": 48,
           "heightSegments": 1,
           "openEnded": false
@@ -4242,8 +2304,8 @@
         },
         "type": "cylinder"
       },
-      "color": "#d98c7a",
-      "opacity": 0.4,
+      "color": "#2fb8a6",
+      "opacity": 0.32,
       "display": true,
       "renderMode": "default",
       "wireframe": false,
@@ -4252,9 +2314,9 @@
       "plugins": [
         {
           "id": "PulsePlugin",
-          "color": "#ffd2c4",
-          "intensity": 0.6,
-          "speed": 0.9
+          "color": "#9ff5e8",
+          "intensity": 0.7,
+          "speed": 1.6
         }
       ],
       "collider": {
@@ -4263,19 +2325,19 @@
         "colliderType": "CYLINDER"
       },
       "script": {
-        "identifier": "fashion-atelier-ring",
-        "tag": "m1-fashion-reactive"
+        "identifier": "music-stage-wash",
+        "tag": "m1-music-reactive"
       }
     },
-    "fashion-stud-1": {
-      "name": "Floor stud 1",
-      "id": "fashion-stud-1",
+    "music-booth-spot": {
+      "name": "Booth spotlight (lit)",
+      "id": "music-booth-spot",
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": 59.5,
-        "y": 0.505,
-        "z": -49
+        "x": -70,
+        "y": 8.5,
+        "z": -46
       },
       "rotation": {
         "x": 0,
@@ -4294,10 +2356,10 @@
           "heightSegments": 32
         },
         "cylinderParams": {
-          "radiusTop": 0.24,
-          "radiusBottom": 0.24,
-          "height": 0.03,
-          "radialSegments": 12,
+          "radiusTop": 0.6,
+          "radiusBottom": 3.2,
+          "height": 14,
+          "radialSegments": 32,
           "heightSegments": 1,
           "openEnded": false
         },
@@ -4308,239 +2370,178 @@
         },
         "type": "cylinder"
       },
-      "color": "#d98c7a",
-      "opacity": 1,
+      "color": "#cffcf4",
+      "opacity": 0.16,
       "display": true,
       "renderMode": "default",
       "wireframe": false,
       "castShadow": false,
       "receiveShadow": false,
-      "plugins": [
-        {
-          "id": "PulsePlugin",
-          "color": "#d98c7a",
-          "intensity": 0.5,
-          "speed": 0.45
-        }
-      ],
       "collider": {
         "enabled": false,
         "rigidbodyType": "FIXED",
         "colliderType": "CYLINDER"
       },
       "script": {
-        "identifier": "fashion-stud-1",
-        "tag": "m1-fashion-clue"
+        "identifier": "music-booth-spot",
+        "tag": "m1-music-reactive"
       }
     },
-    "fashion-stud-2": {
-      "name": "Floor stud 2",
-      "id": "fashion-stud-2",
-      "type": "mesh",
-      "kit": "cyber",
-      "position": {
-        "x": 58.8,
-        "y": 0.505,
-        "z": -53
-      },
-      "rotation": {
-        "x": 0,
-        "y": 0,
-        "z": 0
-      },
-      "scale": {
-        "x": 1,
-        "y": 1,
-        "z": 1
-      },
-      "geometry": {
-        "sphereParams": {
-          "radius": 1,
-          "widthSegments": 32,
-          "heightSegments": 32
-        },
-        "cylinderParams": {
-          "radiusTop": 0.24,
-          "radiusBottom": 0.24,
-          "height": 0.03,
-          "radialSegments": 12,
-          "heightSegments": 1,
-          "openEnded": false
-        },
-        "boxParams": {
-          "width": 1,
-          "height": 1,
-          "depth": 1
-        },
-        "type": "cylinder"
-      },
-      "color": "#d98c7a",
-      "opacity": 1,
-      "display": true,
-      "renderMode": "default",
-      "wireframe": false,
-      "castShadow": false,
-      "receiveShadow": false,
-      "plugins": [
-        {
-          "id": "PulsePlugin",
-          "color": "#d98c7a",
-          "intensity": 0.5,
-          "speed": 0.45
-        }
-      ],
-      "collider": {
-        "enabled": false,
-        "rigidbodyType": "FIXED",
-        "colliderType": "CYLINDER"
-      },
-      "script": {
-        "identifier": "fashion-stud-2",
-        "tag": "m1-fashion-clue"
-      }
-    },
-    "fashion-stud-3": {
-      "name": "Floor stud 3",
-      "id": "fashion-stud-3",
-      "type": "mesh",
-      "kit": "cyber",
-      "position": {
-        "x": 59.5,
-        "y": 0.505,
-        "z": -56.5
-      },
-      "rotation": {
-        "x": 0,
-        "y": 0,
-        "z": 0
-      },
-      "scale": {
-        "x": 1,
-        "y": 1,
-        "z": 1
-      },
-      "geometry": {
-        "sphereParams": {
-          "radius": 1,
-          "widthSegments": 32,
-          "heightSegments": 32
-        },
-        "cylinderParams": {
-          "radiusTop": 0.24,
-          "radiusBottom": 0.24,
-          "height": 0.03,
-          "radialSegments": 12,
-          "heightSegments": 1,
-          "openEnded": false
-        },
-        "boxParams": {
-          "width": 1,
-          "height": 1,
-          "depth": 1
-        },
-        "type": "cylinder"
-      },
-      "color": "#d98c7a",
-      "opacity": 1,
-      "display": true,
-      "renderMode": "default",
-      "wireframe": false,
-      "castShadow": false,
-      "receiveShadow": false,
-      "plugins": [
-        {
-          "id": "PulsePlugin",
-          "color": "#d98c7a",
-          "intensity": 0.5,
-          "speed": 0.45
-        }
-      ],
-      "collider": {
-        "enabled": false,
-        "rigidbodyType": "FIXED",
-        "colliderType": "CYLINDER"
-      },
-      "script": {
-        "identifier": "fashion-stud-3",
-        "tag": "m1-fashion-clue"
-      }
-    },
-    "fashion-stud-4": {
-      "name": "Floor stud 4",
-      "id": "fashion-stud-4",
-      "type": "mesh",
-      "kit": "cyber",
-      "position": {
-        "x": 62,
-        "y": 0.505,
-        "z": -56.5
-      },
-      "rotation": {
-        "x": 0,
-        "y": 0,
-        "z": 0
-      },
-      "scale": {
-        "x": 1,
-        "y": 1,
-        "z": 1
-      },
-      "geometry": {
-        "sphereParams": {
-          "radius": 1,
-          "widthSegments": 32,
-          "heightSegments": 32
-        },
-        "cylinderParams": {
-          "radiusTop": 0.24,
-          "radiusBottom": 0.24,
-          "height": 0.03,
-          "radialSegments": 12,
-          "heightSegments": 1,
-          "openEnded": false
-        },
-        "boxParams": {
-          "width": 1,
-          "height": 1,
-          "depth": 1
-        },
-        "type": "cylinder"
-      },
-      "color": "#d98c7a",
-      "opacity": 1,
-      "display": true,
-      "renderMode": "default",
-      "wireframe": false,
-      "castShadow": false,
-      "receiveShadow": false,
-      "plugins": [
-        {
-          "id": "PulsePlugin",
-          "color": "#d98c7a",
-          "intensity": 0.5,
-          "speed": 0.45
-        }
-      ],
-      "collider": {
-        "enabled": false,
-        "rigidbodyType": "FIXED",
-        "colliderType": "CYLINDER"
-      },
-      "script": {
-        "identifier": "fashion-stud-4",
-        "tag": "m1-fashion-clue"
-      }
-    },
-    "label-fashion-culture": {
-      "name": "Label Fashion / Culture District",
-      "id": "label-fashion-culture",
+    "label-music-artist": {
+      "name": "Label Placeholder Artist",
+      "id": "label-music-artist",
       "type": "text",
       "kit": "cyber",
-      "text": "FASHION / CULTURE",
+      "text": "Placeholder Artist",
       "position": {
-        "x": 70,
-        "y": 9.2,
-        "z": -13.5
+        "x": -70,
+        "y": 7.2,
+        "z": -54.2
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1.3,
+        "y": 1.3,
+        "z": 1.3
+      },
+      "align": "center",
+      "font": "aeonik-bold",
+      "lineHeight": 60,
+      "textColor": "#f3ead8",
+      "textTransform": "none",
+      "width": 900,
+      "opacity": 1
+    },
+    "music-bench-w": {
+      "name": "Audience bench west",
+      "id": "music-bench-w",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -79,
+        "y": 0.725,
+        "z": -36
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 0.9,
+          "height": 0.45,
+          "depth": 3
+        },
+        "type": "box"
+      },
+      "color": "#c9bfae",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "music-bench-w",
+        "tag": "m1-music-route"
+      }
+    },
+    "music-bench-e": {
+      "name": "Audience bench east",
+      "id": "music-bench-e",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -61,
+        "y": 0.725,
+        "z": -36
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 0.9,
+          "height": 0.45,
+          "depth": 3
+        },
+        "type": "box"
+      },
+      "color": "#c9bfae",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "music-bench-e",
+        "tag": "m1-music-route"
+      }
+    },
+    "label-music": {
+      "name": "Label Music District",
+      "id": "label-music",
+      "type": "text",
+      "kit": "cyber",
+      "text": "MUSIC DISTRICT",
+      "position": {
+        "x": -70,
+        "y": 7,
+        "z": -12.3
       },
       "rotation": {
         "x": 0,
@@ -4555,47 +2556,18 @@
       "align": "center",
       "font": "aeonik-bold",
       "lineHeight": 60,
-      "textColor": "#d98c7a",
+      "textColor": "#2fb8a6",
       "textTransform": "none",
-      "width": 1600,
+      "width": 1400,
       "opacity": 1
     },
-    "label-fashion-culture-brand": {
-      "name": "Label Placeholder Brand",
-      "id": "label-fashion-culture-brand",
-      "type": "text",
-      "kit": "cyber",
-      "text": "Placeholder Fashion / Culture Brand",
-      "position": {
-        "x": 70,
-        "y": 6.1,
-        "z": -40.8
-      },
-      "rotation": {
-        "x": 0,
-        "y": 0,
-        "z": 0
-      },
-      "scale": {
-        "x": 0.9,
-        "y": 0.9,
-        "z": 0.9
-      },
-      "align": "center",
-      "font": "aeonik-bold",
-      "lineHeight": 60,
-      "textColor": "#3a3330",
-      "textTransform": "none",
-      "width": 1800,
-      "opacity": 1
-    },
-    "fashion-gate-hub-post-n": {
+    "music-gate-hub-post-n": {
       "name": "Hub gateway post north",
-      "id": "fashion-gate-hub-post-n",
+      "id": "music-gate-hub-post-n",
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": 61,
+        "x": -61,
         "y": 3,
         "z": -7.9
       },
@@ -4630,7 +2602,7 @@
         },
         "type": "cylinder"
       },
-      "color": "#b3a995",
+      "color": "#c9bfae",
       "opacity": 1,
       "display": true,
       "renderMode": "default",
@@ -4643,17 +2615,17 @@
         "colliderType": "CYLINDER"
       },
       "script": {
-        "identifier": "fashion-gate-hub-post-n",
-        "tag": "m1-fashion-structure"
+        "identifier": "music-gate-hub-post-n",
+        "tag": "m1-music-structure"
       }
     },
-    "fashion-gate-hub-post-s": {
+    "music-gate-hub-post-s": {
       "name": "Hub gateway post south",
-      "id": "fashion-gate-hub-post-s",
+      "id": "music-gate-hub-post-s",
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": 61,
+        "x": -61,
         "y": 3,
         "z": 7.9
       },
@@ -4688,7 +2660,7 @@
         },
         "type": "cylinder"
       },
-      "color": "#b3a995",
+      "color": "#c9bfae",
       "opacity": 1,
       "display": true,
       "renderMode": "default",
@@ -4701,17 +2673,17 @@
         "colliderType": "CYLINDER"
       },
       "script": {
-        "identifier": "fashion-gate-hub-post-s",
-        "tag": "m1-fashion-structure"
+        "identifier": "music-gate-hub-post-s",
+        "tag": "m1-music-structure"
       }
     },
-    "fashion-gate-hub-lintel": {
+    "music-gate-hub-lintel": {
       "name": "Hub gateway lintel",
-      "id": "fashion-gate-hub-lintel",
+      "id": "music-gate-hub-lintel",
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": 61,
+        "x": -61,
         "y": 5.85,
         "z": 0
       },
@@ -4746,7 +2718,7 @@
         },
         "type": "box"
       },
-      "color": "#b3a995",
+      "color": "#c9bfae",
       "opacity": 1,
       "display": true,
       "renderMode": "default",
@@ -4759,24 +2731,24 @@
         "colliderType": "CUBE"
       },
       "script": {
-        "identifier": "fashion-gate-hub-lintel",
-        "tag": "m1-fashion-structure"
+        "identifier": "music-gate-hub-lintel",
+        "tag": "m1-music-structure"
       }
     },
-    "fashion-gate-hub-label": {
+    "music-gate-hub-label": {
       "name": "Label Hub gateway",
-      "id": "fashion-gate-hub-label",
+      "id": "music-gate-hub-label",
       "type": "text",
       "kit": "cyber",
       "text": "HUB",
       "position": {
-        "x": 61.7,
+        "x": -61.7,
         "y": 7.1,
         "z": 0
       },
       "rotation": {
         "x": 0,
-        "y": 1.5708,
+        "y": -1.5708,
         "z": 0
       },
       "scale": {
@@ -4792,248 +2764,14 @@
       "width": 900,
       "opacity": 1
     },
-    "fashion-gate-brand-post-w": {
-      "name": "Brand threshold post west",
-      "id": "fashion-gate-brand-post-w",
+    "music-gate-artist-post-w": {
+      "name": "Stage threshold post west",
+      "id": "music-gate-artist-post-w",
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": 67,
+        "x": -73.5,
         "y": 2.3,
-        "z": -33
-      },
-      "rotation": {
-        "x": 0,
-        "y": 0,
-        "z": 0
-      },
-      "scale": {
-        "x": 1,
-        "y": 1,
-        "z": 1
-      },
-      "geometry": {
-        "sphereParams": {
-          "radius": 1,
-          "widthSegments": 32,
-          "heightSegments": 32
-        },
-        "cylinderParams": {
-          "radiusTop": 0.3,
-          "radiusBottom": 0.3,
-          "height": 3.6,
-          "radialSegments": 12,
-          "heightSegments": 1,
-          "openEnded": false
-        },
-        "boxParams": {
-          "width": 1,
-          "height": 1,
-          "depth": 1
-        },
-        "type": "cylinder"
-      },
-      "color": "#b3a995",
-      "opacity": 1,
-      "display": true,
-      "renderMode": "default",
-      "wireframe": false,
-      "castShadow": true,
-      "receiveShadow": true,
-      "collider": {
-        "enabled": true,
-        "rigidbodyType": "FIXED",
-        "colliderType": "CYLINDER"
-      },
-      "script": {
-        "identifier": "fashion-gate-brand-post-w",
-        "tag": "m1-fashion-structure"
-      }
-    },
-    "fashion-gate-brand-post-e": {
-      "name": "Brand threshold post east",
-      "id": "fashion-gate-brand-post-e",
-      "type": "mesh",
-      "kit": "cyber",
-      "position": {
-        "x": 73,
-        "y": 2.3,
-        "z": -33
-      },
-      "rotation": {
-        "x": 0,
-        "y": 0,
-        "z": 0
-      },
-      "scale": {
-        "x": 1,
-        "y": 1,
-        "z": 1
-      },
-      "geometry": {
-        "sphereParams": {
-          "radius": 1,
-          "widthSegments": 32,
-          "heightSegments": 32
-        },
-        "cylinderParams": {
-          "radiusTop": 0.3,
-          "radiusBottom": 0.3,
-          "height": 3.6,
-          "radialSegments": 12,
-          "heightSegments": 1,
-          "openEnded": false
-        },
-        "boxParams": {
-          "width": 1,
-          "height": 1,
-          "depth": 1
-        },
-        "type": "cylinder"
-      },
-      "color": "#b3a995",
-      "opacity": 1,
-      "display": true,
-      "renderMode": "default",
-      "wireframe": false,
-      "castShadow": true,
-      "receiveShadow": true,
-      "collider": {
-        "enabled": true,
-        "rigidbodyType": "FIXED",
-        "colliderType": "CYLINDER"
-      },
-      "script": {
-        "identifier": "fashion-gate-brand-post-e",
-        "tag": "m1-fashion-structure"
-      }
-    },
-    "fashion-zone-walk-1": {
-      "name": "Zone runway pair 1",
-      "id": "fashion-zone-walk-1",
-      "type": "mesh",
-      "kit": "cyber",
-      "position": {
-        "x": 70,
-        "y": 3,
-        "z": -14
-      },
-      "rotation": {
-        "x": 0,
-        "y": 0,
-        "z": 0
-      },
-      "scale": {
-        "x": 1,
-        "y": 1,
-        "z": 1
-      },
-      "geometry": {
-        "sphereParams": {
-          "radius": 1,
-          "widthSegments": 32,
-          "heightSegments": 32
-        },
-        "cylinderParams": {
-          "radiusTop": 1,
-          "radiusBottom": 1,
-          "height": 1,
-          "radialSegments": 32,
-          "heightSegments": 1,
-          "openEnded": false
-        },
-        "boxParams": {
-          "width": 4,
-          "height": 3,
-          "depth": 6
-        },
-        "type": "box"
-      },
-      "color": "#000000",
-      "opacity": 0,
-      "display": false,
-      "renderMode": "default",
-      "wireframe": false,
-      "castShadow": false,
-      "receiveShadow": false,
-      "collider": {
-        "enabled": true,
-        "rigidbodyType": "FIXED",
-        "colliderType": "CUBE",
-        "isSensor": true
-      },
-      "script": {
-        "identifier": "fashion-zone-walk-1",
-        "tag": "m1-fashion-zone"
-      }
-    },
-    "fashion-zone-walk-2": {
-      "name": "Zone runway pair 2",
-      "id": "fashion-zone-walk-2",
-      "type": "mesh",
-      "kit": "cyber",
-      "position": {
-        "x": 70,
-        "y": 3,
-        "z": -22
-      },
-      "rotation": {
-        "x": 0,
-        "y": 0,
-        "z": 0
-      },
-      "scale": {
-        "x": 1,
-        "y": 1,
-        "z": 1
-      },
-      "geometry": {
-        "sphereParams": {
-          "radius": 1,
-          "widthSegments": 32,
-          "heightSegments": 32
-        },
-        "cylinderParams": {
-          "radiusTop": 1,
-          "radiusBottom": 1,
-          "height": 1,
-          "radialSegments": 32,
-          "heightSegments": 1,
-          "openEnded": false
-        },
-        "boxParams": {
-          "width": 4,
-          "height": 3,
-          "depth": 6
-        },
-        "type": "box"
-      },
-      "color": "#000000",
-      "opacity": 0,
-      "display": false,
-      "renderMode": "default",
-      "wireframe": false,
-      "castShadow": false,
-      "receiveShadow": false,
-      "collider": {
-        "enabled": true,
-        "rigidbodyType": "FIXED",
-        "colliderType": "CUBE",
-        "isSensor": true
-      },
-      "script": {
-        "identifier": "fashion-zone-walk-2",
-        "tag": "m1-fashion-zone"
-      }
-    },
-    "fashion-zone-walk-3": {
-      "name": "Zone runway pair 3",
-      "id": "fashion-zone-walk-3",
-      "type": "mesh",
-      "kit": "cyber",
-      "position": {
-        "x": 70,
-        "y": 3,
         "z": -30
       },
       "rotation": {
@@ -5053,6 +2791,857 @@
           "heightSegments": 32
         },
         "cylinderParams": {
+          "radiusTop": 0.3,
+          "radiusBottom": 0.3,
+          "height": 3.6,
+          "radialSegments": 12,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1,
+          "height": 1,
+          "depth": 1
+        },
+        "type": "cylinder"
+      },
+      "color": "#1c1f26",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CYLINDER"
+      },
+      "script": {
+        "identifier": "music-gate-artist-post-w",
+        "tag": "m1-music-structure"
+      }
+    },
+    "music-gate-artist-post-e": {
+      "name": "Stage threshold post east",
+      "id": "music-gate-artist-post-e",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -66.5,
+        "y": 2.3,
+        "z": -30
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 0.3,
+          "radiusBottom": 0.3,
+          "height": 3.6,
+          "radialSegments": 12,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1,
+          "height": 1,
+          "depth": 1
+        },
+        "type": "cylinder"
+      },
+      "color": "#1c1f26",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CYLINDER"
+      },
+      "script": {
+        "identifier": "music-gate-artist-post-e",
+        "tag": "m1-music-structure"
+      }
+    },
+    "music-club-passage": {
+      "name": "Club passage floor",
+      "id": "music-club-passage",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -65,
+        "y": 0.25,
+        "z": 15
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 6,
+          "height": 0.5,
+          "depth": 6
+        },
+        "type": "box"
+      },
+      "color": "#141720",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "music-club-passage",
+        "tag": "m1-music-route"
+      }
+    },
+    "music-club-passage-wall-w": {
+      "name": "Club passage wall west",
+      "id": "music-club-passage-wall-w",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -68.25,
+        "y": 2.6,
+        "z": 15
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 0.5,
+          "height": 4.2,
+          "depth": 6
+        },
+        "type": "box"
+      },
+      "color": "#1c1f26",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "music-club-passage-wall-w",
+        "tag": "m1-music-structure"
+      }
+    },
+    "music-club-passage-wall-e": {
+      "name": "Club passage wall east",
+      "id": "music-club-passage-wall-e",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -61.75,
+        "y": 2.6,
+        "z": 15
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 0.5,
+          "height": 4.2,
+          "depth": 6
+        },
+        "type": "box"
+      },
+      "color": "#1c1f26",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "music-club-passage-wall-e",
+        "tag": "m1-music-structure"
+      }
+    },
+    "music-club-passage-end": {
+      "name": "Club passage end wall",
+      "id": "music-club-passage-end",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -65,
+        "y": 2.6,
+        "z": 18.25
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 7,
+          "height": 4.2,
+          "depth": 0.5
+        },
+        "type": "box"
+      },
+      "color": "#0f1116",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "music-club-passage-end",
+        "tag": "m1-music-structure"
+      }
+    },
+    "music-club-lintel": {
+      "name": "Club door lintel",
+      "id": "music-club-lintel",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -65,
+        "y": 5.1,
+        "z": 12.3
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 7,
+          "height": 0.8,
+          "depth": 1
+        },
+        "type": "box"
+      },
+      "color": "#1c1f26",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "music-club-lintel",
+        "tag": "m1-music-structure"
+      }
+    },
+    "music-club-label": {
+      "name": "Label The Club door",
+      "id": "music-club-label",
+      "type": "text",
+      "kit": "cyber",
+      "text": "THE CLUB",
+      "position": {
+        "x": -65,
+        "y": 3.8,
+        "z": 12
+      },
+      "rotation": {
+        "x": 0,
+        "y": 3.1416,
+        "z": 0
+      },
+      "scale": {
+        "x": 0.85,
+        "y": 0.85,
+        "z": 0.85
+      },
+      "align": "center",
+      "font": "aeonik-bold",
+      "lineHeight": 60,
+      "textColor": "#2fb8a6",
+      "textTransform": "none",
+      "width": 1200,
+      "opacity": 1
+    },
+    "music-club-door-glow": {
+      "name": "Club door glow (tonight's room)",
+      "id": "music-club-door-glow",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -65,
+        "y": 5.1,
+        "z": 12.3
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 7.1,
+          "height": 0.9,
+          "depth": 1.1
+        },
+        "type": "box"
+      },
+      "color": "#2fb8a6",
+      "opacity": 0.5,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "plugins": [
+        {
+          "id": "FresnelGlowPlugin",
+          "color": "#2fb8a6",
+          "intensity": 1.8,
+          "power": 1.2,
+          "speed": 0.9,
+          "pulse": 1
+        }
+      ],
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "music-club-door-glow",
+        "tag": "m1-music-structure"
+      }
+    },
+    "music-marquee-board": {
+      "name": "Marquee board",
+      "id": "music-marquee-board",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -65,
+        "y": 6.6,
+        "z": 12.2
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 9,
+          "height": 2.2,
+          "depth": 0.3
+        },
+        "type": "box"
+      },
+      "color": "#0f1116",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "music-marquee-board",
+        "tag": "m1-music-structure"
+      }
+    },
+    "music-marquee-title": {
+      "name": "Marquee title",
+      "id": "music-marquee-title",
+      "type": "text",
+      "kit": "cyber",
+      "text": "TONIGHT",
+      "position": {
+        "x": -65,
+        "y": 6.85,
+        "z": 11.95
+      },
+      "rotation": {
+        "x": 0,
+        "y": 3.1416,
+        "z": 0
+      },
+      "scale": {
+        "x": 0.7,
+        "y": 0.7,
+        "z": 0.7
+      },
+      "align": "center",
+      "font": "aeonik-bold",
+      "lineHeight": 60,
+      "textColor": "#ffd98a",
+      "textTransform": "none",
+      "width": 1200,
+      "opacity": 1
+    },
+    "music-marquee-room": {
+      "name": "Marquee room line",
+      "id": "music-marquee-room",
+      "type": "text",
+      "kit": "cyber",
+      "text": "THE CLUB — placeholder listening session",
+      "position": {
+        "x": -65,
+        "y": 5.95,
+        "z": 11.95
+      },
+      "rotation": {
+        "x": 0,
+        "y": 3.1416,
+        "z": 0
+      },
+      "scale": {
+        "x": 0.55,
+        "y": 0.55,
+        "z": 0.55
+      },
+      "align": "center",
+      "font": "aeonik-bold",
+      "lineHeight": 60,
+      "textColor": "#2fb8a6",
+      "textTransform": "none",
+      "width": 1800,
+      "opacity": 1
+    },
+    "music-booth-ramp": {
+      "name": "Booth ramp",
+      "id": "music-booth-ramp",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -79.5,
+        "y": 2.76,
+        "z": -2.429
+      },
+      "rotation": {
+        "x": -0.2861,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 3,
+          "height": 0.5,
+          "depth": 17.72
+        },
+        "type": "box"
+      },
+      "color": "#6b6559",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "music-booth-ramp",
+        "tag": "m1-music-secret"
+      }
+    },
+    "music-booth-ramp-foot": {
+      "name": "Booth ramp foot",
+      "id": "music-booth-ramp-foot",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -79.5,
+        "y": 0.25,
+        "z": -12.5
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 3,
+          "height": 0.5,
+          "depth": 3
+        },
+        "type": "box"
+      },
+      "color": "#1f2229",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "music-booth-ramp-foot",
+        "tag": "m1-music-secret"
+      }
+    },
+    "music-booth-deck": {
+      "name": "Sound booth deck",
+      "id": "music-booth-deck",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -79.5,
+        "y": 5.25,
+        "z": 9
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 7,
+          "height": 0.5,
+          "depth": 6
+        },
+        "type": "box"
+      },
+      "color": "#1c1f26",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "music-booth-deck",
+        "tag": "m1-music-secret"
+      }
+    },
+    "music-booth-post": {
+      "name": "Sound booth post",
+      "id": "music-booth-post",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -82,
+        "y": 2.5,
+        "z": 11.5
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 0.4,
+          "radiusBottom": 0.4,
+          "height": 5,
+          "radialSegments": 12,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1,
+          "height": 1,
+          "depth": 1
+        },
+        "type": "cylinder"
+      },
+      "color": "#1c1f26",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CYLINDER"
+      },
+      "script": {
+        "identifier": "music-booth-post",
+        "tag": "m1-music-secret"
+      }
+    },
+    "music-booth-desk": {
+      "name": "Mixing desk",
+      "id": "music-booth-desk",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -79.5,
+        "y": 5.95,
+        "z": 10.6
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
           "radiusTop": 1,
           "radiusBottom": 1,
           "height": 1,
@@ -5062,8 +3651,523 @@
         },
         "boxParams": {
           "width": 4,
+          "height": 0.9,
+          "depth": 1
+        },
+        "type": "box"
+      },
+      "color": "#6b6559",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "music-booth-desk",
+        "tag": "m1-music-secret"
+      }
+    },
+    "music-booth-console": {
+      "name": "Console surface",
+      "id": "music-booth-console",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -79.5,
+        "y": 6.46,
+        "z": 10.6
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 3.6,
+          "height": 0.12,
+          "depth": 0.8
+        },
+        "type": "box"
+      },
+      "color": "#2fb8a6",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": true,
+      "plugins": [
+        {
+          "id": "HologramPlugin",
+          "color": "#2fb8a6",
+          "scanDensity": 30,
+          "scanSpeed": 2,
+          "flickerStrength": 0.04
+        }
+      ],
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "music-booth-console",
+        "tag": "m1-music-secret"
+      }
+    },
+    "music-booth-console-lit": {
+      "name": "Console surface (live)",
+      "id": "music-booth-console-lit",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -79.5,
+        "y": 6.5,
+        "z": 10.6
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 3.7,
+          "height": 0.16,
+          "depth": 0.9
+        },
+        "type": "box"
+      },
+      "color": "#9ff5e8",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "plugins": [
+        {
+          "id": "FresnelGlowPlugin",
+          "color": "#2fb8a6",
+          "intensity": 2,
+          "power": 1.2,
+          "speed": 2,
+          "pulse": 1
+        }
+      ],
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "music-booth-console-lit",
+        "tag": "m1-music-reactive"
+      }
+    },
+    "music-booth-rail": {
+      "name": "Booth rail",
+      "id": "music-booth-rail",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -79.5,
+        "y": 6,
+        "z": 12
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 7,
+          "height": 1,
+          "depth": 0.15
+        },
+        "type": "box"
+      },
+      "color": "#6b6559",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "music-booth-rail",
+        "tag": "m1-music-secret"
+      }
+    },
+    "music-stud-1": {
+      "name": "Floor stud 1",
+      "id": "music-stud-1",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -76,
+        "y": 0.505,
+        "z": -2
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 0.24,
+          "radiusBottom": 0.24,
+          "height": 0.03,
+          "radialSegments": 12,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1,
+          "height": 1,
+          "depth": 1
+        },
+        "type": "cylinder"
+      },
+      "color": "#2fb8a6",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "plugins": [
+        {
+          "id": "PulsePlugin",
+          "color": "#2fb8a6",
+          "intensity": 0.5,
+          "speed": 0.45
+        }
+      ],
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CYLINDER"
+      },
+      "script": {
+        "identifier": "music-stud-1",
+        "tag": "m1-music-clue"
+      }
+    },
+    "music-stud-2": {
+      "name": "Floor stud 2",
+      "id": "music-stud-2",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -76.5,
+        "y": 0.505,
+        "z": -6
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 0.24,
+          "radiusBottom": 0.24,
+          "height": 0.03,
+          "radialSegments": 12,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1,
+          "height": 1,
+          "depth": 1
+        },
+        "type": "cylinder"
+      },
+      "color": "#2fb8a6",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "plugins": [
+        {
+          "id": "PulsePlugin",
+          "color": "#2fb8a6",
+          "intensity": 0.5,
+          "speed": 0.45
+        }
+      ],
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CYLINDER"
+      },
+      "script": {
+        "identifier": "music-stud-2",
+        "tag": "m1-music-clue"
+      }
+    },
+    "music-stud-3": {
+      "name": "Floor stud 3",
+      "id": "music-stud-3",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -77.5,
+        "y": 0.505,
+        "z": -10
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 0.24,
+          "radiusBottom": 0.24,
+          "height": 0.03,
+          "radialSegments": 12,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1,
+          "height": 1,
+          "depth": 1
+        },
+        "type": "cylinder"
+      },
+      "color": "#2fb8a6",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "plugins": [
+        {
+          "id": "PulsePlugin",
+          "color": "#2fb8a6",
+          "intensity": 0.5,
+          "speed": 0.45
+        }
+      ],
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CYLINDER"
+      },
+      "script": {
+        "identifier": "music-stud-3",
+        "tag": "m1-music-clue"
+      }
+    },
+    "music-stud-4": {
+      "name": "Floor stud 4",
+      "id": "music-stud-4",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -79.5,
+        "y": 0.505,
+        "z": -12.6
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 0.24,
+          "radiusBottom": 0.24,
+          "height": 0.03,
+          "radialSegments": 12,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1,
+          "height": 1,
+          "depth": 1
+        },
+        "type": "cylinder"
+      },
+      "color": "#2fb8a6",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "plugins": [
+        {
+          "id": "PulsePlugin",
+          "color": "#2fb8a6",
+          "intensity": 0.5,
+          "speed": 0.45
+        }
+      ],
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CYLINDER"
+      },
+      "script": {
+        "identifier": "music-stud-4",
+        "tag": "m1-music-clue"
+      }
+    },
+    "music-zone-walk-south": {
+      "name": "Zone processional south pair",
+      "id": "music-zone-walk-south",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -70,
+        "y": 2,
+        "z": -16
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 6,
           "height": 3,
-          "depth": 5
+          "depth": 6
         },
         "type": "box"
       },
@@ -5081,19 +4185,19 @@
         "isSensor": true
       },
       "script": {
-        "identifier": "fashion-zone-walk-3",
-        "tag": "m1-fashion-zone"
+        "identifier": "music-zone-walk-south",
+        "tag": "m1-music-zone"
       }
     },
-    "fashion-zone-loggia": {
-      "name": "Zone loggia",
-      "id": "fashion-zone-loggia",
+    "music-zone-walk-north": {
+      "name": "Zone processional north pair",
+      "id": "music-zone-walk-north",
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": 70,
-        "y": 2.5,
-        "z": -47.5
+        "x": -70,
+        "y": 2,
+        "z": -24
       },
       "rotation": {
         "x": 0,
@@ -5120,68 +4224,9 @@
           "openEnded": false
         },
         "boxParams": {
-          "width": 16,
-          "height": 4,
-          "depth": 11
-        },
-        "type": "box"
-      },
-      "color": "#000000",
-      "opacity": 0,
-      "display": false,
-      "renderMode": "default",
-      "wireframe": false,
-      "castShadow": false,
-      "receiveShadow": false,
-      "collider": {
-        "enabled": true,
-        "rigidbodyType": "FIXED",
-        "colliderType": "CUBE",
-        "isSensor": true
-      },
-      "script": {
-        "identifier": "fashion-zone-loggia",
-        "tag": "m1-fashion-zone"
-      }
-    },
-    "fashion-zone-roof": {
-      "name": "Zone roof terrace",
-      "id": "fashion-zone-roof",
-      "type": "mesh",
-      "kit": "cyber",
-      "position": {
-        "x": 72,
-        "y": 8.6,
-        "z": -47.5
-      },
-      "rotation": {
-        "x": 0,
-        "y": 0,
-        "z": 0
-      },
-      "scale": {
-        "x": 1,
-        "y": 1,
-        "z": 1
-      },
-      "geometry": {
-        "sphereParams": {
-          "radius": 1,
-          "widthSegments": 32,
-          "heightSegments": 32
-        },
-        "cylinderParams": {
-          "radiusTop": 1,
-          "radiusBottom": 1,
-          "height": 1,
-          "radialSegments": 32,
-          "heightSegments": 1,
-          "openEnded": false
-        },
-        "boxParams": {
-          "width": 28,
+          "width": 6,
           "height": 3,
-          "depth": 13
+          "depth": 6
         },
         "type": "box"
       },
@@ -5199,19 +4244,19 @@
         "isSensor": true
       },
       "script": {
-        "identifier": "fashion-zone-roof",
-        "tag": "m1-fashion-zone"
+        "identifier": "music-zone-walk-north",
+        "tag": "m1-music-zone"
       }
     },
-    "fashion-zone-atelier": {
-      "name": "Zone atelier",
-      "id": "fashion-zone-atelier",
+    "music-zone-booth": {
+      "name": "Zone sound booth deck",
+      "id": "music-zone-booth",
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": 70,
-        "y": 2.5,
-        "z": -58.75
+        "x": -79.5,
+        "y": 7,
+        "z": 9
       },
       "rotation": {
         "x": 0,
@@ -5238,9 +4283,9 @@
           "openEnded": false
         },
         "boxParams": {
-          "width": 13,
-          "height": 4,
-          "depth": 9.5
+          "width": 7,
+          "height": 3,
+          "depth": 6
         },
         "type": "box"
       },
@@ -5258,17 +4303,76 @@
         "isSensor": true
       },
       "script": {
-        "identifier": "fashion-zone-atelier",
-        "tag": "m1-fashion-zone"
+        "identifier": "music-zone-booth",
+        "tag": "m1-music-zone"
       }
     },
-    "portal-fashion-hub": {
-      "name": "Portal Fashion / Culture District → Hub",
-      "id": "portal-fashion-hub",
+    "music-threshold-club": {
+      "name": "Threshold: The Club on the web",
+      "id": "music-threshold-club",
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": 61,
+        "x": -65,
+        "y": 2,
+        "z": 10.5
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 8,
+          "height": 3,
+          "depth": 7
+        },
+        "type": "box"
+      },
+      "color": "#000000",
+      "opacity": 0,
+      "display": false,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE",
+        "isSensor": true
+      },
+      "script": {
+        "identifier": "music-threshold-club",
+        "tag": "m1-music-zone"
+      }
+    },
+    "portal-music-hub": {
+      "name": "Portal Music District → Hub",
+      "id": "portal-music-hub",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -61,
         "y": 2,
         "z": 0
       },
@@ -5317,19 +4421,78 @@
         "isSensor": true
       },
       "script": {
-        "identifier": "portal-fashion-hub",
+        "identifier": "portal-music-hub",
         "tag": "m0-portal"
       }
     },
-    "portal-fashion-brand": {
-      "name": "Portal Fashion / Culture District → Placeholder Brand",
-      "id": "portal-fashion-brand",
+    "portal-music-club": {
+      "name": "Portal Music District → The Club",
+      "id": "portal-music-club",
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": 70,
+        "x": -65,
         "y": 2,
-        "z": -33
+        "z": 16
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 5,
+          "height": 3,
+          "depth": 1
+        },
+        "type": "box"
+      },
+      "color": "#2fb8a6",
+      "opacity": 0.22,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE",
+        "isSensor": true
+      },
+      "script": {
+        "identifier": "portal-music-club",
+        "tag": "m0-portal"
+      }
+    },
+    "portal-music-artist": {
+      "name": "Portal Music District → Placeholder Artist",
+      "id": "portal-music-artist",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -70,
+        "y": 2,
+        "z": -30
       },
       "rotation": {
         "x": 0,
@@ -5362,7 +4525,7 @@
         },
         "type": "box"
       },
-      "color": "#d98c7a",
+      "color": "#2fb8a6",
       "opacity": 0.22,
       "display": true,
       "renderMode": "default",
@@ -5376,7 +4539,7 @@
         "isSensor": true
       },
       "script": {
-        "identifier": "portal-fashion-brand",
+        "identifier": "portal-music-artist",
         "tag": "m0-portal"
       }
     }

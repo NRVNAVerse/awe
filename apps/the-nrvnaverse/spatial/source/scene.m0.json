@@ -9690,6 +9690,65 @@
         "tag": "m1-music-zone"
       }
     },
+    "music-threshold-club": {
+      "name": "Threshold: The Club on the web",
+      "id": "music-threshold-club",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -65,
+        "y": 2,
+        "z": 10.5
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 8,
+          "height": 3,
+          "depth": 7
+        },
+        "type": "box"
+      },
+      "color": "#000000",
+      "opacity": 0,
+      "display": false,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE",
+        "isSensor": true
+      },
+      "script": {
+        "identifier": "music-threshold-club",
+        "tag": "m1-music-zone"
+      }
+    },
     "portal-music-hub": {
       "name": "Portal Music District → Hub",
       "id": "portal-music-hub",
@@ -15126,6 +15185,65 @@
         "tag": "m1-fashion-zone"
       }
     },
+    "fashion-threshold-brand": {
+      "name": "Threshold: the brand on the web",
+      "id": "fashion-threshold-brand",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 70,
+        "y": 2,
+        "z": -50.5
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 10,
+          "height": 3,
+          "depth": 4
+        },
+        "type": "box"
+      },
+      "color": "#000000",
+      "opacity": 0,
+      "display": false,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE",
+        "isSensor": true
+      },
+      "script": {
+        "identifier": "fashion-threshold-brand",
+        "tag": "m1-fashion-zone"
+      }
+    },
     "portal-fashion-hub": {
       "name": "Portal Fashion / Culture District → Hub",
       "id": "portal-fashion-hub",
@@ -19189,6 +19307,65 @@
       },
       "script": {
         "identifier": "club-zone-stage",
+        "tag": "m1-club-zone"
+      }
+    },
+    "club-threshold-bar": {
+      "name": "Threshold: this room on the web (bar)",
+      "id": "club-threshold-bar",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -62.4,
+        "y": 2,
+        "z": 71
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 2.6,
+          "height": 3,
+          "depth": 9
+        },
+        "type": "box"
+      },
+      "color": "#000000",
+      "opacity": 0,
+      "display": false,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE",
+        "isSensor": true
+      },
+      "script": {
+        "identifier": "club-threshold-bar",
         "tag": "m1-club-zone"
       }
     },

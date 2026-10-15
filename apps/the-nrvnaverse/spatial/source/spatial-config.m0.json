@@ -189,6 +189,7 @@
         "music-zone-walk-south",
         "music-zone-walk-north",
         "music-zone-booth",
+        "music-threshold-club",
         "portal-music-hub",
         "portal-music-club",
         "portal-music-artist"
@@ -286,6 +287,7 @@
         "fashion-zone-loggia",
         "fashion-zone-roof",
         "fashion-zone-atelier",
+        "fashion-threshold-brand",
         "portal-fashion-hub",
         "portal-fashion-brand"
       ]
@@ -367,6 +369,7 @@
         "club-booth-3-table",
         "club-zone-floor",
         "club-zone-stage",
+        "club-threshold-bar",
         "portal-club-music"
       ]
     }
@@ -1015,5 +1018,22 @@
         ]
       }
     ]
-  }
+  },
+  "thresholds": [
+    {
+      "componentId": "club-threshold-bar",
+      "chunkKey": "music-club",
+      "destinationId": "dst_gqq90k2404cy9nf0"
+    },
+    {
+      "componentId": "fashion-threshold-brand",
+      "chunkKey": "fashion-culture",
+      "destinationId": "dst_tgfh5h5jvm3wj0w7"
+    },
+    {
+      "componentId": "music-threshold-club",
+      "chunkKey": "music",
+      "destinationId": "dst_gqq90k2404cy9nf0"
+    }
+  ]
 }

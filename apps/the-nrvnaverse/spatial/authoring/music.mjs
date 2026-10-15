@@ -21,6 +21,7 @@ import { PALETTE } from "./hub.mjs";
 /** Stable destination ids the Music arrival beats bind to (references; identity lives in the manifest). */
 export const MUSIC_DISTRICT_ID = "dst_gm3xs4a3tws7bgh3";
 export const PLACEHOLDER_ARTIST_ID = "dst_1qtfn9qjg9kf6jyd";
+export const CLUB_DESTINATION_ID = "dst_gqq90k2404cy9nf0";
 
 /**
  * Venue complex (D-017 / D-018): the Music District floor is the CONCOURSE; each venue room is a
@@ -261,6 +262,11 @@ export function composeMusic() {
   items.push(zone("music-zone-walk-south", v(CX, DATUM + 1.5, -16), [6, 3, 6], { name: "Zone processional south pair", tag: T.zone }));
   items.push(zone("music-zone-walk-north", v(CX, DATUM + 1.5, -24), [6, 3, 6], { name: "Zone processional north pair", tag: T.zone }));
   items.push(zone("music-zone-booth", v(CX - 9.5, DATUM + 6.5, 9), [7, 3, 6], { name: "Zone sound booth deck", tag: T.zone }));
+  // WEB↔SPATIAL threshold (D-020): the concourse floor in front of the Club door and under the
+  // marquee — where a visitor stops to read what is on tonight — surfaces The Club's canonical web
+  // context ("see what's on before you go in"). Browser-tuned 2026-10-15: inside the passage the
+  // strip was crossed in 0.2 s on the way to the portal; the door-front strip is where people stand.
+  items.push(zone("music-threshold-club", v(DOOR_X, DATUM + 1.5, 10.5), [8, 3, 7], { name: "Threshold: The Club on the web", tag: T.zone }));
 
   // --- 6. Portal sensors last (ids and sensor semantics unchanged from M0; the Club door is new) ----
   items.push(portal("portal-music-hub", "Portal Music District → Hub", v(CX + 9, 2, 0), [1, 3, 14], PALETTE.warmLight));
@@ -307,5 +313,10 @@ export function composeMusic() {
     { afterSeconds: 0, hide: ["music-fin-1-blade", "music-fin-2-blade", "music-fin-3-blade", "music-fin-4-blade", "music-fin-5-blade", "music-stage-wash"] },
   ]);
 
-  return { components, componentIds: Object.keys(components), experience: x.build() };
+  return {
+    components,
+    componentIds: Object.keys(components),
+    experience: x.build(),
+    thresholds: [{ sensorId: "music-threshold-club", destinationId: CLUB_DESTINATION_ID }],
+  };
 }

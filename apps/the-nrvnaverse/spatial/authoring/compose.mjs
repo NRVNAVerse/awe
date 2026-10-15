@@ -49,11 +49,18 @@ export function compose() {
   /** @type {{ hidden: Array<{ chunkKey: string; componentIds: string[] }>; zones: Array<Record<string, unknown> & { chunkKey: string }>; arrivals: Array<Record<string, unknown> & { destinationId: string }> }} */
   const experience = { hidden: [...(config.experience?.hidden ?? [])], zones: [...(config.experience?.zones ?? [])], arrivals: [...(config.experience?.arrivals ?? [])] };
   let experienceTouched = false;
+  /** @type {Array<{ componentId: string; chunkKey: string; destinationId: string }>} */
+  let thresholds = [...(config.thresholds ?? [])];
+  let thresholdsTouched = false;
 
   for (const chunk of config.chunks) {
     const composer = COMPOSERS[chunk.key];
     if (!composer) continue;
-    const { components, componentIds, experience: composed } = composer();
+    const { components, componentIds, experience: composed, thresholds: composedThresholds } = composer();
+    if (composedThresholds) {
+      thresholdsTouched = true;
+      thresholds = thresholds.filter((t) => t.chunkKey !== chunk.key).concat(composedThresholds.map((t) => ({ componentId: t.sensorId, chunkKey: chunk.key, destinationId: t.destinationId })));
+    }
     if (composed) {
       experienceTouched = true;
       const chunkOf = (/** @type {string} */ destinationId) => placementChunk.get(destinationId);
@@ -93,6 +100,10 @@ export function compose() {
       zones: experience.zones.sort(byId),
       arrivals: experience.arrivals.sort(byId),
     };
+  }
+
+  if (thresholdsTouched) {
+    config.thresholds = thresholds.sort((a, b) => (a.componentId < b.componentId ? -1 : a.componentId > b.componentId ? 1 : 0));
   }
 
   const nextSceneText = serialize(scene);
