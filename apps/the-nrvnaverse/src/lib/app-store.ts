@@ -18,6 +18,7 @@ import {
 import { FetchDestinationSource, type DestinationDataSource } from "@/lib/destination-source";
 import { ExperienceController, type ExperienceTrigger } from "@/lib/experience/experience-controller";
 import { ThresholdController } from "@/lib/web/threshold-controller";
+import { DiscoveryMemory } from "@/lib/discovery/discovery-memory";
 import { resetWebContext, setThresholdContext } from "@/lib/web/web-context-store";
 import { AweSpatialAdapter } from "@/lib/spatial/awe-spatial-adapter";
 import { FetchChunkDataSource, type ChunkDataSource } from "@/lib/spatial/chunk-data-source";
@@ -49,8 +50,10 @@ export interface SpatialDiagnostics {
   lastExperience: ExperienceTrigger | null;
   /** WEB↔SPATIAL thresholds currently bound (those owned by the active chunk). */
   boundThresholds: number;
+  /** Sigils remembered by this browser (discovery memory; diagnostics only). */
+  remembered: number;
 }
-const IDLE_DIAGNOSTICS: SpatialDiagnostics = { adapterName: null, phase: "idle", destinationId: null, runtimeReady: false, activeChunkKey: null, boundPortals: 0, lastPortal: null, boundZones: 0, lastExperience: null, boundThresholds: 0 };
+const IDLE_DIAGNOSTICS: SpatialDiagnostics = { adapterName: null, phase: "idle", destinationId: null, runtimeReady: false, activeChunkKey: null, boundPortals: 0, lastPortal: null, boundZones: 0, lastExperience: null, boundThresholds: 0, remembered: 0 };
 export const spatialDiagnostics = new Store<SpatialDiagnostics>(IDLE_DIAGNOSTICS);
 
 /**
@@ -72,6 +75,8 @@ export interface BootOptions {
   createRuntime?: () => Promise<BootableRuntime>;
   /** Defaults to `window.location.search`. */
   search?: string;
+  /** Discovery-memory storage (defaults to the browser's localStorage; `null` = this visit only). */
+  discoveryStorage?: ConstructorParameters<typeof DiscoveryMemory>[0]["storage"];
 }
 
 async function createAweRuntime(): Promise<BootableRuntime> {
@@ -109,6 +114,7 @@ interface AppRun {
   portals: PortalController | null;
   experience: ExperienceController | null;
   thresholds: ThresholdController | null;
+  discovery: DiscoveryMemory | null;
   adapter: AweSpatialAdapter | null;
   unsubscribePhase: (() => void) | null;
   popstateBound: boolean;
@@ -186,6 +192,7 @@ function createRun(): AppRun {
     portals: null,
     experience: null,
     thresholds: null,
+    discovery: null,
     adapter: null,
     unsubscribePhase: null,
     popstateBound: false,
@@ -236,8 +243,18 @@ async function executeBoot(current: AppRun, options: BootOptions): Promise<void>
     // Physical portal sensor → stable id → the SAME travel entry point the directory uses.
     current.portals = new PortalController({ portals: spatialIndex.portals, sensors: bootRuntime, onPortalEntered: (destinationId) => travelToDestination(destinationId) });
     // Experience bindings (zones, arrival beats, hidden-on-stage sets) — visibility only, never travel.
-    current.experience = new ExperienceController({ experience: spatialIndex.experience, runtime: bootRuntime, onTrigger: () => refreshDiagnostics() });
-    current.experience.install();
+    const experience = new ExperienceController({
+      experience: spatialIndex.experience,
+      runtime: bootRuntime,
+      onTrigger: (trigger) => {
+        current.discovery?.onTrigger(trigger);
+        refreshDiagnostics();
+      },
+    });
+    current.experience = experience;
+    experience.install();
+    // Discovery memory: finds remembered in this browser; answers through the same visibility effects.
+    current.discovery = new DiscoveryMemory({ storage: options.discoveryStorage, applyEffect: (effect, label) => experience.applyEffect(effect, label), onFound: () => refreshDiagnostics() });
     // WEB↔SPATIAL thresholds (D-020): a sensor → the stable id whose canonical web context the shell surfaces. Never travel.
     current.thresholds = new ThresholdController({ thresholds: spatialIndex.thresholds, sensors: bootRuntime, onThreshold: (destinationId, trigger) => setThresholdContext(destinationId, trigger?.componentId ?? null) });
 
@@ -328,6 +345,7 @@ function syncExperience(destinationId: string | null, fromChunkKey: string | nul
   current?.experience?.activate(chunkKey);
   current?.thresholds?.activate(chunkKey);
   if (destinationId && chunkKey) current?.experience?.onArrival({ destinationId, chunkKey, fromChunkKey });
+  if (chunkKey) current?.discovery?.onArrival(chunkKey);
 }
 
 /**
@@ -354,6 +372,7 @@ function refreshDiagnostics(phase?: SpatialTravelPhase, destinationId?: string |
     boundZones: current?.experience?.boundZoneIds.length ?? 0,
     lastExperience: current?.experience?.lastTrigger ?? null,
     boundThresholds: current?.thresholds?.boundComponentIds.length ?? 0,
+    remembered: current?.discovery?.remembered.length ?? 0,
   }));
 }
 
@@ -470,6 +489,8 @@ async function teardown(current: AppRun, options: { keepAppState: boolean }): Pr
   current.experience = null;
   attempt("dispose thresholds", () => current.thresholds?.dispose());
   current.thresholds = null;
+  attempt("dispose discovery", () => current.discovery?.dispose());
+  current.discovery = null;
   attempt("dispose adapter", () => current.adapter?.dispose());
   current.adapter = null;
   await attemptAsync("dispose orchestrator", () => current.orchestrator?.dispose());
@@ -523,6 +544,11 @@ export function currentExperience(): ExperienceController | null {
 /** Diagnostics/tests/UI: the threshold controller of the booted app. */
 export function currentThresholds(): ThresholdController | null {
   return run?.thresholds ?? null;
+}
+
+/** Diagnostics/tests: the discovery memory of the booted app. */
+export function currentDiscovery(): DiscoveryMemory | null {
+  return run?.discovery ?? null;
 }
 
 /** Test-only: full teardown of whatever run exists (booting, running or disposing) and store reset. */

@@ -236,7 +236,7 @@ describe("generated spatial index → experience bindings (runtime parser, addit
 
   it("the store hands the parsed experience bindings to the experience controller and declares the hidden sets before any chunk is staged", () => {
     const store = readFileSync(join(APP_ROOT, "src/lib/app-store.ts"), "utf8");
-    expect(store).toMatch(/new ExperienceController\(\{ experience: spatialIndex\.experience, runtime: bootRuntime, onTrigger: \(\) => refreshDiagnostics\(\) \}\)/);
-    expect(store.indexOf("current.experience.install()")).toBeLessThan(store.indexOf("await bootRuntime.init("));
+    expect(store).toMatch(/new ExperienceController\(\{\s*experience: spatialIndex\.experience,\s*runtime: bootRuntime,/);
+    expect(store.indexOf("experience.install()")).toBeLessThan(store.indexOf("await bootRuntime.init("));
   });
 });

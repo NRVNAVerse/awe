@@ -42,6 +42,17 @@ export function SpatialPanel({ state }: { state: AppState }) {
         active chunk: <code data-active-chunk={diagnostics.activeChunkKey ?? ""}>{diagnostics.activeChunkKey ?? "—"}</code>
       </p>
       <p className="mt-1">
+        experience: zones <code data-bound-zones={diagnostics.boundZones}>{diagnostics.boundZones}</code> · thresholds{" "}
+        <code data-bound-thresholds={diagnostics.boundThresholds}>{diagnostics.boundThresholds}</code> · remembered{" "}
+        <code data-remembered={diagnostics.remembered}>{diagnostics.remembered}</code>
+        {diagnostics.lastExperience ? (
+          <>
+            {" "}
+            · last: <code data-last-experience={`${diagnostics.lastExperience.kind}:${diagnostics.lastExperience.id}`}>{diagnostics.lastExperience.kind} {diagnostics.lastExperience.id}</code>
+          </>
+        ) : null}
+      </p>
+      <p className="mt-1">
         bound portals: <code data-bound-portals={diagnostics.boundPortals}>{diagnostics.boundPortals}</code>
         {diagnostics.lastPortal ? (
           <>

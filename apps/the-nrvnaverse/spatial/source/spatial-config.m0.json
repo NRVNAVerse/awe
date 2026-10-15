@@ -78,9 +78,12 @@
         "hub-dormant-1-post-w",
         "hub-dormant-1-post-e",
         "hub-dormant-1-inset",
+        "hub-dormant-1-inset-lit",
         "hub-dormant-2-post-w",
         "hub-dormant-2-post-e",
         "hub-dormant-2-inset",
+        "hub-dormant-2-inset-lit",
+        "hub-memory-line",
         "hub-gate-music-post-n",
         "hub-gate-music-post-s",
         "hub-gate-music-lintel",
@@ -103,6 +106,8 @@
         "hub-stud-7",
         "hub-core-mirror",
         "hub-core-line",
+        "hub-core-sigil",
+        "hub-core-sigil-lit",
         "hub-core-halo",
         "hub-core-well",
         "hub-zone-overlook",
@@ -182,6 +187,8 @@
         "music-booth-console",
         "music-booth-console-lit",
         "music-booth-rail",
+        "music-booth-sigil",
+        "music-booth-sigil-lit",
         "music-stud-1",
         "music-stud-2",
         "music-stud-3",
@@ -268,6 +275,8 @@
         "fashion-mannequin-5",
         "fashion-mannequin-5-holo",
         "fashion-atelier-line",
+        "fashion-atelier-sigil",
+        "fashion-atelier-sigil-lit",
         "fashion-atelier-ring",
         "fashion-stud-1",
         "fashion-stud-2",
@@ -535,7 +544,8 @@
           "fashion-frame-3-lit",
           "fashion-roof-lamp-lit",
           "fashion-roof-lamp-pool",
-          "fashion-atelier-ring"
+          "fashion-atelier-ring",
+          "fashion-atelier-sigil-lit"
         ]
       },
       {
@@ -549,7 +559,11 @@
           "hub-return-music-glow",
           "hub-return-fashion-glow",
           "hub-core-halo",
-          "hub-core-well"
+          "hub-core-well",
+          "hub-core-sigil-lit",
+          "hub-dormant-1-inset-lit",
+          "hub-dormant-2-inset-lit",
+          "hub-memory-line"
         ]
       },
       {
@@ -566,7 +580,8 @@
           "music-fin-5-blade",
           "music-stage-wash",
           "music-booth-spot",
-          "music-booth-console-lit"
+          "music-booth-console-lit",
+          "music-booth-sigil-lit"
         ]
       },
       {

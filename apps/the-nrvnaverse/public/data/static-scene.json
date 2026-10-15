@@ -3572,6 +3572,74 @@
         "tag": "m1-hub-structure"
       }
     },
+    "hub-dormant-1-inset-lit": {
+      "name": "Dormant frame 1 inset (remembering)",
+      "id": "hub-dormant-1-inset-lit",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -16,
+        "y": 10.7,
+        "z": -38.45
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 2.5,
+          "height": 3.9,
+          "depth": 0.12
+        },
+        "type": "box"
+      },
+      "color": "#f5b24a",
+      "opacity": 0.7,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "plugins": [
+        {
+          "id": "FresnelGlowPlugin",
+          "color": "#ffd98a",
+          "intensity": 1.8,
+          "power": 1.3,
+          "speed": 0.5,
+          "pulse": 1
+        }
+      ],
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "hub-dormant-1-inset-lit",
+        "tag": "m1-hub-reactive"
+      }
+    },
     "hub-dormant-2-post-w": {
       "name": "Dormant frame 2 post",
       "id": "hub-dormant-2-post-w",
@@ -3753,6 +3821,103 @@
         "identifier": "hub-dormant-2-inset",
         "tag": "m1-hub-structure"
       }
+    },
+    "hub-dormant-2-inset-lit": {
+      "name": "Dormant frame 2 inset (remembering)",
+      "id": "hub-dormant-2-inset-lit",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -9.5,
+        "y": 10.7,
+        "z": -38.45
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 2.5,
+          "height": 3.9,
+          "depth": 0.12
+        },
+        "type": "box"
+      },
+      "color": "#f5b24a",
+      "opacity": 0.7,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "plugins": [
+        {
+          "id": "FresnelGlowPlugin",
+          "color": "#ffd98a",
+          "intensity": 1.8,
+          "power": 1.3,
+          "speed": 0.5,
+          "pulse": 1
+        }
+      ],
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "hub-dormant-2-inset-lit",
+        "tag": "m1-hub-reactive"
+      }
+    },
+    "hub-memory-line": {
+      "name": "Memory inscription (overlook)",
+      "id": "hub-memory-line",
+      "type": "text",
+      "kit": "cyber",
+      "text": "three places remembered — the frames are listening",
+      "position": {
+        "x": -12.75,
+        "y": 13.6,
+        "z": -38.3
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 0.5,
+        "y": 0.5,
+        "z": 0.5
+      },
+      "align": "center",
+      "font": "playfair-italic",
+      "lineHeight": 60,
+      "textColor": "#ffd98a",
+      "textTransform": "none",
+      "width": 1800,
+      "opacity": 1
     },
     "hub-gate-music-post-n": {
       "name": "Gateway music post north",
@@ -4956,6 +5121,140 @@
       "textTransform": "none",
       "width": 1200,
       "opacity": 1
+    },
+    "hub-core-sigil": {
+      "name": "Core sigil (unfound)",
+      "id": "hub-core-sigil",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 2.6,
+        "y": 1.6,
+        "z": -21.4
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 0.22,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1,
+          "height": 1,
+          "depth": 1
+        },
+        "type": "sphere"
+      },
+      "color": "#5a4a30",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": true,
+      "plugins": [
+        {
+          "id": "PulsePlugin",
+          "color": "#f5b24a",
+          "intensity": 0.3,
+          "speed": 0.6
+        }
+      ],
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "SPHERE"
+      },
+      "script": {
+        "identifier": "hub-core-sigil",
+        "tag": "m1-hub-secret"
+      }
+    },
+    "hub-core-sigil-lit": {
+      "name": "Core sigil (remembered)",
+      "id": "hub-core-sigil-lit",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 2.6,
+        "y": 1.6,
+        "z": -21.4
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 0.26,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1,
+          "height": 1,
+          "depth": 1
+        },
+        "type": "sphere"
+      },
+      "color": "#fff1cf",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": true,
+      "plugins": [
+        {
+          "id": "FresnelGlowPlugin",
+          "color": "#f5b24a",
+          "intensity": 2.4,
+          "power": 1.2,
+          "speed": 1,
+          "pulse": 1
+        }
+      ],
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "SPHERE"
+      },
+      "script": {
+        "identifier": "hub-core-sigil-lit",
+        "tag": "m1-hub-reactive"
+      }
     },
     "hub-core-halo": {
       "name": "Core halo (inside)",
@@ -9247,6 +9546,140 @@
       "script": {
         "identifier": "music-booth-rail",
         "tag": "m1-music-secret"
+      }
+    },
+    "music-booth-sigil": {
+      "name": "Booth sigil (unfound)",
+      "id": "music-booth-sigil",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -81.2,
+        "y": 6.8,
+        "z": 10.6
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 0.2,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1,
+          "height": 1,
+          "depth": 1
+        },
+        "type": "sphere"
+      },
+      "color": "#2a4a46",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": true,
+      "plugins": [
+        {
+          "id": "PulsePlugin",
+          "color": "#2fb8a6",
+          "intensity": 0.3,
+          "speed": 0.6
+        }
+      ],
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "SPHERE"
+      },
+      "script": {
+        "identifier": "music-booth-sigil",
+        "tag": "m1-music-secret"
+      }
+    },
+    "music-booth-sigil-lit": {
+      "name": "Booth sigil (remembered)",
+      "id": "music-booth-sigil-lit",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -81.2,
+        "y": 6.8,
+        "z": 10.6
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 0.24,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1,
+          "height": 1,
+          "depth": 1
+        },
+        "type": "sphere"
+      },
+      "color": "#bffbf2",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": true,
+      "plugins": [
+        {
+          "id": "FresnelGlowPlugin",
+          "color": "#2fb8a6",
+          "intensity": 2.4,
+          "power": 1.2,
+          "speed": 1,
+          "pulse": 1
+        }
+      ],
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "SPHERE"
+      },
+      "script": {
+        "identifier": "music-booth-sigil-lit",
+        "tag": "m1-music-reactive"
       }
     },
     "music-stud-1": {
@@ -14123,6 +14556,140 @@
       "textTransform": "none",
       "width": 1600,
       "opacity": 1
+    },
+    "fashion-atelier-sigil": {
+      "name": "Atelier sigil (unfound)",
+      "id": "fashion-atelier-sigil",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 70,
+        "y": 1.8,
+        "z": -59
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 0.2,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1,
+          "height": 1,
+          "depth": 1
+        },
+        "type": "sphere"
+      },
+      "color": "#4a3038",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": true,
+      "plugins": [
+        {
+          "id": "PulsePlugin",
+          "color": "#d98c7a",
+          "intensity": 0.3,
+          "speed": 0.6
+        }
+      ],
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "SPHERE"
+      },
+      "script": {
+        "identifier": "fashion-atelier-sigil",
+        "tag": "m1-fashion-secret"
+      }
+    },
+    "fashion-atelier-sigil-lit": {
+      "name": "Atelier sigil (remembered)",
+      "id": "fashion-atelier-sigil-lit",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 70,
+        "y": 1.8,
+        "z": -59
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 0.24,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1,
+          "height": 1,
+          "depth": 1
+        },
+        "type": "sphere"
+      },
+      "color": "#ffd2c4",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": true,
+      "plugins": [
+        {
+          "id": "FresnelGlowPlugin",
+          "color": "#d98c7a",
+          "intensity": 2.4,
+          "power": 1.2,
+          "speed": 1,
+          "pulse": 1
+        }
+      ],
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "SPHERE"
+      },
+      "script": {
+        "identifier": "fashion-atelier-sigil-lit",
+        "tag": "m1-fashion-reactive"
+      }
     },
     "fashion-atelier-ring": {
       "name": "Atelier ring (inside)",

@@ -3866,6 +3866,140 @@
         "tag": "m1-music-secret"
       }
     },
+    "music-booth-sigil": {
+      "name": "Booth sigil (unfound)",
+      "id": "music-booth-sigil",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -81.2,
+        "y": 6.8,
+        "z": 10.6
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 0.2,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1,
+          "height": 1,
+          "depth": 1
+        },
+        "type": "sphere"
+      },
+      "color": "#2a4a46",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": true,
+      "plugins": [
+        {
+          "id": "PulsePlugin",
+          "color": "#2fb8a6",
+          "intensity": 0.3,
+          "speed": 0.6
+        }
+      ],
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "SPHERE"
+      },
+      "script": {
+        "identifier": "music-booth-sigil",
+        "tag": "m1-music-secret"
+      }
+    },
+    "music-booth-sigil-lit": {
+      "name": "Booth sigil (remembered)",
+      "id": "music-booth-sigil-lit",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -81.2,
+        "y": 6.8,
+        "z": 10.6
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 0.24,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1,
+          "height": 1,
+          "depth": 1
+        },
+        "type": "sphere"
+      },
+      "color": "#bffbf2",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": true,
+      "plugins": [
+        {
+          "id": "FresnelGlowPlugin",
+          "color": "#2fb8a6",
+          "intensity": 2.4,
+          "power": 1.2,
+          "speed": 1,
+          "pulse": 1
+        }
+      ],
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "SPHERE"
+      },
+      "script": {
+        "identifier": "music-booth-sigil-lit",
+        "tag": "m1-music-reactive"
+      }
+    },
     "music-stud-1": {
       "name": "Floor stud 1",
       "id": "music-stud-1",

@@ -198,6 +198,16 @@ export class ExperienceController {
     }
   }
 
+  /**
+   * Apply a visibility effect to the currently staged world on behalf of another app-layer system
+   * (the discovery memory): same hide-before-show semantics as a zone or beat, reported as an
+   * `arrival`-kind trigger labelled by the caller. Never travels, never schedules.
+   */
+  applyEffect(effect: ExperienceEffect, label: string): void {
+    if (this.disposed) return;
+    this.apply({ kind: "arrival", id: label }, effect);
+  }
+
   /** Release every subscription, cancel pending beats and refuse further activation. Call BEFORE the orchestrator / runtime are disposed. */
   dispose(): void {
     if (this.disposed) return;

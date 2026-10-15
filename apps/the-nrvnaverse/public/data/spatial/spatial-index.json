@@ -7,13 +7,13 @@
       "dataUrl": "/data/spatial/chunks/cannabis-21.47ef62cb39981c5a64bfe91a5dea4f41.json"
     },
     "fashion-culture": {
-      "dataUrl": "/data/spatial/chunks/fashion-culture.4f77b37fdba6abdaa4c34709d05ed85d.json"
+      "dataUrl": "/data/spatial/chunks/fashion-culture.ac45bb03e5e9102be36410be33a28f68.json"
     },
     "hub": {
-      "dataUrl": "/data/spatial/chunks/hub.9de77b85398a5165d576fefcdc5b6da4.json"
+      "dataUrl": "/data/spatial/chunks/hub.890f0437a8bc2ba397ccc3eab0d7eaaa.json"
     },
     "music": {
-      "dataUrl": "/data/spatial/chunks/music.89d30c08f748b5c5496c391e9d3e8c41.json"
+      "dataUrl": "/data/spatial/chunks/music.c1b3f4b0184998f6f98a95c3c8622386.json"
     },
     "music-club": {
       "dataUrl": "/data/spatial/chunks/music-club.6619f34ae21c64cb29db18bbb458e1c6.json"
@@ -151,6 +151,7 @@
     "hidden": {
       "fashion-culture": [
         "fashion-atelier-ring",
+        "fashion-atelier-sigil-lit",
         "fashion-frame-1-lit",
         "fashion-frame-2-lit",
         "fashion-frame-3-lit",
@@ -165,7 +166,11 @@
       ],
       "hub": [
         "hub-core-halo",
+        "hub-core-sigil-lit",
         "hub-core-well",
+        "hub-dormant-1-inset-lit",
+        "hub-dormant-2-inset-lit",
+        "hub-memory-line",
         "hub-overlook-lamp-lit",
         "hub-overlook-lamp-pool",
         "hub-return-fashion-glow",
@@ -176,6 +181,7 @@
       ],
       "music": [
         "music-booth-console-lit",
+        "music-booth-sigil-lit",
         "music-booth-spot",
         "music-fin-1-blade",
         "music-fin-2-blade",

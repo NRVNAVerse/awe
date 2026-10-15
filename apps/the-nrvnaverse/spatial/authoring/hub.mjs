@@ -247,7 +247,21 @@ export function composeHub() {
         tag: S.structure,
       }),
     );
+    // Discovery memory (world doc §15): the frame wakes once enough hidden places have been found.
+    items.push(
+      slab(`${k}-inset-lit`, x, OVERLOOK_TOP + 0.25, -38.45, [2.5, 3.9, 0.12], {
+        name: `Dormant frame ${i + 1} inset (remembering)`,
+        color: PALETTE.ember,
+        opacity: 0.7,
+        collider: "none",
+        castShadow: false,
+        receiveShadow: false,
+        plugins: [glow(PALETTE.warmLight, { intensity: 1.8, power: 1.3, speed: 0.5, pulse: 1 })],
+        tag: S.reactive,
+      }),
+    );
   }
+  items.push(label("hub-memory-line", "three places remembered — the frames are listening", v(-12.75, OVERLOOK_TOP + 5.1, -38.3), { scale: 0.5, name: "Memory inscription (overlook)", color: PALETTE.warmLight, font: "playfair-italic", width: 1800 }));
 
   // --- 8. District gateways (west: Music, east: Fashion / Culture) -----------------------------
   const gateways = [
@@ -319,6 +333,9 @@ export function composeHub() {
     script: { identifier: "hub-core-mirror", tag: S.secret },
   });
   items.push(label("hub-core-line", "you are at the centre", v(0, 2.7, pz + 4.45), { scale: 0.7, name: "Core inscription", color: PALETTE.warmLight, font: "playfair-italic", rotation: { x: 0, y: deg(180), z: 0 }, width: 1200 }));
+  // The Core sigil: a small ember glyph floating over the seat ring; dim until found, lit once remembered.
+  items.push(sphere("hub-core-sigil", v(2.6, 1.6, pz - 2.4), 0.22, { name: "Core sigil (unfound)", color: "#5a4a30", collider: "none", castShadow: false, plugins: [pulse(PALETTE.ember, { intensity: 0.3, speed: 0.6 })], tag: S.secret }));
+  items.push(sphere("hub-core-sigil-lit", v(2.6, 1.6, pz - 2.4), 0.26, { name: "Core sigil (remembered)", color: "#fff1cf", collider: "none", castShadow: false, plugins: [glow(PALETTE.ember, { intensity: 2.4, power: 1.2, speed: 1.0, pulse: 1 })], tag: S.reactive }));
   // The interior answers the visitor: a halo around the seat and a brighter well while someone is inside.
   items.push(
     column("hub-core-halo", 0, DATUM + 0.03, pz, 3.2, 0.02, {
@@ -362,7 +379,21 @@ export function composeHub() {
 
   // --- 13. Experience bindings -------------------------------------------------------------------
   const x = experienceOf("hub");
-  x.hide("hub-spire-ring-1-lit", "hub-spire-ring-2-lit", "hub-spire-ring-3-lit", "hub-overlook-lamp-lit", "hub-overlook-lamp-pool", "hub-return-music-glow", "hub-return-fashion-glow", "hub-core-halo", "hub-core-well");
+  x.hide(
+    "hub-spire-ring-1-lit",
+    "hub-spire-ring-2-lit",
+    "hub-spire-ring-3-lit",
+    "hub-overlook-lamp-lit",
+    "hub-overlook-lamp-pool",
+    "hub-return-music-glow",
+    "hub-return-fashion-glow",
+    "hub-core-halo",
+    "hub-core-well",
+    "hub-core-sigil-lit",
+    "hub-dormant-1-inset-lit",
+    "hub-dormant-2-inset-lit",
+    "hub-memory-line",
+  );
   // Reaching the overlook lights its lamp; leaving dims it again.
   x.zone("hub-overlook", "hub-zone-overlook", {
     enter: { show: ["hub-overlook-lamp-lit", "hub-overlook-lamp-pool"], hide: ["hub-overlook-lamp"] },

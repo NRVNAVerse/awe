@@ -56,7 +56,7 @@ describe("experience controller — hidden-on-stage policy", () => {
       for (const id of ids) {
         expect(index.portals[id], id).toBeUndefined();
         expect(sensors.has(id), id).toBe(false);
-        expect(id).toMatch(/-(lit|blade|glow|halo|well|pool|wash|spot|ring|light|live)$/);
+        expect(id).toMatch(/-(lit|blade|glow|halo|well|pool|wash|spot|ring|light|live|line)$/);
       }
     }
   });

@@ -223,3 +223,17 @@ A threshold is an invisible sensor strip bound to a stable id; standing in it op
 | The Club's bar | `club-threshold-bar` (x −63.7..−61.1, z 66.5..75.5) | The Club | the room's own web face; the natural spot for a future event / drop surface |
 
 Design rules: a threshold never travels (a portal does); thresholds and portals are separate sensors (validated); thresholds never overlap a portal (SIC `intersects`: separated); no URL lives in the world data — the manifest's `webUrl` is looked up at display time. Spoiler-light hint: "stand in a doorway and look down-left."
+
+---
+
+## 15. Discovery memory — the world remembers where you have been  [VERIFIED tests + SIC, `feat/m1-spatial-experience-overnight`; D-021-ready]
+
+Each hidden place holds a **sigil**: a small glyph that is dim until found and lit once remembered. Entering the place (its existing zone) finds it; the find is remembered in the visitor's browser (`localStorage` key `nrvnaverse.discovery.v1`, shape `{ v: 1, found: [...] }`); on every later arrival the world answers — the sigil is lit, and the Hub's two dormant frames wake one by one as places are remembered, with a line over the overlook once all three are known. No HUD, no counter, no quest text: the memory is read off the world. Nothing restricted sits behind a sigil (D-021: obscurity is never access control); clearing site data clears the memory; a future web counterpart can read or share the same tiny shape.
+
+| Place | Sigil (dim / lit) | Found by | Position |
+|---|---|---|---|
+| Hub Core house interior | `hub-core-sigil` / `-lit` | zone `hub-core` | floating over the seat ring, east side (2.6, 1.6, −21.4) |
+| Music sound booth | `music-booth-sigil` / `-lit` | zone `music-booth` | on the far end of the mixing desk (−81.2, 6.8, 10.6) |
+| Fashion atelier | `fashion-atelier-sigil` / `-lit` | zone `fashion-atelier` | in the middle of the pedestal ring (70, 1.8, −59) |
+
+Memory answers (Hub chunk, applied after staging): ≥ 1 remembered → `hub-dormant-1-inset-lit`; ≥ 2 → `hub-dormant-2-inset-lit`; 3 → `hub-memory-line` ("three places remembered — the frames are listening"). Code: `src/lib/discovery/discovery-memory.ts` (`DISCOVERY_M1` config: sigil keys `centre`, `booth`, `atelier`; id-keyed, no coordinates), fed by the experience controller's trigger stream and applying effects through `ExperienceController.applyEffect`; tests verify every id against the generated chunks and the hidden-on-stage sets. SIC: each sigil fully inside its zone and clear of the seat / desk / pedestals; the lit frames are 63 % / 22 % visible from the Hub spawn (the memory reads on arrival) and the Core sigil 100 % from inside the Core house. Spoiler-light hint: "the frames on the overlook are listening."

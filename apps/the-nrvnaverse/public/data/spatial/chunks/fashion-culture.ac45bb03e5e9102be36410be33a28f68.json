@@ -4201,6 +4201,140 @@
       "width": 1600,
       "opacity": 1
     },
+    "fashion-atelier-sigil": {
+      "name": "Atelier sigil (unfound)",
+      "id": "fashion-atelier-sigil",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 70,
+        "y": 1.8,
+        "z": -59
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 0.2,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1,
+          "height": 1,
+          "depth": 1
+        },
+        "type": "sphere"
+      },
+      "color": "#4a3038",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": true,
+      "plugins": [
+        {
+          "id": "PulsePlugin",
+          "color": "#d98c7a",
+          "intensity": 0.3,
+          "speed": 0.6
+        }
+      ],
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "SPHERE"
+      },
+      "script": {
+        "identifier": "fashion-atelier-sigil",
+        "tag": "m1-fashion-secret"
+      }
+    },
+    "fashion-atelier-sigil-lit": {
+      "name": "Atelier sigil (remembered)",
+      "id": "fashion-atelier-sigil-lit",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 70,
+        "y": 1.8,
+        "z": -59
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 0.24,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1,
+          "height": 1,
+          "depth": 1
+        },
+        "type": "sphere"
+      },
+      "color": "#ffd2c4",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": true,
+      "plugins": [
+        {
+          "id": "FresnelGlowPlugin",
+          "color": "#d98c7a",
+          "intensity": 2.4,
+          "power": 1.2,
+          "speed": 1,
+          "pulse": 1
+        }
+      ],
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "SPHERE"
+      },
+      "script": {
+        "identifier": "fashion-atelier-sigil-lit",
+        "tag": "m1-fashion-reactive"
+      }
+    },
     "fashion-atelier-ring": {
       "name": "Atelier ring (inside)",
       "id": "fashion-atelier-ring",

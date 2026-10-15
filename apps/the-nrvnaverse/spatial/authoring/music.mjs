@@ -15,7 +15,7 @@
  * facing -Z, artist (-70, 1, -34).
  */
 
-import { box, slab, column, rampZ, label, glow, pulse, collect, v, deg, zone, experienceOf } from "./lib.mjs";
+import { box, slab, column, sphere, rampZ, label, glow, pulse, collect, v, deg, zone, experienceOf } from "./lib.mjs";
 import { PALETTE } from "./hub.mjs";
 
 /** Stable destination ids the Music arrival beats bind to (references; identity lives in the manifest). */
@@ -241,6 +241,9 @@ export function composeMusic() {
     }),
   );
   items.push(slab("music-booth-rail", CX - 9.5, DATUM + 5, 12, [7, 1.0, 0.15], { name: "Booth rail", color: PALETTE.stoneDark, tag: T.secret }));
+  // The booth sigil (discovery memory, world doc §15): a small glyph on the desk's far end.
+  items.push(sphere("music-booth-sigil", v(CX - 11.2, DATUM + 6.3, 10.6), 0.2, { name: "Booth sigil (unfound)", color: "#2a4a46", collider: "none", castShadow: false, plugins: [pulse(TEAL, { intensity: 0.3, speed: 0.6 })], tag: T.secret }));
+  items.push(sphere("music-booth-sigil-lit", v(CX - 11.2, DATUM + 6.3, 10.6), 0.24, { name: "Booth sigil (remembered)", color: "#bffbf2", collider: "none", castShadow: false, plugins: [glow(TEAL, { intensity: 2.4, power: 1.2, speed: 1.0, pulse: 1 })], tag: T.reactive }));
   // Studs run beside the ramp (never under it) to its north foot.
   for (const [i, [x, z]] of [[CX - 6, -2], [CX - 6.5, -6], [CX - 7.5, -10], [CX - 9.5, -12.6]].entries()) {
     items.push(
@@ -292,6 +295,7 @@ export function composeMusic() {
     "music-stage-wash",
     "music-booth-spot",
     "music-booth-console-lit",
+    "music-booth-sigil-lit",
   );
   // Soundcheck trail: each pair of stacks lights as the visitor walks past it and stays lit.
   x.zone("music-walk-south", "music-zone-walk-south", { enter: { show: ["music-stack-1-band-lit", "music-stack-2-band-lit"], hide: ["music-stack-1-band", "music-stack-2-band"] } });

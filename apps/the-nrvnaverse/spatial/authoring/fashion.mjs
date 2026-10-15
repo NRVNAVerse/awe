@@ -194,6 +194,9 @@ export function composeFashion() {
     );
   }
   items.push(label("fashion-atelier-line", "the atelier is quiet — nothing is hung yet", v(CX, 2.6, -63.45), { scale: 0.6, name: "Atelier inscription", color: ROSE, font: "playfair-italic", width: 1600 }));
+  // The atelier sigil (discovery memory, world doc §15): a glyph floating in the middle of the pedestal ring.
+  items.push(sphere("fashion-atelier-sigil", v(CX, DATUM + 1.3, -59), 0.2, { name: "Atelier sigil (unfound)", color: "#4a3038", collider: "none", castShadow: false, plugins: [pulse(ROSE, { intensity: 0.3, speed: 0.6 })], tag: T.secret }));
+  items.push(sphere("fashion-atelier-sigil-lit", v(CX, DATUM + 1.3, -59), 0.24, { name: "Atelier sigil (remembered)", color: "#ffd2c4", collider: "none", castShadow: false, plugins: [glow(ROSE, { intensity: 2.4, power: 1.2, speed: 1.0, pulse: 1 })], tag: T.reactive }));
   // The atelier wakes when entered: a rose ring under the pedestals.
   items.push(
     column("fashion-atelier-ring", CX, DATUM + 0.03, -59, 3.6, 0.02, {
@@ -262,6 +265,7 @@ export function composeFashion() {
     "fashion-roof-lamp-lit",
     "fashion-roof-lamp-pool",
     "fashion-atelier-ring",
+    "fashion-atelier-sigil-lit",
   );
   // The walk: pylon pairs light as the visitor passes and stay lit.
   for (const [k, pair] of [[1, [1, 2]], [2, [3, 4]], [3, [5, 6]]]) {
