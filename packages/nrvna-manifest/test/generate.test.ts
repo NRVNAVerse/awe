@@ -38,7 +38,7 @@ describe("generated views", () => {
     const seven = loadSeven();
     const views = generateViews(seven);
     const file = views["destinations.json"];
-    expect(file.destinations).toHaveLength(7);
+    expect(file.destinations).toHaveLength(8);
     expect(file.hubId).toBe(bySlug(seven, SLUGS.hub).id);
     for (const d of seven) {
       expect(file.index.bySlug[d.slug]).toBe(d.id);
@@ -54,7 +54,7 @@ describe("generated views", () => {
     bySlug(seven, SLUGS.artist).status = "hidden";
     const views = generateViews(seven);
     const music = views["directory.json"].districts.find((d) => d.slug === SLUGS.music)!;
-    expect(music.destinations).toEqual([]);
+    expect(music.destinations.map((d) => d.slug)).toEqual(["music-club"]); // the Club venue room stays public
     expect(views["destinations.json"].destinations.map((d) => d.slug)).toContain(SLUGS.artist);
   });
 

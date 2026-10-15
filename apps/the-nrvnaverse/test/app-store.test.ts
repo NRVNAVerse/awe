@@ -481,7 +481,7 @@ describe("app store — lifecycle hardening (boot / dispose coordination)", () =
     const portals = currentPortals()!;
     expect(win.listenerCount("popstate")).toBe(1);
     expect(adapter.listenerCount).toBe(1);
-    expect(portals.boundPortalCount).toBe(2);
+    expect(portals.boundPortalCount).toBe(3);
     await disposeApp();
     expect(win.listenerCount("popstate")).toBe(0);
     expect(adapter.listenerCount).toBe(0);
@@ -809,7 +809,7 @@ describe("app store — physical portals use the existing travel path", () => {
     expect(win.location.search).toBe(`?destination=${musicId}&from=spatial`);
     expect(win.history.entries).toHaveLength(2);
     expect(spatialDiagnostics.state.activeChunkKey).toBe("music");
-    expect(currentPortals()?.boundComponentIds).toEqual(["portal-music-artist", "portal-music-hub"]);
+    expect(currentPortals()?.boundComponentIds).toEqual(["portal-music-artist", "portal-music-club", "portal-music-hub"]);
     expect(spatialDiagnostics.state.lastPortal).toEqual({ componentId: "portal-hub-music", destinationId: musicId });
     // Portal travel produced exactly the directory's state: the same arrival shape, no portal-specific fields.
     if (state.phase !== "arrived") throw new Error("unreachable");
@@ -828,7 +828,7 @@ describe("app store — physical portals use the existing travel path", () => {
     expect(runtime.log.filter((e) => e.startsWith("sensor-on:")).length).toBe(onCount); // no rebind
     expect(runtime.log.filter((e) => e.startsWith("sensor-off:"))).toEqual([]);
     expect(win.location.search).toBe(`?destination=${artistId}&from=spatial`);
-    expect(bound()).toBe(2);
+    expect(bound()).toBe(3);
   });
 
   it("Music → Hub portal: cross-chunk arrival back at the Hub", async () => {
@@ -915,7 +915,7 @@ describe("app store — physical portals use the existing travel path", () => {
     await flush();
     await flush();
     expect(placed(appStore.state)).toBe(musicId);
-    expect(currentPortals()?.boundComponentIds).toEqual(["portal-music-artist", "portal-music-hub"]);
+    expect(currentPortals()?.boundComponentIds).toEqual(["portal-music-artist", "portal-music-club", "portal-music-hub"]);
     await enter("portal-music-artist");
     expect(placed(appStore.state)).toBe(artistId);
   });

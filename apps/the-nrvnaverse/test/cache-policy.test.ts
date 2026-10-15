@@ -79,7 +79,7 @@ describe("next.config.ts — spatial data cache policy", () => {
   });
 
   it("serves the committed content-addressed global scene and chunk URLs as immutable", async () => {
-    expect(artifactUrls).toHaveLength(5);
+    expect(artifactUrls).toHaveLength(6);
     for (const url of artifactUrls) {
       expect(url).toMatch(/^\/data\/spatial\/(global-scene|chunks\/[a-z0-9-]+)\.[0-9a-f]{32}\.json$/);
       expect(url).not.toContain("?");

@@ -31,7 +31,7 @@ describe("generated spatial index → placement registry", () => {
     expect(index.schemaVersion).toBe(SPATIAL_SCHEMA_VERSION);
     expect(index.worldId).toBe("the-nrvnaverse");
     expect(index.globalSceneUrl).toMatch(/^\/data\/spatial\/global-scene\.[0-9a-f]{32}\.json$/); // content-addressed since 2B.4B.2
-    expect(Object.keys(index.chunks)).toEqual(["cannabis-21", "fashion-culture", "hub", "music"]);
+    expect(Object.keys(index.chunks)).toEqual(["cannabis-21", "fashion-culture", "hub", "music", "music-club"]);
     expect(Object.keys(index.destinations).sort()).toEqual(activeWorldIds);
   });
 
@@ -90,15 +90,17 @@ describe("no independently hard-coded placement table remains in application cod
 });
 
 describe("generated spatial index → portal bindings (M0 Step 2B.3, additive)", () => {
-  it("parses the seven committed portal bindings keyed by physical component id", () => {
+  it("parses the nine committed portal bindings keyed by physical component id", () => {
     const index = parseSpatialIndex(spatialIndexJson);
     expect(Object.keys(index.portals)).toEqual([
+      "portal-club-music",
       "portal-fashion-brand",
       "portal-fashion-hub",
       "portal-hub-cannabis",
       "portal-hub-fashion",
       "portal-hub-music",
       "portal-music-artist",
+      "portal-music-club",
       "portal-music-hub",
     ]);
     for (const [componentId, binding] of Object.entries(index.portals)) {

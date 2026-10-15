@@ -82,7 +82,7 @@ describe("experience wiring — boot", () => {
     expect(spatialDiagnostics.state.boundZones).toBe(2);
     expect(experience.pendingBeatCount).toBe(3);
     expect(runtime.visibleOf("hub-return-music-glow")).toBe(false);
-    runtime.advance(1.6);
+    runtime.advance(2.5);
     expect(runtime.visibleOf("hub-spire-ring-3-lit")).toBe(true);
     expect(spatialDiagnostics.state.lastExperience).toEqual({ kind: "arrival", id: "hub-wake#2" });
   });
@@ -153,7 +153,7 @@ describe("experience wiring — travel", () => {
 
   it("a gated refusal (Hub → Cannabis) changes nothing: zones stay bound, no beat, no cannabis fetch", async () => {
     await boot("");
-    runtime.advance(2); // wake done
+    runtime.advance(3); // wake done
     const experience = currentExperience()!;
     const triggers = experience.triggerCount;
     await travelToDestination(cannabisId);

@@ -54,7 +54,7 @@ function codesOf(input: SpatialSourceInput): string[] {
   return result.ok ? [] : result.errors.map((e) => e.code);
 }
 
-const EXPECTED_CHUNKS = ["cannabis-21", "fashion-culture", "hub", "music"];
+const EXPECTED_CHUNKS = ["cannabis-21", "fashion-culture", "hub", "music", "music-club"];
 const activeWorldDestinations = destinations.destinations
   .filter((d) => d.status === "active" && d.spatialDestination?.platform === "the-nrvnaverse")
   .map((d) => d.id)
@@ -72,18 +72,18 @@ describe("spatial source — valid M0 input", () => {
     for (const k of EXPECTED_CHUNKS) expect(artifacts.chunkFiles[k]).toMatch(CONTENT_ADDRESSED_OUTPUT.chunk);
   });
 
-  it("places all seven active destination ids exactly once in the spatial index", () => {
+  it("places all eight active destination ids exactly once in the spatial index", () => {
     const artifacts = generateSpatialArtifacts(source());
     const index = JSON.parse(artifacts.files[OUTPUT.spatialIndex]);
     const ids = Object.keys(index.destinations);
-    expect(ids.length).toBe(7);
-    expect(new Set(ids).size).toBe(7);
+    expect(ids.length).toBe(8);
+    expect(new Set(ids).size).toBe(8);
     expect(ids).toEqual(activeWorldDestinations);
     expect(artifacts.destinationIds).toEqual(activeWorldDestinations);
     for (const id of ids) expect(index.chunks[index.destinations[id].chunkKey]).toBeDefined();
   });
 
-  it("produces exactly four M0 chunk outputs with the expected logical grouping", () => {
+  it("produces exactly five chunk outputs with the expected logical grouping (four M0 chunks + the Club venue room)", () => {
     const artifacts = generateSpatialArtifacts(source());
     expect(artifacts.chunkKeys).toEqual(EXPECTED_CHUNKS);
     const index = JSON.parse(artifacts.files[OUTPUT.spatialIndex]);
@@ -285,7 +285,7 @@ describe("spatial generation — determinism and committed outputs", () => {
     }
     // Exactly the current content-addressed set is committed — no stale version, no legacy unversioned name.
     const committedChunks = readdirSync(join(OUTPUT_DIR, OUTPUT.chunksDir)).filter((n) => n.endsWith(".json")).sort();
-    expect(committedChunks).toEqual(EXPECTED_CHUNKS.map((k) => artifacts.chunkFiles[k].slice(OUTPUT.chunksDir.length + 1)));
+    expect(committedChunks).toEqual(EXPECTED_CHUNKS.map((k) => artifacts.chunkFiles[k].slice(OUTPUT.chunksDir.length + 1)).sort());
     const committedSpatial = readdirSync(join(OUTPUT_DIR, "spatial")).filter((n) => n.startsWith("global-scene")).sort();
     expect(committedSpatial).toEqual([artifacts.globalSceneFile.slice("spatial/".length)]);
     for (const legacy of ["spatial/global-scene.json", ...EXPECTED_CHUNKS.map((k) => `${OUTPUT.chunksDir}/${k}.json`)]) expect(existsSync(join(OUTPUT_DIR, legacy)), legacy).toBe(false);
@@ -299,7 +299,7 @@ describe("spatial generation — determinism and committed outputs", () => {
 describe("canonical destination manifests stay coordinate- and chunk-free", () => {
   it("neither the source manifests nor destinations.json carry physical placement", () => {
     const files = readdirSync(MANIFESTS_DIR).filter((n) => n.endsWith(".json"));
-    expect(files.length).toBe(7);
+    expect(files.length).toBe(8);
     for (const name of files) {
       const text = readFileSync(join(MANIFESTS_DIR, name), "utf8");
       expect(text, name).not.toMatch(/"(chunkKey|chunk|spawn|position|yaw|coordinates|placementRef)"/);
@@ -320,13 +320,16 @@ const PORTAL_BINDINGS: Record<string, { chunkKey: string; slug: string }> = {
   "portal-music-artist": { chunkKey: "music", slug: "placeholder-artist" },
   "portal-fashion-hub": { chunkKey: "fashion-culture", slug: "hub" },
   "portal-fashion-brand": { chunkKey: "fashion-culture", slug: "placeholder-fashion-culture-brand" },
+  // M1 experience campaign: the Club venue room (its own chunk) and its concourse door.
+  "portal-music-club": { chunkKey: "music", slug: "music-club" },
+  "portal-club-music": { chunkKey: "music-club", slug: "music" },
 };
 const PORTAL_IDS = Object.keys(PORTAL_BINDINGS).sort();
 const portalCodes = (mutate: (portal: Mutable, d: { config: Mutable; scene: Mutable; destinations: Mutable }) => void, i = 0) =>
   codesOf(source((d) => mutate(d.config.portals[i], d)));
 
 describe("spatial source — physical portal bindings (M0 Step 2B.3)", () => {
-  it("the committed source declares exactly the seven M0 portals and validates", () => {
+  it("the committed source declares exactly the seven M0 portals plus the two Club portals and validates", () => {
     expect(validateSpatialSource(source())).toEqual({ ok: true, errors: [] });
     expect(sourceConfig.portals.map((p: Mutable) => p.componentId).sort()).toEqual(PORTAL_IDS);
     for (const p of sourceConfig.portals) {
@@ -336,7 +339,7 @@ describe("spatial source — physical portal bindings (M0 Step 2B.3)", () => {
     }
   });
 
-  it("generates exactly seven deterministic portal bindings keyed by physical component id", () => {
+  it("generates exactly nine deterministic portal bindings keyed by physical component id", () => {
     const artifacts = generateSpatialArtifacts(source());
     const index = JSON.parse(artifacts.files[OUTPUT.spatialIndex]);
     expect(Object.keys(index)).toEqual(["schemaVersion", "worldId", "globalSceneUrl", "chunks", "destinations", "portals", "experience"]);

@@ -27,7 +27,8 @@ Read this first after a compaction, model fallback or restart; then `handoffs/cu
 | # | Checkpoint | SHA | State |
 |---|---|---|---|
 | 0 | Recovery + campaign record + SIC client | `0798e71` | pushed |
-| 1 | **Experience layer**: `experience` bindings in the spatial config / pipeline / index (hidden-on-stage sets, zones, arrival beats), runtime seams (`onPlayerExitSensor`, `hideOnStage`, `setComponentVisible`, `schedule`), `ExperienceController`, store wiring + diagnostics, 11 zones + 6 arrival rules composed into Hub / Music / Fashion (33 state-B components), docs (pipeline §17, runtime §17, world §12) | this commit | tests 466 ✓ · typecheck ✓ · spatial validate/generate/check ✓ · headless zone proof ✓ · SIC design + verify pass ✓ · browser evidence: see §4 |
+| 1 | **Experience layer**: `experience` bindings in the spatial config / pipeline / index (hidden-on-stage sets, zones, arrival beats), runtime seams (`onPlayerExitSensor`, `hideOnStage`, `setComponentVisible`, `schedule`), `ExperienceController`, store wiring + diagnostics, 11 zones + 6 arrival rules composed into Hub / Music / Fashion (33 state-B components), docs (pipeline §17, runtime §17, world §12) | `1157b64` | pushed · tests 466 ✓ · typecheck ✓ · spatial check ✓ · headless zone proof ✓ · SIC design + verify pass ✓ · browser: 8 real-input shots ✓ (see §4) |
+| 2 | **Music venue complex**: the concourse (Club door + tonight's marquee, config-driven `TONIGHT`), **The Club** — first independently loadable venue room (own chunk `music-club`, own `venue` destination `dst_gqq90k2404cy9nf0`, two new portals, its own wake / dance-floor / stage reactions), visual tuning from browser evidence (stage blades as stripes, smaller wash, dormant rings dark, Hub wake retimed past the reveal fade), vault venue audition (8 candidates, SIC `inspect_asset`), world doc §13 | this commit | manifests 61 ✓ · app 466 ✓ · typecheck ✓ · spatial check ✓ · headless (13 zones enter/exit; Club walk onto the stage) ✓ · SIC verify ✓ · browser evidence on the rebuilt bundle: pending (next action) |
 
 ## 3. Architecture chosen for the experience layer (reversible, product-layer)
 
@@ -43,36 +44,44 @@ ExperienceController (app)  ── binds the ACTIVE chunk's zones (enter/exit) a
 
 Rules: effects are visibility toggles over authored component ids (state A / state B geometry, both authored; state B hidden inside `stageChunk` so nothing flashes); no coordinates, no gates, no HUD quests; a chunk retire resets everything (components are recreated). Mirrors the portal precedent (M0 2B.3) so review sees one pattern. Zone sensors sit before the portals in every chunk so `asset:place` still appends after the last portal.
 
+Venue complex (checkpoint 2): a venue room = a chunk + a `venue` manifest + a placement + two portal bindings + a composer; adding The Club touched no runtime code — only data, the composer and count-pinned tests. `TONIGHT` / `VENUE_ROOMS` / `CLUB_TEMPLATE` are authoring-level scaffolding (D-018 vocabulary kept distinct), not an event backend.
+
 ## 4. Evidence already run
 
 | Check | Result |
 |---|---|
-| App tests | 466 passed (28 files; +42 new: `experience-bindings`, `experience-controller`, `experience-store`) |
-| Typecheck (incl. strict) | pass |
-| `spatial:validate` / `generate` / `check` | pass, within budget (hub 110 KiB / 87, music 86 KiB / 65, fashion-culture 119 KiB / 90 — close to the 128 KiB warning) |
+| App tests | 466 passed (28 files) after checkpoint 2 (count-pinned expectations updated: 5 chunks, 8 destinations, 9 portals, 13 zones, 7 arrivals) |
+| Manifest tests | 61 passed (8 destinations; The Club listed under the Music District after the artist, id order) |
+| Typecheck (app incl. strict, manifest) | pass |
+| `spatial:validate` / `generate` / `check` | pass, within budget — hub 110 KiB / 87, music 98 KiB / 90 (at the 96-component warning line), fashion-culture 119 KiB / 90, music-club 76 KiB / 62, cannabis-21 unchanged |
 | `compose --check` | source up to date |
-| Headless (`pnpm run-space`, real engine + Rapier, official Mover teleports) | all 11 zone sensors fire ENTER and EXIT for the player, 0 stray events, 0 missing; `Component3D.visible` toggles on state components |
-| SIC design pass (before authoring) | `bounds` of the 12 zone anchors (OBB tier) — zone volumes sized from them |
-| SIC verify pass (after composing, 258 entities, 18 regions, 0 unsupported) | `in_region`: lamp / seat / halo / desk / plinth / roof bench / pedestal fully inside their zones (conclusive); `intersects`: zones vs portals, ramps, beam ring — separated or touching, 0 penetration; `survey_visibility`: lit rings 38–58 % from the Hub spawn, gateway glows 97 %, stacks 75–100 % and wash 76 % from the Music eyes, frames 100 % from the Brand threshold, roof lamp 90 % from the Fashion spawn |
-| SIC finding kept | `music-fin-3-blade` is fully occluded from the Artist spawn by `music-booth-spot` when both are shown; by design they are never shown together for one visitor (booth-only spot). Revisit with presence |
-| Browser (production build) | pending at this checkpoint — build running; `browser:shots`, `browser:perf`, `browser:touch` next |
+| Headless (`pnpm run-space`, real engine + Rapier) | all 13 zone sensors fire ENTER and EXIT for the player (32 events, 0 stray); Club walk: spawn → dance floor (zone fires) → onto the stage (zone fires, avatar on the riser at y 1.1) |
+| SIC design pass | `bounds` of the 12 zone anchors (OBB tier) — zone volumes sized from them |
+| SIC verify pass (checkpoint 1, 258 entities) | `in_region` anchors fully inside their zones; `intersects` zones vs portals / ramps / beam ring separated or touching; `survey_visibility` lit rings 38–58 % from the Hub spawn, gateway glows 97 %, stacks 75–100 % from the Music eyes, frames 100 % from the Brand threshold, roof lamp 90 % |
+| SIC verify pass (checkpoint 2, 328 entities, 22 regions, 0 unsupported) | Club tiles / console fully inside their zones; stage zone vs floor zone, portal vs floor zone, bar vs tile, booth vs tile, ring vs wall, passage vs booth deck, marquee vs booth deck / rail, ramp vs booths / tiles / wall — all separated; from the Club door: stage 93 %, rings 83–100 %, bar light 100 %; from the Music spawn (turning round): marquee 88 %, door glow 97 % |
+| SIC vault audition | 8 candidates inspected (`inspect_asset`, glTF validator + SIC bounds/topology/texture estimate); table in world doc §13; strongest: Nightclub1 (2.5 k tris, 6.6 MB, 187 MB GPU textures) and 80s warehouse (75 k tris, 4.3 MB) as optimize/derive candidates; Airplane Hanger's concert-stage sub-tree as the hall/festival inspiration; everything UNKNOWN rights, nothing placed |
+| Browser (production build, checkpoint 1 world, real trusted WASD input via CDP, 1280×800) | Hub arrival + spire wake; Music path → stacks lit; artist arrival → crescendo + wash; Music → Hub portal → return glow on the Music gateway; Fashion runway → pylons lit; Brand arrival → frames lit. Destination ids / phases confirmed in the DOM; only console errors are headless pointer-lock refusals from the probe's canvas clicks |
+| Dev-server diagnostic (real engine, `__nrvnaverse` handle) | at placement the 9 Hub state-B components are `visible: false` (hidden on stage), zones bound, beats pending; after 2.5 s the wake had applied — the mechanism works in the real engine; the "already lit" first screenshots were the reveal fade outlasting a 0.6 s beat (hence the retiming to 1.5 / 2.0 / 2.5 s) |
+| Browser (checkpoint 2 bundle) | pending — rebuild running; then Club shots + `browser:perf` + `browser:touch` |
 
 ## 5. Findings worth keeping
 
 - SIC `survey_visibility` takes `from_point` / `from_viewpoint` (not `eye`); the AWE adapter maps hidden `isSensor` meshes to `region` entities, so zones are directly queryable with `in_region`.
 - SIC consumer limitation (hand back to the SIC thread): visibility surveys model every authored mesh as present; there is no way to declare runtime-hidden state (state-B geometry) so "visible when lit" and "occluded by a hidden cone" need two scene variants. A `hidden: [ids]` option on `load_scene` / `adapt_awe_scene` (or honouring `display:false` as non-occluding for visual queries) would make reactive worlds first-class.
-- Engine: sensor EXIT after a straight vertical teleport out of a zone was flaky headless (fired after lateral teleports and more ticks); real walking is lateral, so no product impact, noted for the AWE thread.
+- SIC consumer limitation: `passable` needs an entity with role `opening`; the AWE adapter has no way to mark a door gap as an opening, so door passability was proven headless instead.
+- Engine: sensor EXIT after a straight vertical teleport out of a zone was flaky headless (fired after lateral teleports and more ticks); real walking is lateral, so no product impact. The character controller shoulders straight up a 0.6 m riser but jams when sliding along its face diagonally — ramps remain the rule.
+- Engine: the upstream reveal fade lasts ≈1 s after placement; arrival beats under ≈1.2 s on an initial placement finish behind the fade.
 - Strict typecheck programs grow through imports: excluding a file is not enough if an included test imports its importer.
+- Music chunk is at the 96-component warning line; the next Music addition must raise the warning budget (pipeline doc §16) or move geometry into a room chunk.
 
 ## 6. Continuation queue (ranked)
 
-1. Browser evidence for checkpoint 1 (shots incl. a reactive state, perf, touch/gate regression) → record in §4.
-2. Music concourse + one independently loadable venue room (new `venue` destination) + config-driven "tonight's room"; vault venue audition with SIC `inspect_asset` on a bounded candidate set (Airplane Hanger concert stage ×4 versions, Elysium, Nightclub1 ×2, 80s warehouse, Scifi Hall, cinema interior, Warehouse FBX).
-3. WEB↔SPATIAL threshold: contextual web-context surface driven by the manifest; in-world `iframe` feasibility against an app-served page; document CSP/frame limits honestly.
-4. Second-pass discovery: hidden-place sigils remembered across visits (localStorage, harmless), Hub dormant frame reacts.
-5. Audio-reactive ambience without assets (WebAudio synthesis at app layer) if time; Eddie design notes.
-6. Fashion parity, transitions, mobile comfort for new interactions, performance consolidation if measured; raise the fashion-culture budget before adding geometry there.
+1. Browser evidence on the checkpoint-2 bundle (Club arrival / dance floor / door; official `browser:perf` and `browser:touch` incl. the gate check) → record in §4 (and the runtime doc if numbers move).
+2. WEB↔SPATIAL threshold: contextual web-context surface driven by the manifest (name, kind, district, description, canonical `webUrl`, return context); in-world `iframe` feasibility against an app-served page; document CSP/frame limits honestly. Eddie design notes (song → object / state; vault-as-archive) as the artist-room pattern on top of the venue template.
+3. Second-pass discovery: hidden-place sigils remembered across visits (localStorage, harmless), Hub dormant frame reacts.
+4. Audio-reactive ambience without assets (WebAudio synthesis at app layer) if time.
+5. Fashion parity, transitions, mobile comfort for new interactions, performance consolidation if measured; raise the music / fashion-culture budgets before adding geometry there.
 
 ## 7. Exact next action
 
-Wait for the production build, run `browser:shots` (plus a CDP probe that teleports into a zone and screenshots the lit state), `browser:perf` and `browser:touch`; record results in §4; then start queue item 2 (Music concourse / venue room).
+When the rebuild finishes: run the Club browser probe (arrival wake, dance floor, door), then `pnpm --filter the-nrvnaverse browser:perf` and `browser:touch`; record results in §4; then start queue item 2 (WEB↔SPATIAL threshold).

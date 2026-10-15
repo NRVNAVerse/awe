@@ -1464,7 +1464,7 @@
       }
     },
     "hub-spire-ring-1": {
-      "name": "Spire ring 1",
+      "name": "Spire ring 1 (dormant)",
       "id": "hub-spire-ring-1",
       "type": "mesh",
       "kit": "cyber",
@@ -1504,7 +1504,7 @@
         },
         "type": "cylinder"
       },
-      "color": "#ffd98a",
+      "color": "#5a4a30",
       "opacity": 1,
       "display": true,
       "renderMode": "default",
@@ -1515,7 +1515,7 @@
         {
           "id": "PulsePlugin",
           "color": "#f5b24a",
-          "intensity": 0.35,
+          "intensity": 0.2,
           "speed": 0.5
         }
       ],
@@ -1598,7 +1598,7 @@
       }
     },
     "hub-spire-ring-2": {
-      "name": "Spire ring 2",
+      "name": "Spire ring 2 (dormant)",
       "id": "hub-spire-ring-2",
       "type": "mesh",
       "kit": "cyber",
@@ -1638,7 +1638,7 @@
         },
         "type": "cylinder"
       },
-      "color": "#ffd98a",
+      "color": "#5a4a30",
       "opacity": 1,
       "display": true,
       "renderMode": "default",
@@ -1649,7 +1649,7 @@
         {
           "id": "PulsePlugin",
           "color": "#f5b24a",
-          "intensity": 0.35,
+          "intensity": 0.2,
           "speed": 0.5
         }
       ],
@@ -1732,7 +1732,7 @@
       }
     },
     "hub-spire-ring-3": {
-      "name": "Spire ring 3",
+      "name": "Spire ring 3 (dormant)",
       "id": "hub-spire-ring-3",
       "type": "mesh",
       "kit": "cyber",
@@ -1772,7 +1772,7 @@
         },
         "type": "cylinder"
       },
-      "color": "#ffd98a",
+      "color": "#5a4a30",
       "opacity": 1,
       "display": true,
       "renderMode": "default",
@@ -1783,7 +1783,7 @@
         {
           "id": "PulsePlugin",
           "color": "#f5b24a",
-          "intensity": 0.35,
+          "intensity": 0.2,
           "speed": 0.5
         }
       ],

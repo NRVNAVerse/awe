@@ -1,0 +1,62 @@
+{
+  "schemaVersion": 1,
+  "id": "dst_gqq90k2404cy9nf0",
+  "slug": "music-club",
+  "previousSlugs": [],
+  "kind": "venue",
+  "name": "The Club",
+  "owner": {
+    "name": "NRVNAVerse",
+    "organizationId": null,
+    "webUrl": "https://www.nrvnaverse.com/"
+  },
+  "primaryDistrictId": "dst_gm3xs4a3tws7bgh3",
+  "categories": [
+    "music",
+    "venue"
+  ],
+  "tags": [
+    "m1",
+    "venue-room",
+    "intimate"
+  ],
+  "relatedDestinationIds": [
+    "dst_gm3xs4a3tws7bgh3",
+    "dst_1qtfn9qjg9kf6jyd"
+  ],
+  "description": "An intimate venue room off the Music District concourse: a low dark room with a small stage, a bar and a dance floor. The first independently loadable venue room of the Music complex.",
+  "webUrl": "https://www.nrvnaverse.com/worlds/music-club",
+  "spatialDestination": {
+    "platform": "the-nrvnaverse",
+    "worldId": "the-nrvnaverse"
+  },
+  "media": {
+    "thumbnailUrl": null,
+    "heroUrl": null,
+    "logoUrl": null
+  },
+  "status": "active",
+  "ageRestriction": null,
+  "jurisdictions": {
+    "policy": "unrestricted",
+    "regions": [],
+    "note": null
+  },
+  "capabilities": [
+    "entertainment",
+    "events",
+    "audio"
+  ],
+  "devices": [
+    "desktop",
+    "mobile",
+    "tablet"
+  ],
+  "commerceRefs": [],
+  "analyticsId": "dst_gqq90k2404cy9nf0",
+  "updatedAt": "2026-10-15T00:00:00Z",
+  "auth": {
+    "roles": []
+  },
+  "gates": []
+}

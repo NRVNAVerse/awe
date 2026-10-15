@@ -131,14 +131,16 @@ export function composeHub() {
   );
   for (const [i, y] of [9, 17, 25].entries()) {
     items.push(
+      // Dormant state: a dark bronze ring with a faint ember pulse (browser-tuned 2026-10-15 so the
+      // wake from this state to the lit ring below reads at the arrival).
       column(`hub-spire-ring-${i + 1}`, 0, y, pz, 1.25, 0.25, {
-        name: `Spire ring ${i + 1}`,
-        color: PALETTE.warmLight,
+        name: `Spire ring ${i + 1} (dormant)`,
+        color: "#5a4a30",
         segments: 24,
         collider: "none",
         castShadow: false,
         receiveShadow: false,
-        plugins: [pulse(PALETTE.ember, { intensity: 0.35, speed: 0.5 })],
+        plugins: [pulse(PALETTE.ember, { intensity: 0.2, speed: 0.5 })],
         tag: S.landmark,
       }),
     );
@@ -372,10 +374,12 @@ export function composeHub() {
     exit: { hide: ["hub-core-halo", "hub-core-well"] },
   });
   // Every arrival at the Hub wakes the spire from the bottom ring up (initial placement and returns).
+  // First beat at 1.5 s: on the initial placement the engine's reveal fade lasts about a second, so
+  // an earlier wake finishes behind the fade (browser-verified 2026-10-15); a return still reads.
   x.arrival("hub-wake", HUB_DESTINATION_ID, [
-    { afterSeconds: 0.6, show: ["hub-spire-ring-1-lit"], hide: ["hub-spire-ring-1"] },
-    { afterSeconds: 1.1, show: ["hub-spire-ring-2-lit"], hide: ["hub-spire-ring-2"] },
-    { afterSeconds: 1.6, show: ["hub-spire-ring-3-lit"], hide: ["hub-spire-ring-3"] },
+    { afterSeconds: 1.5, show: ["hub-spire-ring-1-lit"], hide: ["hub-spire-ring-1"] },
+    { afterSeconds: 2.0, show: ["hub-spire-ring-2-lit"], hide: ["hub-spire-ring-2"] },
+    { afterSeconds: 2.5, show: ["hub-spire-ring-3-lit"], hide: ["hub-spire-ring-3"] },
   ]);
   // Coming back from a district: the gateway you returned through glows, then settles.
   x.arrival("hub-return-music", HUB_DESTINATION_ID, [{ afterSeconds: 0, show: ["hub-return-music-glow"] }, { afterSeconds: 6, hide: ["hub-return-music-glow"] }], { fromChunkKey: "music" });

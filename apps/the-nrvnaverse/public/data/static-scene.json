@@ -1801,7 +1801,7 @@
       }
     },
     "hub-spire-ring-1": {
-      "name": "Spire ring 1",
+      "name": "Spire ring 1 (dormant)",
       "id": "hub-spire-ring-1",
       "type": "mesh",
       "kit": "cyber",
@@ -1841,7 +1841,7 @@
         },
         "type": "cylinder"
       },
-      "color": "#ffd98a",
+      "color": "#5a4a30",
       "opacity": 1,
       "display": true,
       "renderMode": "default",
@@ -1852,7 +1852,7 @@
         {
           "id": "PulsePlugin",
           "color": "#f5b24a",
-          "intensity": 0.35,
+          "intensity": 0.2,
           "speed": 0.5
         }
       ],
@@ -1935,7 +1935,7 @@
       }
     },
     "hub-spire-ring-2": {
-      "name": "Spire ring 2",
+      "name": "Spire ring 2 (dormant)",
       "id": "hub-spire-ring-2",
       "type": "mesh",
       "kit": "cyber",
@@ -1975,7 +1975,7 @@
         },
         "type": "cylinder"
       },
-      "color": "#ffd98a",
+      "color": "#5a4a30",
       "opacity": 1,
       "display": true,
       "renderMode": "default",
@@ -1986,7 +1986,7 @@
         {
           "id": "PulsePlugin",
           "color": "#f5b24a",
-          "intensity": 0.35,
+          "intensity": 0.2,
           "speed": 0.5
         }
       ],
@@ -2069,7 +2069,7 @@
       }
     },
     "hub-spire-ring-3": {
-      "name": "Spire ring 3",
+      "name": "Spire ring 3 (dormant)",
       "id": "hub-spire-ring-3",
       "type": "mesh",
       "kit": "cyber",
@@ -2109,7 +2109,7 @@
         },
         "type": "cylinder"
       },
-      "color": "#ffd98a",
+      "color": "#5a4a30",
       "opacity": 1,
       "display": true,
       "renderMode": "default",
@@ -2120,7 +2120,7 @@
         {
           "id": "PulsePlugin",
           "color": "#f5b24a",
-          "intensity": 0.35,
+          "intensity": 0.2,
           "speed": 0.5
         }
       ],
@@ -6809,7 +6809,7 @@
       "kit": "cyber",
       "position": {
         "x": -76.511,
-        "y": 4.9,
+        "y": 4.5,
         "z": -52.464
       },
       "rotation": {
@@ -6837,14 +6837,14 @@
           "openEnded": false
         },
         "boxParams": {
-          "width": 2.75,
-          "height": 5.6,
-          "depth": 0.75
+          "width": 0.9,
+          "height": 6.08,
+          "depth": 0.72
         },
         "type": "box"
       },
-      "color": "#9ff5e8",
-      "opacity": 0.85,
+      "color": "#bffbf2",
+      "opacity": 0.7,
       "display": true,
       "renderMode": "default",
       "wireframe": false,
@@ -6854,7 +6854,7 @@
         {
           "id": "FresnelGlowPlugin",
           "color": "#2fb8a6",
-          "intensity": 2.4,
+          "intensity": 2.2,
           "power": 1.1,
           "speed": 1.2,
           "pulse": 1
@@ -7003,7 +7003,7 @@
       "kit": "cyber",
       "position": {
         "x": -73.592,
-        "y": 6.55,
+        "y": 6,
         "z": -54.704
       },
       "rotation": {
@@ -7031,14 +7031,14 @@
           "openEnded": false
         },
         "boxParams": {
-          "width": 2.75,
-          "height": 7.7,
-          "depth": 0.75
+          "width": 0.9,
+          "height": 8.36,
+          "depth": 0.72
         },
         "type": "box"
       },
-      "color": "#9ff5e8",
-      "opacity": 0.85,
+      "color": "#bffbf2",
+      "opacity": 0.7,
       "display": true,
       "renderMode": "default",
       "wireframe": false,
@@ -7048,7 +7048,7 @@
         {
           "id": "FresnelGlowPlugin",
           "color": "#2fb8a6",
-          "intensity": 2.4,
+          "intensity": 2.2,
           "power": 1.1,
           "speed": 1.2,
           "pulse": 1
@@ -7197,7 +7197,7 @@
       "kit": "cyber",
       "position": {
         "x": -70,
-        "y": 7.65,
+        "y": 7,
         "z": -55.5
       },
       "rotation": {
@@ -7225,14 +7225,14 @@
           "openEnded": false
         },
         "boxParams": {
-          "width": 2.75,
-          "height": 9.1,
-          "depth": 0.75
+          "width": 0.9,
+          "height": 9.88,
+          "depth": 0.72
         },
         "type": "box"
       },
-      "color": "#9ff5e8",
-      "opacity": 0.85,
+      "color": "#bffbf2",
+      "opacity": 0.7,
       "display": true,
       "renderMode": "default",
       "wireframe": false,
@@ -7242,7 +7242,7 @@
         {
           "id": "FresnelGlowPlugin",
           "color": "#2fb8a6",
-          "intensity": 2.4,
+          "intensity": 2.2,
           "power": 1.1,
           "speed": 1.2,
           "pulse": 1
@@ -7391,7 +7391,7 @@
       "kit": "cyber",
       "position": {
         "x": -66.408,
-        "y": 6.55,
+        "y": 6,
         "z": -54.704
       },
       "rotation": {
@@ -7419,14 +7419,14 @@
           "openEnded": false
         },
         "boxParams": {
-          "width": 2.75,
-          "height": 7.7,
-          "depth": 0.75
+          "width": 0.9,
+          "height": 8.36,
+          "depth": 0.72
         },
         "type": "box"
       },
-      "color": "#9ff5e8",
-      "opacity": 0.85,
+      "color": "#bffbf2",
+      "opacity": 0.7,
       "display": true,
       "renderMode": "default",
       "wireframe": false,
@@ -7436,7 +7436,7 @@
         {
           "id": "FresnelGlowPlugin",
           "color": "#2fb8a6",
-          "intensity": 2.4,
+          "intensity": 2.2,
           "power": 1.1,
           "speed": 1.2,
           "pulse": 1
@@ -7585,7 +7585,7 @@
       "kit": "cyber",
       "position": {
         "x": -63.489,
-        "y": 4.9,
+        "y": 4.5,
         "z": -52.464
       },
       "rotation": {
@@ -7613,14 +7613,14 @@
           "openEnded": false
         },
         "boxParams": {
-          "width": 2.75,
-          "height": 5.6,
-          "depth": 0.75
+          "width": 0.9,
+          "height": 6.08,
+          "depth": 0.72
         },
         "type": "box"
       },
-      "color": "#9ff5e8",
-      "opacity": 0.85,
+      "color": "#bffbf2",
+      "opacity": 0.7,
       "display": true,
       "renderMode": "default",
       "wireframe": false,
@@ -7630,7 +7630,7 @@
         {
           "id": "FresnelGlowPlugin",
           "color": "#2fb8a6",
-          "intensity": 2.4,
+          "intensity": 2.2,
           "power": 1.1,
           "speed": 1.2,
           "pulse": 1
@@ -7654,7 +7654,7 @@
       "position": {
         "x": -70,
         "y": 1.515,
-        "z": -46
+        "z": -46.6
       },
       "rotation": {
         "x": 0,
@@ -7673,8 +7673,8 @@
           "heightSegments": 32
         },
         "cylinderParams": {
-          "radiusTop": 7,
-          "radiusBottom": 7,
+          "radiusTop": 2.6,
+          "radiusBottom": 2.6,
           "height": 0.02,
           "radialSegments": 48,
           "heightSegments": 1,
@@ -7688,7 +7688,7 @@
         "type": "cylinder"
       },
       "color": "#2fb8a6",
-      "opacity": 0.45,
+      "opacity": 0.32,
       "display": true,
       "renderMode": "default",
       "wireframe": false,
@@ -8262,6 +8262,509 @@
         "identifier": "music-gate-artist-post-e",
         "tag": "m1-music-structure"
       }
+    },
+    "music-club-passage": {
+      "name": "Club passage floor",
+      "id": "music-club-passage",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -65,
+        "y": 0.25,
+        "z": 15
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 6,
+          "height": 0.5,
+          "depth": 6
+        },
+        "type": "box"
+      },
+      "color": "#141720",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "music-club-passage",
+        "tag": "m1-music-route"
+      }
+    },
+    "music-club-passage-wall-w": {
+      "name": "Club passage wall west",
+      "id": "music-club-passage-wall-w",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -68.25,
+        "y": 2.6,
+        "z": 15
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 0.5,
+          "height": 4.2,
+          "depth": 6
+        },
+        "type": "box"
+      },
+      "color": "#1c1f26",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "music-club-passage-wall-w",
+        "tag": "m1-music-structure"
+      }
+    },
+    "music-club-passage-wall-e": {
+      "name": "Club passage wall east",
+      "id": "music-club-passage-wall-e",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -61.75,
+        "y": 2.6,
+        "z": 15
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 0.5,
+          "height": 4.2,
+          "depth": 6
+        },
+        "type": "box"
+      },
+      "color": "#1c1f26",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "music-club-passage-wall-e",
+        "tag": "m1-music-structure"
+      }
+    },
+    "music-club-passage-end": {
+      "name": "Club passage end wall",
+      "id": "music-club-passage-end",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -65,
+        "y": 2.6,
+        "z": 18.25
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 7,
+          "height": 4.2,
+          "depth": 0.5
+        },
+        "type": "box"
+      },
+      "color": "#0f1116",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "music-club-passage-end",
+        "tag": "m1-music-structure"
+      }
+    },
+    "music-club-lintel": {
+      "name": "Club door lintel",
+      "id": "music-club-lintel",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -65,
+        "y": 5.1,
+        "z": 12.3
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 7,
+          "height": 0.8,
+          "depth": 1
+        },
+        "type": "box"
+      },
+      "color": "#1c1f26",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "music-club-lintel",
+        "tag": "m1-music-structure"
+      }
+    },
+    "music-club-label": {
+      "name": "Label The Club door",
+      "id": "music-club-label",
+      "type": "text",
+      "kit": "cyber",
+      "text": "THE CLUB",
+      "position": {
+        "x": -65,
+        "y": 3.8,
+        "z": 12
+      },
+      "rotation": {
+        "x": 0,
+        "y": 3.1416,
+        "z": 0
+      },
+      "scale": {
+        "x": 0.85,
+        "y": 0.85,
+        "z": 0.85
+      },
+      "align": "center",
+      "font": "aeonik-bold",
+      "lineHeight": 60,
+      "textColor": "#2fb8a6",
+      "textTransform": "none",
+      "width": 1200,
+      "opacity": 1
+    },
+    "music-club-door-glow": {
+      "name": "Club door glow (tonight's room)",
+      "id": "music-club-door-glow",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -65,
+        "y": 5.1,
+        "z": 12.3
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 7.1,
+          "height": 0.9,
+          "depth": 1.1
+        },
+        "type": "box"
+      },
+      "color": "#2fb8a6",
+      "opacity": 0.5,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "plugins": [
+        {
+          "id": "FresnelGlowPlugin",
+          "color": "#2fb8a6",
+          "intensity": 1.8,
+          "power": 1.2,
+          "speed": 0.9,
+          "pulse": 1
+        }
+      ],
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "music-club-door-glow",
+        "tag": "m1-music-structure"
+      }
+    },
+    "music-marquee-board": {
+      "name": "Marquee board",
+      "id": "music-marquee-board",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -65,
+        "y": 6.6,
+        "z": 12.2
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 9,
+          "height": 2.2,
+          "depth": 0.3
+        },
+        "type": "box"
+      },
+      "color": "#0f1116",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "music-marquee-board",
+        "tag": "m1-music-structure"
+      }
+    },
+    "music-marquee-title": {
+      "name": "Marquee title",
+      "id": "music-marquee-title",
+      "type": "text",
+      "kit": "cyber",
+      "text": "TONIGHT",
+      "position": {
+        "x": -65,
+        "y": 6.85,
+        "z": 11.95
+      },
+      "rotation": {
+        "x": 0,
+        "y": 3.1416,
+        "z": 0
+      },
+      "scale": {
+        "x": 0.7,
+        "y": 0.7,
+        "z": 0.7
+      },
+      "align": "center",
+      "font": "aeonik-bold",
+      "lineHeight": 60,
+      "textColor": "#ffd98a",
+      "textTransform": "none",
+      "width": 1200,
+      "opacity": 1
+    },
+    "music-marquee-room": {
+      "name": "Marquee room line",
+      "id": "music-marquee-room",
+      "type": "text",
+      "kit": "cyber",
+      "text": "THE CLUB — placeholder listening session",
+      "position": {
+        "x": -65,
+        "y": 5.95,
+        "z": 11.95
+      },
+      "rotation": {
+        "x": 0,
+        "y": 3.1416,
+        "z": 0
+      },
+      "scale": {
+        "x": 0.55,
+        "y": 0.55,
+        "z": 0.55
+      },
+      "align": "center",
+      "font": "aeonik-bold",
+      "lineHeight": 60,
+      "textColor": "#2fb8a6",
+      "textTransform": "none",
+      "width": 1800,
+      "opacity": 1
     },
     "music-booth-ramp": {
       "name": "Booth ramp",
@@ -9243,6 +9746,65 @@
       },
       "script": {
         "identifier": "portal-music-hub",
+        "tag": "m0-portal"
+      }
+    },
+    "portal-music-club": {
+      "name": "Portal Music District → The Club",
+      "id": "portal-music-club",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -65,
+        "y": 2,
+        "z": 16
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 5,
+          "height": 3,
+          "depth": 1
+        },
+        "type": "box"
+      },
+      "color": "#2fb8a6",
+      "opacity": 0.22,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE",
+        "isSensor": true
+      },
+      "script": {
+        "identifier": "portal-music-club",
         "tag": "m0-portal"
       }
     },
@@ -15013,6 +15575,3507 @@
       "textTransform": "none",
       "width": 900,
       "opacity": 1
+    },
+    "platform-music-club": {
+      "name": "Club floor",
+      "id": "platform-music-club",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -70,
+        "y": 0.25,
+        "z": 68
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 22,
+          "height": 0.5,
+          "depth": 16
+        },
+        "type": "box"
+      },
+      "color": "#15171d",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "platform-music-club",
+        "tag": "m1-club-structure"
+      }
+    },
+    "club-wall-n": {
+      "name": "Club north wall",
+      "id": "club-wall-n",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -70,
+        "y": 3.25,
+        "z": 59.75
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 22.5,
+          "height": 5.5,
+          "depth": 0.5
+        },
+        "type": "box"
+      },
+      "color": "#3a2434",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "club-wall-n",
+        "tag": "m1-club-structure"
+      }
+    },
+    "club-wall-w": {
+      "name": "Club west wall",
+      "id": "club-wall-w",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -81.25,
+        "y": 3.25,
+        "z": 68
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 0.5,
+          "height": 5.5,
+          "depth": 16
+        },
+        "type": "box"
+      },
+      "color": "#3a2434",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "club-wall-w",
+        "tag": "m1-club-structure"
+      }
+    },
+    "club-wall-e": {
+      "name": "Club east wall",
+      "id": "club-wall-e",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -58.75,
+        "y": 3.25,
+        "z": 68
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 0.5,
+          "height": 5.5,
+          "depth": 16
+        },
+        "type": "box"
+      },
+      "color": "#3a2434",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "club-wall-e",
+        "tag": "m1-club-structure"
+      }
+    },
+    "club-wall-sw": {
+      "name": "Club south wall (west of the door)",
+      "id": "club-wall-sw",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -76.75,
+        "y": 3.25,
+        "z": 76.25
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 9.5,
+          "height": 5.5,
+          "depth": 0.5
+        },
+        "type": "box"
+      },
+      "color": "#3a2434",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "club-wall-sw",
+        "tag": "m1-club-structure"
+      }
+    },
+    "club-wall-se": {
+      "name": "Club south wall (east of the door)",
+      "id": "club-wall-se",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -63.25,
+        "y": 3.25,
+        "z": 76.25
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 9.5,
+          "height": 5.5,
+          "depth": 0.5
+        },
+        "type": "box"
+      },
+      "color": "#3a2434",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "club-wall-se",
+        "tag": "m1-club-structure"
+      }
+    },
+    "club-door-lintel": {
+      "name": "Club door lintel",
+      "id": "club-door-lintel",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -70,
+        "y": 5.35,
+        "z": 76.25
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 4.6,
+          "height": 1.3,
+          "depth": 0.6
+        },
+        "type": "box"
+      },
+      "color": "#3a2434",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "club-door-lintel",
+        "tag": "m1-club-structure"
+      }
+    },
+    "label-music-club": {
+      "name": "Label The Club (inside the door)",
+      "id": "label-music-club",
+      "type": "text",
+      "kit": "cyber",
+      "text": "THE CLUB",
+      "position": {
+        "x": -70,
+        "y": 3.8,
+        "z": 75.9
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 0.9,
+        "y": 0.9,
+        "z": 0.9
+      },
+      "align": "center",
+      "font": "aeonik-bold",
+      "lineHeight": 60,
+      "textColor": "#2fb8a6",
+      "textTransform": "none",
+      "width": 1200,
+      "opacity": 1
+    },
+    "club-ring-1": {
+      "name": "Light ring 1 (dormant)",
+      "id": "club-ring-1",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -70,
+        "y": 6.86,
+        "z": 64
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 3.6,
+          "radiusBottom": 3.6,
+          "height": 0.12,
+          "radialSegments": 40,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1,
+          "height": 1,
+          "depth": 1
+        },
+        "type": "cylinder"
+      },
+      "color": "#2a2d36",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "plugins": [
+        {
+          "id": "PulsePlugin",
+          "color": "#2fb8a6",
+          "intensity": 0.15,
+          "speed": 0.4
+        }
+      ],
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CYLINDER"
+      },
+      "script": {
+        "identifier": "club-ring-1",
+        "tag": "m1-club-structure"
+      }
+    },
+    "club-ring-1-lit": {
+      "name": "Light ring 1 (lit)",
+      "id": "club-ring-1-lit",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -70,
+        "y": 6.85,
+        "z": 64
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 3.8,
+          "radiusBottom": 3.8,
+          "height": 0.2,
+          "radialSegments": 40,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1,
+          "height": 1,
+          "depth": 1
+        },
+        "type": "cylinder"
+      },
+      "color": "#bffbf2",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "plugins": [
+        {
+          "id": "FresnelGlowPlugin",
+          "color": "#2fb8a6",
+          "intensity": 2,
+          "power": 1.2,
+          "speed": 0.9,
+          "pulse": 1
+        }
+      ],
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CYLINDER"
+      },
+      "script": {
+        "identifier": "club-ring-1-lit",
+        "tag": "m1-club-reactive"
+      }
+    },
+    "club-ring-2": {
+      "name": "Light ring 2 (dormant)",
+      "id": "club-ring-2",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -70,
+        "y": 6.86,
+        "z": 68
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 3.6,
+          "radiusBottom": 3.6,
+          "height": 0.12,
+          "radialSegments": 40,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1,
+          "height": 1,
+          "depth": 1
+        },
+        "type": "cylinder"
+      },
+      "color": "#2a2d36",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "plugins": [
+        {
+          "id": "PulsePlugin",
+          "color": "#2fb8a6",
+          "intensity": 0.15,
+          "speed": 0.4
+        }
+      ],
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CYLINDER"
+      },
+      "script": {
+        "identifier": "club-ring-2",
+        "tag": "m1-club-structure"
+      }
+    },
+    "club-ring-2-lit": {
+      "name": "Light ring 2 (lit)",
+      "id": "club-ring-2-lit",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -70,
+        "y": 6.85,
+        "z": 68
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 3.8,
+          "radiusBottom": 3.8,
+          "height": 0.2,
+          "radialSegments": 40,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1,
+          "height": 1,
+          "depth": 1
+        },
+        "type": "cylinder"
+      },
+      "color": "#bffbf2",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "plugins": [
+        {
+          "id": "FresnelGlowPlugin",
+          "color": "#2fb8a6",
+          "intensity": 2,
+          "power": 1.2,
+          "speed": 0.9,
+          "pulse": 1
+        }
+      ],
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CYLINDER"
+      },
+      "script": {
+        "identifier": "club-ring-2-lit",
+        "tag": "m1-club-reactive"
+      }
+    },
+    "club-ring-3": {
+      "name": "Light ring 3 (dormant)",
+      "id": "club-ring-3",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -70,
+        "y": 6.86,
+        "z": 72
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 3.6,
+          "radiusBottom": 3.6,
+          "height": 0.12,
+          "radialSegments": 40,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1,
+          "height": 1,
+          "depth": 1
+        },
+        "type": "cylinder"
+      },
+      "color": "#2a2d36",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "plugins": [
+        {
+          "id": "PulsePlugin",
+          "color": "#2fb8a6",
+          "intensity": 0.15,
+          "speed": 0.4
+        }
+      ],
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CYLINDER"
+      },
+      "script": {
+        "identifier": "club-ring-3",
+        "tag": "m1-club-structure"
+      }
+    },
+    "club-ring-3-lit": {
+      "name": "Light ring 3 (lit)",
+      "id": "club-ring-3-lit",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -70,
+        "y": 6.85,
+        "z": 72
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 3.8,
+          "radiusBottom": 3.8,
+          "height": 0.2,
+          "radialSegments": 40,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1,
+          "height": 1,
+          "depth": 1
+        },
+        "type": "cylinder"
+      },
+      "color": "#bffbf2",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "plugins": [
+        {
+          "id": "FresnelGlowPlugin",
+          "color": "#2fb8a6",
+          "intensity": 2,
+          "power": 1.2,
+          "speed": 0.9,
+          "pulse": 1
+        }
+      ],
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CYLINDER"
+      },
+      "script": {
+        "identifier": "club-ring-3-lit",
+        "tag": "m1-club-reactive"
+      }
+    },
+    "club-ring-1-drop": {
+      "name": "Light ring 1 drop",
+      "id": "club-ring-1-drop",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -70,
+        "y": 7.9,
+        "z": 64
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 0.06,
+          "radiusBottom": 0.06,
+          "height": 2,
+          "radialSegments": 6,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1,
+          "height": 1,
+          "depth": 1
+        },
+        "type": "cylinder"
+      },
+      "color": "#1c1f26",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CYLINDER"
+      },
+      "script": {
+        "identifier": "club-ring-1-drop",
+        "tag": "m1-club-structure"
+      }
+    },
+    "club-ring-2-drop": {
+      "name": "Light ring 2 drop",
+      "id": "club-ring-2-drop",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -70,
+        "y": 7.9,
+        "z": 68
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 0.06,
+          "radiusBottom": 0.06,
+          "height": 2,
+          "radialSegments": 6,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1,
+          "height": 1,
+          "depth": 1
+        },
+        "type": "cylinder"
+      },
+      "color": "#1c1f26",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CYLINDER"
+      },
+      "script": {
+        "identifier": "club-ring-2-drop",
+        "tag": "m1-club-structure"
+      }
+    },
+    "club-ring-3-drop": {
+      "name": "Light ring 3 drop",
+      "id": "club-ring-3-drop",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -70,
+        "y": 7.9,
+        "z": 72
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 0.06,
+          "radiusBottom": 0.06,
+          "height": 2,
+          "radialSegments": 6,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1,
+          "height": 1,
+          "depth": 1
+        },
+        "type": "cylinder"
+      },
+      "color": "#1c1f26",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CYLINDER"
+      },
+      "script": {
+        "identifier": "club-ring-3-drop",
+        "tag": "m1-club-structure"
+      }
+    },
+    "club-stage": {
+      "name": "Club stage riser",
+      "id": "club-stage",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -70,
+        "y": 0.8,
+        "z": 62
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 10,
+          "height": 0.6,
+          "depth": 4
+        },
+        "type": "box"
+      },
+      "color": "#1c1f26",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "club-stage",
+        "tag": "m1-club-stage"
+      }
+    },
+    "club-stage-ramp": {
+      "name": "Club stage ramp",
+      "id": "club-stage-ramp",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -75.928,
+        "y": 0.561,
+        "z": 62
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0.2915
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 2.088,
+          "height": 0.5,
+          "depth": 3
+        },
+        "type": "box"
+      },
+      "color": "#1c1f26",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "club-stage-ramp",
+        "tag": "m1-club-route"
+      }
+    },
+    "club-console": {
+      "name": "Club console",
+      "id": "club-console",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -70,
+        "y": 1.55,
+        "z": 61.4
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 2.6,
+          "height": 0.9,
+          "depth": 0.8
+        },
+        "type": "box"
+      },
+      "color": "#6b6559",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "club-console",
+        "tag": "m1-club-stage"
+      }
+    },
+    "club-console-top": {
+      "name": "Club console surface",
+      "id": "club-console-top",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -70,
+        "y": 2.05,
+        "z": 61.4
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 2.4,
+          "height": 0.1,
+          "depth": 0.7
+        },
+        "type": "box"
+      },
+      "color": "#2fb8a6",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": true,
+      "plugins": [
+        {
+          "id": "HologramPlugin",
+          "color": "#2fb8a6",
+          "scanDensity": 28,
+          "scanSpeed": 2,
+          "flickerStrength": 0.04
+        }
+      ],
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "club-console-top",
+        "tag": "m1-club-stage"
+      }
+    },
+    "club-console-live": {
+      "name": "Club console surface (live)",
+      "id": "club-console-live",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -70,
+        "y": 2.09,
+        "z": 61.4
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 2.5,
+          "height": 0.14,
+          "depth": 0.8
+        },
+        "type": "box"
+      },
+      "color": "#9ff5e8",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "plugins": [
+        {
+          "id": "FresnelGlowPlugin",
+          "color": "#2fb8a6",
+          "intensity": 2,
+          "power": 1.2,
+          "speed": 2,
+          "pulse": 1
+        }
+      ],
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "club-console-live",
+        "tag": "m1-club-reactive"
+      }
+    },
+    "club-stage-spot": {
+      "name": "Club stage spot (lit)",
+      "id": "club-stage-spot",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -70,
+        "y": 4.4,
+        "z": 62
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 0.4,
+          "radiusBottom": 1.6,
+          "height": 6.6,
+          "radialSegments": 24,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1,
+          "height": 1,
+          "depth": 1
+        },
+        "type": "cylinder"
+      },
+      "color": "#cffcf4",
+      "opacity": 0.16,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CYLINDER"
+      },
+      "script": {
+        "identifier": "club-stage-spot",
+        "tag": "m1-club-reactive"
+      }
+    },
+    "club-stage-back": {
+      "name": "Club stage back wall (dark)",
+      "id": "club-stage-back",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -70,
+        "y": 3.3,
+        "z": 60.1
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 10,
+          "height": 4.4,
+          "depth": 0.2
+        },
+        "type": "box"
+      },
+      "color": "#0f1116",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": true,
+      "plugins": [
+        {
+          "id": "PulsePlugin",
+          "color": "#2fb8a6",
+          "intensity": 0.12,
+          "speed": 0.3
+        }
+      ],
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "club-stage-back",
+        "tag": "m1-club-stage"
+      }
+    },
+    "club-tile-1": {
+      "name": "Dance tile 1 (dark)",
+      "id": "club-tile-1",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -72,
+        "y": 0.51,
+        "z": 66
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1.9,
+          "height": 0.02,
+          "depth": 1.9
+        },
+        "type": "box"
+      },
+      "color": "#20242c",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "club-tile-1",
+        "tag": "m1-club-structure"
+      }
+    },
+    "club-tile-1-lit": {
+      "name": "Dance tile 1 (lit)",
+      "id": "club-tile-1-lit",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -72,
+        "y": 0.515,
+        "z": 66
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1.9,
+          "height": 0.02,
+          "depth": 1.9
+        },
+        "type": "box"
+      },
+      "color": "#ffd98a",
+      "opacity": 0.85,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "plugins": [
+        {
+          "id": "PulsePlugin",
+          "color": "#f5b24a",
+          "intensity": 0.6,
+          "speed": 1.4
+        }
+      ],
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "club-tile-1-lit",
+        "tag": "m1-club-reactive"
+      }
+    },
+    "club-tile-2": {
+      "name": "Dance tile 2 (dark)",
+      "id": "club-tile-2",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -70,
+        "y": 0.51,
+        "z": 66
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1.9,
+          "height": 0.02,
+          "depth": 1.9
+        },
+        "type": "box"
+      },
+      "color": "#20242c",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "club-tile-2",
+        "tag": "m1-club-structure"
+      }
+    },
+    "club-tile-2-lit": {
+      "name": "Dance tile 2 (lit)",
+      "id": "club-tile-2-lit",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -70,
+        "y": 0.515,
+        "z": 66
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1.9,
+          "height": 0.02,
+          "depth": 1.9
+        },
+        "type": "box"
+      },
+      "color": "#8ff2e4",
+      "opacity": 0.85,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "plugins": [
+        {
+          "id": "PulsePlugin",
+          "color": "#2fb8a6",
+          "intensity": 0.6,
+          "speed": 1.4
+        }
+      ],
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "club-tile-2-lit",
+        "tag": "m1-club-reactive"
+      }
+    },
+    "club-tile-3": {
+      "name": "Dance tile 3 (dark)",
+      "id": "club-tile-3",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -68,
+        "y": 0.51,
+        "z": 66
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1.9,
+          "height": 0.02,
+          "depth": 1.9
+        },
+        "type": "box"
+      },
+      "color": "#20242c",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "club-tile-3",
+        "tag": "m1-club-structure"
+      }
+    },
+    "club-tile-3-lit": {
+      "name": "Dance tile 3 (lit)",
+      "id": "club-tile-3-lit",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -68,
+        "y": 0.515,
+        "z": 66
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1.9,
+          "height": 0.02,
+          "depth": 1.9
+        },
+        "type": "box"
+      },
+      "color": "#ffd98a",
+      "opacity": 0.85,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "plugins": [
+        {
+          "id": "PulsePlugin",
+          "color": "#f5b24a",
+          "intensity": 0.6,
+          "speed": 1.4
+        }
+      ],
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "club-tile-3-lit",
+        "tag": "m1-club-reactive"
+      }
+    },
+    "club-tile-4": {
+      "name": "Dance tile 4 (dark)",
+      "id": "club-tile-4",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -72,
+        "y": 0.51,
+        "z": 68
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1.9,
+          "height": 0.02,
+          "depth": 1.9
+        },
+        "type": "box"
+      },
+      "color": "#20242c",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "club-tile-4",
+        "tag": "m1-club-structure"
+      }
+    },
+    "club-tile-4-lit": {
+      "name": "Dance tile 4 (lit)",
+      "id": "club-tile-4-lit",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -72,
+        "y": 0.515,
+        "z": 68
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1.9,
+          "height": 0.02,
+          "depth": 1.9
+        },
+        "type": "box"
+      },
+      "color": "#8ff2e4",
+      "opacity": 0.85,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "plugins": [
+        {
+          "id": "PulsePlugin",
+          "color": "#2fb8a6",
+          "intensity": 0.6,
+          "speed": 1.4
+        }
+      ],
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "club-tile-4-lit",
+        "tag": "m1-club-reactive"
+      }
+    },
+    "club-tile-5": {
+      "name": "Dance tile 5 (dark)",
+      "id": "club-tile-5",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -70,
+        "y": 0.51,
+        "z": 68
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1.9,
+          "height": 0.02,
+          "depth": 1.9
+        },
+        "type": "box"
+      },
+      "color": "#20242c",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "club-tile-5",
+        "tag": "m1-club-structure"
+      }
+    },
+    "club-tile-5-lit": {
+      "name": "Dance tile 5 (lit)",
+      "id": "club-tile-5-lit",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -70,
+        "y": 0.515,
+        "z": 68
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1.9,
+          "height": 0.02,
+          "depth": 1.9
+        },
+        "type": "box"
+      },
+      "color": "#ffd98a",
+      "opacity": 0.85,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "plugins": [
+        {
+          "id": "PulsePlugin",
+          "color": "#f5b24a",
+          "intensity": 0.6,
+          "speed": 1.4
+        }
+      ],
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "club-tile-5-lit",
+        "tag": "m1-club-reactive"
+      }
+    },
+    "club-tile-6": {
+      "name": "Dance tile 6 (dark)",
+      "id": "club-tile-6",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -68,
+        "y": 0.51,
+        "z": 68
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1.9,
+          "height": 0.02,
+          "depth": 1.9
+        },
+        "type": "box"
+      },
+      "color": "#20242c",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "club-tile-6",
+        "tag": "m1-club-structure"
+      }
+    },
+    "club-tile-6-lit": {
+      "name": "Dance tile 6 (lit)",
+      "id": "club-tile-6-lit",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -68,
+        "y": 0.515,
+        "z": 68
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1.9,
+          "height": 0.02,
+          "depth": 1.9
+        },
+        "type": "box"
+      },
+      "color": "#8ff2e4",
+      "opacity": 0.85,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "plugins": [
+        {
+          "id": "PulsePlugin",
+          "color": "#2fb8a6",
+          "intensity": 0.6,
+          "speed": 1.4
+        }
+      ],
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "club-tile-6-lit",
+        "tag": "m1-club-reactive"
+      }
+    },
+    "club-tile-7": {
+      "name": "Dance tile 7 (dark)",
+      "id": "club-tile-7",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -72,
+        "y": 0.51,
+        "z": 70
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1.9,
+          "height": 0.02,
+          "depth": 1.9
+        },
+        "type": "box"
+      },
+      "color": "#20242c",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "club-tile-7",
+        "tag": "m1-club-structure"
+      }
+    },
+    "club-tile-7-lit": {
+      "name": "Dance tile 7 (lit)",
+      "id": "club-tile-7-lit",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -72,
+        "y": 0.515,
+        "z": 70
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1.9,
+          "height": 0.02,
+          "depth": 1.9
+        },
+        "type": "box"
+      },
+      "color": "#ffd98a",
+      "opacity": 0.85,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "plugins": [
+        {
+          "id": "PulsePlugin",
+          "color": "#f5b24a",
+          "intensity": 0.6,
+          "speed": 1.4
+        }
+      ],
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "club-tile-7-lit",
+        "tag": "m1-club-reactive"
+      }
+    },
+    "club-tile-8": {
+      "name": "Dance tile 8 (dark)",
+      "id": "club-tile-8",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -70,
+        "y": 0.51,
+        "z": 70
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1.9,
+          "height": 0.02,
+          "depth": 1.9
+        },
+        "type": "box"
+      },
+      "color": "#20242c",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "club-tile-8",
+        "tag": "m1-club-structure"
+      }
+    },
+    "club-tile-8-lit": {
+      "name": "Dance tile 8 (lit)",
+      "id": "club-tile-8-lit",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -70,
+        "y": 0.515,
+        "z": 70
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1.9,
+          "height": 0.02,
+          "depth": 1.9
+        },
+        "type": "box"
+      },
+      "color": "#8ff2e4",
+      "opacity": 0.85,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "plugins": [
+        {
+          "id": "PulsePlugin",
+          "color": "#2fb8a6",
+          "intensity": 0.6,
+          "speed": 1.4
+        }
+      ],
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "club-tile-8-lit",
+        "tag": "m1-club-reactive"
+      }
+    },
+    "club-tile-9": {
+      "name": "Dance tile 9 (dark)",
+      "id": "club-tile-9",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -68,
+        "y": 0.51,
+        "z": 70
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1.9,
+          "height": 0.02,
+          "depth": 1.9
+        },
+        "type": "box"
+      },
+      "color": "#20242c",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "club-tile-9",
+        "tag": "m1-club-structure"
+      }
+    },
+    "club-tile-9-lit": {
+      "name": "Dance tile 9 (lit)",
+      "id": "club-tile-9-lit",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -68,
+        "y": 0.515,
+        "z": 70
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1.9,
+          "height": 0.02,
+          "depth": 1.9
+        },
+        "type": "box"
+      },
+      "color": "#ffd98a",
+      "opacity": 0.85,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "plugins": [
+        {
+          "id": "PulsePlugin",
+          "color": "#f5b24a",
+          "intensity": 0.6,
+          "speed": 1.4
+        }
+      ],
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "club-tile-9-lit",
+        "tag": "m1-club-reactive"
+      }
+    },
+    "club-bar": {
+      "name": "Bar counter",
+      "id": "club-bar",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -60.4,
+        "y": 1.05,
+        "z": 69
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1.2,
+          "height": 1.1,
+          "depth": 9
+        },
+        "type": "box"
+      },
+      "color": "#5a3f2e",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "club-bar",
+        "tag": "m1-club-structure"
+      }
+    },
+    "club-bar-top": {
+      "name": "Bar top",
+      "id": "club-bar-top",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -60.4,
+        "y": 1.64,
+        "z": 69
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1.4,
+          "height": 0.08,
+          "depth": 9.2
+        },
+        "type": "box"
+      },
+      "color": "#c9bfae",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "club-bar-top",
+        "tag": "m1-club-structure"
+      }
+    },
+    "club-bar-shelf": {
+      "name": "Bar back shelf",
+      "id": "club-bar-shelf",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -59.1,
+        "y": 3,
+        "z": 69
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 0.2,
+          "height": 1.8,
+          "depth": 9
+        },
+        "type": "box"
+      },
+      "color": "#2a1d18",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "club-bar-shelf",
+        "tag": "m1-club-structure"
+      }
+    },
+    "club-bar-light": {
+      "name": "Bar back light (lit)",
+      "id": "club-bar-light",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -59.25,
+        "y": 3,
+        "z": 69
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 0.1,
+          "height": 1.6,
+          "depth": 8.8
+        },
+        "type": "box"
+      },
+      "color": "#ffd98a",
+      "opacity": 0.7,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "plugins": [
+        {
+          "id": "FresnelGlowPlugin",
+          "color": "#f5b24a",
+          "intensity": 1.8,
+          "power": 1.2,
+          "speed": 0.7,
+          "pulse": 1
+        }
+      ],
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "club-bar-light",
+        "tag": "m1-club-reactive"
+      }
+    },
+    "club-booth-1": {
+      "name": "Booth bench 1",
+      "id": "club-booth-1",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -79.8,
+        "y": 0.725,
+        "z": 64
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1.2,
+          "height": 0.45,
+          "depth": 2.6
+        },
+        "type": "box"
+      },
+      "color": "#3a2434",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "club-booth-1",
+        "tag": "m1-club-route"
+      }
+    },
+    "club-booth-1-back": {
+      "name": "Booth back 1",
+      "id": "club-booth-1-back",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -80.6,
+        "y": 1.1,
+        "z": 64
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 0.3,
+          "height": 1.2,
+          "depth": 2.6
+        },
+        "type": "box"
+      },
+      "color": "#3a2434",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "club-booth-1-back",
+        "tag": "m1-club-route"
+      }
+    },
+    "club-booth-1-table": {
+      "name": "Booth table 1",
+      "id": "club-booth-1-table",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -78.3,
+        "y": 0.875,
+        "z": 64
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 0.9,
+          "height": 0.75,
+          "depth": 1.2
+        },
+        "type": "box"
+      },
+      "color": "#5a3f2e",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "club-booth-1-table",
+        "tag": "m1-club-route"
+      }
+    },
+    "club-booth-2": {
+      "name": "Booth bench 2",
+      "id": "club-booth-2",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -79.8,
+        "y": 0.725,
+        "z": 68
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1.2,
+          "height": 0.45,
+          "depth": 2.6
+        },
+        "type": "box"
+      },
+      "color": "#3a2434",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "club-booth-2",
+        "tag": "m1-club-route"
+      }
+    },
+    "club-booth-2-back": {
+      "name": "Booth back 2",
+      "id": "club-booth-2-back",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -80.6,
+        "y": 1.1,
+        "z": 68
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 0.3,
+          "height": 1.2,
+          "depth": 2.6
+        },
+        "type": "box"
+      },
+      "color": "#3a2434",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "club-booth-2-back",
+        "tag": "m1-club-route"
+      }
+    },
+    "club-booth-2-table": {
+      "name": "Booth table 2",
+      "id": "club-booth-2-table",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -78.3,
+        "y": 0.875,
+        "z": 68
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 0.9,
+          "height": 0.75,
+          "depth": 1.2
+        },
+        "type": "box"
+      },
+      "color": "#5a3f2e",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "club-booth-2-table",
+        "tag": "m1-club-route"
+      }
+    },
+    "club-booth-3": {
+      "name": "Booth bench 3",
+      "id": "club-booth-3",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -79.8,
+        "y": 0.725,
+        "z": 72
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1.2,
+          "height": 0.45,
+          "depth": 2.6
+        },
+        "type": "box"
+      },
+      "color": "#3a2434",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "club-booth-3",
+        "tag": "m1-club-route"
+      }
+    },
+    "club-booth-3-back": {
+      "name": "Booth back 3",
+      "id": "club-booth-3-back",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -80.6,
+        "y": 1.1,
+        "z": 72
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 0.3,
+          "height": 1.2,
+          "depth": 2.6
+        },
+        "type": "box"
+      },
+      "color": "#3a2434",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "club-booth-3-back",
+        "tag": "m1-club-route"
+      }
+    },
+    "club-booth-3-table": {
+      "name": "Booth table 3",
+      "id": "club-booth-3-table",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -78.3,
+        "y": 0.875,
+        "z": 72
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 0.9,
+          "height": 0.75,
+          "depth": 1.2
+        },
+        "type": "box"
+      },
+      "color": "#5a3f2e",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "club-booth-3-table",
+        "tag": "m1-club-route"
+      }
+    },
+    "club-zone-floor": {
+      "name": "Zone dance floor",
+      "id": "club-zone-floor",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -70,
+        "y": 2,
+        "z": 68
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 6,
+          "height": 3,
+          "depth": 6
+        },
+        "type": "box"
+      },
+      "color": "#000000",
+      "opacity": 0,
+      "display": false,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE",
+        "isSensor": true
+      },
+      "script": {
+        "identifier": "club-zone-floor",
+        "tag": "m1-club-zone"
+      }
+    },
+    "club-zone-stage": {
+      "name": "Zone stage",
+      "id": "club-zone-stage",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -70,
+        "y": 2.6,
+        "z": 62
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 10,
+          "height": 3,
+          "depth": 4
+        },
+        "type": "box"
+      },
+      "color": "#000000",
+      "opacity": 0,
+      "display": false,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE",
+        "isSensor": true
+      },
+      "script": {
+        "identifier": "club-zone-stage",
+        "tag": "m1-club-zone"
+      }
+    },
+    "portal-club-music": {
+      "name": "Portal The Club → Music District",
+      "id": "portal-club-music",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -70,
+        "y": 2,
+        "z": 76.9
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 4,
+          "height": 3,
+          "depth": 1
+        },
+        "type": "box"
+      },
+      "color": "#ffd98a",
+      "opacity": 0.22,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE",
+        "isSensor": true
+      },
+      "script": {
+        "identifier": "portal-club-music",
+        "tag": "m0-portal"
+      }
     }
   },
   "params": {},

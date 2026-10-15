@@ -38,7 +38,7 @@ function setup(onPortalEntered?: (id: string) => void | Promise<void>) {
 }
 
 describe("portal controller — activation follows the active chunk", () => {
-  it("activate(hub) binds exactly the 3 Hub portals, music 2, fashion-culture 2, cannabis-21 none", async () => {
+  it("activate(hub) binds exactly the 3 Hub portals, music 3, fashion-culture 2, cannabis-21 none", async () => {
     const { runtime, controller } = setup();
     const hub = await runtime.stageChunk(HUB, signal());
     controller.activate("hub");
@@ -49,7 +49,7 @@ describe("portal controller — activation follows the active chunk", () => {
     const music = await runtime.stageChunk(MUSIC, signal());
     runtime.retireChunk(hub);
     controller.activate("music");
-    expect(controller.boundComponentIds).toEqual(["portal-music-artist", "portal-music-hub"]);
+    expect(controller.boundComponentIds).toEqual(["portal-music-artist", "portal-music-club", "portal-music-hub"]);
 
     const fashion = await runtime.stageChunk(FASHION, signal());
     runtime.retireChunk(music);
@@ -75,7 +75,7 @@ describe("portal controller — activation follows the active chunk", () => {
     expect(runtime.log.length).toBe(log);
     expect(runtime.sensorListenerCount("portal-music-artist")).toBe(1);
     expect(runtime.sensorListenerCount("portal-music-hub")).toBe(1);
-    expect(controller.boundPortalCount).toBe(2);
+    expect(controller.boundPortalCount).toBe(3);
   });
 
   it("a chunk switch removes the previous listeners before binding the new set", async () => {
@@ -87,13 +87,13 @@ describe("portal controller — activation follows the active chunk", () => {
     runtime.retireChunk(hub);
     controller.activate("music");
     expect(runtime.log.filter((e) => e.startsWith("sensor-off:"))).toEqual([]); // hub emitters were already gone
-    expect(controller.boundComponentIds).toEqual(["portal-music-artist", "portal-music-hub"]);
+    expect(controller.boundComponentIds).toEqual(["portal-music-artist", "portal-music-club", "portal-music-hub"]);
     for (const id of ["portal-hub-music", "portal-hub-fashion", "portal-hub-cannabis"]) expect(runtime.sensorListenerCount(id)).toBe(0);
 
     // Switching while the old chunk is still alive unsubscribes cleanly too.
     const hub2 = await runtime.stageChunk(HUB, signal());
     controller.activate("hub");
-    expect(runtime.log.filter((e) => e.startsWith("sensor-off:")).sort()).toEqual(["sensor-off:portal-music-artist", "sensor-off:portal-music-hub"]);
+    expect(runtime.log.filter((e) => e.startsWith("sensor-off:")).sort()).toEqual(["sensor-off:portal-music-artist", "sensor-off:portal-music-club", "sensor-off:portal-music-hub"]);
     runtime.enterSensor("portal-music-artist");
     await flush();
     expect(travelled).toEqual([]);

@@ -62,7 +62,7 @@ describe("destination resolution", () => {
     const seven = loadSeven();
     const index = createDestinationIndex(seven);
     const music = bySlug(seven, SLUGS.music);
-    expect(destinationsInDistrict(index, music.id).map((d) => d.slug)).toEqual([SLUGS.artist]);
+    expect(destinationsInDistrict(index, music.id).map((d) => d.slug)).toEqual([SLUGS.artist, "music-club"]); // id order: the artist, then the Club venue room
   });
 
   it("refuses to build an index without an active hub", () => {

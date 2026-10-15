@@ -13,7 +13,7 @@ const bySlug = new Map(web.destinations.map((d) => [d.slug, d]));
 describe("web destinations export", () => {
   it("lists every active destination, id-ordered, deterministically", () => {
     expect(web.destinations.map((d) => d.id)).toEqual([...web.destinations.map((d) => d.id)].sort());
-    expect([...bySlug.keys()].sort()).toEqual(["cannabis-21", "fashion-culture", "hub", "music", "nrvna-farms-placeholder", "placeholder-artist", "placeholder-fashion-culture-brand"]);
+    expect([...bySlug.keys()].sort()).toEqual(["cannabis-21", "fashion-culture", "hub", "music", "music-club", "nrvna-farms-placeholder", "placeholder-artist", "placeholder-fashion-culture-brand"]);
     expect(serializeView(generateFromSource()["web-destinations.json"])).toBe(serializeView(web));
     expect(web.spatialRoot).toBe("https://worlds.nrvnaverse.com/");
   });

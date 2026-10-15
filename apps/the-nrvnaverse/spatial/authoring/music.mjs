@@ -22,6 +22,21 @@ import { PALETTE } from "./hub.mjs";
 export const MUSIC_DISTRICT_ID = "dst_gm3xs4a3tws7bgh3";
 export const PLACEHOLDER_ARTIST_ID = "dst_1qtfn9qjg9kf6jyd";
 
+/**
+ * Venue complex (D-017 / D-018): the Music District floor is the CONCOURSE; each venue room is a
+ * door off it. The Soundstage (processional path + stage, this chunk) and The Club (its own chunk,
+ * `club.mjs`) are the first two rooms. `TONIGHT` is the config-driven "select your stage" proof:
+ * the marquee names the assigned room and only that room's door is lit — changing one value here
+ * re-composes the concourse (no backend, no manifest change, fully reversible). The manifests stay
+ * canonical for identity; this is product-layer authoring scaffolding, not an event system.
+ */
+export const VENUE_ROOMS = Object.freeze({
+  soundstage: { label: "THE SOUNDSTAGE", templateId: "venue-template.soundstage-open", room: "open-air stage with five fins, processional approach, booth overlook" },
+  club: { label: "THE CLUB", templateId: "venue-template.club-intimate", room: "intimate walled room, low stage, bar, booths, dance floor (separate chunk)" },
+});
+/** Tonight's assignment (placeholder programme; no real event or artist is named). */
+export const TONIGHT = Object.freeze({ room: /** @type {keyof typeof VENUE_ROOMS} */ ("club"), line: "placeholder listening session" });
+
 const CX = -70; // district centre x
 const DATUM = 0.5;
 
@@ -109,27 +124,30 @@ export function composeMusic() {
         tag: T.stage,
       }),
     );
-    // Crescendo state: a tall lit blade on each fin, revealed centre-out when the stage is reached.
+    // Crescendo state: a lit blade up the face of each fin (a stripe, not a flood), revealed
+    // centre-out when the stage is reached. Browser-tuned 2026-10-15: a full-face 0.85 slab read as
+    // a cyan billboard; the stripe keeps the charcoal fin and adds the light.
     items.push(
-      slab(`music-fin-${i + 1}-blade`, x, DATUM + h * 0.2, z, [2.75, h * 0.7, 0.75], {
+      slab(`music-fin-${i + 1}-blade`, x, DATUM + h * 0.12, z, [0.9, h * 0.76, 0.72], {
         name: `Stage fin ${i + 1} blade (lit)`,
-        color: "#9ff5e8",
+        color: "#bffbf2",
         rotation: { x: 0, y: deg(-a), z: 0 },
-        opacity: 0.85,
+        opacity: 0.7,
         collider: "none",
         castShadow: false,
         receiveShadow: false,
-        plugins: [glow(TEAL, { intensity: 2.4, power: 1.1, speed: 1.2, pulse: 1 })],
+        plugins: [glow(TEAL, { intensity: 2.2, power: 1.1, speed: 1.2, pulse: 1 })],
         tag: T.reactive,
       }),
     );
   }
-  // Stage wash: a lit disc on the riser that completes the crescendo.
+  // Stage wash: a lit disc on the riser that completes the crescendo (kept inside the riser's
+  // 20 × 6 footprint so it never reaches the audience floor; browser-tuned 2026-10-15).
   items.push(
-    column("music-stage-wash", CX, DATUM + 1.005, -46, 7, 0.02, {
+    column("music-stage-wash", CX, DATUM + 1.005, -46.6, 2.6, 0.02, {
       name: "Stage wash (lit)",
       color: TEAL,
-      opacity: 0.45,
+      opacity: 0.32,
       segments: 48,
       collider: "none",
       castShadow: false,
@@ -164,6 +182,35 @@ export function composeMusic() {
   items.push(label("music-gate-hub-label", "HUB", v(CX + 8.3, DATUM + 6.6, 0), { scale: 0.95, name: "Label Hub gateway", color: PALETTE.warmLight, rotation: { x: 0, y: deg(-90), z: 0 } }));
   items.push(column("music-gate-artist-post-w", CX - 3.5, DATUM, -30, 0.3, 3.6, { name: "Stage threshold post west", color: PALETTE.charcoal, segments: 12, tag: T.structure }));
   items.push(column("music-gate-artist-post-e", CX + 3.5, DATUM, -30, 0.3, 3.6, { name: "Stage threshold post east", color: PALETTE.charcoal, segments: 12, tag: T.structure }));
+
+  // --- 4b. The concourse: the Club door (south-east, behind the arrival) and tonight's marquee --
+  // The door is a short dark passage off the floor's south edge; its sensor is the portal to The
+  // Club (a separate chunk — the passage is a threshold, the room is elsewhere). The marquee over
+  // the passage mouth names tonight's room; the assigned room's door glows (config-driven).
+  const DOOR_X = CX + 5; // east of the booth ramp foot (x -83..-76), clear of the spawn (x -70, z 6)
+  items.push(box("music-club-passage", v(DOOR_X, 0.25, 15), [6, 0.5, 6], { name: "Club passage floor", color: "#141720", tag: T.route }));
+  items.push(slab("music-club-passage-wall-w", DOOR_X - 3.25, DATUM, 15, [0.5, 4.2, 6], { name: "Club passage wall west", color: PALETTE.charcoal, tag: T.structure }));
+  items.push(slab("music-club-passage-wall-e", DOOR_X + 3.25, DATUM, 15, [0.5, 4.2, 6], { name: "Club passage wall east", color: PALETTE.charcoal, tag: T.structure }));
+  items.push(slab("music-club-passage-end", DOOR_X, DATUM, 18.25, [7, 4.2, 0.5], { name: "Club passage end wall", color: "#0f1116", tag: T.structure }));
+  items.push(slab("music-club-lintel", DOOR_X, DATUM + 4.2, 12.3, [7, 0.8, 1.0], { name: "Club door lintel", color: PALETTE.charcoal, tag: T.structure }));
+  items.push(label("music-club-label", VENUE_ROOMS.club.label, v(DOOR_X, DATUM + 3.3, 12.0), { scale: 0.85, name: "Label The Club door", color: TEAL, width: 1200, rotation: { x: 0, y: deg(180), z: 0 } }));
+  items.push(
+    slab("music-club-door-glow", DOOR_X, DATUM + 4.15, 12.3, [7.1, 0.9, 1.1], {
+      name: "Club door glow (tonight's room)",
+      color: TEAL,
+      opacity: 0.5,
+      collider: "none",
+      castShadow: false,
+      receiveShadow: false,
+      plugins: [glow(TEAL, { intensity: 1.8, power: 1.2, speed: 0.9, pulse: 1 })],
+      tag: T.structure,
+    }),
+  );
+  // Tonight's marquee: a dark board over the Club door, facing the arrival (which faces north,
+  // so the visitor finds it by turning round — the same "turn around after you arrive" move as the booth).
+  items.push(slab("music-marquee-board", DOOR_X, DATUM + 5.0, 12.2, [9, 2.2, 0.3], { name: "Marquee board", color: "#0f1116", collider: "none", castShadow: false, tag: T.structure }));
+  items.push(label("music-marquee-title", "TONIGHT", v(DOOR_X, DATUM + 6.35, 11.95), { scale: 0.7, name: "Marquee title", color: PALETTE.warmLight, width: 1200, rotation: { x: 0, y: deg(180), z: 0 } }));
+  items.push(label("music-marquee-room", `${VENUE_ROOMS[TONIGHT.room].label} — ${TONIGHT.line}`, v(DOOR_X, DATUM + 5.45, 11.95), { scale: 0.55, name: "Marquee room line", color: TEAL, width: 1800, rotation: { x: 0, y: deg(180), z: 0 } }));
 
   // --- 5. The sound booth: an overlook behind the arrival, west edge (hidden from the spawn) ----
   items.push(rampZ("music-booth-ramp", CX - 9.5, -11, DATUM, 6, DATUM + 5, 3, { name: "Booth ramp", color: PALETTE.stoneDark, tag: T.secret }));
@@ -215,8 +262,9 @@ export function composeMusic() {
   items.push(zone("music-zone-walk-north", v(CX, DATUM + 1.5, -24), [6, 3, 6], { name: "Zone processional north pair", tag: T.zone }));
   items.push(zone("music-zone-booth", v(CX - 9.5, DATUM + 6.5, 9), [7, 3, 6], { name: "Zone sound booth deck", tag: T.zone }));
 
-  // --- 6. Portal sensors last (ids and sensor semantics unchanged from M0) ---------------------
+  // --- 6. Portal sensors last (ids and sensor semantics unchanged from M0; the Club door is new) ----
   items.push(portal("portal-music-hub", "Portal Music District → Hub", v(CX + 9, 2, 0), [1, 3, 14], PALETTE.warmLight));
+  items.push(portal("portal-music-club", "Portal Music District → The Club", v(DOOR_X, 2, 16), [5, 3, 1], TEAL));
   // Artist threshold at the END of the processional path (z -30): the walk past the speaker stacks is real,
   // and the artist spawn (-70, 1, -34) is four metres beyond the sensor, facing the stage.
   items.push(portal("portal-music-artist", "Portal Music District → Placeholder Artist", v(CX, 2, -30), [6, 3, 1], TEAL));

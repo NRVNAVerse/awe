@@ -170,3 +170,42 @@ Every reaction is authored geometry in two states (state A idle, state B lit, bo
 | Atelier | zone `fashion-zone-atelier` (interior) | a rose ring wakes under the pedestals while you are inside | `fashion-atelier` · `fashion-atelier-ring` |
 
 Zone sensors are `zone()` meshes (`display: false`, enabled sensor collider) tagged `m1-<area>-zone`; state-B geometry is tagged `m1-<area>-reactive`. Zone volumes were sized from SIC `bounds` of their anchors and checked with `in_region` / `intersects` (anchors fully inside, no penetration of portals, ramps or the beam ring); the real engine fires enter and exit for the avatar in every zone (headless Mover proof). Component counts after the layer: hub 87, music 65, fashion-culture 90 (budget 96 / 128 KiB, warning-only; fashion-culture ≈ 119 KiB — raise the budget before adding more there). Visitor copy stays spoiler-light: "the Hub remembers where you came back from", "walk the path and listen", "the booth runs the room".
+
+---
+
+## 13. Music as a venue complex — the concourse and The Club  [VERIFIED headless + SIC, `feat/m1-spatial-experience-overnight`; D-017 / D-018 proof]
+
+The Music District floor (the arrival, three lit rings) is now the **concourse**; each venue room is a door off it. Two rooms exist: **the Soundstage** (the processional path and the fin stage — this chunk, Placeholder Artist) and **The Club** — the first independently loadable venue room: its own chunk `music-club`, its own stable destination (`The Club`, `dst_gqq90k2404cy9nf0`, kind `venue`, primary district Music, slug `music-club`), entered through a door on the concourse and left through the same door. Nothing was invented about an artist, event or brand: the room is a template.
+
+| Element | Ids | Notes |
+|---|---|---|
+| Club door (concourse, south-east, behind the arrival) | `music-club-passage`, `music-club-passage-wall-{w,e}`, `music-club-passage-end`, `music-club-lintel`, `music-club-label` ("THE CLUB"), `music-club-door-glow`, sensor `portal-music-club` | a short dark passage off the floor's south edge at x −65 (clear of the booth ramp foot and the spawn); the sensor at z 16 routes to The Club's stable id (cross-chunk travel); the glow marks tonight's room |
+| Tonight's marquee | `music-marquee-board`, `music-marquee-title` ("TONIGHT"), `music-marquee-room` | over the Club door, facing the arrival — you find it by turning round, like the booth. Text and the lit door come from `TONIGHT` / `VENUE_ROOMS` in `music.mjs` (config-driven "select your stage" scaffolding: change one value, recompose; no backend, no manifest change) |
+| The Club — room | `platform-music-club` (22 × 16, x −81..−59, z 60..76), `club-wall-{n,w,e,sw,se}` (5.5 m), `club-door-lintel`, `label-music-club` | walled on three sides, open to the sky; the only opening is the south door (4 m) |
+| Light rings | `club-ring-{1,2,3}` (dormant) / `-lit` / `-drop` | hanging at 6.3 m over the floor; dormant until the room wakes |
+| Stage (north end) | `club-stage` (10 × 4 × 0.6), `club-stage-ramp` (16.7°, west end), `club-console`, `club-console-top`, `club-console-live`, `club-stage-spot`, `club-stage-back` | low riser, one console (the first media slot), spot cone; the ramp is the clean route up (headless: the controller also shoulders straight up the 0.6 m face, but jams when sliding along it diagonally) |
+| Dance floor | `club-tile-{1..9}` (dark) / `-lit` | nine 1.9 m tiles, 6 × 6 m, alternating teal / ember when lit |
+| Bar (east) · booths (west) | `club-bar`, `club-bar-top`, `club-bar-shelf`, `club-bar-light`; `club-booth-{1,2,3}`, `-back`, `-table` | the bar back-light is the first thing to wake |
+| Door back | sensor `portal-club-music` (z 76.9) → Music District spawn | |
+| Spawn | (−70, 1, 73.5) facing north (`spatial-config` placement) | the stage is visible from the door (SIC 93 %) |
+
+Experience (same system, reused unchanged — world doc §12): arrival `club-wake` (bar light 0.3 s, rings from the door inward 0.8 / 1.2 / 1.6 s); zone `club-floor` (dance floor lit while occupied); zone `club-stage` (console live + spot while someone is on the riser; the spot lifts when they step off).
+
+Template metadata (documentation-level scaffolding for a future curated stage library, D-018): `CLUB_TEMPLATE` in `club.mjs` and `VENUE_ROOMS` in `music.mjs` record room size, stage, audience layout, sightlines, media slots and mobile notes. Keep `venue template` (reusable design) ≠ `venue / room` (stable destination) ≠ `event` ≠ `assignment` (`TONIGHT`) distinct — none of this is a manifest contract.
+
+Proofs: manifests 61 tests (eight destinations), app 466 tests (five chunks, nine portals, 13 zones, 7 arrival rules), typecheck, `spatial:check` (music 98 KiB / 90 components — at the component budget; music-club 75 KiB / 61), SIC (`in_region`: tiles and console fully inside their zones; `intersects`: stage zone vs floor zone, portal vs floor zone, bar vs tile, booth table vs tile, ring vs wall, passage vs booth deck, marquee vs booth deck / rail — all separated; `survey_visibility` from the Club door: stage 93 %, rings 83–100 %, bar light 100 %; from the Music spawn (turning round): marquee 88 %, door glow 97 %, label 100 %), headless Mover proof (both Club zones fire enter and exit; 13 zones, 32 events, 0 stray). Booth sightline finding (pre-existing composition): the centre fin is self-occluded by fin 2 from the booth; the booth sees fins 1–2, the stacks and the spotlight cone.
+
+Vault venue audition (SIC `inspect_asset`, read-only; rights per the Vault Organizer and file provenance — nothing placed, nothing copied into the repository):
+
+| Candidate | Facts (measured) | Rights | Verdict for the venue library |
+|---|---|---|---|
+| `backup glb/Nightclub1 v1.1.glb` | 22 × 14 × 42 m shell, 2.5 k tris, 2 meshes, 4 draw calls, 6.6 MB, 11 textures (2048², ≈187 MB GPU estimate), valid (4 warnings) | UNKNOWN (Sketchfab origin) | **optimize / derive** — the cheapest intimate-room shell in the vault; a Club template skin candidate once rights are cleared |
+| `backup glb/80s-warehouse v1.0.glb` | 33 × 6 × 21 m, 75 k tris, 85 meshes, 86 draw calls, 4.3 MB, 7 textures (≈67 MB GPU), valid | UNKNOWN (Sketchfab origin) | **optimize / derive** — a warehouse / electronic-room template; low ceiling (5.7 m) needs the camera rig check |
+| `Blender/Airplane Hanger 1.3.glb` | 60 × 19 × 100 m with `concert-stage.main.final` nodes, 454 k tris, 363 meshes, 434 draw calls, 33 MB, 2 textures at 4096² (≈171 MB GPU), valid | UNKNOWN / LIKELY NEEDS REVIEW (Sketchfab stage inside an owner scene) | **inspiration + partial derive** — the concert stage sub-tree is the Grand Hall / festival candidate; too heavy whole |
+| `cinema … interior.glb` | 5.7 × 5 × 11 m, 392 k tris, 510 meshes, 17 MB | UNKNOWN (Sketchfab) | **reject** for venues (small, very dense) |
+| `backup glb/Elysium v1.20.glb` | 120 × 40 × 169 m, 1.04 M tris, 1 729 meshes, 1 756 draw calls, 63 MB, 70 textures (≈362 MB GPU), 29 animations, 27 warnings | owner's own build (contains dance platforms) | **inspiration only** — far beyond budget as one asset; its dance-platform ring informs the Club floor |
+| `backup glb/Scifi Hall 1.0.glb` | 16 × 9 × 68 m, 292 k tris, 1 394 meshes, 63 MB, 1 015 validator warnings | UNKNOWN | **reject** (validator noise, corridor not room) |
+| `backup glb/Warehouse FBX Model Free v1.3.glb` | 456 k tris, 58 meshes, 93 draw calls, 61 MB, 41 textures (≈411 MB GPU), 15 warnings, no bounds (unsupported accessor bounds) | UNKNOWN ("Free" FBX import) | **reject** until re-exported with bounds; heavy |
+| `Blend Files/megacity night lounge v1.1.glb` | 29 × 56 × 52 m, 140 tris, 7 KB | owner's own | **reject** (a blocking shell, no detail) |
+
+Rights labels follow the brief (CLEARED / LIKELY NEEDS REVIEW / UNKNOWN / RESTRICTED); nothing here is cleared for production, so every verdict is a library candidate, not a placement.

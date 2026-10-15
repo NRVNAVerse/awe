@@ -112,6 +112,26 @@
             "placeholder"
           ],
           "webUrl": "https://www.nrvnaverse.com/worlds/placeholder-artist"
+        },
+        {
+          "categories": [
+            "music",
+            "venue"
+          ],
+          "description": "An intimate venue room off the Music District concourse: a low dark room with a small stage, a bar and a dance floor. The first independently loadable venue room of the Music complex.",
+          "gates": [],
+          "id": "dst_gqq90k2404cy9nf0",
+          "kind": "venue",
+          "minimumAge": null,
+          "name": "The Club",
+          "slug": "music-club",
+          "spatialUrl": "https://worlds.nrvnaverse.com/?destination=dst_gqq90k2404cy9nf0",
+          "tags": [
+            "m1",
+            "venue-room",
+            "intimate"
+          ],
+          "webUrl": "https://www.nrvnaverse.com/worlds/music-club"
         }
       ],
       "gates": [],

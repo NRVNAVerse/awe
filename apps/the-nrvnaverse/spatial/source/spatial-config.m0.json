@@ -164,6 +164,16 @@
         "music-gate-hub-label",
         "music-gate-artist-post-w",
         "music-gate-artist-post-e",
+        "music-club-passage",
+        "music-club-passage-wall-w",
+        "music-club-passage-wall-e",
+        "music-club-passage-end",
+        "music-club-lintel",
+        "music-club-label",
+        "music-club-door-glow",
+        "music-marquee-board",
+        "music-marquee-title",
+        "music-marquee-room",
         "music-booth-ramp",
         "music-booth-ramp-foot",
         "music-booth-deck",
@@ -180,6 +190,7 @@
         "music-zone-walk-north",
         "music-zone-booth",
         "portal-music-hub",
+        "portal-music-club",
         "portal-music-artist"
       ]
     },
@@ -291,6 +302,70 @@
         "label-cannabis-21",
         "label-cannabis-21-closed"
       ]
+    },
+    {
+      "key": "music-club",
+      "label": "Music District — The Club (venue room)",
+      "componentIds": [
+        "platform-music-club",
+        "club-wall-n",
+        "club-wall-w",
+        "club-wall-e",
+        "club-wall-sw",
+        "club-wall-se",
+        "club-door-lintel",
+        "label-music-club",
+        "club-ring-1",
+        "club-ring-1-lit",
+        "club-ring-2",
+        "club-ring-2-lit",
+        "club-ring-3",
+        "club-ring-3-lit",
+        "club-ring-1-drop",
+        "club-ring-2-drop",
+        "club-ring-3-drop",
+        "club-stage",
+        "club-stage-ramp",
+        "club-console",
+        "club-console-top",
+        "club-console-live",
+        "club-stage-spot",
+        "club-stage-back",
+        "club-tile-1",
+        "club-tile-1-lit",
+        "club-tile-2",
+        "club-tile-2-lit",
+        "club-tile-3",
+        "club-tile-3-lit",
+        "club-tile-4",
+        "club-tile-4-lit",
+        "club-tile-5",
+        "club-tile-5-lit",
+        "club-tile-6",
+        "club-tile-6-lit",
+        "club-tile-7",
+        "club-tile-7-lit",
+        "club-tile-8",
+        "club-tile-8-lit",
+        "club-tile-9",
+        "club-tile-9-lit",
+        "club-bar",
+        "club-bar-top",
+        "club-bar-shelf",
+        "club-bar-light",
+        "club-booth-1",
+        "club-booth-1-back",
+        "club-booth-1-table",
+        "club-booth-2",
+        "club-booth-2-back",
+        "club-booth-2-table",
+        "club-booth-3",
+        "club-booth-3-back",
+        "club-booth-3-table",
+        "club-zone-floor",
+        "club-zone-stage",
+        "portal-club-music"
+      ]
     }
   ],
   "placements": [
@@ -377,6 +452,18 @@
         },
         "yaw": 0
       }
+    },
+    {
+      "destinationId": "dst_gqq90k2404cy9nf0",
+      "chunkKey": "music-club",
+      "spawn": {
+        "position": {
+          "x": -70,
+          "y": 1,
+          "z": 73.5
+        },
+        "yaw": 0
+      }
     }
   ],
   "portals": [
@@ -414,6 +501,16 @@
       "componentId": "portal-fashion-brand",
       "chunkKey": "fashion-culture",
       "destinationId": "dst_tgfh5h5jvm3wj0w7"
+    },
+    {
+      "componentId": "portal-music-club",
+      "chunkKey": "music",
+      "destinationId": "dst_gqq90k2404cy9nf0"
+    },
+    {
+      "componentId": "portal-club-music",
+      "chunkKey": "music-club",
+      "destinationId": "dst_gm3xs4a3tws7bgh3"
     }
   ],
   "experience": {
@@ -465,9 +562,76 @@
           "music-booth-spot",
           "music-booth-console-lit"
         ]
+      },
+      {
+        "chunkKey": "music-club",
+        "componentIds": [
+          "club-ring-1-lit",
+          "club-ring-2-lit",
+          "club-ring-3-lit",
+          "club-console-live",
+          "club-stage-spot",
+          "club-bar-light",
+          "club-tile-1-lit",
+          "club-tile-2-lit",
+          "club-tile-3-lit",
+          "club-tile-4-lit",
+          "club-tile-5-lit",
+          "club-tile-6-lit",
+          "club-tile-7-lit",
+          "club-tile-8-lit",
+          "club-tile-9-lit"
+        ]
       }
     ],
     "zones": [
+      {
+        "id": "club-floor",
+        "chunkKey": "music-club",
+        "sensorId": "club-zone-floor",
+        "enter": {
+          "show": [
+            "club-tile-1-lit",
+            "club-tile-2-lit",
+            "club-tile-3-lit",
+            "club-tile-4-lit",
+            "club-tile-5-lit",
+            "club-tile-6-lit",
+            "club-tile-7-lit",
+            "club-tile-8-lit",
+            "club-tile-9-lit"
+          ]
+        },
+        "exit": {
+          "hide": [
+            "club-tile-1-lit",
+            "club-tile-2-lit",
+            "club-tile-3-lit",
+            "club-tile-4-lit",
+            "club-tile-5-lit",
+            "club-tile-6-lit",
+            "club-tile-7-lit",
+            "club-tile-8-lit",
+            "club-tile-9-lit"
+          ]
+        }
+      },
+      {
+        "id": "club-stage",
+        "chunkKey": "music-club",
+        "sensorId": "club-zone-stage",
+        "enter": {
+          "show": [
+            "club-console-live",
+            "club-stage-spot"
+          ]
+        },
+        "exit": {
+          "hide": [
+            "club-stage-spot"
+          ]
+        }
+      },
       {
         "id": "fashion-atelier",
         "chunkKey": "fashion-culture",
@@ -659,6 +823,45 @@
     ],
     "arrivals": [
       {
+        "id": "club-wake",
+        "destinationId": "dst_gqq90k2404cy9nf0",
+        "beats": [
+          {
+            "afterSeconds": 0.3,
+            "show": [
+              "club-bar-light"
+            ]
+          },
+          {
+            "afterSeconds": 0.8,
+            "show": [
+              "club-ring-3-lit"
+            ],
+            "hide": [
+              "club-ring-3"
+            ]
+          },
+          {
+            "afterSeconds": 1.2,
+            "show": [
+              "club-ring-2-lit"
+            ],
+            "hide": [
+              "club-ring-2"
+            ]
+          },
+          {
+            "afterSeconds": 1.6,
+            "show": [
+              "club-ring-1-lit"
+            ],
+            "hide": [
+              "club-ring-1"
+            ]
+          }
+        ]
+      },
+      {
         "id": "fashion-brand-welcome",
         "destinationId": "dst_tgfh5h5jvm3wj0w7",
         "beats": [
@@ -725,7 +928,7 @@
         "destinationId": "dst_7g19n1vm9ackw8a0",
         "beats": [
           {
-            "afterSeconds": 0.6,
+            "afterSeconds": 1.5,
             "show": [
               "hub-spire-ring-1-lit"
             ],
@@ -734,7 +937,7 @@
             ]
           },
           {
-            "afterSeconds": 1.1,
+            "afterSeconds": 2,
             "show": [
               "hub-spire-ring-2-lit"
             ],
@@ -743,7 +946,7 @@
             ]
           },
           {
-            "afterSeconds": 1.6,
+            "afterSeconds": 2.5,
             "show": [
               "hub-spire-ring-3-lit"
             ],

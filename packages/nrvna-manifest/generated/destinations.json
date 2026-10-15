@@ -324,6 +324,69 @@
     },
     {
       "ageRestriction": null,
+      "analyticsId": "dst_gqq90k2404cy9nf0",
+      "auth": {
+        "roles": []
+      },
+      "capabilities": [
+        "entertainment",
+        "events",
+        "audio"
+      ],
+      "categories": [
+        "music",
+        "venue"
+      ],
+      "commerceRefs": [],
+      "description": "An intimate venue room off the Music District concourse: a low dark room with a small stage, a bar and a dance floor. The first independently loadable venue room of the Music complex.",
+      "devices": [
+        "desktop",
+        "mobile",
+        "tablet"
+      ],
+      "gates": [],
+      "id": "dst_gqq90k2404cy9nf0",
+      "jurisdictions": {
+        "note": null,
+        "policy": "unrestricted",
+        "regions": []
+      },
+      "kind": "venue",
+      "media": {
+        "heroUrl": null,
+        "logoUrl": null,
+        "thumbnailUrl": null
+      },
+      "name": "The Club",
+      "owner": {
+        "name": "NRVNAVerse",
+        "organizationId": null,
+        "webUrl": "https://www.nrvnaverse.com/"
+      },
+      "previousSlugs": [],
+      "primaryDistrictId": "dst_gm3xs4a3tws7bgh3",
+      "relatedDestinationIds": [
+        "dst_gm3xs4a3tws7bgh3",
+        "dst_1qtfn9qjg9kf6jyd"
+      ],
+      "schemaVersion": 1,
+      "slug": "music-club",
+      "spatialDestination": {
+        "platform": "the-nrvnaverse",
+        "worldId": "the-nrvnaverse"
+      },
+      "spatialUrl": "https://worlds.nrvnaverse.com/?destination=dst_gqq90k2404cy9nf0",
+      "status": "active",
+      "tags": [
+        "m1",
+        "venue-room",
+        "intimate"
+      ],
+      "updatedAt": "2026-10-15T00:00:00Z",
+      "webUrl": "https://www.nrvnaverse.com/worlds/music-club"
+    },
+    {
+      "ageRestriction": null,
       "analyticsId": "dst_tgfh5h5jvm3wj0w7",
       "auth": {
         "roles": []
@@ -474,6 +537,7 @@
       "dst_7g19n1vm9ackw8a0": "dst_7g19n1vm9ackw8a0",
       "dst_9c4wxtpec8awsx1q": "dst_9c4wxtpec8awsx1q",
       "dst_gm3xs4a3tws7bgh3": "dst_gm3xs4a3tws7bgh3",
+      "dst_gqq90k2404cy9nf0": "dst_gqq90k2404cy9nf0",
       "dst_tgfh5h5jvm3wj0w7": "dst_tgfh5h5jvm3wj0w7",
       "dst_vfkz626za0vra89j": "dst_vfkz626za0vra89j"
     },
@@ -483,6 +547,7 @@
       "fashion-culture": "dst_9c4wxtpec8awsx1q",
       "hub": "dst_7g19n1vm9ackw8a0",
       "music": "dst_gm3xs4a3tws7bgh3",
+      "music-club": "dst_gqq90k2404cy9nf0",
       "nrvna-farms-placeholder": "dst_vfkz626za0vra89j",
       "placeholder-artist": "dst_1qtfn9qjg9kf6jyd",
       "placeholder-fashion-culture-brand": "dst_tgfh5h5jvm3wj0w7"

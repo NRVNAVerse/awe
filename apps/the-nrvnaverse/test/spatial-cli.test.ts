@@ -152,7 +152,7 @@ describe("spatial CLI — generated-output ownership with content-addressed name
         d.config.experience.hidden = hidden.filter((h) => h.chunkKey !== "fashion-culture");
       }
     });
-    expect(smaller.chunkKeys).toEqual(["cannabis-21", "hub", "music"]);
+    expect(smaller.chunkKeys).toEqual(["cannabis-21", "hub", "music", "music-club"]);
     // The removed chunk's file AND the previous Hub version (the Hub content grew) are stale content versions.
     const staleNames = [full.chunkFiles["fashion-culture"], full.chunkFiles.hub].sort();
     expect(smaller.chunkFiles.hub).not.toBe(full.chunkFiles.hub);

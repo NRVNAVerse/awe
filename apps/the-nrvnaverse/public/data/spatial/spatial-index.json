@@ -10,10 +10,13 @@
       "dataUrl": "/data/spatial/chunks/fashion-culture.3c1d1257aeb8e764b5f7c1ea72d5eb52.json"
     },
     "hub": {
-      "dataUrl": "/data/spatial/chunks/hub.0c2040a3d0a367484052c83a3a466a2e.json"
+      "dataUrl": "/data/spatial/chunks/hub.9de77b85398a5165d576fefcdc5b6da4.json"
     },
     "music": {
-      "dataUrl": "/data/spatial/chunks/music.98e5e8a44c974d0af94a695be36d679d.json"
+      "dataUrl": "/data/spatial/chunks/music.23281f0593089ebc0e1ad4a4d7808233.json"
+    },
+    "music-club": {
+      "dataUrl": "/data/spatial/chunks/music-club.c99c120e65f3cb4bdeb44c79adf5f044.json"
     }
   },
   "destinations": {
@@ -72,6 +75,17 @@
         "yaw": 0
       }
     },
+    "dst_gqq90k2404cy9nf0": {
+      "chunkKey": "music-club",
+      "spawn": {
+        "position": {
+          "x": -70,
+          "y": 1,
+          "z": 73.5
+        },
+        "yaw": 0
+      }
+    },
     "dst_tgfh5h5jvm3wj0w7": {
       "chunkKey": "fashion-culture",
       "spawn": {
@@ -96,6 +110,10 @@
     }
   },
   "portals": {
+    "portal-club-music": {
+      "chunkKey": "music-club",
+      "destinationId": "dst_gm3xs4a3tws7bgh3"
+    },
     "portal-fashion-brand": {
       "chunkKey": "fashion-culture",
       "destinationId": "dst_tgfh5h5jvm3wj0w7"
@@ -119,6 +137,10 @@
     "portal-music-artist": {
       "chunkKey": "music",
       "destinationId": "dst_1qtfn9qjg9kf6jyd"
+    },
+    "portal-music-club": {
+      "chunkKey": "music",
+      "destinationId": "dst_gqq90k2404cy9nf0"
     },
     "portal-music-hub": {
       "chunkKey": "music",
@@ -165,9 +187,71 @@
         "music-stack-3-band-lit",
         "music-stack-4-band-lit",
         "music-stage-wash"
+      ],
+      "music-club": [
+        "club-bar-light",
+        "club-console-live",
+        "club-ring-1-lit",
+        "club-ring-2-lit",
+        "club-ring-3-lit",
+        "club-stage-spot",
+        "club-tile-1-lit",
+        "club-tile-2-lit",
+        "club-tile-3-lit",
+        "club-tile-4-lit",
+        "club-tile-5-lit",
+        "club-tile-6-lit",
+        "club-tile-7-lit",
+        "club-tile-8-lit",
+        "club-tile-9-lit"
       ]
     },
     "zones": {
+      "club-floor": {
+        "chunkKey": "music-club",
+        "sensorId": "club-zone-floor",
+        "enter": {
+          "show": [
+            "club-tile-1-lit",
+            "club-tile-2-lit",
+            "club-tile-3-lit",
+            "club-tile-4-lit",
+            "club-tile-5-lit",
+            "club-tile-6-lit",
+            "club-tile-7-lit",
+            "club-tile-8-lit",
+            "club-tile-9-lit"
+          ]
+        },
+        "exit": {
+          "hide": [
+            "club-tile-1-lit",
+            "club-tile-2-lit",
+            "club-tile-3-lit",
+            "club-tile-4-lit",
+            "club-tile-5-lit",
+            "club-tile-6-lit",
+            "club-tile-7-lit",
+            "club-tile-8-lit",
+            "club-tile-9-lit"
+          ]
+        }
+      },
+      "club-stage": {
+        "chunkKey": "music-club",
+        "sensorId": "club-zone-stage",
+        "enter": {
+          "show": [
+            "club-console-live",
+            "club-stage-spot"
+          ]
+        },
+        "exit": {
+          "hide": [
+            "club-stage-spot"
+          ]
+        }
+      },
       "fashion-atelier": {
         "chunkKey": "fashion-culture",
         "sensorId": "fashion-zone-atelier",
@@ -347,6 +431,44 @@
       }
     },
     "arrivals": {
+      "club-wake": {
+        "destinationId": "dst_gqq90k2404cy9nf0",
+        "beats": [
+          {
+            "afterSeconds": 0.3,
+            "show": [
+              "club-bar-light"
+            ]
+          },
+          {
+            "afterSeconds": 0.8,
+            "show": [
+              "club-ring-3-lit"
+            ],
+            "hide": [
+              "club-ring-3"
+            ]
+          },
+          {
+            "afterSeconds": 1.2,
+            "show": [
+              "club-ring-2-lit"
+            ],
+            "hide": [
+              "club-ring-2"
+            ]
+          },
+          {
+            "afterSeconds": 1.6,
+            "show": [
+              "club-ring-1-lit"
+            ],
+            "hide": [
+              "club-ring-1"
+            ]
+          }
+        ]
+      },
       "fashion-brand-welcome": {
         "destinationId": "dst_tgfh5h5jvm3wj0w7",
         "beats": [
@@ -410,7 +532,7 @@
         "destinationId": "dst_7g19n1vm9ackw8a0",
         "beats": [
           {
-            "afterSeconds": 0.6,
+            "afterSeconds": 1.5,
             "show": [
               "hub-spire-ring-1-lit"
             ],
@@ -419,7 +541,7 @@
             ]
           },
           {
-            "afterSeconds": 1.1,
+            "afterSeconds": 2,
             "show": [
               "hub-spire-ring-2-lit"
             ],
@@ -428,7 +550,7 @@
             ]
           },
           {
-            "afterSeconds": 1.6,
+            "afterSeconds": 2.5,
             "show": [
               "hub-spire-ring-3-lit"
             ],

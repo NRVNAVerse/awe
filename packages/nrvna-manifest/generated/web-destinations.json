@@ -150,6 +150,41 @@
     },
     {
       "categories": [
+        "music",
+        "venue"
+      ],
+      "commerceRefs": [],
+      "description": "An intimate venue room off the Music District concourse: a low dark room with a small stage, a bar and a dance floor. The first independently loadable venue room of the Music complex.",
+      "gate": null,
+      "id": "dst_gqq90k2404cy9nf0",
+      "kind": "venue",
+      "listing": "public",
+      "media": {
+        "heroUrl": null,
+        "thumbnailUrl": null
+      },
+      "name": "The Club",
+      "placeholder": false,
+      "primaryDistrict": {
+        "id": "dst_gm3xs4a3tws7bgh3",
+        "name": "Music District",
+        "slug": "music"
+      },
+      "slug": "music-club",
+      "spatial": {
+        "deepLink": "https://worlds.nrvnaverse.com/?destination=dst_gqq90k2404cy9nf0&from=web&return=web",
+        "enterable": true
+      },
+      "tags": [
+        "m1",
+        "venue-room",
+        "intimate"
+      ],
+      "updatedAt": "2026-10-15T00:00:00Z",
+      "webUrl": "https://www.nrvnaverse.com/worlds/music-club"
+    },
+    {
+      "categories": [
         "fashion",
         "culture",
         "brand"

@@ -35,7 +35,7 @@ function setup() {
 describe("experience controller — hidden-on-stage policy", () => {
   it("install() declares every chunk's hidden set once; staging a chunk hides exactly those components before the batch is returned", async () => {
     const { runtime } = setup();
-    expect([...runtime.hiddenOnStage.keys()].sort()).toEqual(["fashion-culture", "hub", "music"]);
+    expect([...runtime.hiddenOnStage.keys()].sort()).toEqual(["fashion-culture", "hub", "music", "music-club"]);
     const batch = await runtime.stageChunk(HUB, signal());
     for (const id of index.experience.hidden.hub) {
       expect(batch.componentIds).toContain(id);
@@ -56,7 +56,7 @@ describe("experience controller — hidden-on-stage policy", () => {
       for (const id of ids) {
         expect(index.portals[id], id).toBeUndefined();
         expect(sensors.has(id), id).toBe(false);
-        expect(id).toMatch(/-(lit|blade|glow|halo|well|pool|wash|spot|ring)$/);
+        expect(id).toMatch(/-(lit|blade|glow|halo|well|pool|wash|spot|ring|light|live)$/);
       }
     }
   });
@@ -180,14 +180,14 @@ describe("experience controller — zone enter / exit effects", () => {
 describe("experience controller — arrival beats on the engine clock", () => {
   const hubArrival = { destinationId: data.hubId, chunkKey: "hub", fromChunkKey: null };
 
-  it("arriving at the Hub wakes the spire ring by ring at 0.6 / 1.1 / 1.6 s", async () => {
+  it("arriving at the Hub wakes the spire ring by ring at 1.5 / 2.0 / 2.5 s", async () => {
     const { runtime, controller } = setup();
     await runtime.stageChunk(HUB, signal());
     controller.activate("hub");
     controller.onArrival(hubArrival);
     expect(controller.pendingBeatCount).toBe(3);
     expect(runtime.visibleOf("hub-spire-ring-1-lit")).toBe(false);
-    runtime.advance(0.6);
+    runtime.advance(1.5);
     expect(runtime.visibleOf("hub-spire-ring-1-lit")).toBe(true);
     expect(runtime.visibleOf("hub-spire-ring-1")).toBe(false);
     expect(runtime.visibleOf("hub-spire-ring-2-lit")).toBe(false);

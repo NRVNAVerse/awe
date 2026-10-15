@@ -11,9 +11,9 @@ function singleCodes(manifest: unknown): ValidationCode[] {
 }
 
 describe("seven M0 placeholder manifests", () => {
-  it("are exactly seven and valid as a set", () => {
+  it("are exactly eight and valid as a set", () => {
     const seven = loadSeven();
-    expect(seven).toHaveLength(7);
+    expect(seven).toHaveLength(8);
     const result = validateDestinationSet(seven);
     expect(result.errors).toEqual([]);
     expect(result.ok).toBe(true);
