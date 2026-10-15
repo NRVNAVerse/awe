@@ -1,18 +1,14 @@
 # Handoff Status
 
-NEXT: CLAUDE
-LAST: CHATGPT
-STATE: READY_FOR_LONG_UNATTENDED_CAMPAIGN
-SESSION: NEW
-MODEL: Fable 5.1
-EFFORT: High
-MODE: Auto
+NEXT: CHATGPT
+LAST: CLAUDE
+STATE: AWAITING_REVIEW
 
 Last completed:
-ChatGPT prepared the M1 Spatial Experience overnight branch from the accepted M1 creative checkpoint and carried the owner-approved venue/event/WEB↔SPATIAL direction onto it.
+Claude Code ran the M1 Spatial Experience overnight campaign on `feat/m1-spatial-experience-overnight` (checkpoints 0–4 pushed: experience layer, Music venue complex + The Club, WEB↔SPATIAL thresholds + web window, discovery memory; vault venue audition; final verification and browser evidence) and wrote the implementer handoff.
 
 Next action:
-Read `handoffs/current/reviewer.md`, current Key overnight/model-routing guidance, then execute the long unattended campaign on `feat/m1-spatial-experience-overnight`.
+ChatGPT reviews `handoffs/current/reviewer.md`, `docs/NRVNAVERSE_M1_EXPERIENCE_CAMPAIGN.md` and the branch, and decides on integration, the owner playtest and the next milestone.
 
 Operator command:
-Start a fresh Claude Code session on this branch with SIC connected, then say "handoff".
+Say "handoff" in the ChatGPT planning/review conversation.
