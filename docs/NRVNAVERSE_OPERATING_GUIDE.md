@@ -103,6 +103,8 @@ Start with a credible vertical slice and real founding partners rather than tryi
 
 The conventional web surface remains important: preserve HTML/web capabilities for SEO, accessibility, speed, discovery, services, case studies and commerce, while AWE supplies the immersive spatial layer. Implementation details that are merely planned are not locked here; treat them as PLANNED unless `DECISIONS.md` says otherwise.
 
+Accepted product direction now goes further than simple deep-link handoff: WEB and SPATIAL should become a **permeable seam** with contextual thresholds, exact return paths and, where technically appropriate, in-world surfaces into canonical web pages. The Music District should evolve toward a reusable multi-venue/concourse model with curated stage templates and future hosted-event stage selection. Cross-surface discovery/gameplay is allowed, but obscurity is never access control. See D-017–D-021 and [`NRVNAVERSE_VENUES_EVENTS_WEB_SPATIAL.md`](./NRVNAVERSE_VENUES_EVENTS_WEB_SPATIAL.md).
+
 ---
 
 ## 3. Source precedence
@@ -138,6 +140,7 @@ Implementation reality (code, Git) outranks stale prose in any document, includi
 | Destination identity and metadata contract, manifests, deep links, auth/gates data model, generated destination views, adapter boundary | [`NRVNAVERSE_DESTINATION_MANIFEST.md`](./NRVNAVERSE_DESTINATION_MANIFEST.md) |
 | Authoritative physical scene / spatial config, validation, deterministic generation, chunk files, spatial index, portal bindings, content-addressed delivery and HTTP cache policy | [`NRVNAVERSE_SPATIAL_DATA_PIPELINE.md`](./NRVNAVERSE_SPATIAL_DATA_PIPELINE.md) |
 | Official AWE runtime mount, chunk orchestrator, gate-before-fetch, application state / URL contract, physical portals, lifecycle / shutdown hardening, instrumentation, browser validation | [`NRVNAVERSE_SPATIAL_RUNTIME.md`](./NRVNAVERSE_SPATIAL_RUNTIME.md) |
+| Venues, reusable stages, hosted-event direction, WEB↔SPATIAL contextual surfaces and cross-surface discovery | [`NRVNAVERSE_VENUES_EVENTS_WEB_SPATIAL.md`](./NRVNAVERSE_VENUES_EVENTS_WEB_SPATIAL.md) |
 | Upstream AWE conventions, kebab-case rule, `/engine`, `/run-space`, `/game-prd` skills, examples | [`CLAUDE.md`](../CLAUDE.md) (upstream portion), `CONTRIBUTING.md`, `packages/tools/AGENT.md`, `.claude/skills/*` |
 | Generic AWE capability implementation and usage (multiplayer, space kit, behaviors, generators, scaffolding) | `TheCannaMan/awe` — its `README.md`, package READMEs, `.claude/skills/engine/references/*.md` |
 
