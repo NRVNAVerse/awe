@@ -119,3 +119,38 @@ Decisions D-001 through D-012 were accepted during the NRVNAVerse planning sessi
 - **Decision:** For M0, THE NRVNAVerse implements chunk orchestration and destination travel in the NRVNAVerse application layer using official AWE runtime APIs. Stable destination IDs resolve through NRVNAVerse-owned spatial configuration to physical chunk/spawn data. Visitor gates are evaluated before gated chunk/content fetches. M0 does not require modifications to AWE engine core or adoption of Ghost's experimental chunk/portal implementation.
 - **Rationale:** The verified upstream runtime already provides the live component lifecycle, space hooks, and movement primitives required to prove chunk streaming independently. Keeping M0 at the application layer reduces fork divergence, preserves stable destination identity, avoids making experimental Ghost code a prerequisite, and allows the chunk lifecycle to be validated before deciding which primitives merit generalization.
 - **Implications:** This is an M0 implementation boundary, not a permanent prohibition on engine-level streaming. Generic chunk/portal primitives may later move into `contrib/*` or upstream AWE after testing and, where materially based on Ghost's work, Ghost review under D-013.
+
+## D-017 — Music District is a reusable multi-venue complex
+
+- **Status:** Accepted (2026-10-14)
+- **Decision:** The Music District is not one permanent concert venue. It is a reusable venue complex / concourse that may route visitors into multiple independently authored venue rooms or stage environments. Different concerts and events may use materially different spatial environments.
+- **Rationale:** A venue complex creates reasons to return, lets existing and future concert-hall/stage assets become reusable product inventory, and avoids forcing one visual/functional venue to fit every event. It also aligns with chunked loading and stable destination identity.
+- **Implications:** Preserve a lightweight common Music entry/concourse where practical; model venue rooms as separately loadable destinations/experiences when useful; keep venue identity independent of coordinates; evaluate owner concert/stage assets as potential reusable venue templates rather than assuming only one should replace the current stage.
+
+## D-018 — Hosted events use a curated “Select Your Stage” model
+
+- **Status:** Accepted (2026-10-14)
+- **Decision:** Future authorized hosts may choose from a curated library of approved venue/stage templates when creating hosted or group events.
+- **Rationale:** Template selection makes NRVNAVerse spaces reusable and useful without requiring every event to commission a bespoke world. Different spaces may meaningfully vary in capacity, sightlines, stage geometry, media, lighting, social layout and interactive capabilities.
+- **Implications:** Keep `venue template`, `venue / room`, `event`, and `event instance / venue assignment` as distinct concepts. Template selection does not imply unrestricted user world building. Early prototypes may use manual/config-driven venue assignment rather than a complete generalized event backend.
+
+## D-019 — Event infrastructure is adopt/compose-before-custom-build
+
+- **Status:** Accepted (2026-10-14)
+- **Decision:** Before designing a custom event-management backend, research mature reusable open-source systems, libraries, starter kits, templates, reference implementations and services; prefer adopting or composing compatible pieces before custom-building NRVNAVerse-specific infrastructure.
+- **Rationale:** Scheduling, RSVP, invitations, ticket/access state, capacity, waitlists, organizer permissions, calendar integration, notifications, check-in and analytics are established problem areas where mature building blocks may already exist.
+- **Implications:** Any adopted system must preserve NRVNAVerse stable IDs, D-008 cross-network event identity, D-006 AUTH ≠ GATES, D-001 WEB + SPATIAL dual-interface architecture and D-004 identity independence from coordinates. Licensing, security, maintainability and data ownership are selection criteria. Do not prematurely build the full event backend merely because the product direction is accepted.
+
+## D-020 — WEB↔SPATIAL supports contextual thresholds and in-world web surfaces
+
+- **Status:** Accepted (2026-10-14)
+- **Decision:** WEB and SPATIAL should increasingly feel like two modes/areas of one NRVNAVerse. Spatial experiences may expose relevant canonical website pages through contextual thresholds, windows, displays or other web surfaces, and WEB pages may enter the exact relevant spatial destination/venue/event rather than a generic root.
+- **Rationale:** The strongest integration is contextual continuity, not duplicating the website inside AWE. A visitor should be able to move from an event/artist page into the correct room and from a spatial venue into relevant canonical web content while retaining a clear return path.
+- **Implications:** Do not rebuild the whole public website inside AWE. Preserve stable destination/event/venue context and explicit return semantics. The exact technical mechanism for in-world web surfaces is not yet locked and must be evaluated for CSP/frame policy, cross-origin behavior, input/focus, mobile, accessibility, authentication/session continuity and performance.
+
+## D-021 — Cross-surface discovery is allowed but obscurity is never access control
+
+- **Status:** Accepted (2026-10-14)
+- **Decision:** WEB and SPATIAL may participate in the same optional discovery/gameplay loop, including hidden web pages discoverable through spatial clues, spatial secrets revealed through website clues, and challenges that move between both surfaces. Obscurity must never be used as security.
+- **Rationale:** Cross-surface discovery can make the website part of THE NRVNAVerse experience rather than merely its marketing surface. However, an unlinked or hard-to-find URL provides no meaningful protection.
+- **Implications:** Hidden/unlinked/unindexed pages may contain harmless optional game, lore, media or discovery content. Sensitive, restricted or age-gated material still requires the real auth/gate system. Search indexing and discoverability are product choices, not access-control mechanisms.
