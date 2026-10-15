@@ -16,7 +16,7 @@
       "dataUrl": "/data/spatial/chunks/music.23281f0593089ebc0e1ad4a4d7808233.json"
     },
     "music-club": {
-      "dataUrl": "/data/spatial/chunks/music-club.c99c120e65f3cb4bdeb44c79adf5f044.json"
+      "dataUrl": "/data/spatial/chunks/music-club.2085ddeee4c0e7662586db7349c21a5e.json"
     }
   },
   "destinations": {
@@ -81,7 +81,7 @@
         "position": {
           "x": -70,
           "y": 1,
-          "z": 73.5
+          "z": 75.5
         },
         "yaw": 0
       }
@@ -192,8 +192,11 @@
         "club-bar-light",
         "club-console-live",
         "club-ring-1-lit",
+        "club-ring-1-pool",
         "club-ring-2-lit",
+        "club-ring-2-pool",
         "club-ring-3-lit",
+        "club-ring-3-pool",
         "club-stage-spot",
         "club-tile-1-lit",
         "club-tile-2-lit",
@@ -443,7 +446,8 @@
           {
             "afterSeconds": 0.8,
             "show": [
-              "club-ring-3-lit"
+              "club-ring-3-lit",
+              "club-ring-3-pool"
             ],
             "hide": [
               "club-ring-3"
@@ -452,7 +456,8 @@
           {
             "afterSeconds": 1.2,
             "show": [
-              "club-ring-2-lit"
+              "club-ring-2-lit",
+              "club-ring-2-pool"
             ],
             "hide": [
               "club-ring-2"
@@ -461,7 +466,8 @@
           {
             "afterSeconds": 1.6,
             "show": [
-              "club-ring-1-lit"
+              "club-ring-1-lit",
+              "club-ring-1-pool"
             ],
             "hide": [
               "club-ring-1"

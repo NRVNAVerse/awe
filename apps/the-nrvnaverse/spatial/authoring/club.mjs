@@ -17,7 +17,12 @@
  * Template metadata (product-layer scaffolding for D-018 "Select Your Stage"; documentation, not a
  * contract): see CLUB_TEMPLATE below.
  *
- * Datum: floor top y = 0.5. Spawn (spatial-config placement): (-70, 1, 73.5) facing -Z (north).
+ * Datum: floor top y = 0.5. Spawn (spatial-config placement): (-70, 1, 75.5) facing -Z (north).
+ * Browser-tuned 2026-10-15: the room is 20 m deep (z 60..80) and the door sits off-centre (x
+ * -66..-62) so the third-person camera (5 m behind the spawn) rests against the solid south wall
+ * INSIDE the room instead of hanging outside and peering through the door gap; the name label
+ * moved to the north wall above the stage; each lit ring throws a warm pool on the floor (no
+ * point lights exist in upstream AWE, so the "light" is authored geometry).
  */
 
 import { box, slab, column, rampX, label, glow, pulse, collect, v, deg, zone, experienceOf } from "./lib.mjs";
@@ -49,7 +54,8 @@ export const CLUB_TAGS = Object.freeze({
 });
 
 const CX = -70;
-const CZ = 68; // room centre z (room spans z 60..76)
+const CZ = 70; // room centre z (room spans z 60..80; stage north, door south)
+const ROOM_D = 20;
 const DATUM = 0.5;
 const WALL_H = 5.5;
 const TEAL = PALETTE.music;
@@ -67,20 +73,23 @@ export function composeClub() {
   const items = [];
 
   // --- 1. Floor and walls (south wall has the door gap, 4 m wide, centred) ---------------------
-  items.push(box("platform-music-club", v(CX, 0.25, CZ), [22, 0.5, 16], { name: "Club floor", color: INK, tag: T.structure }));
-  items.push(slab("club-wall-n", CX, DATUM, CZ - 8.25, [22.5, WALL_H, 0.5], { name: "Club north wall", color: PLUM, tag: T.structure }));
-  items.push(slab("club-wall-w", CX - 11.25, DATUM, CZ, [0.5, WALL_H, 16], { name: "Club west wall", color: PLUM, tag: T.structure }));
-  items.push(slab("club-wall-e", CX + 11.25, DATUM, CZ, [0.5, WALL_H, 16], { name: "Club east wall", color: PLUM, tag: T.structure }));
-  items.push(slab("club-wall-sw", CX - 6.75, DATUM, CZ + 8.25, [9.5, WALL_H, 0.5], { name: "Club south wall (west of the door)", color: PLUM, tag: T.structure }));
-  items.push(slab("club-wall-se", CX + 6.75, DATUM, CZ + 8.25, [9.5, WALL_H, 0.5], { name: "Club south wall (east of the door)", color: PLUM, tag: T.structure }));
-  items.push(slab("club-door-lintel", CX, DATUM + 4.2, CZ + 8.25, [4.6, 1.3, 0.6], { name: "Club door lintel", color: PLUM, tag: T.structure }));
-  items.push(label("label-music-club", "THE CLUB", v(CX, DATUM + 3.3, CZ + 7.9), { scale: 0.9, name: "Label The Club (inside the door)", color: TEAL, width: 1200 }));
+  const DOOR_X = CX + 6; // door gap x -68..-64 (off-centre so the camera behind the spawn meets solid wall)
+  items.push(box("platform-music-club", v(CX, 0.25, CZ), [22, 0.5, ROOM_D], { name: "Club floor", color: INK, tag: T.structure }));
+  items.push(slab("club-wall-n", CX, DATUM, CZ - ROOM_D / 2 - 0.25, [22.5, WALL_H, 0.5], { name: "Club north wall", color: PLUM, tag: T.structure }));
+  items.push(slab("club-wall-w", CX - 11.25, DATUM, CZ, [0.5, WALL_H, ROOM_D], { name: "Club west wall", color: PLUM, tag: T.structure }));
+  items.push(slab("club-wall-e", CX + 11.25, DATUM, CZ, [0.5, WALL_H, ROOM_D], { name: "Club east wall", color: PLUM, tag: T.structure }));
+  // South wall with a 4 m door gap at x -68..-64: west part x -81.25..-68 (13.25 m), east part x -64..-58.75 (5.25 m).
+  items.push(slab("club-wall-sw", CX - 4.625, DATUM, CZ + ROOM_D / 2 + 0.25, [13.25, WALL_H, 0.5], { name: "Club south wall (west of the door)", color: PLUM, tag: T.structure }));
+  items.push(slab("club-wall-se", CX + 8.625, DATUM, CZ + ROOM_D / 2 + 0.25, [5.25, WALL_H, 0.5], { name: "Club south wall (east of the door)", color: PLUM, tag: T.structure }));
+  items.push(slab("club-door-lintel", DOOR_X, DATUM + 4.2, CZ + ROOM_D / 2 + 0.25, [4.6, 1.3, 0.6], { name: "Club door lintel", color: PLUM, tag: T.structure }));
+  items.push(label("label-music-club", "THE CLUB", v(CX, DATUM + 4.6, CZ - ROOM_D / 2 + 0.35), { scale: 0.6, name: "Label The Club (north wall, above the stage)", color: TEAL, width: 1200 }));
 
-  // --- 2. Light rings hanging over the floor (dormant / lit) ---------------------------------
+  // --- 2. Hanging light drums over the floor (dormant / lit; browser-tuned 2026-10-15: the first
+  //        version used 7 m discs that read as cyan plates from below) --------------------------
   for (const [i, dz] of [-4, 0, 4].entries()) {
     items.push(
-      column(`club-ring-${i + 1}`, CX, DATUM + 6.3, CZ + dz, 3.6, 0.12, {
-        name: `Light ring ${i + 1} (dormant)`,
+      column(`club-ring-${i + 1}`, CX, DATUM + 5.9, CZ + dz, 1.0, 0.45, {
+        name: `Light drum ${i + 1} (dormant)`,
         color: "#2a2d36",
         segments: 40,
         collider: "none",
@@ -91,8 +100,8 @@ export function composeClub() {
       }),
     );
     items.push(
-      column(`club-ring-${i + 1}-lit`, CX, DATUM + 6.25, CZ + dz, 3.8, 0.2, {
-        name: `Light ring ${i + 1} (lit)`,
+      column(`club-ring-${i + 1}-lit`, CX, DATUM + 5.88, CZ + dz, 1.06, 0.5, {
+        name: `Light drum ${i + 1} (lit)`,
         color: "#bffbf2",
         segments: 40,
         collider: "none",
@@ -104,17 +113,29 @@ export function composeClub() {
     );
   }
   for (const [i, dz] of [-4, 0, 4].entries()) {
-    items.push(column(`club-ring-${i + 1}-drop`, CX, DATUM + 6.4, CZ + dz, 0.06, 2.0, { name: `Light ring ${i + 1} drop`, color: PALETTE.charcoal, segments: 6, collider: "none", castShadow: false, tag: T.structure }));
+    items.push(column(`club-ring-${i + 1}-drop`, CX, DATUM + 6.35, CZ + dz, 0.06, 2.0, { name: `Light drum ${i + 1} drop`, color: PALETTE.charcoal, segments: 6, collider: "none", castShadow: false, tag: T.structure }));
+    items.push(
+      column(`club-ring-${i + 1}-pool`, CX, DATUM + 0.003 + i * 0.0005, CZ + dz, 3.4, 0.006, {
+        name: `Light drum ${i + 1} floor pool (lit)`,
+        color: i === 1 ? PALETTE.warmLight : TEAL,
+        opacity: 0.16,
+        segments: 40,
+        collider: "none",
+        castShadow: false,
+        receiveShadow: false,
+        tag: T.reactive,
+      }),
+    );
   }
 
   // --- 3. Stage (north end), console, spot ---------------------------------------------------
-  items.push(box("club-stage", v(CX, DATUM + 0.3, CZ - 6), [10, 0.6, 4], { name: "Club stage riser", color: PALETTE.charcoal, tag: T.stage }));
+  items.push(box("club-stage", v(CX, DATUM + 0.3, CZ - 8), [10, 0.6, 4], { name: "Club stage riser", color: PALETTE.charcoal, tag: T.stage }));
   // The riser is 0.6 m: a step the character controller cannot climb, so a 16.7° ramp joins the
   // floor to the riser's west end (clear of the booths; SIC-checked).
-  items.push(rampX("club-stage-ramp", CZ - 6, CX - 7, DATUM, CX - 5, DATUM + 0.6, 3, { name: "Club stage ramp", color: PALETTE.charcoal, tag: T.route }));
-  items.push(slab("club-console", CX, DATUM + 0.6, CZ - 6.6, [2.6, 0.9, 0.8], { name: "Club console", color: PALETTE.stoneDark, tag: T.stage }));
+  items.push(rampX("club-stage-ramp", CZ - 8, CX - 7, DATUM, CX - 5, DATUM + 0.6, 3, { name: "Club stage ramp", color: PALETTE.charcoal, tag: T.route }));
+  items.push(slab("club-console", CX, DATUM + 0.6, CZ - 8.6, [2.6, 0.9, 0.8], { name: "Club console", color: PALETTE.stoneDark, tag: T.stage }));
   items.push(
-    slab("club-console-top", CX, DATUM + 1.5, CZ - 6.6, [2.4, 0.1, 0.7], {
+    slab("club-console-top", CX, DATUM + 1.5, CZ - 8.6, [2.4, 0.1, 0.7], {
       name: "Club console surface",
       color: TEAL,
       collider: "none",
@@ -124,7 +145,7 @@ export function composeClub() {
     }),
   );
   items.push(
-    slab("club-console-live", CX, DATUM + 1.52, CZ - 6.6, [2.5, 0.14, 0.8], {
+    slab("club-console-live", CX, DATUM + 1.52, CZ - 8.6, [2.5, 0.14, 0.8], {
       name: "Club console surface (live)",
       color: "#9ff5e8",
       collider: "none",
@@ -135,7 +156,7 @@ export function composeClub() {
     }),
   );
   items.push(
-    column("club-stage-spot", CX, DATUM + 0.6, CZ - 6, 1.6, 6.6, {
+    column("club-stage-spot", CX, DATUM + 0.6, CZ - 8, 1.6, 6.6, {
       name: "Club stage spot (lit)",
       color: "#cffcf4",
       opacity: 0.16,
@@ -148,7 +169,7 @@ export function composeClub() {
     }),
   );
   items.push(
-    slab("club-stage-back", CX, DATUM + 0.6, CZ - 7.9, [10, 4.4, 0.2], {
+    slab("club-stage-back", CX, DATUM + 0.6, CZ - 9.9, [10, 3.4, 0.2], {
       name: "Club stage back wall (dark)",
       color: "#0f1116",
       collider: "none",
@@ -160,12 +181,13 @@ export function composeClub() {
 
   // --- 4. Dance floor: nine tiles (dark / lit) -------------------------------------------------
   let t = 0;
+  const FLOOR_Z = CZ - 2; // dance floor centre (z 65..71)
   for (const dz of [-2, 0, 2]) {
     for (const dx of [-2, 0, 2]) {
       t += 1;
-      items.push(box(`club-tile-${t}`, v(CX + dx, DATUM + 0.01, CZ + dz), [1.9, 0.02, 1.9], { name: `Dance tile ${t} (dark)`, color: "#20242c", collider: "none", castShadow: false, receiveShadow: false, tag: T.structure }));
+      items.push(box(`club-tile-${t}`, v(CX + dx, DATUM + 0.02, FLOOR_Z + dz), [1.9, 0.02, 1.9], { name: `Dance tile ${t} (dark)`, color: "#20242c", collider: "none", castShadow: false, receiveShadow: false, tag: T.structure }));
       items.push(
-        box(`club-tile-${t}-lit`, v(CX + dx, DATUM + 0.015, CZ + dz), [1.9, 0.02, 1.9], {
+        box(`club-tile-${t}-lit`, v(CX + dx, DATUM + 0.025, FLOOR_Z + dz), [1.9, 0.02, 1.9], {
           name: `Dance tile ${t} (lit)`,
           color: t % 2 === 0 ? "#8ff2e4" : "#ffd98a",
           opacity: 0.85,
@@ -202,24 +224,24 @@ export function composeClub() {
   }
 
   // --- 6. Experience zones (dance floor; stage) ------------------------------------------------
-  items.push(zone("club-zone-floor", v(CX, DATUM + 1.5, CZ), [6, 3, 6], { name: "Zone dance floor", tag: T.zone }));
-  items.push(zone("club-zone-stage", v(CX, DATUM + 2.1, CZ - 6), [10, 3, 4], { name: "Zone stage", tag: T.zone }));
+  items.push(zone("club-zone-floor", v(CX, DATUM + 1.5, FLOOR_Z), [6, 3, 6], { name: "Zone dance floor", tag: T.zone }));
+  items.push(zone("club-zone-stage", v(CX, DATUM + 2.1, CZ - 8), [10, 3, 4], { name: "Zone stage", tag: T.zone }));
 
   // --- 7. Portal sensor last: the door back to the concourse (Music District) -----------------
-  items.push(portal("portal-club-music", "Portal The Club → Music District", v(CX, 2, CZ + 8.9), [4, 3, 1], PALETTE.warmLight));
+  items.push(portal("portal-club-music", "Portal The Club → Music District", v(DOOR_X, 2, CZ + ROOM_D / 2 + 0.9), [4, 3, 1], PALETTE.warmLight));
 
   const components = collect(items);
 
   // --- 8. Experience bindings -------------------------------------------------------------------
   const x = experienceOf("music-club");
   const tilesLit = Array.from({ length: 9 }, (_, i) => `club-tile-${i + 1}-lit`);
-  x.hide("club-ring-1-lit", "club-ring-2-lit", "club-ring-3-lit", "club-console-live", "club-stage-spot", "club-bar-light", ...tilesLit);
-  // The room wakes when you arrive: the bar light first, then the rings from the door inward.
+  x.hide("club-ring-1-lit", "club-ring-2-lit", "club-ring-3-lit", "club-ring-1-pool", "club-ring-2-pool", "club-ring-3-pool", "club-console-live", "club-stage-spot", "club-bar-light", ...tilesLit);
+  // The room wakes when you arrive: the bar light first, then the rings (and their floor pools) from the door inward.
   x.arrival("club-wake", CLUB_ID, [
     { afterSeconds: 0.3, show: ["club-bar-light"] },
-    { afterSeconds: 0.8, show: ["club-ring-3-lit"], hide: ["club-ring-3"] },
-    { afterSeconds: 1.2, show: ["club-ring-2-lit"], hide: ["club-ring-2"] },
-    { afterSeconds: 1.6, show: ["club-ring-1-lit"], hide: ["club-ring-1"] },
+    { afterSeconds: 0.8, show: ["club-ring-3-lit", "club-ring-3-pool"], hide: ["club-ring-3"] },
+    { afterSeconds: 1.2, show: ["club-ring-2-lit", "club-ring-2-pool"], hide: ["club-ring-2"] },
+    { afterSeconds: 1.6, show: ["club-ring-1-lit", "club-ring-1-pool"], hide: ["club-ring-1"] },
   ]);
   // The dance floor lights while someone is on it.
   x.zone("club-floor", "club-zone-floor", { enter: { show: tilesLit }, exit: { hide: tilesLit } });

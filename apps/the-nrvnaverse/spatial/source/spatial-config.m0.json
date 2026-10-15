@@ -322,8 +322,11 @@
         "club-ring-3",
         "club-ring-3-lit",
         "club-ring-1-drop",
+        "club-ring-1-pool",
         "club-ring-2-drop",
+        "club-ring-2-pool",
         "club-ring-3-drop",
+        "club-ring-3-pool",
         "club-stage",
         "club-stage-ramp",
         "club-console",
@@ -460,7 +463,7 @@
         "position": {
           "x": -70,
           "y": 1,
-          "z": 73.5
+          "z": 75.5
         },
         "yaw": 0
       }
@@ -569,6 +572,9 @@
           "club-ring-1-lit",
           "club-ring-2-lit",
           "club-ring-3-lit",
+          "club-ring-1-pool",
+          "club-ring-2-pool",
+          "club-ring-3-pool",
           "club-console-live",
           "club-stage-spot",
           "club-bar-light",
@@ -835,7 +841,8 @@
           {
             "afterSeconds": 0.8,
             "show": [
-              "club-ring-3-lit"
+              "club-ring-3-lit",
+              "club-ring-3-pool"
             ],
             "hide": [
               "club-ring-3"
@@ -844,7 +851,8 @@
           {
             "afterSeconds": 1.2,
             "show": [
-              "club-ring-2-lit"
+              "club-ring-2-lit",
+              "club-ring-2-pool"
             ],
             "hide": [
               "club-ring-2"
@@ -853,7 +861,8 @@
           {
             "afterSeconds": 1.6,
             "show": [
-              "club-ring-1-lit"
+              "club-ring-1-lit",
+              "club-ring-1-pool"
             ],
             "hide": [
               "club-ring-1"

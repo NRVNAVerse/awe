@@ -90,6 +90,16 @@ export interface SpatialIndexExperience {
 
 export const EMPTY_EXPERIENCE: SpatialIndexExperience = Object.freeze({ hidden: {}, zones: {}, arrivals: {} });
 
+/**
+ * WEB↔SPATIAL threshold (M1 experience campaign, D-020): a physical sensor → the stable id whose
+ * canonical web context is surfaced while the visitor stands in it. Same shape as a portal binding;
+ * a threshold never travels and the pipeline refuses a portal sensor here.
+ */
+export interface SpatialIndexThreshold {
+  chunkKey: string;
+  destinationId: string;
+}
+
 export interface SpatialIndexFile {
   schemaVersion: typeof SPATIAL_SCHEMA_VERSION;
   worldId: string;
@@ -100,6 +110,8 @@ export interface SpatialIndexFile {
   portals: Record<string, SpatialIndexPortal>;
   /** Experience bindings. Empty sets when the index declares none. */
   experience: SpatialIndexExperience;
+  /** Keyed by physical sensor component id. Empty when the index declares none. */
+  thresholds: Record<string, SpatialIndexThreshold>;
 }
 
 const CHUNK_KEY_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
@@ -167,7 +179,24 @@ export function parseSpatialIndex(input: unknown): SpatialIndexFile {
   // Additive since the M1 experience campaign: a missing `experience` field is an empty binding set.
   const experience = parseExperience(input.experience, chunks, destinations, portals);
 
-  return { schemaVersion: SPATIAL_SCHEMA_VERSION, worldId: input.worldId, globalSceneUrl: input.globalSceneUrl, chunks, destinations, portals, experience };
+  // Additive (M1 experience campaign, D-020): thresholds share the portal shape; a missing field is an empty set.
+  const thresholds: Record<string, SpatialIndexThreshold> = {};
+  if (input.thresholds !== undefined) {
+    if (!isRecord(input.thresholds)) throw new Error("spatial index is malformed: thresholds must be an object keyed by component id");
+    for (const [componentId, entry] of Object.entries(input.thresholds)) {
+      if (componentId.length === 0 || !isRecord(entry)) throw new Error(`spatial index is malformed: threshold "${componentId}"`);
+      if (componentId in portals) throw new Error(`spatial index is malformed: threshold "${componentId}" is a portal sensor`);
+      if (typeof entry.chunkKey !== "string" || !(entry.chunkKey in chunks)) {
+        throw new Error(`spatial index is malformed: threshold "${componentId}" references unknown chunk "${String(entry.chunkKey)}"`);
+      }
+      if (typeof entry.destinationId !== "string" || !isDestinationId(entry.destinationId)) {
+        throw new Error(`spatial index is malformed: threshold "${componentId}" destinationId is not a stable destination id`);
+      }
+      thresholds[componentId] = { chunkKey: entry.chunkKey, destinationId: entry.destinationId };
+    }
+  }
+
+  return { schemaVersion: SPATIAL_SCHEMA_VERSION, worldId: input.worldId, globalSceneUrl: input.globalSceneUrl, chunks, destinations, portals, experience, thresholds };
 }
 
 const EXPERIENCE_ID_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;

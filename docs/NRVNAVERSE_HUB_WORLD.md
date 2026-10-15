@@ -181,13 +181,13 @@ The Music District floor (the arrival, three lit rings) is now the **concourse**
 |---|---|---|
 | Club door (concourse, south-east, behind the arrival) | `music-club-passage`, `music-club-passage-wall-{w,e}`, `music-club-passage-end`, `music-club-lintel`, `music-club-label` ("THE CLUB"), `music-club-door-glow`, sensor `portal-music-club` | a short dark passage off the floor's south edge at x −65 (clear of the booth ramp foot and the spawn); the sensor at z 16 routes to The Club's stable id (cross-chunk travel); the glow marks tonight's room |
 | Tonight's marquee | `music-marquee-board`, `music-marquee-title` ("TONIGHT"), `music-marquee-room` | over the Club door, facing the arrival — you find it by turning round, like the booth. Text and the lit door come from `TONIGHT` / `VENUE_ROOMS` in `music.mjs` (config-driven "select your stage" scaffolding: change one value, recompose; no backend, no manifest change) |
-| The Club — room | `platform-music-club` (22 × 16, x −81..−59, z 60..76), `club-wall-{n,w,e,sw,se}` (5.5 m), `club-door-lintel`, `label-music-club` | walled on three sides, open to the sky; the only opening is the south door (4 m) |
-| Light rings | `club-ring-{1,2,3}` (dormant) / `-lit` / `-drop` | hanging at 6.3 m over the floor; dormant until the room wakes |
+| The Club — room | `platform-music-club` (22 × 20, x −81..−59, z 60..80), `club-wall-{n,w,e,sw,se}` (5.5 m), `club-door-lintel`, `label-music-club` (north wall, above the stage) | walled on three sides, open to the sky; the only opening is the south door (4 m, off-centre at x −68..−64 so the third-person camera behind the spawn rests against solid wall inside the room — browser-tuned) |
+| Light rings | `club-ring-{1,2,3}` (dormant) / `-lit` / `-drop` / `-pool` | hanging at 6.3 m over the floor; dormant until the room wakes; each lit ring throws a translucent pool on the floor (upstream AWE has no point lights, so light is authored geometry) |
 | Stage (north end) | `club-stage` (10 × 4 × 0.6), `club-stage-ramp` (16.7°, west end), `club-console`, `club-console-top`, `club-console-live`, `club-stage-spot`, `club-stage-back` | low riser, one console (the first media slot), spot cone; the ramp is the clean route up (headless: the controller also shoulders straight up the 0.6 m face, but jams when sliding along it diagonally) |
 | Dance floor | `club-tile-{1..9}` (dark) / `-lit` | nine 1.9 m tiles, 6 × 6 m, alternating teal / ember when lit |
 | Bar (east) · booths (west) | `club-bar`, `club-bar-top`, `club-bar-shelf`, `club-bar-light`; `club-booth-{1,2,3}`, `-back`, `-table` | the bar back-light is the first thing to wake |
-| Door back | sensor `portal-club-music` (z 76.9) → Music District spawn | |
-| Spawn | (−70, 1, 73.5) facing north (`spatial-config` placement) | the stage is visible from the door (SIC 93 %) |
+| Door back | sensor `portal-club-music` (x −64, z 80.9) → Music District spawn | |
+| Spawn | (−70, 1, 75.5) facing north (`spatial-config` placement) | the stage is visible from the spawn (SIC 93 %) and from the camera's resting point behind it (93 %) |
 
 Experience (same system, reused unchanged — world doc §12): arrival `club-wake` (bar light 0.3 s, rings from the door inward 0.8 / 1.2 / 1.6 s); zone `club-floor` (dance floor lit while occupied); zone `club-stage` (console live + spot while someone is on the riser; the spot lifts when they step off).
 

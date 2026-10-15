@@ -15584,7 +15584,7 @@
       "position": {
         "x": -70,
         "y": 0.25,
-        "z": 68
+        "z": 70
       },
       "rotation": {
         "x": 0,
@@ -15613,7 +15613,7 @@
         "boxParams": {
           "width": 22,
           "height": 0.5,
-          "depth": 16
+          "depth": 20
         },
         "type": "box"
       },
@@ -15700,7 +15700,7 @@
       "position": {
         "x": -81.25,
         "y": 3.25,
-        "z": 68
+        "z": 70
       },
       "rotation": {
         "x": 0,
@@ -15729,7 +15729,7 @@
         "boxParams": {
           "width": 0.5,
           "height": 5.5,
-          "depth": 16
+          "depth": 20
         },
         "type": "box"
       },
@@ -15758,7 +15758,7 @@
       "position": {
         "x": -58.75,
         "y": 3.25,
-        "z": 68
+        "z": 70
       },
       "rotation": {
         "x": 0,
@@ -15787,7 +15787,7 @@
         "boxParams": {
           "width": 0.5,
           "height": 5.5,
-          "depth": 16
+          "depth": 20
         },
         "type": "box"
       },
@@ -15814,9 +15814,9 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": -76.75,
+        "x": -74.625,
         "y": 3.25,
-        "z": 76.25
+        "z": 80.25
       },
       "rotation": {
         "x": 0,
@@ -15843,7 +15843,7 @@
           "openEnded": false
         },
         "boxParams": {
-          "width": 9.5,
+          "width": 13.25,
           "height": 5.5,
           "depth": 0.5
         },
@@ -15872,9 +15872,9 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": -63.25,
+        "x": -61.375,
         "y": 3.25,
-        "z": 76.25
+        "z": 80.25
       },
       "rotation": {
         "x": 0,
@@ -15901,7 +15901,7 @@
           "openEnded": false
         },
         "boxParams": {
-          "width": 9.5,
+          "width": 5.25,
           "height": 5.5,
           "depth": 0.5
         },
@@ -15930,9 +15930,9 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": -70,
+        "x": -64,
         "y": 5.35,
-        "z": 76.25
+        "z": 80.25
       },
       "rotation": {
         "x": 0,
@@ -15983,15 +15983,15 @@
       }
     },
     "label-music-club": {
-      "name": "Label The Club (inside the door)",
+      "name": "Label The Club (north wall, above the stage)",
       "id": "label-music-club",
       "type": "text",
       "kit": "cyber",
       "text": "THE CLUB",
       "position": {
         "x": -70,
-        "y": 3.8,
-        "z": 75.9
+        "y": 5.1,
+        "z": 60.35
       },
       "rotation": {
         "x": 0,
@@ -15999,9 +15999,9 @@
         "z": 0
       },
       "scale": {
-        "x": 0.9,
-        "y": 0.9,
-        "z": 0.9
+        "x": 0.6,
+        "y": 0.6,
+        "z": 0.6
       },
       "align": "center",
       "font": "aeonik-bold",
@@ -16012,14 +16012,14 @@
       "opacity": 1
     },
     "club-ring-1": {
-      "name": "Light ring 1 (dormant)",
+      "name": "Light drum 1 (dormant)",
       "id": "club-ring-1",
       "type": "mesh",
       "kit": "cyber",
       "position": {
         "x": -70,
-        "y": 6.86,
-        "z": 64
+        "y": 6.625,
+        "z": 66
       },
       "rotation": {
         "x": 0,
@@ -16038,9 +16038,9 @@
           "heightSegments": 32
         },
         "cylinderParams": {
-          "radiusTop": 3.6,
-          "radiusBottom": 3.6,
-          "height": 0.12,
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 0.45,
           "radialSegments": 40,
           "heightSegments": 1,
           "openEnded": false
@@ -16078,14 +16078,14 @@
       }
     },
     "club-ring-1-lit": {
-      "name": "Light ring 1 (lit)",
+      "name": "Light drum 1 (lit)",
       "id": "club-ring-1-lit",
       "type": "mesh",
       "kit": "cyber",
       "position": {
         "x": -70,
-        "y": 6.85,
-        "z": 64
+        "y": 6.63,
+        "z": 66
       },
       "rotation": {
         "x": 0,
@@ -16104,9 +16104,9 @@
           "heightSegments": 32
         },
         "cylinderParams": {
-          "radiusTop": 3.8,
-          "radiusBottom": 3.8,
-          "height": 0.2,
+          "radiusTop": 1.06,
+          "radiusBottom": 1.06,
+          "height": 0.5,
           "radialSegments": 40,
           "heightSegments": 1,
           "openEnded": false
@@ -16146,14 +16146,14 @@
       }
     },
     "club-ring-2": {
-      "name": "Light ring 2 (dormant)",
+      "name": "Light drum 2 (dormant)",
       "id": "club-ring-2",
       "type": "mesh",
       "kit": "cyber",
       "position": {
         "x": -70,
-        "y": 6.86,
-        "z": 68
+        "y": 6.625,
+        "z": 70
       },
       "rotation": {
         "x": 0,
@@ -16172,9 +16172,9 @@
           "heightSegments": 32
         },
         "cylinderParams": {
-          "radiusTop": 3.6,
-          "radiusBottom": 3.6,
-          "height": 0.12,
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 0.45,
           "radialSegments": 40,
           "heightSegments": 1,
           "openEnded": false
@@ -16212,14 +16212,14 @@
       }
     },
     "club-ring-2-lit": {
-      "name": "Light ring 2 (lit)",
+      "name": "Light drum 2 (lit)",
       "id": "club-ring-2-lit",
       "type": "mesh",
       "kit": "cyber",
       "position": {
         "x": -70,
-        "y": 6.85,
-        "z": 68
+        "y": 6.63,
+        "z": 70
       },
       "rotation": {
         "x": 0,
@@ -16238,9 +16238,9 @@
           "heightSegments": 32
         },
         "cylinderParams": {
-          "radiusTop": 3.8,
-          "radiusBottom": 3.8,
-          "height": 0.2,
+          "radiusTop": 1.06,
+          "radiusBottom": 1.06,
+          "height": 0.5,
           "radialSegments": 40,
           "heightSegments": 1,
           "openEnded": false
@@ -16280,14 +16280,14 @@
       }
     },
     "club-ring-3": {
-      "name": "Light ring 3 (dormant)",
+      "name": "Light drum 3 (dormant)",
       "id": "club-ring-3",
       "type": "mesh",
       "kit": "cyber",
       "position": {
         "x": -70,
-        "y": 6.86,
-        "z": 72
+        "y": 6.625,
+        "z": 74
       },
       "rotation": {
         "x": 0,
@@ -16306,9 +16306,9 @@
           "heightSegments": 32
         },
         "cylinderParams": {
-          "radiusTop": 3.6,
-          "radiusBottom": 3.6,
-          "height": 0.12,
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 0.45,
           "radialSegments": 40,
           "heightSegments": 1,
           "openEnded": false
@@ -16346,14 +16346,14 @@
       }
     },
     "club-ring-3-lit": {
-      "name": "Light ring 3 (lit)",
+      "name": "Light drum 3 (lit)",
       "id": "club-ring-3-lit",
       "type": "mesh",
       "kit": "cyber",
       "position": {
         "x": -70,
-        "y": 6.85,
-        "z": 72
+        "y": 6.63,
+        "z": 74
       },
       "rotation": {
         "x": 0,
@@ -16372,9 +16372,9 @@
           "heightSegments": 32
         },
         "cylinderParams": {
-          "radiusTop": 3.8,
-          "radiusBottom": 3.8,
-          "height": 0.2,
+          "radiusTop": 1.06,
+          "radiusBottom": 1.06,
+          "height": 0.5,
           "radialSegments": 40,
           "heightSegments": 1,
           "openEnded": false
@@ -16414,14 +16414,14 @@
       }
     },
     "club-ring-1-drop": {
-      "name": "Light ring 1 drop",
+      "name": "Light drum 1 drop",
       "id": "club-ring-1-drop",
       "type": "mesh",
       "kit": "cyber",
       "position": {
         "x": -70,
-        "y": 7.9,
-        "z": 64
+        "y": 7.85,
+        "z": 66
       },
       "rotation": {
         "x": 0,
@@ -16471,15 +16471,73 @@
         "tag": "m1-club-structure"
       }
     },
+    "club-ring-1-pool": {
+      "name": "Light drum 1 floor pool (lit)",
+      "id": "club-ring-1-pool",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -70,
+        "y": 0.506,
+        "z": 66
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 3.4,
+          "radiusBottom": 3.4,
+          "height": 0.006,
+          "radialSegments": 40,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1,
+          "height": 1,
+          "depth": 1
+        },
+        "type": "cylinder"
+      },
+      "color": "#2fb8a6",
+      "opacity": 0.16,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CYLINDER"
+      },
+      "script": {
+        "identifier": "club-ring-1-pool",
+        "tag": "m1-club-reactive"
+      }
+    },
     "club-ring-2-drop": {
-      "name": "Light ring 2 drop",
+      "name": "Light drum 2 drop",
       "id": "club-ring-2-drop",
       "type": "mesh",
       "kit": "cyber",
       "position": {
         "x": -70,
-        "y": 7.9,
-        "z": 68
+        "y": 7.85,
+        "z": 70
       },
       "rotation": {
         "x": 0,
@@ -16529,15 +16587,73 @@
         "tag": "m1-club-structure"
       }
     },
+    "club-ring-2-pool": {
+      "name": "Light drum 2 floor pool (lit)",
+      "id": "club-ring-2-pool",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -70,
+        "y": 0.506,
+        "z": 70
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 3.4,
+          "radiusBottom": 3.4,
+          "height": 0.006,
+          "radialSegments": 40,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1,
+          "height": 1,
+          "depth": 1
+        },
+        "type": "cylinder"
+      },
+      "color": "#ffd98a",
+      "opacity": 0.16,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CYLINDER"
+      },
+      "script": {
+        "identifier": "club-ring-2-pool",
+        "tag": "m1-club-reactive"
+      }
+    },
     "club-ring-3-drop": {
-      "name": "Light ring 3 drop",
+      "name": "Light drum 3 drop",
       "id": "club-ring-3-drop",
       "type": "mesh",
       "kit": "cyber",
       "position": {
         "x": -70,
-        "y": 7.9,
-        "z": 72
+        "y": 7.85,
+        "z": 74
       },
       "rotation": {
         "x": 0,
@@ -16585,6 +16701,64 @@
       "script": {
         "identifier": "club-ring-3-drop",
         "tag": "m1-club-structure"
+      }
+    },
+    "club-ring-3-pool": {
+      "name": "Light drum 3 floor pool (lit)",
+      "id": "club-ring-3-pool",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -70,
+        "y": 0.507,
+        "z": 74
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 3.4,
+          "radiusBottom": 3.4,
+          "height": 0.006,
+          "radialSegments": 40,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1,
+          "height": 1,
+          "depth": 1
+        },
+        "type": "cylinder"
+      },
+      "color": "#2fb8a6",
+      "opacity": 0.16,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CYLINDER"
+      },
+      "script": {
+        "identifier": "club-ring-3-pool",
+        "tag": "m1-club-reactive"
       }
     },
     "club-stage": {
@@ -16961,7 +17135,7 @@
       "kit": "cyber",
       "position": {
         "x": -70,
-        "y": 3.3,
+        "y": 2.8,
         "z": 60.1
       },
       "rotation": {
@@ -16990,7 +17164,7 @@
         },
         "boxParams": {
           "width": 10,
-          "height": 4.4,
+          "height": 3.4,
           "depth": 0.2
         },
         "type": "box"
@@ -17027,7 +17201,7 @@
       "kit": "cyber",
       "position": {
         "x": -72,
-        "y": 0.51,
+        "y": 0.52,
         "z": 66
       },
       "rotation": {
@@ -17085,7 +17259,7 @@
       "kit": "cyber",
       "position": {
         "x": -72,
-        "y": 0.515,
+        "y": 0.525,
         "z": 66
       },
       "rotation": {
@@ -17151,7 +17325,7 @@
       "kit": "cyber",
       "position": {
         "x": -70,
-        "y": 0.51,
+        "y": 0.52,
         "z": 66
       },
       "rotation": {
@@ -17209,7 +17383,7 @@
       "kit": "cyber",
       "position": {
         "x": -70,
-        "y": 0.515,
+        "y": 0.525,
         "z": 66
       },
       "rotation": {
@@ -17275,7 +17449,7 @@
       "kit": "cyber",
       "position": {
         "x": -68,
-        "y": 0.51,
+        "y": 0.52,
         "z": 66
       },
       "rotation": {
@@ -17333,7 +17507,7 @@
       "kit": "cyber",
       "position": {
         "x": -68,
-        "y": 0.515,
+        "y": 0.525,
         "z": 66
       },
       "rotation": {
@@ -17399,7 +17573,7 @@
       "kit": "cyber",
       "position": {
         "x": -72,
-        "y": 0.51,
+        "y": 0.52,
         "z": 68
       },
       "rotation": {
@@ -17457,7 +17631,7 @@
       "kit": "cyber",
       "position": {
         "x": -72,
-        "y": 0.515,
+        "y": 0.525,
         "z": 68
       },
       "rotation": {
@@ -17523,7 +17697,7 @@
       "kit": "cyber",
       "position": {
         "x": -70,
-        "y": 0.51,
+        "y": 0.52,
         "z": 68
       },
       "rotation": {
@@ -17581,7 +17755,7 @@
       "kit": "cyber",
       "position": {
         "x": -70,
-        "y": 0.515,
+        "y": 0.525,
         "z": 68
       },
       "rotation": {
@@ -17647,7 +17821,7 @@
       "kit": "cyber",
       "position": {
         "x": -68,
-        "y": 0.51,
+        "y": 0.52,
         "z": 68
       },
       "rotation": {
@@ -17705,7 +17879,7 @@
       "kit": "cyber",
       "position": {
         "x": -68,
-        "y": 0.515,
+        "y": 0.525,
         "z": 68
       },
       "rotation": {
@@ -17771,7 +17945,7 @@
       "kit": "cyber",
       "position": {
         "x": -72,
-        "y": 0.51,
+        "y": 0.52,
         "z": 70
       },
       "rotation": {
@@ -17829,7 +18003,7 @@
       "kit": "cyber",
       "position": {
         "x": -72,
-        "y": 0.515,
+        "y": 0.525,
         "z": 70
       },
       "rotation": {
@@ -17895,7 +18069,7 @@
       "kit": "cyber",
       "position": {
         "x": -70,
-        "y": 0.51,
+        "y": 0.52,
         "z": 70
       },
       "rotation": {
@@ -17953,7 +18127,7 @@
       "kit": "cyber",
       "position": {
         "x": -70,
-        "y": 0.515,
+        "y": 0.525,
         "z": 70
       },
       "rotation": {
@@ -18019,7 +18193,7 @@
       "kit": "cyber",
       "position": {
         "x": -68,
-        "y": 0.51,
+        "y": 0.52,
         "z": 70
       },
       "rotation": {
@@ -18077,7 +18251,7 @@
       "kit": "cyber",
       "position": {
         "x": -68,
-        "y": 0.515,
+        "y": 0.525,
         "z": 70
       },
       "rotation": {
@@ -18144,7 +18318,7 @@
       "position": {
         "x": -60.4,
         "y": 1.05,
-        "z": 69
+        "z": 71
       },
       "rotation": {
         "x": 0,
@@ -18202,7 +18376,7 @@
       "position": {
         "x": -60.4,
         "y": 1.64,
-        "z": 69
+        "z": 71
       },
       "rotation": {
         "x": 0,
@@ -18260,7 +18434,7 @@
       "position": {
         "x": -59.1,
         "y": 3,
-        "z": 69
+        "z": 71
       },
       "rotation": {
         "x": 0,
@@ -18318,7 +18492,7 @@
       "position": {
         "x": -59.25,
         "y": 3,
-        "z": 69
+        "z": 71
       },
       "rotation": {
         "x": 0,
@@ -18386,7 +18560,7 @@
       "position": {
         "x": -79.8,
         "y": 0.725,
-        "z": 64
+        "z": 66
       },
       "rotation": {
         "x": 0,
@@ -18444,7 +18618,7 @@
       "position": {
         "x": -80.6,
         "y": 1.1,
-        "z": 64
+        "z": 66
       },
       "rotation": {
         "x": 0,
@@ -18502,7 +18676,7 @@
       "position": {
         "x": -78.3,
         "y": 0.875,
-        "z": 64
+        "z": 66
       },
       "rotation": {
         "x": 0,
@@ -18560,7 +18734,7 @@
       "position": {
         "x": -79.8,
         "y": 0.725,
-        "z": 68
+        "z": 70
       },
       "rotation": {
         "x": 0,
@@ -18618,7 +18792,7 @@
       "position": {
         "x": -80.6,
         "y": 1.1,
-        "z": 68
+        "z": 70
       },
       "rotation": {
         "x": 0,
@@ -18676,7 +18850,7 @@
       "position": {
         "x": -78.3,
         "y": 0.875,
-        "z": 68
+        "z": 70
       },
       "rotation": {
         "x": 0,
@@ -18734,7 +18908,7 @@
       "position": {
         "x": -79.8,
         "y": 0.725,
-        "z": 72
+        "z": 74
       },
       "rotation": {
         "x": 0,
@@ -18792,7 +18966,7 @@
       "position": {
         "x": -80.6,
         "y": 1.1,
-        "z": 72
+        "z": 74
       },
       "rotation": {
         "x": 0,
@@ -18850,7 +19024,7 @@
       "position": {
         "x": -78.3,
         "y": 0.875,
-        "z": 72
+        "z": 74
       },
       "rotation": {
         "x": 0,
@@ -19024,9 +19198,9 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": -70,
+        "x": -64,
         "y": 2,
-        "z": 76.9
+        "z": 80.9
       },
       "rotation": {
         "x": 0,
