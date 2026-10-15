@@ -141,6 +141,16 @@ describe("spatial CLI — generated-output ownership with content-addressed name
       d.config.chunks = d.config.chunks.filter((c: Mutable) => c.key !== "fashion-culture");
       for (const p of d.config.placements) if (p.chunkKey === "fashion-culture") p.chunkKey = "hub";
       for (const p of d.config.portals) if (p.chunkKey === "fashion-culture") p.chunkKey = "hub";
+      // Experience bindings follow their components: zones re-own, the hidden sets merge (one entry per chunk),
+      // and a "return from fashion-culture" arrival rule has no chunk to come from any more.
+      for (const z of d.config.experience.zones) if (z.chunkKey === "fashion-culture") z.chunkKey = "hub";
+      d.config.experience.arrivals = d.config.experience.arrivals.filter((a: Mutable) => a.fromChunkKey !== "fashion-culture");
+      const hidden: Mutable[] = d.config.experience.hidden;
+      const fashionHidden = hidden.find((h) => h.chunkKey === "fashion-culture");
+      if (fashionHidden) {
+        hidden.find((h) => h.chunkKey === "hub")!.componentIds.push(...fashionHidden.componentIds);
+        d.config.experience.hidden = hidden.filter((h) => h.chunkKey !== "fashion-culture");
+      }
     });
     expect(smaller.chunkKeys).toEqual(["cannabis-21", "hub", "music"]);
     // The removed chunk's file AND the previous Hub version (the Hub content grew) are stale content versions.

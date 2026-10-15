@@ -17,8 +17,11 @@
  * seamless step into the loggia.
  */
 
-import { box, slab, column, sphere, rampZ, label, glow, pulse, collect, v, deg } from "./lib.mjs";
+import { box, slab, column, sphere, rampZ, label, glow, pulse, collect, v, deg, zone, experienceOf } from "./lib.mjs";
 import { PALETTE } from "./hub.mjs";
+
+/** Stable destination id the Fashion arrival beats bind to (a reference; identity lives in the manifest). */
+export const PLACEHOLDER_BRAND_ID = "dst_tgfh5h5jvm3wj0w7";
 
 const CX = 70;
 const DATUM = 0.5;
@@ -36,6 +39,8 @@ export const FASHION_TAGS = Object.freeze({
   clue: "m1-fashion-clue",
   secret: "m1-fashion-secret",
   portal: "m0-portal",
+  reactive: "m1-fashion-reactive",
+  zone: "m1-fashion-zone",
 });
 
 function portal(id, name, position, size, color, rotY = 0) {
@@ -70,6 +75,19 @@ export function composeFashion() {
         tag: T.runway,
       }),
     );
+    // The walk: each pair of pylons lights as the visitor passes it on the runway (hidden until then).
+    items.push(
+      column(`fashion-pylon-${i + 1}-band-lit`, x, DATUM + 5.0, z, 0.56, 0.75, {
+        name: `Pylon ${i + 1} band (lit)`,
+        color: "#ffd2c4",
+        segments: 16,
+        collider: "none",
+        castShadow: false,
+        receiveShadow: false,
+        plugins: [glow(ROSE, { intensity: 2.2, power: 1.2, speed: 1.2, pulse: 1 })],
+        tag: T.reactive,
+      }),
+    );
   }
   items.push(slab("fashion-bench-w", CX - 9, DATUM, -22, [0.9, 0.45, 3], { name: "Runway bench west", color: TRAVERTINE_DARK, tag: T.route }));
   items.push(slab("fashion-bench-e", CX + 9, DATUM, -22, [0.9, 0.45, 3], { name: "Runway bench east", color: TRAVERTINE_DARK, tag: T.route }));
@@ -94,6 +112,19 @@ export function composeFashion() {
         tag: T.loggia,
       }),
     );
+    // Gallery light: the frame's rim lights while the loggia is occupied (hidden otherwise).
+    items.push(
+      slab(`fashion-frame-${i + 1}-lit`, CX + dx, DATUM + 1.3, -53.33, [2.6, 3.4, 0.06], {
+        name: `Wall frame ${i + 1} rim (lit)`,
+        color: "#ffd2c4",
+        opacity: 0.8,
+        collider: "none",
+        castShadow: false,
+        receiveShadow: false,
+        plugins: [glow(ROSE, { intensity: 2.0, power: 1.3, speed: 0.9, pulse: 1 })],
+        tag: T.reactive,
+      }),
+    );
   }
   // Roof terrace: outboard ramp on the east side (15.4°), bench and lamp on the roof.
   // Outboard of the loggia floor's east edge (x 82) with NO lateral overlap with the roof slab (its edge
@@ -105,14 +136,37 @@ export function composeFashion() {
   items.push(column("fashion-roof-ramp-post", CX + 14, 0, -40, 0.4, 3.4, { name: "Roof ramp post", color: TRAVERTINE_DARK, segments: 12, tag: T.route }));
   items.push(slab("fashion-roof-bench", CX - 4, ROOF_TOP, -46, [3, 0.45, 0.9], { name: "Roof bench", color: TRAVERTINE_DARK, tag: T.route }));
   items.push(column("fashion-roof-lamp-post", CX + 6, ROOF_TOP, -44, 0.1, 1.3, { name: "Roof lamp post", color: PALETTE.charcoal, segments: 8, collider: "none", tag: T.route }));
+  // The roof lamp is dim until someone reaches the terrace; it lights while the roof is occupied.
   items.push(
     sphere("fashion-roof-lamp", v(CX + 6, ROOF_TOP + 1.6, -44), 0.4, {
-      name: "Roof lamp",
+      name: "Roof lamp (dim)",
+      color: "#6b4a44",
+      collider: "none",
+      castShadow: false,
+      plugins: [pulse(ROSE, { intensity: 0.25, speed: 0.4 })],
+      tag: T.route,
+    }),
+  );
+  items.push(
+    sphere("fashion-roof-lamp-lit", v(CX + 6, ROOF_TOP + 1.6, -44), 0.46, {
+      name: "Roof lamp (lit)",
       color: "#fff1cf",
       collider: "none",
       castShadow: false,
-      plugins: [glow(ROSE, { intensity: 1.8, power: 1.5, speed: 0.5, pulse: 1 })],
-      tag: T.route,
+      plugins: [glow(ROSE, { intensity: 2.2, power: 1.4, speed: 0.5, pulse: 1 })],
+      tag: T.reactive,
+    }),
+  );
+  items.push(
+    column("fashion-roof-lamp-pool", CX + 6, ROOF_TOP + 0.005, -44, 2.6, 0.02, {
+      name: "Roof lamp light pool",
+      color: ROSE,
+      opacity: 0.3,
+      segments: 32,
+      collider: "none",
+      castShadow: false,
+      receiveShadow: false,
+      tag: T.reactive,
     }),
   );
 
@@ -140,6 +194,20 @@ export function composeFashion() {
     );
   }
   items.push(label("fashion-atelier-line", "the atelier is quiet — nothing is hung yet", v(CX, 2.6, -63.45), { scale: 0.6, name: "Atelier inscription", color: ROSE, font: "playfair-italic", width: 1600 }));
+  // The atelier wakes when entered: a rose ring under the pedestals.
+  items.push(
+    column("fashion-atelier-ring", CX, DATUM + 0.03, -59, 3.6, 0.02, {
+      name: "Atelier ring (inside)",
+      color: ROSE,
+      opacity: 0.4,
+      segments: 48,
+      collider: "none",
+      castShadow: false,
+      receiveShadow: false,
+      plugins: [pulse("#ffd2c4", { intensity: 0.6, speed: 0.9 })],
+      tag: T.reactive,
+    }),
+  );
   for (const [i, [x, z]] of [[CX - 10.5, -49], [CX - 11.2, -53], [CX - 10.5, -56.5], [CX - 8, -56.5]].entries()) {
     items.push(
       column(`fashion-stud-${i + 1}`, x, DATUM - 0.01, z, 0.24, 0.03, {
@@ -165,6 +233,16 @@ export function composeFashion() {
   items.push(column("fashion-gate-brand-post-w", CX - 3, DATUM, -33, 0.3, 3.6, { name: "Brand threshold post west", color: TRAVERTINE_DARK, segments: 12, tag: T.structure }));
   items.push(column("fashion-gate-brand-post-e", CX + 3, DATUM, -33, 0.3, 3.6, { name: "Brand threshold post east", color: TRAVERTINE_DARK, segments: 12, tag: T.structure }));
 
+  // --- 5b. Experience zones (invisible sensor volumes; SIC-measured anchors: runway x 68..72 /
+  //         top 1.5, roof x 58..82 / z -54..-41 / top 7.1 (+ landing to x 85.5), atelier interior
+  //         x 63.5..76.5 / z -63.5..-54) ---------------------------------------------------------
+  items.push(zone("fashion-zone-walk-1", v(CX, RUNWAY_TOP + 1.5, -14), [4, 3, 6], { name: "Zone runway pair 1", tag: T.zone }));
+  items.push(zone("fashion-zone-walk-2", v(CX, RUNWAY_TOP + 1.5, -22), [4, 3, 6], { name: "Zone runway pair 2", tag: T.zone }));
+  items.push(zone("fashion-zone-walk-3", v(CX, RUNWAY_TOP + 1.5, -30), [4, 3, 5], { name: "Zone runway pair 3", tag: T.zone }));
+  items.push(zone("fashion-zone-loggia", v(CX, DATUM + 2, -47.5), [16, 4, 11], { name: "Zone loggia", tag: T.zone }));
+  items.push(zone("fashion-zone-roof", v(CX + 2, ROOF_TOP + 1.5, -47.5), [28, 3, 13], { name: "Zone roof terrace", tag: T.zone }));
+  items.push(zone("fashion-zone-atelier", v(CX, DATUM + 2, -58.75), [13, 4, 9.5], { name: "Zone atelier", tag: T.zone }));
+
   // --- 6. Portal sensors last (ids and sensor semantics unchanged from M0) --------------------
   items.push(portal("portal-fashion-hub", "Portal Fashion / Culture District → Hub", v(CX - 9, 2, 0), [1, 3, 14], PALETTE.warmLight));
   // Brand threshold: at the runway's north end (deck top 1.5, slab spans y 0.5..3.5), so the brand
@@ -172,5 +250,39 @@ export function composeFashion() {
   items.push(portal("portal-fashion-brand", "Portal Fashion / Culture District → Placeholder Brand", v(CX, 2, -33), [6, 3, 1], ROSE));
 
   const components = collect(items);
-  return { components, componentIds: Object.keys(components) };
+
+  // --- 7. Experience bindings -------------------------------------------------------------------
+  const x = experienceOf("fashion-culture");
+  x.hide(
+    ...[1, 2, 3, 4, 5, 6].map((i) => `fashion-pylon-${i}-band-lit`),
+    ...[1, 2, 3].map((i) => `fashion-frame-${i}-lit`),
+    "fashion-roof-lamp-lit",
+    "fashion-roof-lamp-pool",
+    "fashion-atelier-ring",
+  );
+  // The walk: pylon pairs light as the visitor passes and stay lit.
+  for (const [k, pair] of [[1, [1, 2]], [2, [3, 4]], [3, [5, 6]]]) {
+    const ids = /** @type {number[]} */ (pair);
+    x.zone(`fashion-walk-${k}`, `fashion-zone-walk-${k}`, { enter: { show: ids.map((i) => `fashion-pylon-${i}-band-lit`), hide: ids.map((i) => `fashion-pylon-${i}-band`) } });
+  }
+  // The gallery lights while occupied.
+  x.zone("fashion-loggia", "fashion-zone-loggia", {
+    enter: { show: ["fashion-frame-1-lit", "fashion-frame-2-lit", "fashion-frame-3-lit"] },
+    exit: { hide: ["fashion-frame-1-lit", "fashion-frame-2-lit", "fashion-frame-3-lit"] },
+  });
+  // Reaching the roof lights its lamp; leaving dims it.
+  x.zone("fashion-roof", "fashion-zone-roof", {
+    enter: { show: ["fashion-roof-lamp-lit", "fashion-roof-lamp-pool"], hide: ["fashion-roof-lamp"] },
+    exit: { show: ["fashion-roof-lamp"], hide: ["fashion-roof-lamp-lit", "fashion-roof-lamp-pool"] },
+  });
+  // The atelier wakes when entered.
+  x.zone("fashion-atelier", "fashion-zone-atelier", { enter: { show: ["fashion-atelier-ring"] }, exit: { hide: ["fashion-atelier-ring"] } });
+  // Arriving at the brand threshold (end of the runway): the frames light one after another.
+  x.arrival("fashion-brand-welcome", PLACEHOLDER_BRAND_ID, [
+    { afterSeconds: 0.3, show: ["fashion-frame-1-lit"] },
+    { afterSeconds: 0.6, show: ["fashion-frame-2-lit"] },
+    { afterSeconds: 0.9, show: ["fashion-frame-3-lit"] },
+  ]);
+
+  return { components, componentIds: Object.keys(components), experience: x.build() };
 }

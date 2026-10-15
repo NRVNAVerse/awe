@@ -12,6 +12,7 @@
     "src/lib/spatial/awe-spatial-runtime.ts",
     "src/lib/app-store.ts",
     "test/app-store.test.ts",
+    "test/experience-store.test.ts",
     "src/lib/input/gameplay-inputs.ts",
     "src/lib/input/touch-controls.ts",
     "src/lib/input/input-diagnostics.ts",

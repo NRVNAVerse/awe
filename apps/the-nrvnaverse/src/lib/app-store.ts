@@ -16,13 +16,14 @@ import {
   type InitialPlacementOutcome,
 } from "@/lib/app-state";
 import { FetchDestinationSource, type DestinationDataSource } from "@/lib/destination-source";
+import { ExperienceController, type ExperienceTrigger } from "@/lib/experience/experience-controller";
 import { AweSpatialAdapter } from "@/lib/spatial/awe-spatial-adapter";
 import { FetchChunkDataSource, type ChunkDataSource } from "@/lib/spatial/chunk-data-source";
 import { ChunkOrchestrator } from "@/lib/spatial/chunk-orchestrator";
 import { PortalController, type PortalTrigger } from "@/lib/spatial/portal-controller";
 import { registryFromSpatialIndex } from "@/lib/spatial/spatial-index";
 import { FetchSpatialIndexSource, type SpatialIndexSource } from "@/lib/spatial/spatial-index-source";
-import type { ChunkRuntime, SensorRuntime } from "@/lib/spatial/spatial-runtime";
+import type { ChunkRuntime, SceneStateRuntime, SensorRuntime } from "@/lib/spatial/spatial-runtime";
 import { now, perfMark, perfMeasure } from "@/lib/perf";
 
 /** Single application store. UI subscribes through `useStore(appStore)`. */
@@ -40,8 +41,12 @@ export interface SpatialDiagnostics {
   boundPortals: number;
   /** Last portal sensor the player entered and the stable id it routed to (development diagnostics). */
   lastPortal: PortalTrigger | null;
+  /** Experience zones currently bound (those owned by the active chunk). */
+  boundZones: number;
+  /** Last experience effect applied (zone enter / exit or arrival beat; development diagnostics). */
+  lastExperience: ExperienceTrigger | null;
 }
-const IDLE_DIAGNOSTICS: SpatialDiagnostics = { adapterName: null, phase: "idle", destinationId: null, runtimeReady: false, activeChunkKey: null, boundPortals: 0, lastPortal: null };
+const IDLE_DIAGNOSTICS: SpatialDiagnostics = { adapterName: null, phase: "idle", destinationId: null, runtimeReady: false, activeChunkKey: null, boundPortals: 0, lastPortal: null, boundZones: 0, lastExperience: null };
 export const spatialDiagnostics = new Store<SpatialDiagnostics>(IDLE_DIAGNOSTICS);
 
 /**
@@ -49,7 +54,7 @@ export const spatialDiagnostics = new Store<SpatialDiagnostics>(IDLE_DIAGNOSTICS
  * player-enters-sensor seam are needed here; the real implementation (`AweSpatialRuntime`) is
  * imported lazily so the shell — and its tests — never load the engine eagerly.
  */
-export interface BootableRuntime extends ChunkRuntime, SensorRuntime {
+export interface BootableRuntime extends ChunkRuntime, SensorRuntime, SceneStateRuntime {
   init(options: { sceneUrl: string }): Promise<void>;
   reveal(): Promise<void>;
   /** Destroy the space. May be asynchronous (the real runtime waits for the engine session to settle). */
@@ -98,6 +103,7 @@ interface AppRun {
   runtime: BootableRuntime | null;
   orchestrator: ChunkOrchestrator | null;
   portals: PortalController | null;
+  experience: ExperienceController | null;
   adapter: AweSpatialAdapter | null;
   unsubscribePhase: (() => void) | null;
   popstateBound: boolean;
@@ -173,6 +179,7 @@ function createRun(): AppRun {
     runtime: null,
     orchestrator: null,
     portals: null,
+    experience: null,
     adapter: null,
     unsubscribePhase: null,
     popstateBound: false,
@@ -222,13 +229,16 @@ async function executeBoot(current: AppRun, options: BootOptions): Promise<void>
     current.unsubscribePhase = adapter.onPhase(onSpatialPhase);
     // Physical portal sensor → stable id → the SAME travel entry point the directory uses.
     current.portals = new PortalController({ portals: spatialIndex.portals, sensors: bootRuntime, onPortalEntered: (destinationId) => travelToDestination(destinationId) });
+    // Experience bindings (zones, arrival beats, hidden-on-stage sets) — visibility only, never travel.
+    current.experience = new ExperienceController({ experience: spatialIndex.experience, runtime: bootRuntime, onTrigger: () => refreshDiagnostics() });
+    current.experience.install();
 
     // Official AWE boots from the global scene only (avatar, animations, environment, ground).
     await bootRuntime.init({ sceneUrl: spatialIndex.globalSceneUrl });
     if (current.disposeRequested) return;
     if (process.env.NODE_ENV !== "production") {
       // Dev-only handle for browser debugging (never used by application code).
-      (globalThis as Record<string, unknown>).__nrvnaverse = { runtime: bootRuntime, adapter, orchestrator, portals: current.portals };
+      (globalThis as Record<string, unknown>).__nrvnaverse = { runtime: bootRuntime, adapter, orchestrator, portals: current.portals, experience: current.experience };
     }
     perfMark("engine-ready");
     perfMeasure("boot→engine-ready", "app-boot", "engine-ready");
@@ -290,8 +300,25 @@ async function initialPlacement(spatial: AweSpatialAdapter, requested: Destinati
  */
 function onSpatialPhase(phase: SpatialTravelPhase, destinationId: string | null) {
   if (phase === "loadingChunk" && destinationId) appStore.update(withChunkLoading(appStore.state, destinationId));
-  if (phase === "arrived") syncPortals();
+  if (phase === "arrived") {
+    const fromChunkKey = spatialDiagnostics.state.activeChunkKey;
+    syncPortals();
+    syncExperience(destinationId, fromChunkKey);
+  }
   refreshDiagnostics(phase, destinationId);
+}
+
+/**
+ * After every committed arrival: bind the active chunk's experience zones (same chunk → no-op
+ * inside the controller) and play the arrival beats of the destination. `fromChunkKey` is the
+ * chunk that was active BEFORE this arrival (null on the initial placement) — physical context
+ * for "return" beats, never identity. Experience never influences the travel outcome.
+ */
+function syncExperience(destinationId: string | null, fromChunkKey: string | null) {
+  const current = run;
+  const chunkKey = current?.orchestrator?.activeChunkKey ?? null;
+  current?.experience?.activate(chunkKey);
+  if (destinationId && chunkKey) current?.experience?.onArrival({ destinationId, chunkKey, fromChunkKey });
 }
 
 /**
@@ -315,6 +342,8 @@ function refreshDiagnostics(phase?: SpatialTravelPhase, destinationId?: string |
     activeChunkKey: current?.orchestrator?.activeChunkKey ?? null,
     boundPortals: current?.portals?.boundPortalCount ?? 0,
     lastPortal: current?.portals?.lastTrigger ?? null,
+    boundZones: current?.experience?.boundZoneIds.length ?? 0,
+    lastExperience: current?.experience?.lastTrigger ?? null,
   }));
 }
 
@@ -427,6 +456,8 @@ async function teardown(current: AppRun, options: { keepAppState: boolean }): Pr
   current.unsubscribePhase = null;
   attempt("dispose portals", () => current.portals?.dispose());
   current.portals = null;
+  attempt("dispose experience", () => current.experience?.dispose());
+  current.experience = null;
   attempt("dispose adapter", () => current.adapter?.dispose());
   current.adapter = null;
   await attemptAsync("dispose orchestrator", () => current.orchestrator?.dispose());
@@ -469,6 +500,11 @@ export function currentAdapter(): AweSpatialAdapter | null {
 /** Diagnostics/tests: the portal controller of the booted app. */
 export function currentPortals(): PortalController | null {
   return run?.portals ?? null;
+}
+
+/** Diagnostics/tests: the experience controller of the booted app. */
+export function currentExperience(): ExperienceController | null {
+  return run?.experience ?? null;
 }
 
 /** Test-only: full teardown of whatever run exists (booting, running or disposing) and store reset. */

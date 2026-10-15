@@ -105,13 +105,24 @@ export const CONTENT_ADDRESSED_OUTPUT = Object.freeze({
   chunk: /^spatial\/chunks\/([a-z0-9]+(?:-[a-z0-9]+)*)\.([0-9a-f]{32})\.json$/,
 });
 
-const CONFIG_KEYS = ["schemaVersion", "worldId", "scene", "assetRegistry", "assetStorage", "global", "chunks", "placements", "portals"];
+const CONFIG_KEYS = ["schemaVersion", "worldId", "scene", "assetRegistry", "assetStorage", "global", "chunks", "placements", "portals", "experience"];
 const GLOBAL_KEYS = ["componentIds"];
 const CHUNK_KEYS = ["key", "label", "componentIds"];
 const PLACEMENT_KEYS = ["destinationId", "chunkKey", "spawn"];
 const PORTAL_KEYS = ["componentId", "chunkKey", "destinationId"];
 const SPAWN_KEYS = ["position", "yaw"];
 const POSITION_KEYS = ["x", "y", "z"];
+// Experience bindings (M1 experience campaign): visibility effects over authored component ids,
+// triggered by sensor zones and by arrivals. References only — no coordinates, gates or metadata.
+const EXPERIENCE_KEYS = ["hidden", "zones", "arrivals"];
+const EXPERIENCE_HIDDEN_KEYS = ["chunkKey", "componentIds"];
+const EXPERIENCE_ZONE_KEYS = ["id", "chunkKey", "sensorId", "enter", "exit"];
+const EXPERIENCE_ARRIVAL_KEYS = ["id", "destinationId", "fromChunkKey", "beats"];
+const EXPERIENCE_EFFECT_KEYS = ["show", "hide"];
+const EXPERIENCE_BEAT_KEYS = ["afterSeconds", "show", "hide"];
+const EXPERIENCE_ID_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
+/** Longest arrival beat delay accepted (seconds): beats are arrival moments, not schedules. */
+const EXPERIENCE_BEAT_MAX_SECONDS = 30;
 
 /**
  * @typedef {{ x: number; y: number; z: number }} Position
@@ -119,6 +130,11 @@ const POSITION_KEYS = ["x", "y", "z"];
  * @typedef {{ key: string; label: string; componentIds: string[] }} ChunkConfig
  * @typedef {{ destinationId: string; chunkKey: string; spawn: Spawn }} PlacementConfig
  * @typedef {{ componentId: string; chunkKey: string; destinationId: string }} PortalConfig
+ * @typedef {{ show?: string[]; hide?: string[] }} ExperienceEffect
+ * @typedef {{ afterSeconds: number; show?: string[]; hide?: string[] }} ExperienceBeat
+ * @typedef {{ id: string; chunkKey: string; sensorId: string; enter?: ExperienceEffect; exit?: ExperienceEffect }} ExperienceZoneConfig
+ * @typedef {{ id: string; destinationId: string; fromChunkKey?: string; beats: ExperienceBeat[] }} ExperienceArrivalConfig
+ * @typedef {{ hidden?: Array<{ chunkKey: string; componentIds: string[] }>; zones?: ExperienceZoneConfig[]; arrivals?: ExperienceArrivalConfig[] }} ExperienceConfig
  * @typedef {{
  *   schemaVersion: number;
  *   worldId: string;
@@ -129,6 +145,7 @@ const POSITION_KEYS = ["x", "y", "z"];
  *   chunks: ChunkConfig[];
  *   placements: PlacementConfig[];
  *   portals?: PortalConfig[];
+ *   experience?: ExperienceConfig;
  * }} SpatialConfig
  * @typedef {{ components: Record<string, Record<string, unknown>>; [key: string]: unknown }} SceneFile
  * @typedef {{ id: string; status: string; gates?: unknown[]; spatialDestination: { platform: string; worldId?: string } | null }} DestinationRecord
@@ -146,6 +163,8 @@ const POSITION_KEYS = ["x", "y", "z"];
  *   chunkKeys: string[];
  *   destinationIds: string[];
  *   portalComponentIds: string[];
+ *   experienceZoneIds: string[];
+ *   experienceArrivalIds: string[];
  *   assetIds: string[];
  * }} SpatialArtifacts
  *   `files` is keyed by output file name relative to `public/data/` — the content-addressed names
@@ -320,6 +339,8 @@ export function validateSpatialSource(input) {
   const worldId = isNonEmptyString(config.worldId) ? config.worldId : null;
   /** @type {Set<string>} */
   const placedIds = new Set();
+  /** @type {Map<string, string>} destinationId → chunkKey (valid placements only; read by the experience validation) */
+  const placementChunk = new Map();
   if (!Array.isArray(config.placements)) {
     fail("invalid-placements", "config.placements", "placements must be an array");
   } else {
@@ -347,10 +368,14 @@ export function validateSpatialSource(input) {
       }
       if (!isNonEmptyString(chunkKey) || !chunkKeys.has(chunkKey)) {
         fail("unknown-chunk", `${path}.chunkKey`, `chunk ${JSON.stringify(chunkKey)} is not declared in config.chunks`);
+      } else if (isNonEmptyString(destinationId) && placedIds.has(destinationId)) {
+        placementChunk.set(destinationId, chunkKey);
       }
       validateSpawn(spawn, `${path}.spawn`, fail);
     });
   }
+  /** @type {Set<string>} portal sensor component ids (valid or not; experience effects may never target them) */
+  const portalComponentIds = new Set();
 
   // --- portals (optional, additive; M0 Step 2B.3) ---
   // physical sensor component → stable destination id. References only: the component must be
@@ -377,6 +402,7 @@ export function validateSpatialSource(input) {
           fail("duplicate-portal", `${path}.componentId`, `portal component "${componentId}" is bound more than once`);
         } else {
           portalIds.add(componentId);
+          portalComponentIds.add(componentId);
           const component = sceneComponents[componentId];
           const owner = owners.get(componentId);
           if (!component) {
@@ -407,16 +433,31 @@ export function validateSpatialSource(input) {
     }
   }
 
+  // --- experience bindings (optional, additive; M1 experience campaign) ---
+  // Visibility effects over authored component ids: `hidden` (state hidden when a chunk is
+  // staged), `zones` (a sensor component → enter / exit effects) and `arrivals` (a destination →
+  // timed beats, optionally only when arriving from another chunk). References only: every id
+  // must be authored and owned by the chunk the binding belongs to (never global, never another
+  // chunk), a zone sensor must be an enabled sensor, an arrival destination must be placed in
+  // this world. No coordinates, spawns, gates, URLs or metadata — and no effect ever targets a
+  // portal sensor, so navigation can never be hidden or revealed by an experience binding.
   // Every active THE NRVNAVerse destination in this world must have exactly one placement.
   let worldDestinations = 0;
+  /** @type {Set<string>} active destinations of this world (a missing placement is reported once, here) */
+  const activeWorldDestinationIds = new Set();
   for (const destination of destinationById.values()) {
     const spatial = destination.spatialDestination;
     if (!spatial || spatial.platform !== THE_NRVNAVERSE_PLATFORM) continue;
     if (worldId !== null && spatial.worldId !== worldId) continue;
     worldDestinations += 1;
-    if (destination.status === "active" && !placedIds.has(destination.id)) {
-      fail("missing-placement", `config.placements`, `active destination "${destination.id}" has no placement`);
+    if (destination.status === "active") {
+      activeWorldDestinationIds.add(destination.id);
+      if (!placedIds.has(destination.id)) fail("missing-placement", `config.placements`, `active destination "${destination.id}" has no placement`);
     }
+  }
+
+  if (config.experience !== undefined) {
+    validateExperience(config.experience, { sceneComponents, owners, chunkKeys, destinationById, placementChunk, placedIds, activeWorldDestinationIds, portalIds: portalComponentIds, worldId }, fail);
   }
   if (worldId !== null && destinationById.size > 0 && worldDestinations === 0) {
     fail("world-id-mismatch", "config.worldId", `no THE NRVNAVerse destination declares worldId "${worldId}"`);
@@ -523,6 +564,197 @@ function validateSpawn(spawn, path, fail) {
     }
   }
   if (!isFiniteNumber(yaw)) fail("invalid-orientation", `${path}.yaw`, "spawn.yaw (orientation around Y, radians) must be a finite number");
+}
+
+/**
+ * Experience bindings validation (M1 experience campaign). Pure reference checks; see the comment
+ * at the call site. `ctx.owners` maps component id → "global" | "chunk:<key>".
+ * @param {unknown} experience
+ * @param {{
+ *   sceneComponents: Record<string, Record<string, unknown>>;
+ *   owners: Map<string, string>;
+ *   chunkKeys: Set<string>;
+ *   destinationById: Map<string, DestinationRecord>;
+ *   placementChunk: Map<string, string>;
+ *   placedIds: Set<string>;
+ *   activeWorldDestinationIds: Set<string>;
+ *   portalIds: Set<string>;
+ *   worldId: string | null;
+ * }} ctx
+ * @param {(code: string, path: string, message: string) => void} fail
+ */
+function validateExperience(experience, ctx, fail) {
+  if (!isRecord(experience)) return fail("invalid-experience", "config.experience", "experience must be an object { hidden?, zones?, arrivals? }");
+  for (const key of Object.keys(experience)) {
+    if (!EXPERIENCE_KEYS.includes(key)) fail("unexpected-field", `config.experience.${key}`, `unexpected field "${key}" — experience carries hidden / zones / arrivals only`);
+  }
+
+  /**
+   * Every id of an effect list must be an authored component owned by `chunkKey` and never a portal sensor.
+   * @param {unknown} ids @param {string} path @param {string | null} chunkKey
+   */
+  const checkTargets = (ids, path, chunkKey) => {
+    if (!Array.isArray(ids)) return fail("invalid-experience-targets", path, "must be an array of component ids");
+    if (ids.length === 0) fail("invalid-experience-targets", path, "must name at least one component id");
+    /** @type {Set<string>} */
+    const seen = new Set();
+    ids.forEach((id, i) => {
+      const p = `${path}[${i}]`;
+      if (!isNonEmptyString(id)) return fail("invalid-component-ref", p, "component id must be a non-empty string");
+      if (seen.has(id)) return fail("duplicate-component-ref", p, `component "${id}" is listed twice`);
+      seen.add(id);
+      if (!(id in ctx.sceneComponents)) return fail("unknown-component", p, `component "${id}" does not exist in the scene`);
+      if (ctx.portalIds.has(id)) return fail("experience-targets-portal", p, `component "${id}" is a portal sensor; navigation is never hidden or revealed by an experience effect`);
+      const owner = ctx.owners.get(id);
+      if (owner === "global") return fail("global-experience-target", p, `component "${id}" is global; experience effects act on chunk components only`);
+      if (chunkKey !== null && owner !== undefined && owner !== `chunk:${chunkKey}`) {
+        fail("experience-chunk-mismatch", p, `component "${id}" is owned by ${owner}, not by chunk "${chunkKey}"`);
+      }
+    });
+  };
+  /** @param {unknown} effect @param {string} path @param {string | null} chunkKey @param {string[]} allowedKeys */
+  const checkEffect = (effect, path, chunkKey, allowedKeys) => {
+    if (!isRecord(effect)) return fail("invalid-experience-effect", path, "effect must be an object { show?, hide? }");
+    for (const key of Object.keys(effect)) {
+      if (!allowedKeys.includes(key)) fail("unexpected-field", `${path}.${key}`, `unexpected field "${key}" — an effect is show / hide lists of component ids only`);
+    }
+    if (effect.show === undefined && effect.hide === undefined) fail("invalid-experience-effect", path, "effect must show or hide at least one component");
+    if (effect.show !== undefined) checkTargets(effect.show, `${path}.show`, chunkKey);
+    if (effect.hide !== undefined) checkTargets(effect.hide, `${path}.hide`, chunkKey);
+    if (Array.isArray(effect.show) && Array.isArray(effect.hide)) {
+      for (const id of effect.show) if (effect.hide.includes(id)) fail("experience-effect-conflict", path, `component "${String(id)}" is both shown and hidden by the same effect`);
+    }
+  };
+
+  // hidden: per chunk, the components that start hidden when the chunk is staged.
+  if (experience.hidden !== undefined) {
+    if (!Array.isArray(experience.hidden)) {
+      fail("invalid-experience-hidden", "config.experience.hidden", "hidden must be an array of { chunkKey, componentIds }");
+    } else {
+      /** @type {Set<string>} */
+      const chunksSeen = new Set();
+      experience.hidden.forEach((entry, i) => {
+        const path = `config.experience.hidden[${i}]`;
+        if (!isRecord(entry)) return fail("invalid-experience-hidden", path, "hidden entry must be an object { chunkKey, componentIds }");
+        for (const key of Object.keys(entry)) {
+          if (!EXPERIENCE_HIDDEN_KEYS.includes(key)) fail("unexpected-field", `${path}.${key}`, `unexpected field "${key}"`);
+        }
+        const chunkKey = isNonEmptyString(entry.chunkKey) && ctx.chunkKeys.has(entry.chunkKey) ? entry.chunkKey : null;
+        if (chunkKey === null) fail("unknown-chunk", `${path}.chunkKey`, `chunk ${JSON.stringify(entry.chunkKey)} is not declared in config.chunks`);
+        else if (chunksSeen.has(chunkKey)) fail("duplicate-experience-hidden", `${path}.chunkKey`, `chunk "${chunkKey}" has more than one hidden entry`);
+        else chunksSeen.add(chunkKey);
+        checkTargets(entry.componentIds, `${path}.componentIds`, chunkKey);
+      });
+    }
+  }
+
+  // zones: one sensor component → enter / exit effects within the sensor's chunk.
+  if (experience.zones !== undefined) {
+    if (!Array.isArray(experience.zones)) {
+      fail("invalid-experience-zones", "config.experience.zones", "zones must be an array of { id, chunkKey, sensorId, enter?, exit? }");
+    } else {
+      /** @type {Set<string>} */
+      const zoneIds = new Set();
+      /** @type {Set<string>} */
+      const sensorIds = new Set();
+      experience.zones.forEach((zone, i) => {
+        const path = `config.experience.zones[${i}]`;
+        if (!isRecord(zone)) return fail("invalid-experience-zone", path, "zone must be an object { id, chunkKey, sensorId, enter?, exit? }");
+        for (const key of Object.keys(zone)) {
+          if (!EXPERIENCE_ZONE_KEYS.includes(key)) fail("unexpected-field", `${path}.${key}`, `unexpected field "${key}" — a zone is id, chunkKey, sensorId and enter / exit effects only`);
+        }
+        const { id, chunkKey, sensorId } = zone;
+        if (!isNonEmptyString(id) || !EXPERIENCE_ID_PATTERN.test(id)) fail("invalid-experience-id", `${path}.id`, `zone id ${JSON.stringify(id)} must be lowercase kebab-case`);
+        else if (zoneIds.has(id)) fail("duplicate-experience-id", `${path}.id`, `zone id "${id}" is declared more than once`);
+        else zoneIds.add(id);
+        const ownerChunk = isNonEmptyString(chunkKey) && ctx.chunkKeys.has(chunkKey) ? chunkKey : null;
+        if (ownerChunk === null) fail("unknown-chunk", `${path}.chunkKey`, `chunk ${JSON.stringify(chunkKey)} is not declared in config.chunks`);
+        if (!isNonEmptyString(sensorId)) {
+          fail("invalid-component-ref", `${path}.sensorId`, "zone sensorId must be a non-empty string");
+        } else if (sensorIds.has(sensorId)) {
+          fail("duplicate-zone-sensor", `${path}.sensorId`, `sensor "${sensorId}" is bound by more than one zone`);
+        } else {
+          sensorIds.add(sensorId);
+          const component = ctx.sceneComponents[sensorId];
+          const owner = ctx.owners.get(sensorId);
+          if (!component) {
+            fail("unknown-component", `${path}.sensorId`, `zone sensor "${sensorId}" does not exist in the scene`);
+          } else {
+            if (ctx.portalIds.has(sensorId)) fail("zone-sensor-is-portal", `${path}.sensorId`, `zone sensor "${sensorId}" is a portal sensor; a portal routes travel and nothing else`);
+            if (owner === "global") fail("global-zone-sensor", `${path}.sensorId`, `zone sensor "${sensorId}" is global; a zone belongs to the chunk in which it is encountered`);
+            if (!isEnabledSensor(component)) fail("zone-not-sensor", `${path}.sensorId`, `zone sensor "${sensorId}" must have an enabled collider with isSensor: true`);
+            if (ownerChunk !== null && owner !== undefined && owner !== "global" && owner !== `chunk:${ownerChunk}`) {
+              fail("experience-chunk-mismatch", `${path}.chunkKey`, `zone sensor "${sensorId}" is owned by ${owner}, not by chunk "${ownerChunk}"`);
+            }
+          }
+        }
+        if (zone.enter === undefined && zone.exit === undefined) fail("invalid-experience-zone", path, "zone must declare an enter or an exit effect");
+        if (zone.enter !== undefined) checkEffect(zone.enter, `${path}.enter`, ownerChunk, EXPERIENCE_EFFECT_KEYS);
+        if (zone.exit !== undefined) checkEffect(zone.exit, `${path}.exit`, ownerChunk, EXPERIENCE_EFFECT_KEYS);
+      });
+    }
+  }
+
+  // arrivals: a placed destination → timed beats within the destination's chunk.
+  if (experience.arrivals !== undefined) {
+    if (!Array.isArray(experience.arrivals)) {
+      fail("invalid-experience-arrivals", "config.experience.arrivals", "arrivals must be an array of { id, destinationId, fromChunkKey?, beats }");
+    } else {
+      /** @type {Set<string>} */
+      const arrivalIds = new Set();
+      experience.arrivals.forEach((arrival, i) => {
+        const path = `config.experience.arrivals[${i}]`;
+        if (!isRecord(arrival)) return fail("invalid-experience-arrival", path, "arrival must be an object { id, destinationId, fromChunkKey?, beats }");
+        for (const key of Object.keys(arrival)) {
+          if (!EXPERIENCE_ARRIVAL_KEYS.includes(key)) fail("unexpected-field", `${path}.${key}`, `unexpected field "${key}" — an arrival is id, destinationId, fromChunkKey and beats only`);
+        }
+        const { id, destinationId, fromChunkKey, beats } = arrival;
+        if (!isNonEmptyString(id) || !EXPERIENCE_ID_PATTERN.test(id)) fail("invalid-experience-id", `${path}.id`, `arrival id ${JSON.stringify(id)} must be lowercase kebab-case`);
+        else if (arrivalIds.has(id)) fail("duplicate-experience-id", `${path}.id`, `arrival id "${id}" is declared more than once`);
+        else arrivalIds.add(id);
+        /** @type {string | null} */
+        let chunkKey = null;
+        if (!isNonEmptyString(destinationId) || !DESTINATION_ID_PATTERN.test(destinationId)) {
+          fail("invalid-destination-id", `${path}.destinationId`, `destinationId ${JSON.stringify(destinationId)} is not a stable destination id`);
+        } else if (!ctx.destinationById.has(destinationId)) {
+          fail("unknown-destination", `${path}.destinationId`, `arrival destination "${destinationId}" does not exist in the canonical destination set`);
+        } else if (ctx.placementChunk.has(destinationId)) {
+          chunkKey = /** @type {string} */ (ctx.placementChunk.get(destinationId));
+        } else if (!ctx.placedIds.has(destinationId) && !ctx.activeWorldDestinationIds.has(destinationId)) {
+          // An active destination of this world without a placement is already `missing-placement`; a
+          // placement that exists but is invalid is already reported on the placement. Only a
+          // destination that legitimately has no placement here (draft / hidden / other platform) is
+          // an arrival error in its own right. Target chunk checks are skipped when the chunk is unknown.
+          fail("arrival-not-placed", `${path}.destinationId`, `arrival destination "${destinationId}" has no placement in this world`);
+        }
+        if (fromChunkKey !== undefined) {
+          if (!isNonEmptyString(fromChunkKey) || !ctx.chunkKeys.has(fromChunkKey)) fail("unknown-chunk", `${path}.fromChunkKey`, `chunk ${JSON.stringify(fromChunkKey)} is not declared in config.chunks`);
+          else if (chunkKey !== null && fromChunkKey === chunkKey) fail("invalid-experience-arrival", `${path}.fromChunkKey`, `fromChunkKey "${fromChunkKey}" is the destination's own chunk; a cross-chunk arrival rule must name another chunk`);
+        }
+        if (!Array.isArray(beats) || beats.length === 0) {
+          fail("invalid-experience-beats", `${path}.beats`, "beats must be a non-empty array of { afterSeconds, show?, hide? }");
+        } else {
+          let previous = -1;
+          beats.forEach((beat, j) => {
+            const p = `${path}.beats[${j}]`;
+            if (!isRecord(beat)) return fail("invalid-experience-beat", p, "beat must be an object { afterSeconds, show?, hide? }");
+            for (const key of Object.keys(beat)) {
+              if (!EXPERIENCE_BEAT_KEYS.includes(key)) fail("unexpected-field", `${p}.${key}`, `unexpected field "${key}"`);
+            }
+            const after = beat.afterSeconds;
+            if (!isFiniteNumber(after) || after < 0 || after > EXPERIENCE_BEAT_MAX_SECONDS) {
+              fail("invalid-experience-beat", `${p}.afterSeconds`, `afterSeconds must be a finite number between 0 and ${EXPERIENCE_BEAT_MAX_SECONDS}`);
+            } else if (after < previous) {
+              fail("invalid-experience-beat", `${p}.afterSeconds`, "beats must be listed in non-decreasing time order");
+            } else {
+              previous = after;
+            }
+            checkEffect({ show: beat.show, hide: beat.hide }, p, chunkKey, EXPERIENCE_EFFECT_KEYS);
+          });
+        }
+      });
+    }
+  }
 }
 
 /**
@@ -678,6 +910,11 @@ export function generateSpatialArtifacts(input) {
     portalIndex[portal.componentId] = { chunkKey: portal.chunkKey, destinationId: portal.destinationId };
   }
 
+  // F. Experience bindings — hidden-on-stage sets per chunk, zones keyed by zone id and arrivals
+  //    keyed by arrival id, every list sorted for determinism. Component ids only: no coordinates
+  //    (the zone sensor geometry lives in the chunk payload), no gates, no metadata.
+  const experienceIndex = experienceIndexOf(config.experience);
+
   files[OUTPUT.spatialIndex] = serializeArtifact({
     schemaVersion: SPATIAL_SCHEMA_VERSION,
     worldId: config.worldId,
@@ -685,6 +922,7 @@ export function generateSpatialArtifacts(input) {
     chunks: chunkIndex,
     destinations: destinationIndex,
     portals: portalIndex,
+    experience: experienceIndex,
   });
 
   return {
@@ -695,8 +933,52 @@ export function generateSpatialArtifacts(input) {
     chunkKeys: chunks.map((c) => c.key),
     destinationIds: placements.map((p) => p.destinationId),
     portalComponentIds: portals.map((p) => p.componentId),
+    experienceZoneIds: Object.keys(experienceIndex.zones),
+    experienceArrivalIds: Object.keys(experienceIndex.arrivals),
     assetIds,
   };
+}
+
+/**
+ * Deterministic index form of the (validated) experience bindings. A source without `experience`
+ * yields empty sets, so consumers never special-case its absence.
+ * @param {ExperienceConfig | undefined} experience
+ */
+export function experienceIndexOf(experience) {
+  const sortedIds = (/** @type {string[] | undefined} */ ids) => (ids === undefined ? undefined : [...ids].sort(compareStrings));
+  /** @param {ExperienceEffect} effect */
+  const effectOf = (effect) => {
+    /** @type {{ show?: string[]; hide?: string[] }} */
+    const out = {};
+    const show = sortedIds(effect.show);
+    const hide = sortedIds(effect.hide);
+    if (show !== undefined) out.show = show;
+    if (hide !== undefined) out.hide = hide;
+    return out;
+  };
+  /** @type {Record<string, string[]>} */
+  const hidden = {};
+  for (const entry of [...(experience?.hidden ?? [])].sort((a, b) => compareStrings(a.chunkKey, b.chunkKey))) {
+    hidden[entry.chunkKey] = [...entry.componentIds].sort(compareStrings);
+  }
+  /** @type {Record<string, { chunkKey: string; sensorId: string; enter?: { show?: string[]; hide?: string[] }; exit?: { show?: string[]; hide?: string[] } }>} */
+  const zones = {};
+  for (const zone of [...(experience?.zones ?? [])].sort((a, b) => compareStrings(a.id, b.id))) {
+    /** @type {{ chunkKey: string; sensorId: string; enter?: { show?: string[]; hide?: string[] }; exit?: { show?: string[]; hide?: string[] } }} */
+    const entry = { chunkKey: zone.chunkKey, sensorId: zone.sensorId };
+    if (zone.enter !== undefined) entry.enter = effectOf(zone.enter);
+    if (zone.exit !== undefined) entry.exit = effectOf(zone.exit);
+    zones[zone.id] = entry;
+  }
+  /** @type {Record<string, { destinationId: string; fromChunkKey?: string; beats: Array<{ afterSeconds: number; show?: string[]; hide?: string[] }> }>} */
+  const arrivals = {};
+  for (const arrival of [...(experience?.arrivals ?? [])].sort((a, b) => compareStrings(a.id, b.id))) {
+    /** @type {{ destinationId: string; fromChunkKey?: string; beats: Array<{ afterSeconds: number; show?: string[]; hide?: string[] }> }} */
+    const entry = { destinationId: arrival.destinationId, beats: arrival.beats.map((b) => ({ afterSeconds: b.afterSeconds, ...effectOf(b) })) };
+    if (arrival.fromChunkKey !== undefined) entry.fromChunkKey = arrival.fromChunkKey;
+    arrivals[arrival.id] = entry;
+  }
+  return { hidden, zones, arrivals };
 }
 
 /**

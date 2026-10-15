@@ -1,8 +1,8 @@
 import type { ChunkPayload } from "@/lib/spatial/chunk-payload";
 import { createComponentBatch } from "@/lib/spatial/component-batch";
 import type { SpawnPoint } from "@/lib/spatial/placement-registry";
-import { subscribePlayerEnterSensor, type SensorHost } from "@/lib/spatial/sensor-subscription";
-import type { ChunkBatch, ChunkRuntime, SensorRuntime } from "@/lib/spatial/spatial-runtime";
+import { subscribePlayerEnterSensor, subscribePlayerExitSensor, type SensorHost } from "@/lib/spatial/sensor-subscription";
+import type { ChunkBatch, ChunkRuntime, SceneStateRuntime, SensorRuntime } from "@/lib/spatial/spatial-runtime";
 
 /**
  * Deterministic in-memory stand-in for `AweSpatialRuntime`. It keeps a "world" of live component
@@ -21,7 +21,7 @@ import type { ChunkBatch, ChunkRuntime, SensorRuntime } from "@/lib/spatial/spat
  * (`onPlayerEnterSensor`) goes through the real `subscribePlayerEnterSensor` helper over an
  * in-memory emitter per live component; `enterSensor(id, other)` simulates an intersection.
  */
-export class FakeChunkRuntime implements ChunkRuntime, SensorRuntime {
+export class FakeChunkRuntime implements ChunkRuntime, SensorRuntime, SceneStateRuntime {
   isReady = true;
   /** Live component ids ("the world"). Global scene components are not modelled. */
   readonly world = new Set<string>();
@@ -29,6 +29,16 @@ export class FakeChunkRuntime implements ChunkRuntime, SensorRuntime {
   readonly records = new Map<string, Record<string, unknown>>();
   /** Sensor-enter listeners per live component id (`other` = the intersecting component id). */
   readonly sensorListeners = new Map<string, Set<(other: string) => void>>();
+  /** Sensor-exit listeners per live component id. */
+  readonly sensorExitListeners = new Map<string, Set<(other: string) => void>>();
+  /** Visibility of live components (true unless hidden on stage or by `setComponentVisible`). */
+  readonly visibility = new Map<string, boolean>();
+  /** `hideOnStage` declarations per chunk key. */
+  readonly hiddenOnStage = new Map<string, readonly string[]>();
+  /** Pending `schedule` callbacks in order of registration; `advance(seconds)` runs the due ones. */
+  readonly timers: Array<{ at: number; callback: () => void; cancelled: boolean }> = [];
+  /** Engine-time clock in seconds for `schedule` / `advance`. */
+  clock = 0;
   /** The id the sensor seam treats as the player avatar. */
   readonly playerId = "Player";
   /** Ordered operation log: `stage:<key>`, `create:<id>`, `destroy:<id>`, `place:<x,y,z>`, `retire:<key>`. */
@@ -76,6 +86,7 @@ export class FakeChunkRuntime implements ChunkRuntime, SensorRuntime {
           if (this.world.has(record.id)) throw new Error(`duplicate component id "${record.id}"`);
           this.world.add(record.id);
           this.records.set(record.id, record);
+          this.visibility.set(record.id, true);
           this.log.push(`create:${record.id}`);
           return record.id;
         },
@@ -87,9 +98,59 @@ export class FakeChunkRuntime implements ChunkRuntime, SensorRuntime {
       signal,
     );
     if (this.holdStageEnd) await new Promise<void>((resolve) => this.stageWaiters.push(resolve));
+    // Hidden-on-stage policy, applied exactly like the real runtime: before the batch is handed back.
+    for (const id of this.hiddenOnStage.get(payload.chunkKey) ?? []) {
+      if (this.world.has(id) && ids.includes(id)) {
+        this.visibility.set(id, false);
+        this.log.push(`hide-on-stage:${id}`);
+      }
+    }
     const batch: ChunkBatch = { chunkKey: payload.chunkKey, componentIds: ids };
     this.batches.set(batch, ids);
     return batch;
+  }
+
+  hideOnStage(chunkKey: string, componentIds: readonly string[]): void {
+    this.hiddenOnStage.set(chunkKey, [...componentIds]);
+  }
+
+  setComponentVisible(componentId: string, visible: boolean): boolean {
+    if (!this.world.has(componentId)) return false;
+    this.visibility.set(componentId, visible);
+    this.log.push(`${visible ? "show" : "hide"}:${componentId}`);
+    return true;
+  }
+
+  schedule(delaySeconds: number, callback: () => void): () => void {
+    if (!Number.isFinite(delaySeconds) || delaySeconds < 0) throw new Error("schedule requires a non-negative finite delay");
+    const timer = { at: this.clock + delaySeconds, callback, cancelled: false };
+    this.timers.push(timer);
+    this.log.push(`schedule:${delaySeconds}`);
+    return () => {
+      timer.cancelled = true;
+    };
+  }
+
+  /** Advance engine time and run every due, uncancelled timer in time order (ties in registration order). */
+  advance(seconds: number): void {
+    this.clock += seconds;
+    for (;;) {
+      const due = this.timers.filter((t) => !t.cancelled && t.at <= this.clock).sort((a, b) => a.at - b.at)[0];
+      if (!due) break;
+      due.cancelled = true;
+      due.callback();
+    }
+    for (let i = this.timers.length - 1; i >= 0; i--) if (this.timers[i].cancelled) this.timers.splice(i, 1);
+  }
+
+  /** Pending (uncancelled, not yet due) timers. */
+  get pendingTimerCount(): number {
+    return this.timers.filter((t) => !t.cancelled).length;
+  }
+
+  /** Visibility of a live component (`undefined` when it is not live). */
+  visibleOf(componentId: string): boolean | undefined {
+    return this.visibility.get(componentId);
   }
 
   retireChunk(batch: ChunkBatch): void {
@@ -128,8 +189,41 @@ export class FakeChunkRuntime implements ChunkRuntime, SensorRuntime {
           this.log.push(`sensor-off:${id}`);
         };
       },
+      onSensorExit: (id, listener) => {
+        if (!this.sensorExitListeners.has(id)) this.sensorExitListeners.set(id, new Set());
+        this.sensorExitListeners.get(id)!.add(listener);
+        this.log.push(`sensor-exit-on:${id}`);
+        return () => {
+          if (!this.world.has(id)) throw new Error(`component "${id}" is disposed`);
+          this.sensorExitListeners.get(id)?.delete(listener);
+          this.log.push(`sensor-exit-off:${id}`);
+        };
+      },
     };
     return subscribePlayerEnterSensor(host, componentId, this.playerId, callback);
+  }
+
+  onPlayerExitSensor(componentId: string, callback: () => void): () => void {
+    if (!this.isReady) throw new Error("runtime is not ready");
+    const host: SensorHost<string> = {
+      resolve: (id) => (this.world.has(id) ? id : undefined),
+      isSensor: (id) => {
+        const collider = this.records.get(id)?.collider as Record<string, unknown> | undefined;
+        return collider?.enabled === true && collider?.isSensor === true;
+      },
+      onSensorEnter: () => () => {},
+      onSensorExit: (id, listener) => {
+        if (!this.sensorExitListeners.has(id)) this.sensorExitListeners.set(id, new Set());
+        this.sensorExitListeners.get(id)!.add(listener);
+        this.log.push(`sensor-exit-on:${id}`);
+        return () => {
+          if (!this.world.has(id)) throw new Error(`component "${id}" is disposed`);
+          this.sensorExitListeners.get(id)?.delete(listener);
+          this.log.push(`sensor-exit-off:${id}`);
+        };
+      },
+    };
+    return subscribePlayerExitSensor(host, componentId, this.playerId, callback);
   }
 
   /** Simulate `other` entering the sensor of a live component (the player by default). */
@@ -139,15 +233,29 @@ export class FakeChunkRuntime implements ChunkRuntime, SensorRuntime {
     for (const listener of this.sensorListeners.get(componentId) ?? []) listener(other);
   }
 
+  /** Simulate `other` leaving the sensor of a live component (the player by default). */
+  exitSensor(componentId: string, other: string = this.playerId): void {
+    if (!this.world.has(componentId)) throw new Error(`component "${componentId}" is not live`);
+    this.log.push(`exit:${componentId}:${other}`);
+    for (const listener of this.sensorExitListeners.get(componentId) ?? []) listener(other);
+  }
+
   /** Number of sensor listeners on a component (0 once it is disposed). */
   sensorListenerCount(componentId: string): number {
     return this.sensorListeners.get(componentId)?.size ?? 0;
+  }
+
+  /** Number of sensor-exit listeners on a component (0 once it is disposed). */
+  sensorExitListenerCount(componentId: string): number {
+    return this.sensorExitListeners.get(componentId)?.size ?? 0;
   }
 
   private disposeComponent(id: string): void {
     this.world.delete(id);
     this.records.delete(id);
     this.sensorListeners.delete(id);
+    this.sensorExitListeners.delete(id);
+    this.visibility.delete(id);
   }
 
   /** Let every held stage proceed. */

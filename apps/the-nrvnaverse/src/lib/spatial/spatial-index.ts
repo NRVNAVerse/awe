@@ -50,6 +50,46 @@ export interface SpatialIndexPortal {
   destinationId: string;
 }
 
+/** A visibility effect: component ids to show and / or hide (each list sorted by the generator). */
+export interface ExperienceEffect {
+  show?: readonly string[];
+  hide?: readonly string[];
+}
+
+/** A sensor zone of one chunk: the player entering / leaving the sensor applies the effects. */
+export interface SpatialIndexZone {
+  chunkKey: string;
+  /** The authored sensor component (never a portal sensor; validated by the pipeline). */
+  sensorId: string;
+  enter?: ExperienceEffect;
+  exit?: ExperienceEffect;
+}
+
+/** One timed beat of an arrival sequence (`afterSeconds` from the committed arrival, non-decreasing). */
+export interface ExperienceBeat extends ExperienceEffect {
+  afterSeconds: number;
+}
+
+/** Arrival beats for a placed destination; with `fromChunkKey`, only when the visitor arrives from that chunk. */
+export interface SpatialIndexArrival {
+  destinationId: string;
+  fromChunkKey?: string;
+  beats: readonly ExperienceBeat[];
+}
+
+/**
+ * Experience bindings (M1 experience campaign; additive): visibility effects over authored chunk
+ * component ids. `hidden[chunkKey]` lists the components that start hidden when the chunk is
+ * staged; zones and arrivals are keyed by their authored ids. No coordinates, gates or metadata.
+ */
+export interface SpatialIndexExperience {
+  hidden: Record<string, readonly string[]>;
+  zones: Record<string, SpatialIndexZone>;
+  arrivals: Record<string, SpatialIndexArrival>;
+}
+
+export const EMPTY_EXPERIENCE: SpatialIndexExperience = Object.freeze({ hidden: {}, zones: {}, arrivals: {} });
+
 export interface SpatialIndexFile {
   schemaVersion: typeof SPATIAL_SCHEMA_VERSION;
   worldId: string;
@@ -58,6 +98,8 @@ export interface SpatialIndexFile {
   destinations: Record<string, SpatialIndexDestination>;
   /** Keyed by physical sensor component id. Empty when the index declares none. */
   portals: Record<string, SpatialIndexPortal>;
+  /** Experience bindings. Empty sets when the index declares none. */
+  experience: SpatialIndexExperience;
 }
 
 const CHUNK_KEY_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
@@ -122,7 +164,94 @@ export function parseSpatialIndex(input: unknown): SpatialIndexFile {
     }
   }
 
-  return { schemaVersion: SPATIAL_SCHEMA_VERSION, worldId: input.worldId, globalSceneUrl: input.globalSceneUrl, chunks, destinations, portals };
+  // Additive since the M1 experience campaign: a missing `experience` field is an empty binding set.
+  const experience = parseExperience(input.experience, chunks, destinations, portals);
+
+  return { schemaVersion: SPATIAL_SCHEMA_VERSION, worldId: input.worldId, globalSceneUrl: input.globalSceneUrl, chunks, destinations, portals, experience };
+}
+
+const EXPERIENCE_ID_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
+
+function parseIdList(value: unknown, what: string, portals: Record<string, SpatialIndexPortal>): readonly string[] {
+  if (!Array.isArray(value)) throw new Error(`spatial index is malformed: ${what} must be an array of component ids`);
+  const ids: string[] = [];
+  for (const id of value) {
+    if (typeof id !== "string" || id.length === 0) throw new Error(`spatial index is malformed: ${what} contains a non-id entry`);
+    if (id in portals) throw new Error(`spatial index is malformed: ${what} targets the portal sensor "${id}"`);
+    ids.push(id);
+  }
+  return ids;
+}
+
+function parseEffect(value: unknown, what: string, portals: Record<string, SpatialIndexPortal>): ExperienceEffect {
+  if (!isRecord(value)) throw new Error(`spatial index is malformed: ${what} must be an effect object`);
+  const effect: ExperienceEffect = {};
+  if (value.show !== undefined) effect.show = parseIdList(value.show, `${what}.show`, portals);
+  if (value.hide !== undefined) effect.hide = parseIdList(value.hide, `${what}.hide`, portals);
+  if (effect.show === undefined && effect.hide === undefined) throw new Error(`spatial index is malformed: ${what} shows and hides nothing`);
+  return effect;
+}
+
+function parseExperience(
+  input: unknown,
+  chunks: Record<string, SpatialIndexChunk>,
+  destinations: Record<string, SpatialIndexDestination>,
+  portals: Record<string, SpatialIndexPortal>,
+): SpatialIndexExperience {
+  if (input === undefined) return { hidden: {}, zones: {}, arrivals: {} };
+  if (!isRecord(input)) throw new Error("spatial index is malformed: experience must be an object");
+  const hidden: Record<string, readonly string[]> = {};
+  if (input.hidden !== undefined) {
+    if (!isRecord(input.hidden)) throw new Error("spatial index is malformed: experience.hidden must be an object keyed by chunk key");
+    for (const [chunkKey, ids] of Object.entries(input.hidden)) {
+      if (!(chunkKey in chunks)) throw new Error(`spatial index is malformed: experience.hidden references unknown chunk "${chunkKey}"`);
+      hidden[chunkKey] = parseIdList(ids, `experience.hidden.${chunkKey}`, portals);
+    }
+  }
+  const zones: Record<string, SpatialIndexZone> = {};
+  if (input.zones !== undefined) {
+    if (!isRecord(input.zones)) throw new Error("spatial index is malformed: experience.zones must be an object keyed by zone id");
+    for (const [zoneId, entry] of Object.entries(input.zones)) {
+      if (!EXPERIENCE_ID_PATTERN.test(zoneId) || !isRecord(entry)) throw new Error(`spatial index is malformed: zone "${zoneId}"`);
+      if (typeof entry.chunkKey !== "string" || !(entry.chunkKey in chunks)) {
+        throw new Error(`spatial index is malformed: zone "${zoneId}" references unknown chunk "${String(entry.chunkKey)}"`);
+      }
+      if (typeof entry.sensorId !== "string" || entry.sensorId.length === 0) throw new Error(`spatial index is malformed: zone "${zoneId}" has no sensorId`);
+      if (entry.sensorId in portals) throw new Error(`spatial index is malformed: zone "${zoneId}" binds the portal sensor "${entry.sensorId}"`);
+      const zone: SpatialIndexZone = { chunkKey: entry.chunkKey, sensorId: entry.sensorId };
+      if (entry.enter !== undefined) zone.enter = parseEffect(entry.enter, `zone "${zoneId}".enter`, portals);
+      if (entry.exit !== undefined) zone.exit = parseEffect(entry.exit, `zone "${zoneId}".exit`, portals);
+      if (zone.enter === undefined && zone.exit === undefined) throw new Error(`spatial index is malformed: zone "${zoneId}" has no effect`);
+      zones[zoneId] = zone;
+    }
+  }
+  const arrivals: Record<string, SpatialIndexArrival> = {};
+  if (input.arrivals !== undefined) {
+    if (!isRecord(input.arrivals)) throw new Error("spatial index is malformed: experience.arrivals must be an object keyed by arrival id");
+    for (const [arrivalId, entry] of Object.entries(input.arrivals)) {
+      if (!EXPERIENCE_ID_PATTERN.test(arrivalId) || !isRecord(entry)) throw new Error(`spatial index is malformed: arrival "${arrivalId}"`);
+      if (typeof entry.destinationId !== "string" || !isDestinationId(entry.destinationId) || !(entry.destinationId in destinations)) {
+        throw new Error(`spatial index is malformed: arrival "${arrivalId}" references an unplaced destination`);
+      }
+      if (entry.fromChunkKey !== undefined && (typeof entry.fromChunkKey !== "string" || !(entry.fromChunkKey in chunks))) {
+        throw new Error(`spatial index is malformed: arrival "${arrivalId}" references unknown chunk "${String(entry.fromChunkKey)}"`);
+      }
+      if (!Array.isArray(entry.beats) || entry.beats.length === 0) throw new Error(`spatial index is malformed: arrival "${arrivalId}" has no beats`);
+      const beats: ExperienceBeat[] = [];
+      let previous = -1;
+      for (const [i, beat] of entry.beats.entries()) {
+        if (!isRecord(beat)) throw new Error(`spatial index is malformed: arrival "${arrivalId}" beat ${i}`);
+        const afterSeconds = finite(beat.afterSeconds, `arrival "${arrivalId}" beat ${i} afterSeconds`);
+        if (afterSeconds < previous || afterSeconds < 0) throw new Error(`spatial index is malformed: arrival "${arrivalId}" beats are out of order`);
+        previous = afterSeconds;
+        beats.push({ afterSeconds, ...parseEffect({ show: beat.show, hide: beat.hide }, `arrival "${arrivalId}" beat ${i}`, portals) });
+      }
+      const arrival: SpatialIndexArrival = { destinationId: entry.destinationId, beats };
+      if (entry.fromChunkKey !== undefined) arrival.fromChunkKey = entry.fromChunkKey as string;
+      arrivals[arrivalId] = arrival;
+    }
+  }
+  return { hidden, zones, arrivals };
 }
 
 /** Diagnostics handle derived from the chunk key. Not identity; never written to a URL. */

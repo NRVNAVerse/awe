@@ -475,6 +475,74 @@
         "tag": "m1-music-structure"
       }
     },
+    "music-stack-1-band-lit": {
+      "name": "Speaker stack 1 band (lit)",
+      "id": "music-stack-1-band-lit",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -74.5,
+        "y": 2.65,
+        "z": -16
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1.6,
+          "height": 0.5,
+          "depth": 1.6
+        },
+        "type": "box"
+      },
+      "color": "#8ff2e4",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "plugins": [
+        {
+          "id": "FresnelGlowPlugin",
+          "color": "#2fb8a6",
+          "intensity": 2.2,
+          "power": 1.2,
+          "speed": 1.4,
+          "pulse": 1
+        }
+      ],
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "music-stack-1-band-lit",
+        "tag": "m1-music-reactive"
+      }
+    },
     "music-stack-2": {
       "name": "Speaker stack 2",
       "id": "music-stack-2",
@@ -597,6 +665,74 @@
       "script": {
         "identifier": "music-stack-2-band",
         "tag": "m1-music-structure"
+      }
+    },
+    "music-stack-2-band-lit": {
+      "name": "Speaker stack 2 band (lit)",
+      "id": "music-stack-2-band-lit",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -65.5,
+        "y": 2.65,
+        "z": -16
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1.6,
+          "height": 0.5,
+          "depth": 1.6
+        },
+        "type": "box"
+      },
+      "color": "#8ff2e4",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "plugins": [
+        {
+          "id": "FresnelGlowPlugin",
+          "color": "#2fb8a6",
+          "intensity": 2.2,
+          "power": 1.2,
+          "speed": 1.4,
+          "pulse": 1
+        }
+      ],
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "music-stack-2-band-lit",
+        "tag": "m1-music-reactive"
       }
     },
     "music-stack-3": {
@@ -723,6 +859,74 @@
         "tag": "m1-music-structure"
       }
     },
+    "music-stack-3-band-lit": {
+      "name": "Speaker stack 3 band (lit)",
+      "id": "music-stack-3-band-lit",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -74.5,
+        "y": 2.65,
+        "z": -24
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1.6,
+          "height": 0.5,
+          "depth": 1.6
+        },
+        "type": "box"
+      },
+      "color": "#8ff2e4",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "plugins": [
+        {
+          "id": "FresnelGlowPlugin",
+          "color": "#2fb8a6",
+          "intensity": 2.2,
+          "power": 1.2,
+          "speed": 1.4,
+          "pulse": 1
+        }
+      ],
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "music-stack-3-band-lit",
+        "tag": "m1-music-reactive"
+      }
+    },
     "music-stack-4": {
       "name": "Speaker stack 4",
       "id": "music-stack-4",
@@ -845,6 +1049,74 @@
       "script": {
         "identifier": "music-stack-4-band",
         "tag": "m1-music-structure"
+      }
+    },
+    "music-stack-4-band-lit": {
+      "name": "Speaker stack 4 band (lit)",
+      "id": "music-stack-4-band-lit",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -65.5,
+        "y": 2.65,
+        "z": -24
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1.6,
+          "height": 0.5,
+          "depth": 1.6
+        },
+        "type": "box"
+      },
+      "color": "#8ff2e4",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "plugins": [
+        {
+          "id": "FresnelGlowPlugin",
+          "color": "#2fb8a6",
+          "intensity": 2.2,
+          "power": 1.2,
+          "speed": 1.4,
+          "pulse": 1
+        }
+      ],
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "music-stack-4-band-lit",
+        "tag": "m1-music-reactive"
       }
     },
     "music-stage-riser": {
@@ -1147,6 +1419,74 @@
         "tag": "m1-music-stage"
       }
     },
+    "music-fin-1-blade": {
+      "name": "Stage fin 1 blade (lit)",
+      "id": "music-fin-1-blade",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -76.511,
+        "y": 4.9,
+        "z": -52.464
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0.8727,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 2.75,
+          "height": 5.6,
+          "depth": 0.75
+        },
+        "type": "box"
+      },
+      "color": "#9ff5e8",
+      "opacity": 0.85,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "plugins": [
+        {
+          "id": "FresnelGlowPlugin",
+          "color": "#2fb8a6",
+          "intensity": 2.4,
+          "power": 1.1,
+          "speed": 1.2,
+          "pulse": 1
+        }
+      ],
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "music-fin-1-blade",
+        "tag": "m1-music-reactive"
+      }
+    },
     "music-fin-2": {
       "name": "Stage fin 2",
       "id": "music-fin-2",
@@ -1271,6 +1611,74 @@
       "script": {
         "identifier": "music-fin-2-ribbon",
         "tag": "m1-music-stage"
+      }
+    },
+    "music-fin-2-blade": {
+      "name": "Stage fin 2 blade (lit)",
+      "id": "music-fin-2-blade",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -73.592,
+        "y": 6.55,
+        "z": -54.704
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0.4363,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 2.75,
+          "height": 7.7,
+          "depth": 0.75
+        },
+        "type": "box"
+      },
+      "color": "#9ff5e8",
+      "opacity": 0.85,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "plugins": [
+        {
+          "id": "FresnelGlowPlugin",
+          "color": "#2fb8a6",
+          "intensity": 2.4,
+          "power": 1.1,
+          "speed": 1.2,
+          "pulse": 1
+        }
+      ],
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "music-fin-2-blade",
+        "tag": "m1-music-reactive"
       }
     },
     "music-fin-3": {
@@ -1399,6 +1807,74 @@
         "tag": "m1-music-stage"
       }
     },
+    "music-fin-3-blade": {
+      "name": "Stage fin 3 blade (lit)",
+      "id": "music-fin-3-blade",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -70,
+        "y": 7.65,
+        "z": -55.5
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 2.75,
+          "height": 9.1,
+          "depth": 0.75
+        },
+        "type": "box"
+      },
+      "color": "#9ff5e8",
+      "opacity": 0.85,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "plugins": [
+        {
+          "id": "FresnelGlowPlugin",
+          "color": "#2fb8a6",
+          "intensity": 2.4,
+          "power": 1.1,
+          "speed": 1.2,
+          "pulse": 1
+        }
+      ],
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "music-fin-3-blade",
+        "tag": "m1-music-reactive"
+      }
+    },
     "music-fin-4": {
       "name": "Stage fin 4",
       "id": "music-fin-4",
@@ -1525,6 +2001,74 @@
         "tag": "m1-music-stage"
       }
     },
+    "music-fin-4-blade": {
+      "name": "Stage fin 4 blade (lit)",
+      "id": "music-fin-4-blade",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -66.408,
+        "y": 6.55,
+        "z": -54.704
+      },
+      "rotation": {
+        "x": 0,
+        "y": -0.4363,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 2.75,
+          "height": 7.7,
+          "depth": 0.75
+        },
+        "type": "box"
+      },
+      "color": "#9ff5e8",
+      "opacity": 0.85,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "plugins": [
+        {
+          "id": "FresnelGlowPlugin",
+          "color": "#2fb8a6",
+          "intensity": 2.4,
+          "power": 1.1,
+          "speed": 1.2,
+          "pulse": 1
+        }
+      ],
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "music-fin-4-blade",
+        "tag": "m1-music-reactive"
+      }
+    },
     "music-fin-5": {
       "name": "Stage fin 5",
       "id": "music-fin-5",
@@ -1649,6 +2193,198 @@
       "script": {
         "identifier": "music-fin-5-ribbon",
         "tag": "m1-music-stage"
+      }
+    },
+    "music-fin-5-blade": {
+      "name": "Stage fin 5 blade (lit)",
+      "id": "music-fin-5-blade",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -63.489,
+        "y": 4.9,
+        "z": -52.464
+      },
+      "rotation": {
+        "x": 0,
+        "y": -0.8727,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 2.75,
+          "height": 5.6,
+          "depth": 0.75
+        },
+        "type": "box"
+      },
+      "color": "#9ff5e8",
+      "opacity": 0.85,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "plugins": [
+        {
+          "id": "FresnelGlowPlugin",
+          "color": "#2fb8a6",
+          "intensity": 2.4,
+          "power": 1.1,
+          "speed": 1.2,
+          "pulse": 1
+        }
+      ],
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "music-fin-5-blade",
+        "tag": "m1-music-reactive"
+      }
+    },
+    "music-stage-wash": {
+      "name": "Stage wash (lit)",
+      "id": "music-stage-wash",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -70,
+        "y": 1.515,
+        "z": -46
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 7,
+          "radiusBottom": 7,
+          "height": 0.02,
+          "radialSegments": 48,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1,
+          "height": 1,
+          "depth": 1
+        },
+        "type": "cylinder"
+      },
+      "color": "#2fb8a6",
+      "opacity": 0.45,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "plugins": [
+        {
+          "id": "PulsePlugin",
+          "color": "#9ff5e8",
+          "intensity": 0.7,
+          "speed": 1.6
+        }
+      ],
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CYLINDER"
+      },
+      "script": {
+        "identifier": "music-stage-wash",
+        "tag": "m1-music-reactive"
+      }
+    },
+    "music-booth-spot": {
+      "name": "Booth spotlight (lit)",
+      "id": "music-booth-spot",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -70,
+        "y": 8.5,
+        "z": -46
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 0.6,
+          "radiusBottom": 3.2,
+          "height": 14,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1,
+          "height": 1,
+          "depth": 1
+        },
+        "type": "cylinder"
+      },
+      "color": "#cffcf4",
+      "opacity": 0.16,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CYLINDER"
+      },
+      "script": {
+        "identifier": "music-booth-spot",
+        "tag": "m1-music-reactive"
       }
     },
     "label-music-artist": {
@@ -2501,6 +3237,74 @@
         "tag": "m1-music-secret"
       }
     },
+    "music-booth-console-lit": {
+      "name": "Console surface (live)",
+      "id": "music-booth-console-lit",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -79.5,
+        "y": 6.5,
+        "z": 10.6
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 3.7,
+          "height": 0.16,
+          "depth": 0.9
+        },
+        "type": "box"
+      },
+      "color": "#9ff5e8",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "plugins": [
+        {
+          "id": "FresnelGlowPlugin",
+          "color": "#2fb8a6",
+          "intensity": 2,
+          "power": 1.2,
+          "speed": 2,
+          "pulse": 1
+        }
+      ],
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "music-booth-console-lit",
+        "tag": "m1-music-reactive"
+      }
+    },
     "music-booth-rail": {
       "name": "Booth rail",
       "id": "music-booth-rail",
@@ -2821,6 +3625,183 @@
       "script": {
         "identifier": "music-stud-4",
         "tag": "m1-music-clue"
+      }
+    },
+    "music-zone-walk-south": {
+      "name": "Zone processional south pair",
+      "id": "music-zone-walk-south",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -70,
+        "y": 2,
+        "z": -16
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 6,
+          "height": 3,
+          "depth": 6
+        },
+        "type": "box"
+      },
+      "color": "#000000",
+      "opacity": 0,
+      "display": false,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE",
+        "isSensor": true
+      },
+      "script": {
+        "identifier": "music-zone-walk-south",
+        "tag": "m1-music-zone"
+      }
+    },
+    "music-zone-walk-north": {
+      "name": "Zone processional north pair",
+      "id": "music-zone-walk-north",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -70,
+        "y": 2,
+        "z": -24
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 6,
+          "height": 3,
+          "depth": 6
+        },
+        "type": "box"
+      },
+      "color": "#000000",
+      "opacity": 0,
+      "display": false,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE",
+        "isSensor": true
+      },
+      "script": {
+        "identifier": "music-zone-walk-north",
+        "tag": "m1-music-zone"
+      }
+    },
+    "music-zone-booth": {
+      "name": "Zone sound booth deck",
+      "id": "music-zone-booth",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -79.5,
+        "y": 7,
+        "z": 9
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 7,
+          "height": 3,
+          "depth": 6
+        },
+        "type": "box"
+      },
+      "color": "#000000",
+      "opacity": 0,
+      "display": false,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE",
+        "isSensor": true
+      },
+      "script": {
+        "identifier": "music-zone-booth",
+        "tag": "m1-music-zone"
       }
     },
     "portal-music-hub": {

@@ -547,7 +547,7 @@ describe("app store — lifecycle hardening (boot / dispose coordination)", () =
         expect(runtime.revealed).toBe(0);
         expect(runtime.world.size).toBe(0);
         expect(runtime.batches.size).toBe(0);
-        expect(spatialDiagnostics.state).toEqual({ adapterName: null, phase: "idle", destinationId: null, runtimeReady: false, activeChunkKey: null, boundPortals: 0, lastPortal: null });
+        expect(spatialDiagnostics.state).toEqual({ adapterName: null, phase: "idle", destinationId: null, runtimeReady: false, activeChunkKey: null, boundPortals: 0, lastPortal: null, boundZones: 0, lastExperience: null });
         // A runtime whose init ran is disposed again (init may have created a Space); one never initialised is disposed too (harmless, idempotent).
         if (runtime.initOptions) expect(runtime.disposed).toBe(1);
         // Unmount after a failed boot only resets the stores.
@@ -789,7 +789,7 @@ describe("app store — physical portals use the existing travel path", () => {
     expect(state.phase).toBe("ready");
     expect(bound()).toBe(3);
     expect(currentPortals()?.boundComponentIds).toEqual(["portal-hub-cannabis", "portal-hub-fashion", "portal-hub-music"]);
-    const sensorOn = runtime.log.map((e, i) => (e.startsWith("sensor-on:") ? i : -1)).filter((i) => i >= 0);
+    const sensorOn = runtime.log.map((e, i) => (e.startsWith("sensor-on:portal-") ? i : -1)).filter((i) => i >= 0); // portals only; experience zones bind their own sensors
     expect(sensorOn).toHaveLength(3);
     expect(runtime.log.indexOf("reveal")).toBeGreaterThan(Math.max(...sensorOn)); // committed → portals bound → reveal
     expect(runtime.revealed).toBe(1);

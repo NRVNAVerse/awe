@@ -22,7 +22,10 @@
  * deck top is y = 8.5. The spawn is (0, 1, 6) facing -Z (spatial-config placement, unchanged).
  */
 
-import { box, slab, column, sphere, rampZ, rampX, label, glow, pulse, collect, v, deg } from "./lib.mjs";
+import { box, slab, column, sphere, rampZ, rampX, label, glow, pulse, collect, v, deg, zone, experienceOf } from "./lib.mjs";
+
+/** Stable destination ids the Hub's arrival beats bind to (identity lives in the manifest; these are references). */
+export const HUB_DESTINATION_ID = "dst_7g19n1vm9ackw8a0";
 
 export const PALETTE = Object.freeze({
   basinFloor: "#2b2e35",
@@ -48,6 +51,9 @@ export const HUB_TAGS = Object.freeze({
   clue: "m1-hub-clue",
   secret: "m1-hub-secret",
   copy: "m1-hub-copy",
+  /** State-B geometry and trigger volumes of the experience layer (M1 experience campaign). */
+  reactive: "m1-hub-reactive",
+  zone: "m1-hub-zone",
 });
 
 const DATUM = 0.5; // basin floor top
@@ -136,6 +142,19 @@ export function composeHub() {
         tag: S.landmark,
       }),
     );
+    // Lit state (hidden until the arrival beat "wakes" the spire from the bottom ring up).
+    items.push(
+      column(`hub-spire-ring-${i + 1}-lit`, 0, y - 0.1, pz, 1.45, 0.45, {
+        name: `Spire ring ${i + 1} (lit)`,
+        color: "#fff1cf",
+        segments: 24,
+        collider: "none",
+        castShadow: false,
+        receiveShadow: false,
+        plugins: [glow(PALETTE.ember, { intensity: 2.0, power: 1.3, speed: 0.5, pulse: 1 })],
+        tag: S.reactive,
+      }),
+    );
   }
   items.push(
     sphere("hub-spire-cap", v(0, SPIRE_TOP + 0.9, pz), 1.1, {
@@ -176,14 +195,37 @@ export function composeHub() {
   items.push(column("hub-overlook-post-n", -19.3, 0, -38.3, 0.45, OVERLOOK_TOP - 0.5, { name: "Overlook post north", color: PALETTE.stoneDark, segments: 16, tag: S.route }));
   items.push(slab("hub-bench-lounge", -14, TERRACE_TOP, -33.5, [3, 0.45, 0.9], { name: "Lounge bench", color: PALETTE.stoneLight, tag: S.route }));
   items.push(column("hub-overlook-lamp-post", -16.5, OVERLOOK_TOP, -30, 0.1, 1.3, { name: "Overlook lamp post", color: PALETTE.charcoal, segments: 8, collider: "none", tag: S.route }));
+  // The lamp is dim until someone reaches the deck; it lights while the deck is occupied.
   items.push(
     sphere("hub-overlook-lamp", v(-16.5, OVERLOOK_TOP + 1.6, -30), 0.4, {
-      name: "Overlook lamp",
+      name: "Overlook lamp (dim)",
+      color: "#6b5a3a",
+      collider: "none",
+      castShadow: false,
+      plugins: [pulse(PALETTE.ember, { intensity: 0.25, speed: 0.4 })],
+      tag: S.route,
+    }),
+  );
+  items.push(
+    sphere("hub-overlook-lamp-lit", v(-16.5, OVERLOOK_TOP + 1.6, -30), 0.46, {
+      name: "Overlook lamp (lit)",
       color: "#fff1cf",
       collider: "none",
       castShadow: false,
-      plugins: [glow(PALETTE.ember, { intensity: 1.8, power: 1.5, speed: 0.5, pulse: 1 })],
-      tag: S.route,
+      plugins: [glow(PALETTE.ember, { intensity: 2.2, power: 1.4, speed: 0.5, pulse: 1 })],
+      tag: S.reactive,
+    }),
+  );
+  items.push(
+    column("hub-overlook-lamp-pool", -16.5, OVERLOOK_TOP + 0.005, -30, 2.6, 0.02, {
+      name: "Overlook lamp light pool",
+      color: PALETTE.warmLight,
+      opacity: 0.35,
+      segments: 32,
+      collider: "none",
+      castShadow: false,
+      receiveShadow: false,
+      tag: S.reactive,
     }),
   );
 
@@ -215,6 +257,19 @@ export function composeHub() {
     items.push(column(`hub-gate-${g.k}-post-s`, g.x, DATUM, 7.9, 0.45, 5, { name: `Gateway ${g.k} post south`, color: PALETTE.stoneLight, segments: 16, tag: S.structure }));
     items.push(slab(`hub-gate-${g.k}-lintel`, g.x, DATUM + 5, 0, [1.2, 0.7, 17], { name: `Gateway ${g.k} lintel`, color: PALETTE.stoneLight, tag: S.structure }));
     items.push(label(`hub-gate-${g.k}-label`, g.text, v(g.x + (g.x < 0 ? 0.7 : -0.7), DATUM + 6.6, 0), { scale: 0.95, name: `Label gateway ${g.k}`, color: g.color, rotation: { x: 0, y: deg(g.rotY), z: 0 }, width: 1200 }));
+    // Return glow: the lintel of the gateway you just came back through lights for a few seconds.
+    items.push(
+      slab(`hub-return-${g.k}-glow`, g.x, DATUM + 4.95, 0, [1.3, 0.8, 17.2], {
+        name: `Gateway ${g.k} return glow`,
+        color: g.color,
+        opacity: 0.55,
+        collider: "none",
+        castShadow: false,
+        receiveShadow: false,
+        plugins: [glow(g.color, { intensity: 1.8, power: 1.2, speed: 1.0, pulse: 1 })],
+        tag: S.reactive,
+      }),
+    );
   }
 
   // --- 9. The gated 21+ gate: off the arrival axis, north-east corner, dark posts ----------------
@@ -262,6 +317,39 @@ export function composeHub() {
     script: { identifier: "hub-core-mirror", tag: S.secret },
   });
   items.push(label("hub-core-line", "you are at the centre", v(0, 2.7, pz + 4.45), { scale: 0.7, name: "Core inscription", color: PALETTE.warmLight, font: "playfair-italic", rotation: { x: 0, y: deg(180), z: 0 }, width: 1200 }));
+  // The interior answers the visitor: a halo around the seat and a brighter well while someone is inside.
+  items.push(
+    column("hub-core-halo", 0, DATUM + 0.03, pz, 3.2, 0.02, {
+      name: "Core halo (inside)",
+      color: PALETTE.warmLight,
+      opacity: 0.4,
+      segments: 48,
+      collider: "none",
+      castShadow: false,
+      receiveShadow: false,
+      plugins: [pulse(PALETTE.ember, { intensity: 0.6, speed: 0.8 })],
+      tag: S.reactive,
+    }),
+  );
+  items.push(
+    column("hub-core-well", 0, finBase, pz, 0.7, 6, {
+      name: "Core well (inside)",
+      color: PALETTE.ember,
+      opacity: 0.35,
+      segments: 16,
+      collider: "none",
+      castShadow: false,
+      receiveShadow: false,
+      plugins: [glow(PALETTE.warmLight, { intensity: 2.4, power: 1.2, speed: 0.9, pulse: 1 })],
+      tag: S.reactive,
+    }),
+  );
+
+  // --- 11b. Experience zones (invisible sensor volumes; ids are the zone sensors) ----------------
+  // Sized from SIC `bounds` of the anchors (overlook deck x -20..-6 / z -39..-28 / top 8.5; Core
+  // house interior x -4..4 / z -23.5..-14.5). Zones precede the portals so the portals stay last.
+  items.push(zone("hub-zone-overlook", v(-13, OVERLOOK_TOP + 1.5, -33.5), [14, 3, 11], { name: "Zone overlook deck", tag: S.zone }));
+  items.push(zone("hub-zone-core", v(0, DATUM + 2, pz), [8, 4, 9], { name: "Zone Core house interior", tag: S.zone }));
 
   // --- 12. Portal sensors last: asset:place appends after the final hub id (portal-hub-cannabis) ---
   items.push(portal("portal-hub-music", "Portal Hub → Music District", v(-9, 2, 0), [1, 3, 14], PALETTE.music, 0));
@@ -269,5 +357,29 @@ export function composeHub() {
   items.push(portal("portal-hub-cannabis", "Portal Hub → 21+ Cannabis District (gated)", v(8.5, 2, -9.5), [6, 3, 1], PALETTE.gated, 45));
 
   const components = collect(items);
-  return { components, componentIds: Object.keys(components) };
+
+  // --- 13. Experience bindings -------------------------------------------------------------------
+  const x = experienceOf("hub");
+  x.hide("hub-spire-ring-1-lit", "hub-spire-ring-2-lit", "hub-spire-ring-3-lit", "hub-overlook-lamp-lit", "hub-overlook-lamp-pool", "hub-return-music-glow", "hub-return-fashion-glow", "hub-core-halo", "hub-core-well");
+  // Reaching the overlook lights its lamp; leaving dims it again.
+  x.zone("hub-overlook", "hub-zone-overlook", {
+    enter: { show: ["hub-overlook-lamp-lit", "hub-overlook-lamp-pool"], hide: ["hub-overlook-lamp"] },
+    exit: { show: ["hub-overlook-lamp"], hide: ["hub-overlook-lamp-lit", "hub-overlook-lamp-pool"] },
+  });
+  // Inside the Core house the well brightens and the halo appears; the inscription stays.
+  x.zone("hub-core", "hub-zone-core", {
+    enter: { show: ["hub-core-halo", "hub-core-well"] },
+    exit: { hide: ["hub-core-halo", "hub-core-well"] },
+  });
+  // Every arrival at the Hub wakes the spire from the bottom ring up (initial placement and returns).
+  x.arrival("hub-wake", HUB_DESTINATION_ID, [
+    { afterSeconds: 0.6, show: ["hub-spire-ring-1-lit"], hide: ["hub-spire-ring-1"] },
+    { afterSeconds: 1.1, show: ["hub-spire-ring-2-lit"], hide: ["hub-spire-ring-2"] },
+    { afterSeconds: 1.6, show: ["hub-spire-ring-3-lit"], hide: ["hub-spire-ring-3"] },
+  ]);
+  // Coming back from a district: the gateway you returned through glows, then settles.
+  x.arrival("hub-return-music", HUB_DESTINATION_ID, [{ afterSeconds: 0, show: ["hub-return-music-glow"] }, { afterSeconds: 6, hide: ["hub-return-music-glow"] }], { fromChunkKey: "music" });
+  x.arrival("hub-return-fashion", HUB_DESTINATION_ID, [{ afterSeconds: 0, show: ["hub-return-fashion-glow"] }, { afterSeconds: 6, hide: ["hub-return-fashion-glow"] }], { fromChunkKey: "fashion-culture" });
+
+  return { components, componentIds: Object.keys(components), experience: x.build() };
 }

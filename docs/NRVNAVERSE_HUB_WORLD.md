@@ -148,3 +148,25 @@ Routes proven headless: runway up / down; loggia; roof ramp → landing → terr
 - "There is a way up on both sides. Go up."
 - "In the Music District, turn around after you arrive."
 - "In the Fashion District, the gallery has a roof."
+
+---
+
+## 12. The world reacts — experience layer  [VERIFIED headless + SIC, `feat/m1-spatial-experience-overnight`]
+
+Every reaction is authored geometry in two states (state A idle, state B lit, both in the chunk; state B hidden on staging) plus an invisible sensor **zone** or an **arrival** rule (pipeline doc §17, runtime doc §17). Nothing here is a HUD, a counter or a quest; a chunk retire resets everything.
+
+| Place | Trigger | What happens | Ids (zone · state B) |
+|---|---|---|---|
+| Hub arrival | arrival at the Hub (initial or return) | the spire wakes from the bottom ring up at 0.6 / 1.1 / 1.6 s | `hub-wake` · `hub-spire-ring-{1,2,3}-lit` |
+| Hub return | arrival at the Hub from the `music` / `fashion-culture` chunk | the gateway you came back through glows for 6 s | `hub-return-music`, `hub-return-fashion` · `hub-return-{music,fashion}-glow` |
+| Overlook deck | zone `hub-zone-overlook` (deck top, x −20..−6, z −39..−28) | the lamp lights and throws a pool on the deck; dims again when you leave | `hub-overlook` · `hub-overlook-lamp-lit`, `hub-overlook-lamp-pool` (dim: `hub-overlook-lamp`) |
+| Core house interior | zone `hub-zone-core` (x −4..4, z −23.5..−14.5) | a halo appears round the seat and the ember well brightens while you are inside | `hub-core` · `hub-core-halo`, `hub-core-well` |
+| Processional path | zones `music-zone-walk-south` / `-north` (z −19..−13 / −27..−21) | each pair of speaker stacks lights as you pass and stays lit — a soundcheck trail | `music-walk-south`, `music-walk-north` · `music-stack-{1..4}-band-lit` |
+| The stage | arrival at Placeholder Artist | the fin blades light centre-out at 0.3 / 0.7 / 1.1 s, the stage wash at 1.6 s; arriving at the district floor resets it | `music-stage-crescendo`, `music-floor-reset` · `music-fin-{1..5}-blade`, `music-stage-wash` |
+| Sound booth | zone `music-zone-booth` (deck top) | the console goes live and a spotlight lands on the stage; the spot lifts when you leave (the booth controls the room) | `music-booth` · `music-booth-console-lit`, `music-booth-spot` |
+| Runway | zones `fashion-zone-walk-{1,2,3}` (on the runway, z −17..−11 / −25..−19 / −32.5..−27.5) | pylon pairs light as you walk and stay lit | `fashion-walk-{1,2,3}` · `fashion-pylon-{1..6}-band-lit` |
+| Loggia | zone `fashion-zone-loggia` (between the columns) + arrival at the Brand threshold | the frame rims light while the gallery is occupied; on arrival at the threshold they light one after another (0.3 / 0.6 / 0.9 s) | `fashion-loggia`, `fashion-brand-welcome` · `fashion-frame-{1,2,3}-lit` |
+| Roof terrace | zone `fashion-zone-roof` (roof + landing) | the roof lamp lights with a pool; dims when you leave | `fashion-roof` · `fashion-roof-lamp-lit`, `fashion-roof-lamp-pool` |
+| Atelier | zone `fashion-zone-atelier` (interior) | a rose ring wakes under the pedestals while you are inside | `fashion-atelier` · `fashion-atelier-ring` |
+
+Zone sensors are `zone()` meshes (`display: false`, enabled sensor collider) tagged `m1-<area>-zone`; state-B geometry is tagged `m1-<area>-reactive`. Zone volumes were sized from SIC `bounds` of their anchors and checked with `in_region` / `intersects` (anchors fully inside, no penetration of portals, ramps or the beam ring); the real engine fires enter and exit for the avatar in every zone (headless Mover proof). Component counts after the layer: hub 87, music 65, fashion-culture 90 (budget 96 / 128 KiB, warning-only; fashion-culture ≈ 119 KiB — raise the budget before adding more there). Visitor copy stays spoiler-light: "the Hub remembers where you came back from", "walk the path and listen", "the booth runs the room".

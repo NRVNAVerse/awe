@@ -229,3 +229,85 @@ export function collect(items) {
   }
   return out;
 }
+
+// ---------------------------------------------------------------------------------------------
+// Experience authoring (M1 experience campaign). Zones are invisible sensor volumes; effects are
+// visibility toggles over authored component ids. The composers return an `experience` block next
+// to their components; `compose.mjs` writes it into `spatial-config.m0.json` (`experience`), the
+// pipeline validates the references and emits it into the spatial index (additive, schema v1).
+// ---------------------------------------------------------------------------------------------
+
+/**
+ * An invisible trigger volume (official mesh with an enabled sensor collider, `display: false` so
+ * the mesh never renders while the collider still exists). Axis-aligned box by centre.
+ * @param {string} id @param {XYZ} center @param {[number, number, number]} size @param {{ name?: string; tag?: string; rotY?: number }} [opts]
+ */
+export function zone(id, center, size, opts = {}) {
+  const data = box(id, center, size, {
+    name: opts.name ?? `Zone ${id}`,
+    color: "#000000",
+    opacity: 0,
+    collider: "sensor",
+    castShadow: false,
+    receiveShadow: false,
+    tag: opts.tag ?? "m1-experience-zone",
+    rotation: { x: 0, y: deg(opts.rotY ?? 0), z: 0 },
+  });
+  data.display = false;
+  return data;
+}
+
+/**
+ * Collects the experience bindings of one composed chunk. Every effect names component ids only.
+ * @param {string} chunkKey
+ */
+export function experienceOf(chunkKey) {
+  /** @type {string[]} */
+  const hidden = [];
+  /** @type {Array<{ id: string; chunkKey: string; sensorId: string; enter?: { show?: string[]; hide?: string[] }; exit?: { show?: string[]; hide?: string[] } }>} */
+  const zones = [];
+  /** @type {Array<{ id: string; destinationId: string; fromChunkKey?: string; beats: Array<{ afterSeconds: number; show?: string[]; hide?: string[] }> }>} */
+  const arrivals = [];
+  const uniq = (/** @type {string[]} */ ids) => [...new Set(ids)];
+  return {
+    /** Mark authored components as hidden when their chunk is staged (state B geometry). @param {...string} ids */
+    hide(...ids) {
+      for (const id of ids) if (!hidden.includes(id)) hidden.push(id);
+    },
+    /**
+     * @param {string} id @param {string} sensorId
+     * @param {{ enter?: { show?: string[]; hide?: string[] }; exit?: { show?: string[]; hide?: string[] } }} effects
+     */
+    zone(id, sensorId, effects) {
+      if (zones.some((z) => z.id === id)) throw new Error(`duplicate zone id "${id}"`);
+      /** @type {{ id: string; chunkKey: string; sensorId: string; enter?: { show?: string[]; hide?: string[] }; exit?: { show?: string[]; hide?: string[] } }} */
+      const z = { id, chunkKey, sensorId };
+      if (effects.enter) z.enter = effect(effects.enter);
+      if (effects.exit) z.exit = effect(effects.exit);
+      zones.push(z);
+    },
+    /**
+     * @param {string} id @param {string} destinationId
+     * @param {Array<{ afterSeconds: number; show?: string[]; hide?: string[] }>} beats
+     * @param {{ fromChunkKey?: string }} [opts]
+     */
+    arrival(id, destinationId, beats, opts = {}) {
+      if (arrivals.some((a) => a.id === id)) throw new Error(`duplicate arrival id "${id}"`);
+      /** @type {{ id: string; destinationId: string; fromChunkKey?: string; beats: Array<{ afterSeconds: number; show?: string[]; hide?: string[] }> }} */
+      const a = { id, destinationId, beats: beats.map((b) => ({ afterSeconds: r3(b.afterSeconds), ...effect(b) })) };
+      if (opts.fromChunkKey) a.fromChunkKey = opts.fromChunkKey;
+      arrivals.push(a);
+    },
+    build() {
+      return { hidden: uniq(hidden), zones, arrivals };
+    },
+  };
+  /** @param {{ show?: string[]; hide?: string[] }} e */
+  function effect(e) {
+    /** @type {{ show?: string[]; hide?: string[] }} */
+    const out = {};
+    if (e.show && e.show.length) out.show = uniq(e.show);
+    if (e.hide && e.hide.length) out.hide = uniq(e.hide);
+    return out;
+  }
+}

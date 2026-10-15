@@ -51,4 +51,28 @@ export interface SensorRuntime {
    * Returns an idempotent unsubscribe that is safe to call after the component was disposed.
    */
   onPlayerEnterSensor(componentId: string, callback: () => void): () => void;
+  /** The mirror image: `callback` each time the player's avatar LEAVES the sensor (official `onSensorExit`). Same contract. */
+  onPlayerExitSensor(componentId: string, callback: () => void): () => void;
+}
+
+/**
+ * Scene-state seam (M1 experience campaign). Still portal- and destination-neutral: the runtime
+ * knows component ids and visibility, never why something is shown. Implemented over official
+ * APIs only (`Component3D` is a three.js `Object3D`, so `visible` hides its subtree;
+ * `space.schedule` is the engine's own timer). The `ExperienceController` is its only consumer.
+ */
+export interface SceneStateRuntime {
+  /**
+   * Declare the components of a chunk that must be INVISIBLE from the moment the chunk is staged
+   * (applied inside `stageChunk`, before the batch is handed back, so nothing ever flashes).
+   * Replaces any previous declaration for that chunk; unknown ids are ignored at staging time.
+   */
+  hideOnStage(chunkKey: string, componentIds: readonly string[]): void;
+  /** Show / hide a currently staged component. Returns false (and does nothing) when it is not staged. */
+  setComponentVisible(componentId: string, visible: boolean): boolean;
+  /**
+   * Run `callback` once after `delaySeconds` of ENGINE time (paused with the space). Returns a
+   * cancel function that is idempotent and safe after the callback ran or the space was destroyed.
+   */
+  schedule(delaySeconds: number, callback: () => void): () => void;
 }

@@ -15,8 +15,8 @@ import { installInputDiagnostics } from "@/lib/input/input-diagnostics";
 import type { ChunkPayload } from "@/lib/spatial/chunk-payload";
 import { createComponentBatch } from "@/lib/spatial/component-batch";
 import type { SpawnPoint } from "@/lib/spatial/placement-registry";
-import { subscribePlayerEnterSensor, type SensorHost } from "@/lib/spatial/sensor-subscription";
-import type { ChunkBatch, ChunkRuntime, SensorRuntime } from "@/lib/spatial/spatial-runtime";
+import { subscribePlayerEnterSensor, subscribePlayerExitSensor, type SensorHost } from "@/lib/spatial/sensor-subscription";
+import type { ChunkBatch, ChunkRuntime, SceneStateRuntime, SensorRuntime } from "@/lib/spatial/spatial-runtime";
 
 /**
  * Official AWE runtime mount for THE NRVNAVerse (M0 Step 2A; chunk operations added in 2B.2;
@@ -41,6 +41,10 @@ import type { ChunkBatch, ChunkRuntime, SensorRuntime } from "@/lib/spatial/spat
  * - Adds `onPlayerEnterSensor(componentId, cb)` — the official `Component3D.onSensorEnter` on a
  *   staged component whose collider is a sensor, filtered to the player's avatar (`event.other`).
  *   Portal-neutral: it knows component ids, not destinations (the `PortalController` does).
+ * - (M1 experience campaign) `onPlayerExitSensor` mirrors the enter seam over the official
+ *   `Component3D.onSensorExit`; `hideOnStage` / `setComponentVisible` toggle `Component3D.visible`
+ *   (a three.js `Object3D` flag, so the component's subtree stops rendering while its collider
+ *   stays), and `schedule` wraps the official `space.schedule`. Still no destination knowledge.
  * - (2B.4A) `dispose()` is asynchronous and idempotent: it destroys the space exactly once and
  *   resolves only after the engine session has settled back to `"void"`, so a replacement
  *   `init()` can never race the old session ("engine already has a session"). The engine offers
@@ -141,10 +145,12 @@ export interface AweSpatialRuntimeInitOptions {
   assetsBaseUrl?: string;
 }
 
-export class AweSpatialRuntime implements ChunkRuntime, SensorRuntime {
+export class AweSpatialRuntime implements ChunkRuntime, SensorRuntime, SceneStateRuntime {
   private space: Space | null = null;
   /** Engine components per staged batch. Private: the opaque handle is all callers get. */
   private readonly batches = new Map<ChunkBatch, Component3D[]>();
+  /** Components to hide as soon as their chunk is staged (`hideOnStage`), per chunk key. */
+  private readonly hiddenOnStage = new Map<string, ReadonlySet<string>>();
   private revealFn: (() => Promise<void>) | null = null;
   private cleanup: (() => void) | null = null;
   private player: AvatarComponent | null = null;
@@ -290,9 +296,44 @@ export class AweSpatialRuntime implements ChunkRuntime, SensorRuntime {
       },
       signal,
     );
+    // Hidden-on-stage policy BEFORE the batch is handed back (and so before the visitor is
+    // teleported into it): state geometry that must start invisible never renders a frame.
+    const hidden = this.hiddenOnStage.get(payload.chunkKey);
+    if (hidden && hidden.size > 0) {
+      for (const component of components) if (hidden.has(component.data.id)) component.visible = false;
+    }
     const batch: ChunkBatch = { chunkKey: payload.chunkKey, componentIds: components.map((c) => c.data.id) };
     this.batches.set(batch, components);
     return batch;
+  }
+
+  hideOnStage(chunkKey: string, componentIds: readonly string[]): void {
+    this.hiddenOnStage.set(chunkKey, new Set(componentIds));
+  }
+
+  /** `Component3D` is an `Object3D`: `visible` hides the whole subtree (mesh, text, plugins) while physics is untouched. */
+  setComponentVisible(componentId: string, visible: boolean): boolean {
+    const component = this.space?.components.byInternalId(componentId) as Component3D | undefined;
+    if (!component || component.wasDisposed) return false;
+    component.visible = visible;
+    return true;
+  }
+
+  /** Official `space.schedule` (engine time; paused with the space). The cancel is idempotent and safe after the space is gone. */
+  schedule(delaySeconds: number, callback: () => void): () => void {
+    const space = this.space;
+    if (!space) throw new Error("runtime is not ready");
+    const handle = space.schedule(delaySeconds, callback);
+    let active = true;
+    return () => {
+      if (!active) return;
+      active = false;
+      try {
+        handle.cancel();
+      } catch {
+        // The space may already be destroyed; there is nothing left to cancel.
+      }
+    };
   }
 
   /**
@@ -338,6 +379,23 @@ export class AweSpatialRuntime implements ChunkRuntime, SensorRuntime {
     return subscribePlayerEnterSensor(host, componentId, player as Component3D, callback);
   }
 
+  /** Same seam over the official `Component3D.onSensorExit` (M1 experience campaign). */
+  onPlayerExitSensor(componentId: string, callback: () => void): () => void {
+    const space = this.space;
+    const player = this.player;
+    if (!space || !player) throw new Error("runtime is not ready");
+    const host: SensorHost<Component3D> = {
+      resolve: (id) => {
+        const component = space.components.byInternalId(id) as Component3D | undefined;
+        return component && !component.wasDisposed ? component : undefined;
+      },
+      isSensor: (component) => component.collider?.isSensor === true,
+      onSensorEnter: (component, listener) => component.onSensorEnter((event) => listener(event.other)),
+      onSensorExit: (component, listener) => component.onSensorExit((event) => listener(event.other)),
+    };
+    return subscribePlayerExitSensor(host, componentId, player as Component3D, callback);
+  }
+
   /** Diagnostics/tests: number of chunk batches this runtime currently holds. */
   get stagedBatchCount(): number {
     return this.batches.size;
@@ -371,6 +429,7 @@ export class AweSpatialRuntime implements ChunkRuntime, SensorRuntime {
     this.cleanup = null;
     // Any batch still held is destroyed with the space below; drop the handles.
     this.batches.clear();
+    this.hiddenOnStage.clear();
 
     this.animStateMachine?.dispose();
     this.animStateMachine = null;

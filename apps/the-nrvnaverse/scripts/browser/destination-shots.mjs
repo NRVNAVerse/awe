@@ -22,10 +22,15 @@ const PLACED = `(() => { const ph = document.querySelector("header[data-app-phas
 /** Ungated destinations from the generated manifest view (stable ids, never coordinates). */
 function destinations() {
   const file = path.resolve(APP_DIR, "..", "..", "packages", "nrvna-manifest", "generated", "destinations.json");
+  /** @type {{ destinations: Array<{ id: string; slug?: string; gates?: unknown[] }> }} */
   const json = JSON.parse(fs.readFileSync(file, "utf8"));
   return json.destinations.filter((d) => !(d.gates && d.gates.length)).map((d) => ({ id: d.id, slug: d.slug ?? d.id }));
 }
 
+/**
+ * @param {import("./cdp.mjs").CDP} cdp
+ * @param {string} name
+ */
 async function shot(cdp, name) {
   const r = await cdp.send("Page.captureScreenshot", { format: "png" });
   const file = path.join(OUT_DIR, `${name}.png`);
@@ -34,6 +39,10 @@ async function shot(cdp, name) {
 }
 
 async function main() {
+  if (!CHROME) {
+    console.error("No Chrome found: install Google Chrome or set CHROME_PATH.");
+    process.exit(2);
+  }
   fs.mkdirSync(OUT_DIR, { recursive: true });
   const server = await startServer(PORT);
   const chrome = await launchChrome(CHROME, CDP_PORT);

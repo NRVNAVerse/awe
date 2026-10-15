@@ -15,8 +15,12 @@
  * facing -Z, artist (-70, 1, -34).
  */
 
-import { box, slab, column, rampZ, label, glow, pulse, collect, v, deg } from "./lib.mjs";
+import { box, slab, column, rampZ, label, glow, pulse, collect, v, deg, zone, experienceOf } from "./lib.mjs";
 import { PALETTE } from "./hub.mjs";
+
+/** Stable destination ids the Music arrival beats bind to (references; identity lives in the manifest). */
+export const MUSIC_DISTRICT_ID = "dst_gm3xs4a3tws7bgh3";
+export const PLACEHOLDER_ARTIST_ID = "dst_1qtfn9qjg9kf6jyd";
 
 const CX = -70; // district centre x
 const DATUM = 0.5;
@@ -28,6 +32,8 @@ export const MUSIC_TAGS = Object.freeze({
   clue: "m1-music-clue",
   secret: "m1-music-secret",
   portal: "m0-portal",
+  reactive: "m1-music-reactive",
+  zone: "m1-music-zone",
 });
 
 const TEAL = PALETTE.music;
@@ -65,6 +71,18 @@ export function composeMusic() {
         tag: T.structure,
       }),
     );
+    // Soundcheck: the stack lights fully as the visitor walks past it (hidden until then).
+    items.push(
+      slab(`music-stack-${i + 1}-band-lit`, x, DATUM + 1.9, z, [1.6, 0.5, 1.6], {
+        name: `Speaker stack ${i + 1} band (lit)`,
+        color: "#8ff2e4",
+        collider: "none",
+        castShadow: false,
+        receiveShadow: false,
+        plugins: [glow(TEAL, { intensity: 2.2, power: 1.2, speed: 1.4, pulse: 1 })],
+        tag: T.reactive,
+      }),
+    );
   }
 
   // --- 3. The stage: riser, side ramps, fin shell -----------------------------------------------
@@ -91,7 +109,49 @@ export function composeMusic() {
         tag: T.stage,
       }),
     );
+    // Crescendo state: a tall lit blade on each fin, revealed centre-out when the stage is reached.
+    items.push(
+      slab(`music-fin-${i + 1}-blade`, x, DATUM + h * 0.2, z, [2.75, h * 0.7, 0.75], {
+        name: `Stage fin ${i + 1} blade (lit)`,
+        color: "#9ff5e8",
+        rotation: { x: 0, y: deg(-a), z: 0 },
+        opacity: 0.85,
+        collider: "none",
+        castShadow: false,
+        receiveShadow: false,
+        plugins: [glow(TEAL, { intensity: 2.4, power: 1.1, speed: 1.2, pulse: 1 })],
+        tag: T.reactive,
+      }),
+    );
   }
+  // Stage wash: a lit disc on the riser that completes the crescendo.
+  items.push(
+    column("music-stage-wash", CX, DATUM + 1.005, -46, 7, 0.02, {
+      name: "Stage wash (lit)",
+      color: TEAL,
+      opacity: 0.45,
+      segments: 48,
+      collider: "none",
+      castShadow: false,
+      receiveShadow: false,
+      plugins: [pulse("#9ff5e8", { intensity: 0.7, speed: 1.6 })],
+      tag: T.reactive,
+    }),
+  );
+  // Spotlight thrown from the booth onto the stage centre (the booth controls the room).
+  items.push(
+    column("music-booth-spot", CX, DATUM + 1.0, -46, 3.2, 14, {
+      name: "Booth spotlight (lit)",
+      color: "#cffcf4",
+      opacity: 0.16,
+      segments: 32,
+      radiusTop: 0.6,
+      collider: "none",
+      castShadow: false,
+      receiveShadow: false,
+      tag: T.reactive,
+    }),
+  );
   items.push(label("label-music-artist", "Placeholder Artist", v(CX, 7.2, -54.2), { scale: 1.3, name: "Label Placeholder Artist", color: "#f3ead8" }));
   items.push(slab("music-bench-w", CX - 9, DATUM, -36, [0.9, 0.45, 3], { name: "Audience bench west", color: PALETTE.stoneLight, tag: T.route }));
   items.push(slab("music-bench-e", CX + 9, DATUM, -36, [0.9, 0.45, 3], { name: "Audience bench east", color: PALETTE.stoneLight, tag: T.route }));
@@ -121,6 +181,17 @@ export function composeMusic() {
       tag: T.secret,
     }),
   );
+  items.push(
+    slab("music-booth-console-lit", CX - 9.5, DATUM + 5.92, 10.6, [3.7, 0.16, 0.9], {
+      name: "Console surface (live)",
+      color: "#9ff5e8",
+      collider: "none",
+      castShadow: false,
+      receiveShadow: false,
+      plugins: [glow(TEAL, { intensity: 2.0, power: 1.2, speed: 2.0, pulse: 1 })],
+      tag: T.reactive,
+    }),
+  );
   items.push(slab("music-booth-rail", CX - 9.5, DATUM + 5, 12, [7, 1.0, 0.15], { name: "Booth rail", color: PALETTE.stoneDark, tag: T.secret }));
   // Studs run beside the ramp (never under it) to its north foot.
   for (const [i, [x, z]] of [[CX - 6, -2], [CX - 6.5, -6], [CX - 7.5, -10], [CX - 9.5, -12.6]].entries()) {
@@ -138,6 +209,12 @@ export function composeMusic() {
     );
   }
 
+  // --- 5b. Experience zones (invisible sensor volumes; SIC-measured anchors: path x -73..-67,
+  //         stacks at z -16 / -24, booth deck x -83..-76 / z 6..12 / top 5.5) ---------------------
+  items.push(zone("music-zone-walk-south", v(CX, DATUM + 1.5, -16), [6, 3, 6], { name: "Zone processional south pair", tag: T.zone }));
+  items.push(zone("music-zone-walk-north", v(CX, DATUM + 1.5, -24), [6, 3, 6], { name: "Zone processional north pair", tag: T.zone }));
+  items.push(zone("music-zone-booth", v(CX - 9.5, DATUM + 6.5, 9), [7, 3, 6], { name: "Zone sound booth deck", tag: T.zone }));
+
   // --- 6. Portal sensors last (ids and sensor semantics unchanged from M0) ---------------------
   items.push(portal("portal-music-hub", "Portal Music District → Hub", v(CX + 9, 2, 0), [1, 3, 14], PALETTE.warmLight));
   // Artist threshold at the END of the processional path (z -30): the walk past the speaker stacks is real,
@@ -145,5 +222,42 @@ export function composeMusic() {
   items.push(portal("portal-music-artist", "Portal Music District → Placeholder Artist", v(CX, 2, -30), [6, 3, 1], TEAL));
 
   const components = collect(items);
-  return { components, componentIds: Object.keys(components) };
+
+  // --- 7. Experience bindings -------------------------------------------------------------------
+  const x = experienceOf("music");
+  x.hide(
+    "music-stack-1-band-lit",
+    "music-stack-2-band-lit",
+    "music-stack-3-band-lit",
+    "music-stack-4-band-lit",
+    "music-fin-1-blade",
+    "music-fin-2-blade",
+    "music-fin-3-blade",
+    "music-fin-4-blade",
+    "music-fin-5-blade",
+    "music-stage-wash",
+    "music-booth-spot",
+    "music-booth-console-lit",
+  );
+  // Soundcheck trail: each pair of stacks lights as the visitor walks past it and stays lit.
+  x.zone("music-walk-south", "music-zone-walk-south", { enter: { show: ["music-stack-1-band-lit", "music-stack-2-band-lit"], hide: ["music-stack-1-band", "music-stack-2-band"] } });
+  x.zone("music-walk-north", "music-zone-walk-north", { enter: { show: ["music-stack-3-band-lit", "music-stack-4-band-lit"], hide: ["music-stack-3-band", "music-stack-4-band"] } });
+  // The booth controls the room: the console goes live and a spotlight lands on the stage while someone is up there.
+  x.zone("music-booth", "music-zone-booth", {
+    enter: { show: ["music-booth-console-lit", "music-booth-spot"] },
+    exit: { hide: ["music-booth-spot"] },
+  });
+  // Reaching the stage: the fins light centre-out, then the wash completes the crescendo.
+  x.arrival("music-stage-crescendo", PLACEHOLDER_ARTIST_ID, [
+    { afterSeconds: 0.3, show: ["music-fin-3-blade"] },
+    { afterSeconds: 0.7, show: ["music-fin-2-blade", "music-fin-4-blade"] },
+    { afterSeconds: 1.1, show: ["music-fin-1-blade", "music-fin-5-blade"] },
+    { afterSeconds: 1.6, show: ["music-stage-wash"] },
+  ]);
+  // Arriving at the district floor from elsewhere resets the stage to its idle state.
+  x.arrival("music-floor-reset", MUSIC_DISTRICT_ID, [
+    { afterSeconds: 0, hide: ["music-fin-1-blade", "music-fin-2-blade", "music-fin-3-blade", "music-fin-4-blade", "music-fin-5-blade", "music-stage-wash"] },
+  ]);
+
+  return { components, componentIds: Object.keys(components), experience: x.build() };
 }

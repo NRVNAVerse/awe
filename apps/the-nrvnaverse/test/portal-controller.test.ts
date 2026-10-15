@@ -253,6 +253,7 @@ describe("portal controller — disposal", () => {
         if (componentId === "portal-hub-fashion") throw new Error("emitter exploded");
         released.push(componentId);
       },
+      onPlayerExitSensor: () => () => {},
     };
     const controller = new PortalController({ portals: index.portals, sensors, onPortalEntered: () => {}, warn: (m) => warnings.push(m) });
     controller.activate("hub");

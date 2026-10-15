@@ -339,7 +339,7 @@ describe("spatial source — physical portal bindings (M0 Step 2B.3)", () => {
   it("generates exactly seven deterministic portal bindings keyed by physical component id", () => {
     const artifacts = generateSpatialArtifacts(source());
     const index = JSON.parse(artifacts.files[OUTPUT.spatialIndex]);
-    expect(Object.keys(index)).toEqual(["schemaVersion", "worldId", "globalSceneUrl", "chunks", "destinations", "portals"]);
+    expect(Object.keys(index)).toEqual(["schemaVersion", "worldId", "globalSceneUrl", "chunks", "destinations", "portals", "experience"]);
     expect(Object.keys(index.portals)).toEqual(PORTAL_IDS); // sorted, code-unit order
     expect(artifacts.portalComponentIds).toEqual(PORTAL_IDS);
     for (const [componentId, binding] of Object.entries<Mutable>(index.portals)) {
@@ -756,7 +756,7 @@ describe("spatial generation — content-addressed delivery (M0 Step 2B.4B.2)", 
     const artifacts = generateSpatialArtifacts(source());
     const index = JSON.parse(artifacts.files[OUTPUT.spatialIndex]);
     expect(index.schemaVersion).toBe(1);
-    expect(Object.keys(index)).toEqual(["schemaVersion", "worldId", "globalSceneUrl", "chunks", "destinations", "portals"]); // no new field for the digest
+    expect(Object.keys(index)).toEqual(["schemaVersion", "worldId", "globalSceneUrl", "chunks", "destinations", "portals", "experience"]); // no new field for the digest
     for (const key of EXPECTED_CHUNKS) {
       expect(Object.keys(index.chunks[key])).toEqual(["dataUrl"]);
       const file = artifacts.chunkFiles[key];
