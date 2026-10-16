@@ -256,5 +256,42 @@ export function planCity(opts) {
     }
   }
 
-  return { roads: roads.map((r) => /** @type {Rect} */ (r.map(r1))), grounds: grounds.map((g) => ({ rect: /** @type {Rect} */ (g.rect.map(r1)), kind: g.kind })), buildings, lamps };
+  // --- Street trees (inside the Ring and one block beyond): sidewalk centre line, between lamps.
+  /** @type {Array<[number, number, number]>} x, z, size (0..1) */
+  const trees = [];
+  const treeReach = CITY.ring + pitch;
+  for (let k = -kMax; k <= kMax; k++) {
+    const c = k * pitch;
+    if (Math.abs(c) > treeReach) continue;
+    const off = roadHalf(Math.abs(k)) + CITY.sidewalk / 2;
+    for (let s = -treeReach; s < treeReach; s += 17) {
+      const local = ((s % pitch) + pitch) % pitch;
+      if (local < 18 || local > pitch - 18) continue;
+      for (const side of [-1, 1]) {
+        for (const [x, z] of [
+          [c + side * off, s + 8.5],
+          [s + 8.5, c + side * off],
+        ]) {
+          if (plots.some((p) => x > p[0] - 2 && x < p[2] + 2 && z > p[1] - 2 && z < p[3] + 2)) continue;
+          if (hash01(Math.round(x), Math.round(z), 31) < 0.18) continue;
+          trees.push([r1(x), r1(z), Math.round(hash01(Math.round(x), Math.round(z), 32) * 100) / 100]);
+        }
+      }
+    }
+  }
+
+  // --- Crosswalks at every intersection inside the Ring and one block beyond: [x, z, axis (0 = across x-road)].
+  /** @type {Array<[number, number, number]>} */
+  const crossings = [];
+  for (let i = -kMax; i <= kMax; i++) {
+    for (let j = -kMax; j <= kMax; j++) {
+      const x = i * pitch;
+      const z = j * pitch;
+      if (Math.abs(x) > treeReach || Math.abs(z) > treeReach) continue;
+      if (plots.some((p) => x > p[0] && x < p[2] && z > p[1] && z < p[3])) continue;
+      crossings.push([x, z, 0]);
+    }
+  }
+
+  return { roads: roads.map((r) => /** @type {Rect} */ (r.map(r1))), grounds: grounds.map((g) => ({ rect: /** @type {Rect} */ (g.rect.map(r1)), kind: g.kind })), buildings, lamps, trees, crossings };
 }

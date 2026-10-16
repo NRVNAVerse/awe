@@ -269,6 +269,9 @@ export function buildCityLayer(input) {
     buildings: plan.buildings.flatMap((b) => b.tiers.map((t, k) => [...t.rect.map(dm), dm(t.y0), dm(t.y1), b.color, b.style, b.crown && k === b.tiers.length - 1 ? 1 : 0])),
     // [x, z, inWalkable]
     lamps: plan.lamps.map(([x, z, w]) => [dm(x), dm(z), w]),
+    // Street trees [x, z, size 0..100] dm / percent; crosswalk intersections [x, z] m.
+    trees: plan.trees.map(([x, z, s]) => [dm(x), dm(z), Math.round(s * 100)]),
+    crossings: plan.crossings.map(([x, z]) => [x, z]),
     // Light columns: [x, z, y0, y1, radius, colour]
     beacons: [
       [-200, -40, 0, 70, 1.2, PALETTE.music],

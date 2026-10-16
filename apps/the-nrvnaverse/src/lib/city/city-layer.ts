@@ -139,21 +139,40 @@ function addTower(b: GeometryBuilder, x0: number, z0: number, x1: number, z1: nu
   b.rect(x0, z0, x1, z1, y1, roof);
 }
 
-/** Facade (diffuse) texture: wall with darker window panes. Shared by every style. */
-function facadeTexture(): Texture | null {
+/**
+ * Window pane rectangle (texture pixels) of window (i, j) for a facade style:
+ * 0 office — ribbon glazing (wide panes, thin mullions), 1 residential — punched windows with sills,
+ * 2 tower — near-full-height curtain wall. Diffuse and emissive maps share it so light sits in glass.
+ */
+function paneRect(style: number, i: number, j: number): [number, number, number, number] {
+  const cell = 256 / TEX_CELLS;
+  const x = i * cell;
+  const y = j * cell;
+  if (style === 0) return [x + 1, y + 4, cell - 2, cell - 8];
+  if (style === 2) return [x + 1, y + 1, cell - 2, cell - 3];
+  return [x + 5, y + 4, cell - 10, cell - 7];
+}
+
+/** Facade (diffuse) texture per style: wall / spandrel with darker glass. */
+function facadeTexture(style: number): Texture | null {
   if (typeof document === "undefined") return null;
   const c = document.createElement("canvas");
   c.width = c.height = 256;
   const g = c.getContext("2d");
   if (!g) return null;
+  const cell = 256 / TEX_CELLS;
   g.fillStyle = "#ffffff";
   g.fillRect(0, 0, 256, 256);
-  const cell = 256 / TEX_CELLS;
-  g.fillStyle = "#3a3d44";
-  for (let i = 0; i < TEX_CELLS; i++) for (let j = 0; j < TEX_CELLS; j++) g.fillRect(i * cell + 5, j * cell + 4, cell - 10, cell - 7);
-  // Floor bands: a slightly darker sill line under every storey.
-  g.fillStyle = "#c9c9c9";
-  for (let j = 0; j < TEX_CELLS; j++) g.fillRect(0, j * cell + cell - 2, 256, 2);
+  g.fillStyle = style === 2 ? "#323a46" : "#3a3d44";
+  for (let i = 0; i < TEX_CELLS; i++) for (let j = 0; j < TEX_CELLS; j++) g.fillRect(...paneRect(style, i, j));
+  if (style === 1) {
+    // Sills and the odd balcony slab.
+    g.fillStyle = "#d8d8d8";
+    for (let i = 0; i < TEX_CELLS; i++) for (let j = 0; j < TEX_CELLS; j++) g.fillRect(i * cell + 4, j * cell + cell - 3, cell - 8, 2);
+  } else {
+    g.fillStyle = "#c9c9c9";
+    for (let j = 0; j < TEX_CELLS; j++) g.fillRect(0, j * cell + cell - 2, 256, 2);
+  }
   return finishTexture(new CanvasTexture(c));
 }
 
@@ -166,20 +185,20 @@ function windowTexture(style: number): Texture | null {
   if (!g) return null;
   g.fillStyle = "#000000";
   g.fillRect(0, 0, 256, 256);
-  const cell = 256 / TEX_CELLS;
-  const lit = style === 2 ? 0.22 : style === 0 ? 0.42 : 0.36;
+  const lit = style === 2 ? 0.26 : style === 0 ? 0.46 : 0.38;
   const palettes = [
-    ["#cfe6ff", "#e8f1ff", "#a9c9ff"],
-    ["#ffcf86", "#ffb866", "#ffe2b0"],
-    ["#9fd8ff", "#7fb6ff", "#d6f0ff"],
+    ["#cfe6ff", "#e8f1ff", "#a9c9ff", "#fff3d6"],
+    ["#ffcf86", "#ffb866", "#ffe2b0", "#ff9f5a"],
+    ["#9fd8ff", "#7fb6ff", "#d6f0ff", "#ffe9c2"],
   ][style] ?? ["#ffffff"];
   for (let i = 0; i < TEX_CELLS; i++) {
     for (let j = 0; j < TEX_CELLS; j++) {
-      const h = hash01(style, i, j, 77);
-      if (h > lit) continue;
-      g.globalAlpha = 0.55 + 0.45 * hash01(style, i, j, 78);
+      // Whole floors tend to be lit or dark together (offices), single flats vary (residential).
+      const floorBias = style === 0 ? (hash01(style, j, 76) < 0.5 ? 0.25 : -0.2) : 0;
+      if (hash01(style, i, j, 77) > lit + floorBias) continue;
+      g.globalAlpha = 0.5 + 0.5 * hash01(style, i, j, 78);
       g.fillStyle = palettes[Math.floor(hash01(style, i, j, 79) * palettes.length)];
-      g.fillRect(i * cell + 5, j * cell + 4, cell - 10, cell - 7);
+      g.fillRect(...paneRect(style, i, j));
     }
   }
   g.globalAlpha = 1;
@@ -330,13 +349,26 @@ export class CityLayer {
     const park = c("#203528");
     for (const [x0, z0, x1, z1, kind] of d.grounds) ground.rect(x0 / 10, z0 / 10, x1 / 10, z1 / 10, 0, kind === 1 ? park : pave);
     for (const plot of d.plots) ground.rect(plot.rect[0], plot.rect[1], plot.rect[2], plot.rect[3], 0, c(plot.color));
+    // Zebra crossings on the four approaches of each listed intersection.
+    const zebra = c("#8f8f8a");
+    for (const [x, z] of d.crossings ?? []) {
+      const kx = Math.round(Math.abs(x) / d.frame.pitch);
+      const kz = Math.round(Math.abs(z) / d.frame.pitch);
+      const hx = kx % 3 === 0 ? 12 : 8; // half width of the road running along z at this x
+      const hz = kz % 3 === 0 ? 12 : 8;
+      for (const side of [-1, 1]) {
+        // Crossing the x-road (stripes along x), just beyond the intersection on the z axis.
+        const cz = z + side * (hz + 2.5);
+        for (let s = -hx + 0.5; s < hx - 0.5; s += 1.6) ground.rect(x + s, cz - 1.6, x + s + 0.8, cz + 1.6, 0, zebra);
+        const cx = x + side * (hx + 2.5);
+        for (let s = -hz + 0.5; s < hz - 0.5; s += 1.6) ground.rect(cx - 1.6, z + s, cx + 1.6, z + s + 0.8, 0, zebra);
+      }
+    }
     g = ground.build();
     this.addMesh(g, offsetMaterial(new MeshLambertMaterial({ vertexColors: true }), 1, 3), "city-ground");
     count(g);
 
     // --- Buildings, one merged mesh per facade style.
-    const facade = facadeTexture();
-    if (facade) this.track(facade);
     const styles = [new GeometryBuilder(), new GeometryBuilder(), new GeometryBuilder()];
     const roofs = [c("#2a2c31"), c("#3a3532"), c("#1f2a36")];
     for (const [i, t] of d.buildings.entries()) {
@@ -352,12 +384,15 @@ export class CityLayer {
       g = builder.build();
       const win = windowTexture(s);
       if (win) this.track(win);
+      const facade = facadeTexture(s);
+      if (facade) this.track(facade);
       const mat = new MeshLambertMaterial({ vertexColors: true, map: facade ?? undefined, emissiveMap: win ?? undefined, emissive: new Color(emissiveColors[s]), emissiveIntensity: win ? emissiveStrength[s] : 0 });
       this.addMesh(g, mat, `city-buildings-${s}`);
       count(g);
     }
 
     // --- Structures: the Ring viaduct, the gated compound shell, the Hub keel, lamp posts.
+    const aviationTops: number[] = [];
     const structures = new GeometryBuilder();
     const glow = new GeometryBuilder();
     const concrete = c("#3b3c40");
@@ -405,6 +440,85 @@ export class CityLayer {
       const [x0, z0, x1, z1, , y1] = t;
       box((x0 + x1) / 20, y1 / 10 - 1.2, (z0 + z1) / 20, (x1 - x0) / 10 + 0.3, 1.2, (z1 - z0) / 10 + 0.3, c("#ffd9a0", 1.1), glow);
     }
+    // Storefronts: lit bays along the street face of buildings near the walkable region (shops at night).
+    const shopColors = ["#ffcf8a", "#ffe2b8", "#bfe9f2", "#f2b8a8", "#f5e7b0", "#e8c9ff"].map((h) => c(h, 0.62));
+    const shopDark = c("#141518");
+    for (const t of d.buildings) {
+      const [x0d, z0d, x1d, z1d, y0] = t;
+      if (y0 !== 0) continue;
+      const x0 = x0d / 10;
+      const z0 = z0d / 10;
+      const x1 = x1d / 10;
+      const z1 = z1d / 10;
+      const cx = (x0 + x1) / 2;
+      const cz = (z0 + z1) / 2;
+      if (Math.max(Math.abs(cx), Math.abs(cz)) > d.frame.ring + d.frame.pitch * 1.5) continue;
+      const e = 0.07;
+      const sides: Array<[number, number, number, number, number[]]> = [
+        [x0, z1 + e, x1, z1 + e, [0, 0, 1]],
+        [x1 + e, z1, x1 + e, z0, [1, 0, 0]],
+        [x1, z0 - e, x0, z0 - e, [0, 0, -1]],
+        [x0 - e, z0, x0 - e, z1, [-1, 0, 0]],
+      ];
+      for (const [si, [ax, az, bx, bz, n]] of sides.entries()) {
+        const len = Math.hypot(bx - ax, bz - az);
+        const bays = Math.max(1, Math.floor(len / 4.2));
+        for (let k = 0; k < bays; k++) {
+          const h = hash01(x0d, z0d, si, k, 41);
+          const t0 = (k + 0.08) / bays;
+          const t1 = (k + 0.92) / bays;
+          const p0 = [ax + (bx - ax) * t0, az + (bz - az) * t0];
+          const p1 = [ax + (bx - ax) * t1, az + (bz - az) * t1];
+          const col = h < 0.62 ? shopColors[Math.floor(hash01(x0d, z0d, si, k, 42) * shopColors.length)] : shopDark;
+          glow.quad([p0[0], 0.5, p0[1]], [p1[0], 0.5, p1[1]], [p1[0], 3.4, p1[1]], [p0[0], 3.4, p0[1]], n, col);
+        }
+      }
+    }
+    // Street trees: trunk + two-tier canopy (visual only; trees have no colliders).
+    const trunk = c("#2b241e");
+    const leaf = c("#1e3d2a");
+    const leaf2 = c("#2a5138");
+    for (const [xd, zd, sp] of d.trees ?? []) {
+      const s = 0.8 + (sp / 100) * 0.5;
+      const x = xd / 10;
+      const z = zd / 10;
+      box(x, 1.4 * s, z, 0.35 * s, 2.8 * s, 0.35 * s, trunk);
+      const cone = cylinderGeometry(0, 2.1 * s, 3.4 * s, 6, false);
+      m.compose(new Vector3(x, 4.2 * s, z), new Quaternion(), new Vector3(1, 1, 1));
+      structures.appendGeometry(cone, m, leaf);
+      cone.dispose();
+      const cone2 = cylinderGeometry(0, 1.5 * s, 2.6 * s, 6, false);
+      m.compose(new Vector3(x, 5.6 * s, z), new Quaternion(), new Vector3(1, 1, 1));
+      structures.appendGeometry(cone2, m, leaf2);
+      cone2.dispose();
+    }
+    // Rooftop plant on buildings within 900 m (AC boxes / tanks) and masts on the crowns.
+    const plant = c("#2c2e33");
+    /** @type {number[]} */
+    const aviation: number[] = [];
+    for (const [i, t] of d.buildings.entries()) {
+      const [x0d, z0d, x1d, z1d, , y1d, , , crown] = t;
+      const x0 = x0d / 10;
+      const z0 = z0d / 10;
+      const x1 = x1d / 10;
+      const z1 = z1d / 10;
+      const y1 = y1d / 10;
+      const cx = (x0 + x1) / 2;
+      const cz = (z0 + z1) / 2;
+      const isTop = i === d.buildings.length - 1 || d.buildings[i + 1][4] !== y1d || d.buildings[i + 1][0] < x0d - 1 || d.buildings[i + 1][0] > x1d;
+      if (y1 > 80 && isTop) aviation.push(cx, y1 + (crown ? 9 : 0.8), cz);
+      if (crown) box(cx, y1 + 4, cz, 0.6, 8, 0.6, plant);
+      if (Math.hypot(cx, cz) > 900 || !isTop) continue;
+      const w = x1 - x0;
+      const dz = z1 - z0;
+      const n = 1 + Math.floor(hash01(x0d, z0d, 51) * 2.5);
+      for (let k = 0; k < n; k++) {
+        const bx = x0 + w * (0.2 + 0.6 * hash01(x0d, z0d, k, 52));
+        const bz = z0 + dz * (0.2 + 0.6 * hash01(x0d, z0d, k, 53));
+        const sz = 1.6 + 2.4 * hash01(x0d, z0d, k, 54);
+        box(bx, y1 + 0.8, bz, Math.min(sz, w * 0.3), 1.6, Math.min(sz * 0.8, dz * 0.3), plant);
+      }
+    }
     // The Hub's keel: a faceted inverted cone under the island deck.
     const k = d.keel;
     if (k) {
@@ -417,6 +531,7 @@ export class CityLayer {
       glow.appendGeometry(ringGeo, m, c(k.glow, 1.3));
       ringGeo.dispose();
     }
+    aviationTops.push(...aviation);
     g = structures.build();
     this.addMesh(g, new MeshLambertMaterial({ vertexColors: true }), "city-structures");
     count(g);
@@ -455,6 +570,20 @@ export class CityLayer {
     lamps.frustumCulled = false;
     this.root.add(lamps);
     drawCalls++;
+
+    // --- Aviation lights on the skyline (red points).
+    if (aviationTops.length > 0) {
+      const avGeo = this.track(new BufferGeometry());
+      avGeo.setAttribute("position", new BufferAttribute(new Float32Array(aviationTops), 3));
+      avGeo.computeBoundingSphere();
+      const avMat = this.track(new PointsMaterial({ size: 4.5, sizeAttenuation: true, color: new Color("#ff3b30"), map: sprite ?? undefined, transparent: true, depthWrite: false, blending: AdditiveBlending }));
+      const av = new Points(avGeo, avMat);
+      av.name = "city-aviation";
+      av.matrixAutoUpdate = false;
+      av.frustumCulled = false;
+      this.root.add(av);
+      drawCalls++;
+    }
 
     // --- Chunk proxies (stand-ins for every ungated chunk while it is not active).
     for (const [chunkKey, prims] of Object.entries(d.proxies)) {

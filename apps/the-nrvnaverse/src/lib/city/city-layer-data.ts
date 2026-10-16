@@ -24,6 +24,10 @@ export interface CityLayerData {
   buildings: Array<[number, number, number, number, number, number, number, number, number]>;
   /** [x, z, insideRing] dm */
   lamps: Array<[number, number, number]>;
+  /** Street trees [x, z, size %] (dm, percent) — optional (added in the M2 visual pass). */
+  trees?: Array<[number, number, number]>;
+  /** Intersections that get zebra crossings [x, z] (m) — optional. */
+  crossings?: Array<[number, number]>;
   /** [x, z, y0, y1, radius, colour] m */
   beacons: Array<[number, number, number, number, number, string]>;
   compounds: Array<{ rect: [number, number, number, number]; height: number; color: string }>;
