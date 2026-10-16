@@ -444,6 +444,12 @@ export class CityLayer {
     // Storefronts: lit bays along the street face of buildings near the walkable region (shops at night).
     const shopColors = ["#ffcf8a", "#ffe2b8", "#bfe9f2", "#f2b8a8", "#f5e7b0", "#e8c9ff"].map((h) => c(h, 0.62));
     const shopDark = c("#141518");
+    // District identity: storefronts within reach of a district plot take its colour family.
+    const districtTints: Array<{ x: number; z: number; r: number; colors: Color[] }> = [];
+    for (const [key, hexes] of [["music", ["#5fe0cf", "#2fb8a6", "#9ff2e6"]], ["fashion", ["#f0a898", "#d98c7a", "#ffd2c4"]]] as const) {
+      const plot = d.plots.find((p) => p.key === key);
+      if (plot) districtTints.push({ x: (plot.rect[0] + plot.rect[2]) / 2, z: (plot.rect[1] + plot.rect[3]) / 2, r: 150, colors: hexes.map((h) => c(h, 0.7)) });
+    }
     for (const t of d.buildings) {
       const [x0d, z0d, x1d, z1d, y0] = t;
       if (y0 !== 0) continue;
@@ -470,7 +476,9 @@ export class CityLayer {
           const t1 = (k + 0.92) / bays;
           const p0 = [ax + (bx - ax) * t0, az + (bz - az) * t0];
           const p1 = [ax + (bx - ax) * t1, az + (bz - az) * t1];
-          const col = h < 0.62 ? shopColors[Math.floor(hash01(x0d, z0d, si, k, 42) * shopColors.length)] : shopDark;
+          const tint = districtTints.find((t) => Math.hypot(cx - t.x, cz - t.z) < t.r);
+          const palette = tint && hash01(x0d, z0d, si, k, 43) < 0.75 ? tint.colors : shopColors;
+          const col = h < 0.66 ? palette[Math.floor(hash01(x0d, z0d, si, k, 42) * palette.length)] : shopDark;
           glow.quad([p0[0], 0.5, p0[1]], [p1[0], 0.5, p1[1]], [p1[0], 3.4, p1[1]], [p0[0], 3.4, p0[1]], n, col);
         }
       }
