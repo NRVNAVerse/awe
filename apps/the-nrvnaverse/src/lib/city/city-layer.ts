@@ -19,6 +19,7 @@ import {
   SRGBColorSpace,
   Vector3,
   type Material,
+  ShaderMaterial,
   type Texture,
 } from "three";
 import { parseCityLayer, type CityLayerData, type ProxyPrimitive } from "@/lib/city/city-layer-data";
@@ -585,6 +586,17 @@ export class CityLayer {
       drawCalls++;
     }
 
+    // --- Traffic: head / tail light streams on the avenues beyond the Ring and on the Ring viaduct,
+    //     animated in the vertex shader (one draw call, no per-frame CPU work). Never inside the
+    //     walkable region (it would pass through visitors).
+    const traffic = buildTraffic(d);
+    if (traffic) {
+      this.track(traffic.geometry);
+      this.track(traffic.material as ShaderMaterial);
+      this.root.add(traffic);
+      drawCalls++;
+    }
+
     // --- Chunk proxies (stand-ins for every ungated chunk while it is not active).
     for (const [chunkKey, prims] of Object.entries(d.proxies)) {
       const group = new Group();
@@ -722,4 +734,96 @@ function appendPrimitive(p: ProxyPrimitive, into: GeometryBuilder): void {
     into.appendGeometry(geo, _m, col);
     geo.dispose();
   }
+}
+
+/** Lanes of moving light points: [x0, y, z0, dx, dz, length, speed, phase, red]. */
+function buildTraffic(d: CityLayerData): Points | null {
+  const half = d.frame.half;
+  const pitch = d.frame.pitch;
+  const R = d.frame.ring;
+  const keepOut = R + 24;
+  const lanes: Array<[number, number, number, number, number, number]> = []; // x0, y, z0, dx, dz, length
+  const avenue = (k: number) => Math.abs(k) % 3 === 0;
+  for (let k = -Math.round(half / pitch); k <= Math.round(half / pitch); k++) {
+    if (!avenue(k)) continue;
+    const c = k * pitch;
+    const spans: Array<[number, number]> = Math.abs(c) <= keepOut ? [[-half, -keepOut], [keepOut, half]] : [[-half, half]];
+    if (Math.abs(c) === R) continue; // the Ring avenue carries the viaduct traffic instead
+    for (const [a, b] of spans) {
+      for (const side of [-1, 1]) {
+        // along z at x = c (+side lanes run +z, -side run -z); along x at z = c.
+        lanes.push([c + side * 4, 0.9, side > 0 ? a : b, 0, side > 0 ? 1 : -1, b - a]);
+        lanes.push([side > 0 ? a : b, 0.9, c + side * 4, side > 0 ? 1 : -1, 0, b - a]);
+      }
+    }
+  }
+  // The Ring viaduct: a loop each way on the deck.
+  const deck = d.ring.deckY + 1.2;
+  for (const side of [-1, 1]) {
+    const o = side * 3;
+    lanes.push([-R - o, deck, -R, 0, 1, 2 * R]);
+    lanes.push([R + o, deck, R, 0, -1, 2 * R]);
+    lanes.push([-R, deck, R + o, 1, 0, 2 * R]);
+    lanes.push([R, deck, -R - o, -1, 0, 2 * R]);
+  }
+  const start: number[] = [];
+  const dir: number[] = [];
+  const motion: number[] = [];
+  for (const [li, [x0, y, z0, dx, dz, length]] of lanes.entries()) {
+    const n = Math.max(2, Math.floor(length / 38));
+    const speed = 11 + 7 * hash01(li, 61);
+    for (let i = 0; i < n; i++) {
+      start.push(x0, y, z0);
+      dir.push(dx, 0, dz);
+      // [length, speed, phase, kind]: kind 0 = head lights (white), 1 = tail lights (red); a lane's
+      // lights face along its direction, so half the lanes read white toward one side.
+      motion.push(length, speed, hash01(li, i, 62) * length, (li + (dx + dz > 0 ? 0 : 1)) % 2);
+    }
+  }
+  if (start.length === 0) return null;
+  const geo = new BufferGeometry();
+  geo.setAttribute("position", new BufferAttribute(new Float32Array(start), 3));
+  geo.setAttribute("dir", new BufferAttribute(new Float32Array(dir), 3));
+  geo.setAttribute("motion", new BufferAttribute(new Float32Array(motion), 4));
+  geo.boundingSphere = null;
+  const material = new ShaderMaterial({
+    uniforms: { time: { value: 0 }, scale: { value: 2600 } },
+    vertexShader: `
+      attribute vec3 dir;
+      attribute vec4 motion;
+      uniform float time;
+      uniform float scale;
+      varying float vKind;
+      varying float vFade;
+      void main() {
+        float along = mod(motion.z + time * motion.y, motion.x);
+        vec3 p = position + dir * along;
+        vec4 mv = modelViewMatrix * vec4(p, 1.0);
+        float dist = -mv.z;
+        gl_PointSize = clamp(scale / max(dist, 1.0), 1.5, 18.0);
+        vKind = motion.w;
+        vFade = clamp(1.0 - dist / 2300.0, 0.0, 1.0);
+        gl_Position = projectionMatrix * mv;
+      }`,
+    fragmentShader: `
+      varying float vKind;
+      varying float vFade;
+      void main() {
+        vec2 c = gl_PointCoord - 0.5;
+        float a = smoothstep(0.5, 0.0, length(c));
+        vec3 col = mix(vec3(1.0, 0.93, 0.78), vec3(1.0, 0.22, 0.16), vKind);
+        gl_FragColor = vec4(col * a * vFade, a * vFade);
+      }`,
+    transparent: true,
+    depthWrite: false,
+    blending: AdditiveBlending,
+  });
+  const points = new Points(geo, material);
+  points.name = "city-traffic";
+  points.frustumCulled = false;
+  points.matrixAutoUpdate = false;
+  points.onBeforeRender = () => {
+    material.uniforms.time.value = performance.now() / 1000;
+  };
+  return points;
 }
