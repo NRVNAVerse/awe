@@ -414,6 +414,22 @@ export function composeHub() {
     items.push(column(`hub-isle-lamp-${k}-post`, Number(x), DECK_TOP, Number(z), 0.12, 3.2, { name: `Island lamp ${k} post`, color: PALETTE.charcoal, segments: 8, collider: "none", tag: S.route }));
     items.push(sphere(`hub-isle-lamp-${k}`, v(Number(x), DECK_TOP + 3.5, Number(z)), 0.35, { name: `Island lamp ${k}`, color: "#fff1cf", collider: "none", castShadow: false, plugins: [glow(PALETTE.ember, { intensity: 1.8, power: 1.4, speed: 0.5, pulse: 1 })], tag: S.route }));
   }
+  // Edge signs: what lies below each side of the island (read standing at the parapet).
+  items.push(label("hub-isle-sign-w", "MUSIC DISTRICT  ↓", v(ISLE.x0 + 0.6, DECK_TOP + 2.0, -20), { scale: 0.8, color: PALETTE.music, width: 1400, rotation: { x: 0, y: deg(90), z: 0 }, name: "Island sign west" }));
+  items.push(label("hub-isle-sign-e", "FASHION / CULTURE  ↓", v(ISLE.x1 - 0.6, DECK_TOP + 2.0, -20), { scale: 0.8, color: PALETTE.fashion, width: 1600, rotation: { x: 0, y: deg(-90), z: 0 }, name: "Island sign east" }));
+  // Return glow on the Drop frame after riding the plaza sky lift back up (the M1 gateway glow, for the city).
+  items.push(
+    slab("hub-return-plaza-glow", 0, DECK_TOP + 5.9, ISLE.z1 - 0.5, [DROP_HALF * 2 + 2.4, 0.85, 1.1], {
+      name: "The Drop return glow",
+      color: PALETTE.warmLight,
+      opacity: 0.5,
+      collider: "none",
+      castShadow: false,
+      receiveShadow: false,
+      plugins: [glow(PALETTE.ember, { intensity: 1.8, power: 1.2, speed: 1.0, pulse: 1 })],
+      tag: S.reactive,
+    }),
+  );
   items.push(slab("hub-isle-bench-w", ISLE.x0 + 3, DECK_TOP, -20, [0.9, 0.45, 3.2], { name: "Island bench west (over the Music District)", color: PALETTE.stoneLight, tag: S.route }));
   items.push(slab("hub-isle-bench-e", ISLE.x1 - 3, DECK_TOP, -20, [0.9, 0.45, 3.2], { name: "Island bench east (over Fashion / Culture)", color: PALETTE.stoneLight, tag: S.route }));
 
@@ -447,6 +463,7 @@ export function composeHub() {
     "hub-dormant-2-inset-lit",
     "hub-memory-line",
     "hub-drop-lintel-glow",
+    "hub-return-plaza-glow",
   );
   // Reaching the overlook lights its lamp; leaving dims it again.
   x.zone("hub-overlook", "hub-zone-overlook", {
@@ -468,6 +485,7 @@ export function composeHub() {
   ]);
   // Coming back from a district: the gateway you returned through glows, then settles.
   x.arrival("hub-return-music", HUB_DESTINATION_ID, [{ afterSeconds: 0, show: ["hub-return-music-glow"] }, { afterSeconds: 6, hide: ["hub-return-music-glow"] }], { fromChunkKey: "music" });
+  x.arrival("hub-return-plaza", HUB_DESTINATION_ID, [{ afterSeconds: 0, show: ["hub-return-plaza-glow"] }, { afterSeconds: 6, hide: ["hub-return-plaza-glow"] }], { fromChunkKey: "city-plaza" });
   x.arrival("hub-return-fashion", HUB_DESTINATION_ID, [{ afterSeconds: 0, show: ["hub-return-fashion-glow"] }, { afterSeconds: 6, hide: ["hub-return-fashion-glow"] }], { fromChunkKey: "fashion-culture" });
 
   return { components, componentIds: Object.keys(components), experience: x.build() };

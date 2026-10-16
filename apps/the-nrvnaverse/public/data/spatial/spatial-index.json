@@ -31,7 +31,7 @@
       "dataUrl": "/data/spatial/chunks/fashion-culture.ee4912d784256b3d461e75009de81653.json"
     },
     "hub": {
-      "dataUrl": "/data/spatial/chunks/hub.38a247a2c4848453d5e13ab95199f6a3.json"
+      "dataUrl": "/data/spatial/chunks/hub.bc28ea23e2a7c181646c5665c2f1e179.json"
     },
     "music": {
       "dataUrl": "/data/spatial/chunks/music.49f687dcb0d38e50bf06729870e77239.json"
@@ -219,6 +219,7 @@
         "hub-overlook-lamp-pool",
         "hub-return-fashion-glow",
         "hub-return-music-glow",
+        "hub-return-plaza-glow",
         "hub-spire-ring-1-lit",
         "hub-spire-ring-2-lit",
         "hub-spire-ring-3-lit"
@@ -617,6 +618,24 @@
           }
         ],
         "fromChunkKey": "music"
+      },
+      "hub-return-plaza": {
+        "destinationId": "dst_7g19n1vm9ackw8a0",
+        "beats": [
+          {
+            "afterSeconds": 0,
+            "show": [
+              "hub-return-plaza-glow"
+            ]
+          },
+          {
+            "afterSeconds": 6,
+            "hide": [
+              "hub-return-plaza-glow"
+            ]
+          }
+        ],
+        "fromChunkKey": "city-plaza"
       },
       "hub-wake": {
         "destinationId": "dst_7g19n1vm9ackw8a0",

@@ -34,10 +34,10 @@ const codesOf = (input: SpatialSourceInput) => {
 };
 
 const ZONE_IDS = ["club-floor", "club-stage", "fashion-atelier", "fashion-loggia", "fashion-roof", "fashion-walk-1", "fashion-walk-2", "fashion-walk-3", "hub-core", "hub-overlook", "music-booth", "music-walk-north", "music-walk-south", "north-roof", "plaza-landing"];
-const ARRIVAL_IDS = ["club-wake", "fashion-brand-welcome", "hub-return-fashion", "hub-return-music", "hub-wake", "music-floor-reset", "music-stage-crescendo"];
+const ARRIVAL_IDS = ["club-wake", "fashion-brand-welcome", "hub-return-fashion", "hub-return-music", "hub-return-plaza", "hub-wake", "music-floor-reset", "music-stage-crescendo"];
 
 describe("spatial source — experience bindings validate and generate deterministically", () => {
-  it("the committed source carries hidden sets for the five composed chunks (M2: Skyfall Plaza, the North Row roof garden), 15 zones and 7 arrivals, and validates", () => {
+  it("the committed source carries hidden sets for the five composed chunks (M2: Skyfall Plaza, the North Row roof garden), 15 zones and 8 arrivals, and validates", () => {
     expect(validateSpatialSource(source())).toEqual({ ok: true, errors: [] });
     expect(Object.keys(sourceConfig.experience)).toEqual(["hidden", "zones", "arrivals"]);
     expect(sourceConfig.experience.hidden.map((h: Mutable) => h.chunkKey)).toEqual(["city-north", "city-plaza", "fashion-culture", "hub", "music", "music-club"]);

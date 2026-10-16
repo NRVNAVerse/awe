@@ -131,6 +131,9 @@
         "hub-isle-lamp-nw",
         "hub-isle-lamp-ne-post",
         "hub-isle-lamp-ne",
+        "hub-isle-sign-w",
+        "hub-isle-sign-e",
+        "hub-return-plaza-glow",
         "hub-isle-bench-w",
         "hub-isle-bench-e",
         "hub-zone-overlook",
@@ -1065,7 +1068,8 @@
           "hub-dormant-1-inset-lit",
           "hub-dormant-2-inset-lit",
           "hub-memory-line",
-          "hub-drop-lintel-glow"
+          "hub-drop-lintel-glow",
+          "hub-return-plaza-glow"
         ]
       },
       {
@@ -1487,6 +1491,25 @@
           }
         ],
         "fromChunkKey": "music"
+      },
+      {
+        "id": "hub-return-plaza",
+        "destinationId": "dst_7g19n1vm9ackw8a0",
+        "beats": [
+          {
+            "afterSeconds": 0,
+            "show": [
+              "hub-return-plaza-glow"
+            ]
+          },
+          {
+            "afterSeconds": 6,
+            "hide": [
+              "hub-return-plaza-glow"
+            ]
+          }
+        ],
+        "fromChunkKey": "city-plaza"
       },
       {
         "id": "hub-wake",

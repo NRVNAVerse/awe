@@ -6302,6 +6302,132 @@
         "tag": "m1-hub-route"
       }
     },
+    "hub-isle-sign-w": {
+      "name": "Island sign west",
+      "id": "hub-isle-sign-w",
+      "type": "text",
+      "kit": "cyber",
+      "text": "MUSIC DISTRICT  ↓",
+      "position": {
+        "x": -61.4,
+        "y": 142.45,
+        "z": -40
+      },
+      "rotation": {
+        "x": 0,
+        "y": 1.5708,
+        "z": 0
+      },
+      "scale": {
+        "x": 0.8,
+        "y": 0.8,
+        "z": 0.8
+      },
+      "align": "center",
+      "font": "aeonik-bold",
+      "lineHeight": 60,
+      "textColor": "#2fb8a6",
+      "textTransform": "none",
+      "width": 1400,
+      "opacity": 1
+    },
+    "hub-isle-sign-e": {
+      "name": "Island sign east",
+      "id": "hub-isle-sign-e",
+      "type": "text",
+      "kit": "cyber",
+      "text": "FASHION / CULTURE  ↓",
+      "position": {
+        "x": 61.4,
+        "y": 142.45,
+        "z": -40
+      },
+      "rotation": {
+        "x": 0,
+        "y": -1.5708,
+        "z": 0
+      },
+      "scale": {
+        "x": 0.8,
+        "y": 0.8,
+        "z": 0.8
+      },
+      "align": "center",
+      "font": "aeonik-bold",
+      "lineHeight": 60,
+      "textColor": "#d98c7a",
+      "textTransform": "none",
+      "width": 1600,
+      "opacity": 1
+    },
+    "hub-return-plaza-glow": {
+      "name": "The Drop return glow",
+      "id": "hub-return-plaza-glow",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 0,
+        "y": 146.775,
+        "z": 11.5
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 16.4,
+          "height": 0.85,
+          "depth": 1.1
+        },
+        "type": "box"
+      },
+      "color": "#ffd98a",
+      "opacity": 0.5,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "plugins": [
+        {
+          "id": "FresnelGlowPlugin",
+          "color": "#f5b24a",
+          "intensity": 1.8,
+          "power": 1.2,
+          "speed": 1,
+          "pulse": 1
+        }
+      ],
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "hub-return-plaza-glow",
+        "tag": "m1-hub-reactive"
+      }
+    },
     "hub-isle-bench-w": {
       "name": "Island bench west (over the Music District)",
       "id": "hub-isle-bench-w",
