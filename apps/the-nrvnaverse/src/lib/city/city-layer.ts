@@ -248,6 +248,11 @@ export class CityLayer {
     for (const [key, group] of this.proxies) group.visible = key !== chunkKey;
   }
 
+  /** Local audition only: hide / show the procedural building meshes (a real city kit can be compared in their place). */
+  setBuildingsVisible(visible: boolean): void {
+    for (const child of this.root.children) if (child.name.startsWith("city-buildings-")) child.visible = visible;
+  }
+
   get active(): string | null {
     return this.activeChunk;
   }

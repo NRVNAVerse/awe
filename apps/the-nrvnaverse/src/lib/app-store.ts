@@ -136,6 +136,8 @@ interface AppRun {
   streaming: StreamingController | null;
   cityLayer: CityLayer | null;
   detachCityLayer: (() => void) | null;
+  /** M2 local audition overlay (development only). */
+  detachAudition: (() => void) | null;
   /** M2: chunk key → the destination that names that place (location after a walking handoff). */
   homeOf: Map<string, string>;
   adapter: AweSpatialAdapter | null;
@@ -221,6 +223,7 @@ function createRun(): AppRun {
     streaming: null,
     cityLayer: null,
     detachCityLayer: null,
+    detachAudition: null,
     homeOf: new Map(),
     adapter: null,
     unsubscribePhase: null,
@@ -309,6 +312,24 @@ async function executeBoot(current: AppRun, options: BootOptions): Promise<void>
         console.warn("[app-store] city layer unavailable", err);
       }
       if (current.disposeRequested) return;
+    }
+    // M2 LOCAL-ONLY art audition (development builds only; the serving route is 404 in production).
+    if (process.env.NODE_ENV !== "production" && bootRuntime.attachObject) {
+      const audition = new URLSearchParams(options.search ?? window.location.search).get("audition");
+      if (audition) {
+        try {
+          const { loadAudition } = await import("@/lib/audition/local-audition");
+          const result = await loadAudition(audition);
+          if (result && !current.disposeRequested) {
+            current.detachAudition = bootRuntime.attachObject(result.root);
+            if (result.hideCityBuildings) current.cityLayer?.setBuildingsVisible(false);
+            (globalThis as Record<string, unknown>).__nrvnaverseAudition = { loaded: result.loaded, failed: result.failed };
+            console.info("[audition]", result.loaded, result.failed);
+          }
+        } catch (err) {
+          console.warn("[app-store] local audition unavailable", err);
+        }
+      }
     }
     // M2 streaming: walking between city cells / falling off the Hub hands the visitor to the next chunk.
     if (spatialIndex.streaming) {
@@ -612,6 +633,8 @@ async function teardown(current: AppRun, options: { keepAppState: boolean }): Pr
   current.discovery = null;
   attempt("dispose streaming", () => current.streaming?.dispose());
   current.streaming = null;
+  attempt("detach audition", () => current.detachAudition?.());
+  current.detachAudition = null;
   attempt("detach city layer", () => current.detachCityLayer?.());
   attempt("dispose city layer", () => current.cityLayer?.dispose());
   current.detachCityLayer = null;
