@@ -121,6 +121,7 @@
         "hub-drop-post-w",
         "hub-drop-post-e",
         "hub-drop-lintel",
+        "hub-drop-lintel-glow",
         "hub-drop-label",
         "hub-isle-lamp-sw-post",
         "hub-isle-lamp-sw",
@@ -562,15 +563,51 @@
         "city-north-b12-9-20-t0",
         "city-north-b12-9-21-t0",
         "city-north-b12-9-22-t0",
-        "city-north-b12-10-01-t0",
         "city-north-b12-10-02-t0",
-        "city-north-b12-10-10-t0",
-        "city-north-b12-10-11-t0",
         "city-north-b12-10-12-t0",
         "city-north-b12-10-20-t0",
         "city-north-b12-10-21-t0",
         "city-north-b12-10-22-t0",
-        "city-north-ring-n"
+        "city-north-ring-n",
+        "north-roof-ramp-1",
+        "north-roof-landing-1",
+        "north-roof-ramp-2",
+        "north-roof-landing-2",
+        "north-roof-post-a",
+        "north-roof-post-b",
+        "north-roof-post-c",
+        "north-roof-post-d",
+        "north-roof-post-e",
+        "north-roof-landing-1-rail-w",
+        "north-roof-landing-1-rail-n",
+        "north-roof-landing-2-rail-e",
+        "north-roof-landing-2-rail-s",
+        "north-roof-hall",
+        "north-roof-deck",
+        "north-roof-parapet-n",
+        "north-roof-parapet-w",
+        "north-roof-parapet-e",
+        "north-roof-tree-1-trunk",
+        "north-roof-tree-1",
+        "north-roof-tree-2-trunk",
+        "north-roof-tree-2",
+        "north-roof-tree-3-trunk",
+        "north-roof-tree-3",
+        "north-roof-tree-4-trunk",
+        "north-roof-tree-4",
+        "north-roof-bench",
+        "north-roof-lamp-post",
+        "north-roof-lamp",
+        "north-roof-lamp-lit",
+        "north-roof-sigil",
+        "north-roof-sigil-lit",
+        "north-roof-stud-1",
+        "north-roof-stud-2",
+        "north-roof-stud-3",
+        "north-roof-stud-4",
+        "north-roof-stud-5",
+        "north-roof-stud-6",
+        "north-zone-roof"
       ]
     },
     {
@@ -982,6 +1019,13 @@
   "experience": {
     "hidden": [
       {
+        "chunkKey": "city-north",
+        "componentIds": [
+          "north-roof-lamp-lit",
+          "north-roof-sigil-lit"
+        ]
+      },
+      {
         "chunkKey": "city-plaza",
         "componentIds": [
           "plaza-landing-ring-lit"
@@ -1020,7 +1064,8 @@
           "hub-core-sigil-lit",
           "hub-dormant-1-inset-lit",
           "hub-dormant-2-inset-lit",
-          "hub-memory-line"
+          "hub-memory-line",
+          "hub-drop-lintel-glow"
         ]
       },
       {
@@ -1298,6 +1343,27 @@
           "hide": [
             "music-stack-1-band",
             "music-stack-2-band"
+          ]
+        }
+      },
+      {
+        "id": "north-roof",
+        "chunkKey": "city-north",
+        "sensorId": "north-zone-roof",
+        "enter": {
+          "show": [
+            "north-roof-lamp-lit"
+          ],
+          "hide": [
+            "north-roof-lamp"
+          ]
+        },
+        "exit": {
+          "show": [
+            "north-roof-lamp"
+          ],
+          "hide": [
+            "north-roof-lamp-lit"
           ]
         }
       },

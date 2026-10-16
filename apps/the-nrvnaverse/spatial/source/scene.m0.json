@@ -6038,6 +6038,74 @@
         "tag": "m1-hub-landmark"
       }
     },
+    "hub-drop-lintel-glow": {
+      "name": "The Drop lintel (remembering)",
+      "id": "hub-drop-lintel-glow",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 0,
+        "y": 146.775,
+        "z": 11.5
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 16.2,
+          "height": 0.75,
+          "depth": 1
+        },
+        "type": "box"
+      },
+      "color": "#f5b24a",
+      "opacity": 0.6,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "plugins": [
+        {
+          "id": "FresnelGlowPlugin",
+          "color": "#ffd98a",
+          "intensity": 1.8,
+          "power": 1.3,
+          "speed": 0.5,
+          "pulse": 1
+        }
+      ],
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "hub-drop-lintel-glow",
+        "tag": "m1-hub-reactive"
+      }
+    },
     "hub-drop-label": {
       "name": "Label The Drop",
       "id": "hub-drop-label",
@@ -29782,64 +29850,6 @@
         "tag": "m2-city-collider"
       }
     },
-    "city-north-b12-10-01-t0": {
-      "name": "city-north-b12-10-01-t0",
-      "id": "city-north-b12-10-01-t0",
-      "type": "mesh",
-      "kit": "cyber",
-      "position": {
-        "x": 27,
-        "y": 9.25,
-        "z": -150
-      },
-      "rotation": {
-        "x": 0,
-        "y": 0,
-        "z": 0
-      },
-      "scale": {
-        "x": 1,
-        "y": 1,
-        "z": 1
-      },
-      "geometry": {
-        "sphereParams": {
-          "radius": 1,
-          "widthSegments": 32,
-          "heightSegments": 32
-        },
-        "cylinderParams": {
-          "radiusTop": 1,
-          "radiusBottom": 1,
-          "height": 1,
-          "radialSegments": 32,
-          "heightSegments": 1,
-          "openEnded": false
-        },
-        "boxParams": {
-          "width": 18.8,
-          "height": 18.5,
-          "depth": 20
-        },
-        "type": "box"
-      },
-      "color": "#000000",
-      "opacity": 1,
-      "display": false,
-      "renderMode": "default",
-      "wireframe": false,
-      "castShadow": false,
-      "receiveShadow": false,
-      "collider": {
-        "enabled": true,
-        "rigidbodyType": "FIXED",
-        "colliderType": "CUBE"
-      },
-      "script": {
-        "identifier": "city-north-b12-10-01-t0",
-        "tag": "m2-city-collider"
-      }
-    },
     "city-north-b12-10-02-t0": {
       "name": "city-north-b12-10-02-t0",
       "id": "city-north-b12-10-02-t0",
@@ -29895,122 +29905,6 @@
       },
       "script": {
         "identifier": "city-north-b12-10-02-t0",
-        "tag": "m2-city-collider"
-      }
-    },
-    "city-north-b12-10-10-t0": {
-      "name": "city-north-b12-10-10-t0",
-      "id": "city-north-b12-10-10-t0",
-      "type": "mesh",
-      "kit": "cyber",
-      "position": {
-        "x": 52,
-        "y": 9.65,
-        "z": -176.35
-      },
-      "rotation": {
-        "x": 0,
-        "y": 0,
-        "z": 0
-      },
-      "scale": {
-        "x": 1,
-        "y": 1,
-        "z": 1
-      },
-      "geometry": {
-        "sphereParams": {
-          "radius": 1,
-          "widthSegments": 32,
-          "heightSegments": 32
-        },
-        "cylinderParams": {
-          "radiusTop": 1,
-          "radiusBottom": 1,
-          "height": 1,
-          "radialSegments": 32,
-          "heightSegments": 1,
-          "openEnded": false
-        },
-        "boxParams": {
-          "width": 16.6,
-          "height": 19.3,
-          "depth": 17.9
-        },
-        "type": "box"
-      },
-      "color": "#000000",
-      "opacity": 1,
-      "display": false,
-      "renderMode": "default",
-      "wireframe": false,
-      "castShadow": false,
-      "receiveShadow": false,
-      "collider": {
-        "enabled": true,
-        "rigidbodyType": "FIXED",
-        "colliderType": "CUBE"
-      },
-      "script": {
-        "identifier": "city-north-b12-10-10-t0",
-        "tag": "m2-city-collider"
-      }
-    },
-    "city-north-b12-10-11-t0": {
-      "name": "city-north-b12-10-11-t0",
-      "id": "city-north-b12-10-11-t0",
-      "type": "mesh",
-      "kit": "cyber",
-      "position": {
-        "x": 52,
-        "y": 4.75,
-        "z": -150
-      },
-      "rotation": {
-        "x": 0,
-        "y": 0,
-        "z": 0
-      },
-      "scale": {
-        "x": 1,
-        "y": 1,
-        "z": 1
-      },
-      "geometry": {
-        "sphereParams": {
-          "radius": 1,
-          "widthSegments": 32,
-          "heightSegments": 32
-        },
-        "cylinderParams": {
-          "radiusTop": 1,
-          "radiusBottom": 1,
-          "height": 1,
-          "radialSegments": 32,
-          "heightSegments": 1,
-          "openEnded": false
-        },
-        "boxParams": {
-          "width": 17,
-          "height": 9.5,
-          "depth": 18.4
-        },
-        "type": "box"
-      },
-      "color": "#000000",
-      "opacity": 1,
-      "display": false,
-      "renderMode": "default",
-      "wireframe": false,
-      "castShadow": false,
-      "receiveShadow": false,
-      "collider": {
-        "enabled": true,
-        "rigidbodyType": "FIXED",
-        "colliderType": "CUBE"
-      },
-      "script": {
-        "identifier": "city-north-b12-10-11-t0",
         "tag": "m2-city-collider"
       }
     },
@@ -30302,6 +30196,2353 @@
       "script": {
         "identifier": "city-north-ring-n",
         "tag": "m2-city-ring"
+      }
+    },
+    "north-roof-ramp-1": {
+      "name": "Roof garden ramp (first flight)",
+      "id": "north-roof-ramp-1",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 19,
+        "y": 1.756,
+        "z": -159.054
+      },
+      "rotation": {
+        "x": 0.2187,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 4,
+          "height": 0.5,
+          "depth": 18.439
+        },
+        "type": "box"
+      },
+      "color": "#8a857c",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "north-roof-ramp-1",
+        "tag": "m2-city-route"
+      }
+    },
+    "north-roof-landing-1": {
+      "name": "Roof garden landing",
+      "id": "north-roof-landing-1",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 21,
+        "y": 3.75,
+        "z": -170
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 8,
+          "height": 0.5,
+          "depth": 4
+        },
+        "type": "box"
+      },
+      "color": "#5d5a55",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "north-roof-landing-1",
+        "tag": "m2-city-route"
+      }
+    },
+    "north-roof-ramp-2": {
+      "name": "Roof garden ramp (second flight)",
+      "id": "north-roof-ramp-2",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 34.054,
+        "y": 5.756,
+        "z": -170
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0.2187
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 18.439,
+          "height": 0.5,
+          "depth": 4
+        },
+        "type": "box"
+      },
+      "color": "#8a857c",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "north-roof-ramp-2",
+        "tag": "m2-city-route"
+      }
+    },
+    "north-roof-landing-2": {
+      "name": "Roof garden top landing",
+      "id": "north-roof-landing-2",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 45,
+        "y": 7.75,
+        "z": -170
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 4,
+          "height": 0.5,
+          "depth": 4
+        },
+        "type": "box"
+      },
+      "color": "#5d5a55",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "north-roof-landing-2",
+        "tag": "m2-city-route"
+      }
+    },
+    "north-roof-post-a": {
+      "name": "Roof garden ramp post",
+      "id": "north-roof-post-a",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 17.3,
+        "y": 0.85,
+        "z": -159
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 0.22,
+          "radiusBottom": 0.22,
+          "height": 1.7,
+          "radialSegments": 10,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1,
+          "height": 1,
+          "depth": 1
+        },
+        "type": "cylinder"
+      },
+      "color": "#2a2b2f",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CYLINDER"
+      },
+      "script": {
+        "identifier": "north-roof-post-a",
+        "tag": "m2-city-route"
+      }
+    },
+    "north-roof-post-b": {
+      "name": "Roof garden ramp post",
+      "id": "north-roof-post-b",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 20.7,
+        "y": 0.85,
+        "z": -159
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 0.22,
+          "radiusBottom": 0.22,
+          "height": 1.7,
+          "radialSegments": 10,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1,
+          "height": 1,
+          "depth": 1
+        },
+        "type": "cylinder"
+      },
+      "color": "#2a2b2f",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CYLINDER"
+      },
+      "script": {
+        "identifier": "north-roof-post-b",
+        "tag": "m2-city-route"
+      }
+    },
+    "north-roof-post-c": {
+      "name": "Roof garden ramp post",
+      "id": "north-roof-post-c",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 21,
+        "y": 1.85,
+        "z": -171.7
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 0.22,
+          "radiusBottom": 0.22,
+          "height": 3.7,
+          "radialSegments": 10,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1,
+          "height": 1,
+          "depth": 1
+        },
+        "type": "cylinder"
+      },
+      "color": "#2a2b2f",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CYLINDER"
+      },
+      "script": {
+        "identifier": "north-roof-post-c",
+        "tag": "m2-city-route"
+      }
+    },
+    "north-roof-post-d": {
+      "name": "Roof garden ramp post",
+      "id": "north-roof-post-d",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 34,
+        "y": 2.85,
+        "z": -168.3
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 0.22,
+          "radiusBottom": 0.22,
+          "height": 5.7,
+          "radialSegments": 10,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1,
+          "height": 1,
+          "depth": 1
+        },
+        "type": "cylinder"
+      },
+      "color": "#2a2b2f",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CYLINDER"
+      },
+      "script": {
+        "identifier": "north-roof-post-d",
+        "tag": "m2-city-route"
+      }
+    },
+    "north-roof-post-e": {
+      "name": "Roof garden ramp post",
+      "id": "north-roof-post-e",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 34,
+        "y": 2.85,
+        "z": -171.7
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 0.22,
+          "radiusBottom": 0.22,
+          "height": 5.7,
+          "radialSegments": 10,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1,
+          "height": 1,
+          "depth": 1
+        },
+        "type": "cylinder"
+      },
+      "color": "#2a2b2f",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CYLINDER"
+      },
+      "script": {
+        "identifier": "north-roof-post-e",
+        "tag": "m2-city-route"
+      }
+    },
+    "north-roof-landing-1-rail-w": {
+      "name": "Roof garden landing rail",
+      "id": "north-roof-landing-1-rail-w",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 17.2,
+        "y": 4.45,
+        "z": -170
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 0.4,
+          "height": 0.9,
+          "depth": 4
+        },
+        "type": "box"
+      },
+      "color": "#8a857c",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "north-roof-landing-1-rail-w",
+        "tag": "m2-city-route"
+      }
+    },
+    "north-roof-landing-1-rail-n": {
+      "name": "Roof garden landing rail",
+      "id": "north-roof-landing-1-rail-n",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 21,
+        "y": 4.45,
+        "z": -171.8
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 8,
+          "height": 0.9,
+          "depth": 0.4
+        },
+        "type": "box"
+      },
+      "color": "#8a857c",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "north-roof-landing-1-rail-n",
+        "tag": "m2-city-route"
+      }
+    },
+    "north-roof-landing-2-rail-e": {
+      "name": "Roof garden landing rail",
+      "id": "north-roof-landing-2-rail-e",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 46.8,
+        "y": 8.45,
+        "z": -170
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 0.4,
+          "height": 0.9,
+          "depth": 4
+        },
+        "type": "box"
+      },
+      "color": "#8a857c",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "north-roof-landing-2-rail-e",
+        "tag": "m2-city-route"
+      }
+    },
+    "north-roof-landing-2-rail-s": {
+      "name": "Roof garden landing rail",
+      "id": "north-roof-landing-2-rail-s",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 45,
+        "y": 8.45,
+        "z": -168.2
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 4,
+          "height": 0.9,
+          "depth": 0.4
+        },
+        "type": "box"
+      },
+      "color": "#8a857c",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "north-roof-landing-2-rail-s",
+        "tag": "m2-city-route"
+      }
+    },
+    "north-roof-hall": {
+      "name": "Roof garden hall",
+      "id": "north-roof-hall",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 32,
+        "y": 3.75,
+        "z": -178.5
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 30,
+          "height": 7.5,
+          "depth": 13
+        },
+        "type": "box"
+      },
+      "color": "#3b3d43",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "north-roof-hall",
+        "tag": "m2-city-route"
+      }
+    },
+    "north-roof-deck": {
+      "name": "Roof garden deck",
+      "id": "north-roof-deck",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 32,
+        "y": 7.75,
+        "z": -178.5
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 30,
+          "height": 0.5,
+          "depth": 13
+        },
+        "type": "box"
+      },
+      "color": "#4f5d4a",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "north-roof-deck",
+        "tag": "m2-city-route"
+      }
+    },
+    "north-roof-parapet-n": {
+      "name": "Roof garden parapet",
+      "id": "north-roof-parapet-n",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 32,
+        "y": 8.45,
+        "z": -184.8
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 30,
+          "height": 0.9,
+          "depth": 0.4
+        },
+        "type": "box"
+      },
+      "color": "#8a857c",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "north-roof-parapet-n",
+        "tag": "m2-city-route"
+      }
+    },
+    "north-roof-parapet-w": {
+      "name": "Roof garden parapet",
+      "id": "north-roof-parapet-w",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 17.2,
+        "y": 8.45,
+        "z": -178.5
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 0.4,
+          "height": 0.9,
+          "depth": 13
+        },
+        "type": "box"
+      },
+      "color": "#8a857c",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "north-roof-parapet-w",
+        "tag": "m2-city-route"
+      }
+    },
+    "north-roof-parapet-e": {
+      "name": "Roof garden parapet",
+      "id": "north-roof-parapet-e",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 46.8,
+        "y": 8.45,
+        "z": -178.5
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 0.4,
+          "height": 0.9,
+          "depth": 13
+        },
+        "type": "box"
+      },
+      "color": "#8a857c",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "north-roof-parapet-e",
+        "tag": "m2-city-route"
+      }
+    },
+    "north-roof-tree-1-trunk": {
+      "name": "Roof garden tree trunk",
+      "id": "north-roof-tree-1-trunk",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 21,
+        "y": 8.9,
+        "z": -182
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 0.18,
+          "radiusBottom": 0.18,
+          "height": 1.8,
+          "radialSegments": 8,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1,
+          "height": 1,
+          "depth": 1
+        },
+        "type": "cylinder"
+      },
+      "color": "#3a2e24",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CYLINDER"
+      },
+      "script": {
+        "identifier": "north-roof-tree-1-trunk",
+        "tag": "m2-city-route"
+      }
+    },
+    "north-roof-tree-1": {
+      "name": "Roof garden tree",
+      "id": "north-roof-tree-1",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 21,
+        "y": 10.6,
+        "z": -182
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1.3,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1,
+          "height": 1,
+          "depth": 1
+        },
+        "type": "sphere"
+      },
+      "color": "#2d5a3b",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "SPHERE"
+      },
+      "script": {
+        "identifier": "north-roof-tree-1",
+        "tag": "m2-city-route"
+      }
+    },
+    "north-roof-tree-2-trunk": {
+      "name": "Roof garden tree trunk",
+      "id": "north-roof-tree-2-trunk",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 27,
+        "y": 8.9,
+        "z": -182.5
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 0.18,
+          "radiusBottom": 0.18,
+          "height": 1.8,
+          "radialSegments": 8,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1,
+          "height": 1,
+          "depth": 1
+        },
+        "type": "cylinder"
+      },
+      "color": "#3a2e24",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CYLINDER"
+      },
+      "script": {
+        "identifier": "north-roof-tree-2-trunk",
+        "tag": "m2-city-route"
+      }
+    },
+    "north-roof-tree-2": {
+      "name": "Roof garden tree",
+      "id": "north-roof-tree-2",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 27,
+        "y": 10.6,
+        "z": -182.5
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1.3,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1,
+          "height": 1,
+          "depth": 1
+        },
+        "type": "sphere"
+      },
+      "color": "#2d5a3b",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "SPHERE"
+      },
+      "script": {
+        "identifier": "north-roof-tree-2",
+        "tag": "m2-city-route"
+      }
+    },
+    "north-roof-tree-3-trunk": {
+      "name": "Roof garden tree trunk",
+      "id": "north-roof-tree-3-trunk",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 37,
+        "y": 8.9,
+        "z": -182.5
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 0.18,
+          "radiusBottom": 0.18,
+          "height": 1.8,
+          "radialSegments": 8,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1,
+          "height": 1,
+          "depth": 1
+        },
+        "type": "cylinder"
+      },
+      "color": "#3a2e24",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CYLINDER"
+      },
+      "script": {
+        "identifier": "north-roof-tree-3-trunk",
+        "tag": "m2-city-route"
+      }
+    },
+    "north-roof-tree-3": {
+      "name": "Roof garden tree",
+      "id": "north-roof-tree-3",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 37,
+        "y": 10.6,
+        "z": -182.5
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1.3,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1,
+          "height": 1,
+          "depth": 1
+        },
+        "type": "sphere"
+      },
+      "color": "#2d5a3b",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "SPHERE"
+      },
+      "script": {
+        "identifier": "north-roof-tree-3",
+        "tag": "m2-city-route"
+      }
+    },
+    "north-roof-tree-4-trunk": {
+      "name": "Roof garden tree trunk",
+      "id": "north-roof-tree-4-trunk",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 43,
+        "y": 8.9,
+        "z": -182
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 0.18,
+          "radiusBottom": 0.18,
+          "height": 1.8,
+          "radialSegments": 8,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1,
+          "height": 1,
+          "depth": 1
+        },
+        "type": "cylinder"
+      },
+      "color": "#3a2e24",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CYLINDER"
+      },
+      "script": {
+        "identifier": "north-roof-tree-4-trunk",
+        "tag": "m2-city-route"
+      }
+    },
+    "north-roof-tree-4": {
+      "name": "Roof garden tree",
+      "id": "north-roof-tree-4",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 43,
+        "y": 10.6,
+        "z": -182
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1.3,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1,
+          "height": 1,
+          "depth": 1
+        },
+        "type": "sphere"
+      },
+      "color": "#2d5a3b",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "SPHERE"
+      },
+      "script": {
+        "identifier": "north-roof-tree-4",
+        "tag": "m2-city-route"
+      }
+    },
+    "north-roof-bench": {
+      "name": "Roof garden bench",
+      "id": "north-roof-bench",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 32,
+        "y": 8.225,
+        "z": -181
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 3.2,
+          "height": 0.45,
+          "depth": 0.9
+        },
+        "type": "box"
+      },
+      "color": "#8a857c",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "north-roof-bench",
+        "tag": "m2-city-route"
+      }
+    },
+    "north-roof-lamp-post": {
+      "name": "Roof garden lamp post",
+      "id": "north-roof-lamp-post",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 26,
+        "y": 9.3,
+        "z": -176
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 0.1,
+          "radiusBottom": 0.1,
+          "height": 2.6,
+          "radialSegments": 8,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1,
+          "height": 1,
+          "depth": 1
+        },
+        "type": "cylinder"
+      },
+      "color": "#1c1f26",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CYLINDER"
+      },
+      "script": {
+        "identifier": "north-roof-lamp-post",
+        "tag": "m2-city-route"
+      }
+    },
+    "north-roof-lamp": {
+      "name": "Roof garden lamp (dim)",
+      "id": "north-roof-lamp",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 26,
+        "y": 10.9,
+        "z": -176
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 0.32,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1,
+          "height": 1,
+          "depth": 1
+        },
+        "type": "sphere"
+      },
+      "color": "#6b5a3a",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "plugins": [
+        {
+          "id": "PulsePlugin",
+          "color": "#f5b24a",
+          "intensity": 0.25,
+          "speed": 0.4
+        }
+      ],
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "SPHERE"
+      },
+      "script": {
+        "identifier": "north-roof-lamp",
+        "tag": "m2-city-route"
+      }
+    },
+    "north-roof-lamp-lit": {
+      "name": "Roof garden lamp (lit)",
+      "id": "north-roof-lamp-lit",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 26,
+        "y": 10.9,
+        "z": -176
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 0.38,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1,
+          "height": 1,
+          "depth": 1
+        },
+        "type": "sphere"
+      },
+      "color": "#fff1cf",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "plugins": [
+        {
+          "id": "FresnelGlowPlugin",
+          "color": "#f5b24a",
+          "intensity": 2.2,
+          "power": 1.4,
+          "speed": 0.5,
+          "pulse": 1
+        }
+      ],
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "SPHERE"
+      },
+      "script": {
+        "identifier": "north-roof-lamp-lit",
+        "tag": "m2-city-reactive"
+      }
+    },
+    "north-roof-sigil": {
+      "name": "City sigil (unfound)",
+      "id": "north-roof-sigil",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 34.4,
+        "y": 9.4,
+        "z": -181
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 0.22,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1,
+          "height": 1,
+          "depth": 1
+        },
+        "type": "sphere"
+      },
+      "color": "#5a4a30",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "plugins": [
+        {
+          "id": "PulsePlugin",
+          "color": "#f5b24a",
+          "intensity": 0.3,
+          "speed": 0.6
+        }
+      ],
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "SPHERE"
+      },
+      "script": {
+        "identifier": "north-roof-sigil",
+        "tag": "m2-city-secret"
+      }
+    },
+    "north-roof-sigil-lit": {
+      "name": "City sigil (remembered)",
+      "id": "north-roof-sigil-lit",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 34.4,
+        "y": 9.4,
+        "z": -181
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 0.26,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1,
+          "height": 1,
+          "depth": 1
+        },
+        "type": "sphere"
+      },
+      "color": "#fff1cf",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "plugins": [
+        {
+          "id": "FresnelGlowPlugin",
+          "color": "#f5b24a",
+          "intensity": 2.4,
+          "power": 1.2,
+          "speed": 1,
+          "pulse": 1
+        }
+      ],
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "SPHERE"
+      },
+      "script": {
+        "identifier": "north-roof-sigil-lit",
+        "tag": "m2-city-reactive"
+      }
+    },
+    "north-roof-stud-1": {
+      "name": "Roof trail stud 1",
+      "id": "north-roof-stud-1",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 15.5,
+        "y": 0.015,
+        "z": -70
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 0.24,
+          "radiusBottom": 0.24,
+          "height": 0.03,
+          "radialSegments": 12,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1,
+          "height": 1,
+          "depth": 1
+        },
+        "type": "cylinder"
+      },
+      "color": "#ffd98a",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": true,
+      "plugins": [
+        {
+          "id": "PulsePlugin",
+          "color": "#f5b24a",
+          "intensity": 0.5,
+          "speed": 0.45
+        }
+      ],
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CYLINDER"
+      },
+      "script": {
+        "identifier": "north-roof-stud-1",
+        "tag": "m2-city-clue"
+      }
+    },
+    "north-roof-stud-2": {
+      "name": "Roof trail stud 2",
+      "id": "north-roof-stud-2",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 15.5,
+        "y": 0.015,
+        "z": -84
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 0.24,
+          "radiusBottom": 0.24,
+          "height": 0.03,
+          "radialSegments": 12,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1,
+          "height": 1,
+          "depth": 1
+        },
+        "type": "cylinder"
+      },
+      "color": "#ffd98a",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": true,
+      "plugins": [
+        {
+          "id": "PulsePlugin",
+          "color": "#f5b24a",
+          "intensity": 0.5,
+          "speed": 0.45
+        }
+      ],
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CYLINDER"
+      },
+      "script": {
+        "identifier": "north-roof-stud-2",
+        "tag": "m2-city-clue"
+      }
+    },
+    "north-roof-stud-3": {
+      "name": "Roof trail stud 3",
+      "id": "north-roof-stud-3",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 15.5,
+        "y": 0.015,
+        "z": -98
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 0.24,
+          "radiusBottom": 0.24,
+          "height": 0.03,
+          "radialSegments": 12,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1,
+          "height": 1,
+          "depth": 1
+        },
+        "type": "cylinder"
+      },
+      "color": "#ffd98a",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": true,
+      "plugins": [
+        {
+          "id": "PulsePlugin",
+          "color": "#f5b24a",
+          "intensity": 0.5,
+          "speed": 0.45
+        }
+      ],
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CYLINDER"
+      },
+      "script": {
+        "identifier": "north-roof-stud-3",
+        "tag": "m2-city-clue"
+      }
+    },
+    "north-roof-stud-4": {
+      "name": "Roof trail stud 4",
+      "id": "north-roof-stud-4",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 15.5,
+        "y": 0.015,
+        "z": -112
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 0.24,
+          "radiusBottom": 0.24,
+          "height": 0.03,
+          "radialSegments": 12,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1,
+          "height": 1,
+          "depth": 1
+        },
+        "type": "cylinder"
+      },
+      "color": "#ffd98a",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": true,
+      "plugins": [
+        {
+          "id": "PulsePlugin",
+          "color": "#f5b24a",
+          "intensity": 0.5,
+          "speed": 0.45
+        }
+      ],
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CYLINDER"
+      },
+      "script": {
+        "identifier": "north-roof-stud-4",
+        "tag": "m2-city-clue"
+      }
+    },
+    "north-roof-stud-5": {
+      "name": "Roof trail stud 5",
+      "id": "north-roof-stud-5",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 15.5,
+        "y": 0.015,
+        "z": -126
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 0.24,
+          "radiusBottom": 0.24,
+          "height": 0.03,
+          "radialSegments": 12,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1,
+          "height": 1,
+          "depth": 1
+        },
+        "type": "cylinder"
+      },
+      "color": "#ffd98a",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": true,
+      "plugins": [
+        {
+          "id": "PulsePlugin",
+          "color": "#f5b24a",
+          "intensity": 0.5,
+          "speed": 0.45
+        }
+      ],
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CYLINDER"
+      },
+      "script": {
+        "identifier": "north-roof-stud-5",
+        "tag": "m2-city-clue"
+      }
+    },
+    "north-roof-stud-6": {
+      "name": "Roof trail stud 6",
+      "id": "north-roof-stud-6",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 15.5,
+        "y": 0.015,
+        "z": -140
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 0.24,
+          "radiusBottom": 0.24,
+          "height": 0.03,
+          "radialSegments": 12,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1,
+          "height": 1,
+          "depth": 1
+        },
+        "type": "cylinder"
+      },
+      "color": "#ffd98a",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": true,
+      "plugins": [
+        {
+          "id": "PulsePlugin",
+          "color": "#f5b24a",
+          "intensity": 0.5,
+          "speed": 0.45
+        }
+      ],
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CYLINDER"
+      },
+      "script": {
+        "identifier": "north-roof-stud-6",
+        "tag": "m2-city-clue"
+      }
+    },
+    "north-zone-roof": {
+      "name": "Zone roof garden",
+      "id": "north-zone-roof",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 32,
+        "y": 9.5,
+        "z": -178.5
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 29,
+          "height": 3,
+          "depth": 12
+        },
+        "type": "box"
+      },
+      "color": "#000000",
+      "opacity": 0,
+      "display": false,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE",
+        "isSensor": true
+      },
+      "script": {
+        "identifier": "north-zone-roof",
+        "tag": "m2-city-zone"
       }
     },
     "city-south-ground": {

@@ -35,7 +35,7 @@ function setup() {
 describe("experience controller — hidden-on-stage policy", () => {
   it("install() declares every chunk's hidden set once; staging a chunk hides exactly those components before the batch is returned", async () => {
     const { runtime } = setup();
-    expect([...runtime.hiddenOnStage.keys()].sort()).toEqual(["city-plaza", "fashion-culture", "hub", "music", "music-club"]);
+    expect([...runtime.hiddenOnStage.keys()].sort()).toEqual(["city-north", "city-plaza", "fashion-culture", "hub", "music", "music-club"]);
     const batch = await runtime.stageChunk(HUB, signal());
     for (const id of index.experience.hidden.hub) {
       expect(batch.componentIds).toContain(id);

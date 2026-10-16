@@ -33,14 +33,14 @@ const codesOf = (input: SpatialSourceInput) => {
   return result.ok ? [] : result.errors.map((e) => e.code);
 };
 
-const ZONE_IDS = ["club-floor", "club-stage", "fashion-atelier", "fashion-loggia", "fashion-roof", "fashion-walk-1", "fashion-walk-2", "fashion-walk-3", "hub-core", "hub-overlook", "music-booth", "music-walk-north", "music-walk-south", "plaza-landing"];
+const ZONE_IDS = ["club-floor", "club-stage", "fashion-atelier", "fashion-loggia", "fashion-roof", "fashion-walk-1", "fashion-walk-2", "fashion-walk-3", "hub-core", "hub-overlook", "music-booth", "music-walk-north", "music-walk-south", "north-roof", "plaza-landing"];
 const ARRIVAL_IDS = ["club-wake", "fashion-brand-welcome", "hub-return-fashion", "hub-return-music", "hub-wake", "music-floor-reset", "music-stage-crescendo"];
 
 describe("spatial source — experience bindings validate and generate deterministically", () => {
-  it("the committed source carries hidden sets for the five composed chunks (M2: Skyfall Plaza), 14 zones and 7 arrivals, and validates", () => {
+  it("the committed source carries hidden sets for the five composed chunks (M2: Skyfall Plaza, the North Row roof garden), 15 zones and 7 arrivals, and validates", () => {
     expect(validateSpatialSource(source())).toEqual({ ok: true, errors: [] });
     expect(Object.keys(sourceConfig.experience)).toEqual(["hidden", "zones", "arrivals"]);
-    expect(sourceConfig.experience.hidden.map((h: Mutable) => h.chunkKey)).toEqual(["city-plaza", "fashion-culture", "hub", "music", "music-club"]);
+    expect(sourceConfig.experience.hidden.map((h: Mutable) => h.chunkKey)).toEqual(["city-north", "city-plaza", "fashion-culture", "hub", "music", "music-club"]);
     expect(sourceConfig.experience.zones.map((z: Mutable) => z.id)).toEqual(ZONE_IDS);
     expect(sourceConfig.experience.arrivals.map((a: Mutable) => a.id)).toEqual(ARRIVAL_IDS);
   });
@@ -205,7 +205,7 @@ describe("generated spatial index → experience bindings (runtime parser, addit
     const index = parseSpatialIndex(spatialIndexJson);
     expect(Object.keys(index.experience.zones)).toEqual(ZONE_IDS);
     expect(Object.keys(index.experience.arrivals)).toEqual(ARRIVAL_IDS);
-    expect(Object.keys(index.experience.hidden).sort()).toEqual(["city-plaza", "fashion-culture", "hub", "music", "music-club"]);
+    expect(Object.keys(index.experience.hidden).sort()).toEqual(["city-north", "city-plaza", "fashion-culture", "hub", "music", "music-club"]);
     expect(index.experience.zones["hub-overlook"]).toEqual({
       chunkKey: "hub",
       sensorId: "hub-zone-overlook",

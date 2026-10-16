@@ -5701,6 +5701,74 @@
         "tag": "m1-hub-landmark"
       }
     },
+    "hub-drop-lintel-glow": {
+      "name": "The Drop lintel (remembering)",
+      "id": "hub-drop-lintel-glow",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 0,
+        "y": 146.775,
+        "z": 11.5
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 16.2,
+          "height": 0.75,
+          "depth": 1
+        },
+        "type": "box"
+      },
+      "color": "#f5b24a",
+      "opacity": 0.6,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "plugins": [
+        {
+          "id": "FresnelGlowPlugin",
+          "color": "#ffd98a",
+          "intensity": 1.8,
+          "power": 1.3,
+          "speed": 0.5,
+          "pulse": 1
+        }
+      ],
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "hub-drop-lintel-glow",
+        "tag": "m1-hub-reactive"
+      }
+    },
     "hub-drop-label": {
       "name": "Label The Drop",
       "id": "hub-drop-label",

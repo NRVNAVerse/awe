@@ -21,7 +21,7 @@
  * Nothing here knows about gates or manifest metadata beyond the stable ids it binds to.
  */
 
-import { box, slab, column, label, glow, pulse, collect, v, deg, zone } from "./lib.mjs";
+import { box, slab, column, sphere, rampZ, rampX, label, glow, pulse, collect, v, deg, zone } from "./lib.mjs";
 import { CITY, FACADE_COLORS, planCity, r1, inWalkable } from "./city-plan.mjs";
 import { PALETTE, HUB_DESTINATION_ID } from "./hub.mjs";
 
@@ -49,10 +49,12 @@ export const PLOTS = Object.freeze({
   club: /** @type {[number, number, number, number]} */ ([-214, 22, -186, 49]),
   fashion: /** @type {[number, number, number, number]} */ ([174, -78, 226, 26]),
   compound: /** @type {[number, number, number, number]} */ ([-30, -475, 30, -392]),
+  // North Row's roof garden (an optional climb off the avenue north of the plaza).
+  roof: /** @type {[number, number, number, number]} */ ([15, -188, 49, -146]),
 });
 
 /** Plot paving colours (the far-field draws the plot ground; district floors sit on top). */
-const PLOT_COLORS = Object.freeze({ plaza: "#4a463f", music: "#23262d", club: "#1b1d23", fashion: "#8f8676", compound: "#1d1a14" });
+const PLOT_COLORS = Object.freeze({ plaza: "#4a463f", music: "#23262d", club: "#1b1d23", fashion: "#8f8676", compound: "#1d1a14", roof: "#34363c" });
 
 /** Walkable cells → chunk keys (the streaming grid). Cell (i, j) is centred on (i·CELL, j·CELL). */
 export const CITY_CELLS = Object.freeze([
@@ -184,6 +186,66 @@ function plazaDetails() {
 }
 
 /**
+ * North Row's roof garden (cell (0, -1)): an optional climb. A stud trail along the avenue's east
+ * sidewalk leads from the plaza's north exit to the foot of a ramp; two 12.5° flights rise to an
+ * 8 m roof with trees, a bench, a lamp and the city's sigil — the Hub's keel overhead, downtown
+ * ahead. Hidden from the plaza by the street wall; nothing announces it. World coordinates.
+ */
+function roofGarden() {
+  /** @type {Array<Record<string, unknown> & { id: string }>} */
+  const items = [];
+  const T = { route: "m2-city-route", secret: "m2-city-secret", reactive: TAGS.reactive, clue: "m2-city-clue" };
+  const ROOF = 8;
+  const STONE = "#5d5a55";
+  const STONE_LIGHT = "#8a857c";
+  // Flight 1 along -Z on the plot's west edge (x 17..21): street (z -150) → 4 m (z -168).
+  items.push(rampZ("north-roof-ramp-1", 19, -150, 0, -168, 4, 4, { name: "Roof garden ramp (first flight)", color: STONE_LIGHT, tag: T.route }));
+  items.push(box("north-roof-landing-1", v(21, 4 - 0.25, -170), [8, 0.5, 4], { name: "Roof garden landing", color: STONE, tag: T.route }));
+  // Flight 2 along +X south of the roof (z -172..-168): 4 m (x 25) → 8 m (x 43).
+  items.push(rampX("north-roof-ramp-2", -170, 25, 4, 43, ROOF, 4, { name: "Roof garden ramp (second flight)", color: STONE_LIGHT, tag: T.route }));
+  items.push(box("north-roof-landing-2", v(45, ROOF - 0.25, -170), [4, 0.5, 4], { name: "Roof garden top landing", color: STONE, tag: T.route }));
+  for (const [k, x, z, h] of [["a", 17.3, -159, 2], ["b", 20.7, -159, 2], ["c", 21, -171.7, 4], ["d", 34, -168.3, 6], ["e", 34, -171.7, 6]]) {
+    items.push(column(`north-roof-post-${k}`, Number(x), 0, Number(z), 0.22, Number(h) - 0.3, { name: "Roof garden ramp post", color: "#2a2b2f", segments: 10, tag: T.route }));
+  }
+  // Parapets on the landings open edges (walking straight up a flight must not carry you off — browser-found).
+  items.push(slab("north-roof-landing-1-rail-w", 17.2, 4, -170, [0.4, 0.9, 4], { name: "Roof garden landing rail", color: STONE_LIGHT, tag: T.route }));
+  items.push(slab("north-roof-landing-1-rail-n", 21, 4, -171.8, [8, 0.9, 0.4], { name: "Roof garden landing rail", color: STONE_LIGHT, tag: T.route }));
+  items.push(slab("north-roof-landing-2-rail-e", 46.8, ROOF, -170, [0.4, 0.9, 4], { name: "Roof garden landing rail", color: STONE_LIGHT, tag: T.route }));
+  items.push(slab("north-roof-landing-2-rail-s", 45, ROOF, -168.2, [4, 0.9, 0.4], { name: "Roof garden landing rail", color: STONE_LIGHT, tag: T.route }));
+  // The hall under the roof (solid) and the roof itself.
+  items.push(slab("north-roof-hall", 32, 0, -178.5, [30, ROOF - 0.5, 13], { name: "Roof garden hall", color: "#3b3d43", tag: T.route }));
+  items.push(box("north-roof-deck", v(32, ROOF - 0.25, -178.5), [30, 0.5, 13], { name: "Roof garden deck", color: "#4f5d4a", tag: T.route }));
+  for (const [k, x, z, w, d] of [["n", 32, -184.8, 30, 0.4], ["w", 17.2, -178.5, 0.4, 13], ["e", 46.8, -178.5, 0.4, 13]]) {
+    items.push(slab(`north-roof-parapet-${k}`, Number(x), ROOF, Number(z), [Number(w), 0.9, Number(d)], { name: "Roof garden parapet", color: STONE_LIGHT, tag: T.route }));
+  }
+  // Garden: four trees, a bench facing north (downtown), a lamp.
+  for (const [i, [x, z]] of [[21, -182], [27, -182.5], [37, -182.5], [43, -182]].entries()) {
+    items.push(column(`north-roof-tree-${i + 1}-trunk`, x, ROOF, z, 0.18, 1.8, { name: "Roof garden tree trunk", color: "#3a2e24", segments: 8, collider: "none", tag: T.route }));
+    items.push(sphere(`north-roof-tree-${i + 1}`, v(x, ROOF + 2.6, z), 1.3, { name: "Roof garden tree", color: "#2d5a3b", collider: "none", tag: T.route }));
+  }
+  items.push(slab("north-roof-bench", 32, ROOF, -181, [3.2, 0.45, 0.9], { name: "Roof garden bench", color: STONE_LIGHT, tag: T.route }));
+  items.push(column("north-roof-lamp-post", 26, ROOF, -176, 0.1, 2.6, { name: "Roof garden lamp post", color: "#1c1f26", segments: 8, collider: "none", tag: T.route }));
+  items.push(sphere("north-roof-lamp", v(26, ROOF + 2.9, -176), 0.32, { name: "Roof garden lamp (dim)", color: "#6b5a3a", collider: "none", plugins: [pulse(PALETTE.ember, { intensity: 0.25, speed: 0.4 })], tag: T.route }));
+  items.push(sphere("north-roof-lamp-lit", v(26, ROOF + 2.9, -176), 0.38, { name: "Roof garden lamp (lit)", color: "#fff1cf", collider: "none", plugins: [glow(PALETTE.ember, { intensity: 2.2, power: 1.4, speed: 0.5, pulse: 1 })], tag: T.reactive }));
+  // The city's sigil, by the bench (dim until found, lit once remembered).
+  items.push(sphere("north-roof-sigil", v(34.4, ROOF + 1.4, -181), 0.22, { name: "City sigil (unfound)", color: "#5a4a30", collider: "none", plugins: [pulse(PALETTE.ember, { intensity: 0.3, speed: 0.6 })], tag: T.secret }));
+  items.push(sphere("north-roof-sigil-lit", v(34.4, ROOF + 1.4, -181), 0.26, { name: "City sigil (remembered)", color: "#fff1cf", collider: "none", plugins: [glow(PALETTE.ember, { intensity: 2.4, power: 1.2, speed: 1.0, pulse: 1 })], tag: T.reactive }));
+  // Clue: a stud trail on the avenue's east sidewalk from the plaza's north exit to the ramp foot.
+  for (let i = 0; i < 6; i++) {
+    items.push(column(`north-roof-stud-${i + 1}`, 15.5, 0, -70 - i * 14, 0.24, 0.03, { name: `Roof trail stud ${i + 1}`, color: PALETTE.warmLight, segments: 12, collider: "none", castShadow: false, plugins: [pulse(PALETTE.ember, { intensity: 0.5, speed: 0.45 })], tag: T.clue }));
+  }
+  items.push(zone("north-zone-roof", v(32, ROOF + 1.5, -178.5), [29, 3, 12], { name: "Zone roof garden", tag: TAGS.zone }));
+  return {
+    items,
+    experience: {
+      hidden: ["north-roof-lamp-lit", "north-roof-sigil-lit"],
+      zones: [{ id: "north-roof", chunkKey: "city-north", sensorId: "north-zone-roof", enter: { show: ["north-roof-lamp-lit"], hide: ["north-roof-lamp"] }, exit: { show: ["north-roof-lamp"], hide: ["north-roof-lamp-lit"] } }],
+      arrivals: [],
+    },
+  };
+}
+
+/**
  * Composer for one new city cell chunk.
  * @param {string} chunkKey
  */
@@ -202,6 +264,11 @@ export function composeCityCell(chunkKey) {
     items.push(...p.items.filter((it) => !String(it.id).startsWith("portal-")), ...portalItems);
     experience = p.experience;
     portals = p.portals;
+  }
+  if (chunkKey === "city-north") {
+    const r = roofGarden();
+    items.push(...r.items);
+    experience = r.experience;
   }
   const components = collect(items);
   return { components, componentIds: Object.keys(components), experience, portals };

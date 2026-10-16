@@ -7,7 +7,7 @@
       "dataUrl": "/data/spatial/chunks/cannabis-21.0f14e211d2f2a668bcb5e7a743daeb44.json"
     },
     "city-north": {
-      "dataUrl": "/data/spatial/chunks/city-north.99b65900a9193e8cf174a73418c2a02d.json"
+      "dataUrl": "/data/spatial/chunks/city-north.429237843600d6cd15b06bc1a45c87a4.json"
     },
     "city-northeast": {
       "dataUrl": "/data/spatial/chunks/city-northeast.cdd6f8f76835a5d6596bad078d5c3577.json"
@@ -31,7 +31,7 @@
       "dataUrl": "/data/spatial/chunks/fashion-culture.ee4912d784256b3d461e75009de81653.json"
     },
     "hub": {
-      "dataUrl": "/data/spatial/chunks/hub.f6a96a13c3d953654dc48d647b679709.json"
+      "dataUrl": "/data/spatial/chunks/hub.38a247a2c4848453d5e13ab95199f6a3.json"
     },
     "music": {
       "dataUrl": "/data/spatial/chunks/music.49f687dcb0d38e50bf06729870e77239.json"
@@ -185,6 +185,10 @@
   },
   "experience": {
     "hidden": {
+      "city-north": [
+        "north-roof-lamp-lit",
+        "north-roof-sigil-lit"
+      ],
       "city-plaza": [
         "plaza-landing-ring-lit"
       ],
@@ -209,6 +213,7 @@
         "hub-core-well",
         "hub-dormant-1-inset-lit",
         "hub-dormant-2-inset-lit",
+        "hub-drop-lintel-glow",
         "hub-memory-line",
         "hub-overlook-lamp-lit",
         "hub-overlook-lamp-pool",
@@ -477,6 +482,26 @@
           ]
         }
       },
+      "north-roof": {
+        "chunkKey": "city-north",
+        "sensorId": "north-zone-roof",
+        "enter": {
+          "show": [
+            "north-roof-lamp-lit"
+          ],
+          "hide": [
+            "north-roof-lamp"
+          ]
+        },
+        "exit": {
+          "show": [
+            "north-roof-lamp"
+          ],
+          "hide": [
+            "north-roof-lamp-lit"
+          ]
+        }
+      },
       "plaza-landing": {
         "chunkKey": "city-plaza",
         "sensorId": "plaza-zone-landing",
@@ -690,7 +715,7 @@
   },
   "layers": {
     "city": {
-      "dataUrl": "/data/spatial/layers/city.7bc7a6b2cb292827503d1d24f16554a4.json"
+      "dataUrl": "/data/spatial/layers/city.42b96fb8aed3e12fcb7a235bdeacb3cc.json"
     }
   },
   "streaming": {

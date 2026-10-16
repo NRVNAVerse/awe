@@ -54,8 +54,8 @@ describe("discovery memory — configuration is grounded in the generated world"
         if (rule.effect.show?.includes(id)) expect(index.experience.hidden[rule.chunkKey]).toContain(id);
       }
     }
-    expect(DISCOVERY_M1.sigils.map((s) => s.key)).toEqual(["centre", "booth", "atelier"]);
-    expect(DISCOVERY_M1.memory.map((r) => r.atLeast)).toEqual([1, 2, 3]);
+    expect(DISCOVERY_M1.sigils.map((s) => s.key)).toEqual(["centre", "booth", "atelier", "rooftop"]);
+    expect(DISCOVERY_M1.memory.map((r) => r.atLeast)).toEqual([1, 2, 3, 4]);
   });
 
   it("persisted shape is tiny, stable and tolerant", () => {

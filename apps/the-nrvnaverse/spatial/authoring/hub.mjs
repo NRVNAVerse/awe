@@ -395,6 +395,19 @@ export function composeHub() {
   );
   for (const sx of [-1, 1]) items.push(column(`hub-drop-post-${sx < 0 ? "w" : "e"}`, sx * (DROP_HALF + 0.6), DECK_TOP, ISLE.z1 - 0.5, 0.4, 6, { name: "The Drop frame post", color: PALETTE.stoneLight, segments: 16, tag: S.landmark }));
   items.push(slab("hub-drop-lintel", 0, DECK_TOP + 6, ISLE.z1 - 0.5, [DROP_HALF * 2 + 2, 0.6, 0.9], { name: "The Drop lintel", color: PALETTE.stoneLight, tag: S.landmark }));
+  // Discovery memory (M2): with all four hidden places remembered, the Drop's lintel wakes.
+  items.push(
+    slab("hub-drop-lintel-glow", 0, DECK_TOP + 5.95, ISLE.z1 - 0.5, [DROP_HALF * 2 + 2.2, 0.75, 1.0], {
+      name: "The Drop lintel (remembering)",
+      color: PALETTE.ember,
+      opacity: 0.6,
+      collider: "none",
+      castShadow: false,
+      receiveShadow: false,
+      plugins: [glow(PALETTE.warmLight, { intensity: 1.8, power: 1.3, speed: 0.5, pulse: 1 })],
+      tag: S.reactive,
+    }),
+  );
   items.push(label("hub-drop-label", "THE DROP · SKYFALL PLAZA", v(0, DECK_TOP + 7.1, ISLE.z1 - 0.5), { scale: 0.8, name: "Label The Drop", color: PALETTE.warmLight, width: 1800, rotation: { x: 0, y: deg(180), z: 0 } }));
   // Lamps along the island walk and benches at the east / west edges (the view down to the districts).
   for (const [k, x, z] of [["sw", -40, 20], ["se", 40, 20], ["nw", -40, -54], ["ne", 40, -54]]) {
@@ -433,6 +446,7 @@ export function composeHub() {
     "hub-dormant-1-inset-lit",
     "hub-dormant-2-inset-lit",
     "hub-memory-line",
+    "hub-drop-lintel-glow",
   );
   // Reaching the overlook lights its lamp; leaving dims it again.
   x.zone("hub-overlook", "hub-zone-overlook", {

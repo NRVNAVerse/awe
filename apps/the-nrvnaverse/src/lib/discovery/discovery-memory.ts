@@ -48,11 +48,15 @@ export const DISCOVERY_M1: DiscoveryConfig = Object.freeze({
     { key: "centre", zoneId: "hub-core", chunkKey: "hub", remembered: { show: ["hub-core-sigil-lit"], hide: ["hub-core-sigil"] } },
     { key: "booth", zoneId: "music-booth", chunkKey: "music", remembered: { show: ["music-booth-sigil-lit"], hide: ["music-booth-sigil"] } },
     { key: "atelier", zoneId: "fashion-atelier", chunkKey: "fashion-culture", remembered: { show: ["fashion-atelier-sigil-lit"], hide: ["fashion-atelier-sigil"] } },
+    // M2: the city's roof garden off North Row.
+    { key: "rooftop", zoneId: "north-roof", chunkKey: "city-north", remembered: { show: ["north-roof-sigil-lit"], hide: ["north-roof-sigil"] } },
   ],
   memory: [
     { chunkKey: "hub", atLeast: 1, effect: { show: ["hub-dormant-1-inset-lit"] } },
     { chunkKey: "hub", atLeast: 2, effect: { show: ["hub-dormant-2-inset-lit"] } },
     { chunkKey: "hub", atLeast: 3, effect: { show: ["hub-memory-line"] } },
+    // M2: all four places remembered — the Drop's frame answers.
+    { chunkKey: "hub", atLeast: 4, effect: { show: ["hub-drop-lintel-glow"] } },
   ],
 });
 
