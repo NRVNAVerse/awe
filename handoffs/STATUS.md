@@ -5,10 +5,10 @@ LAST: CLAUDE
 STATE: AWAITING_REVIEW
 
 Last completed:
-Claude Code ran the M1 Spatial Experience overnight campaign on `feat/m1-spatial-experience-overnight` (checkpoints 0–4 pushed: experience layer, Music venue complex + The Club, WEB↔SPATIAL thresholds + web window, discovery memory; vault venue audition; final verification and browser evidence) and wrote the implementer handoff.
+Claude Code ran the M2 Hub-over-Megacity overnight campaign on `feat/m2-megacity-foundation` (floating Hub 140 m over a walkable procedural megacity, seamless cell streaming, the Drop, sky lifts, roof-garden route, local-only art audition, production perf / touch probes) and wrote the implementer handoff.
 
 Next action:
-ChatGPT reviews `handoffs/current/reviewer.md`, `docs/NRVNAVERSE_M1_EXPERIENCE_CAMPAIGN.md` and the branch, and decides on integration, the owner playtest and the next milestone.
+ChatGPT reviews `handoffs/current/reviewer.md`, `docs/NRVNAVERSE_M2_MEGACITY_CAMPAIGN.md` and the branch, and decides on the owner playtest, the rights review and the next milestone.
 
 Operator command:
 Say "handoff" in the ChatGPT planning/review conversation.

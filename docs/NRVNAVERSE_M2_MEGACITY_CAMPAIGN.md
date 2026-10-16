@@ -101,6 +101,9 @@ The Drop's physics (measured in the browser): the official Mover integrates `vel
 | 1 | **Hub over megacity**: city plan + composer, chunk origins (Hub y 140; Music / Fashion as city cells; Club on the Music cell; 21+ compound outside the Ring), 7 city-cell chunks + city kit on district cells, pipeline `layers` / `streaming` (gated chunks refused), far-field `CityLayer`, orchestrator handoff (`spawn: null`), `StreamingController`, descent cap, The City destination (`dst_8w1j39h5e0ezrsjh`), sky-lift pads | `84d5472` | pushed · tests 484 · manifests 61 · strict typecheck · spatial check · browser (dev, real input): the Drop end to end, west walk plaza → Music cell |
 | 1b | M2 tests: streaming controller (12), handoff / walked-into / streaming validation (9), world invariants (10) | `f788bde` | pushed · app tests **515** |
 | 1c | Production verification: `browser:perf` **PASSED** (desktop 108 draw calls / 85 k tris / 56 fps vsync-capped / JS heap 22 MB; mobile-emulated 100 / 83 k / 46 MB; Hub → Music → Hub by directory arrives; warm reload 0 wire bytes), `browser:touch` **PASSED** (Hub → 21+ `gateRequired`, **zero** cannabis requests), SIC composition pass (§6.1) | — | evidence in `D:\AWE-Scratch\m2\perf`, `\touch`, `\sic` |
+| 2 | **Local-only audition**: dev route over `NRVNA_AUDITION_DIR` (404 in production; tested), overlay loader, city-building toggle; Megacity level converted + measured + optimised (4.2 MB); five Sketchfab rooms in-world (§2.3) | `259468b` `619c8df` | pushed · nothing from the vault in Git |
+| 3 | **Tier 2 visual / experience**: facade styles, storefront bays, street trees, zebra crossings, rooftop plant, aviation lights (`a8cb974`); sky-lift veil + lift posts on the diagonals (`f7064b6`); North Row roof garden + fourth sigil + Drop lintel memory (`166785b`); Hub edge signs + Drop return glow (`11bd0ee`); downtown behind the spire (`777fd5b`); traffic (`68c8eb7`); keel (`add4f15`); plaza dressing (`440484e`); docs world §17 / runtime §20 / pipeline §19 (`21c5595`) | see column | pushed · tests **520** · strict typecheck · spatial / compose check |
+| 4 | **Convergence** (2026-10-16 ≈ 00:20): production build; `browser:perf` **PASSED** — desktop **112 draw calls / 175 k frame triangles / 56.4 fps (vsync-capped) / p95 18.1 ms / JS heap 43 MB**; mobile-emulated **104 / 173 k / 56.1 fps / 78 MB**; Hub → Music → Hub arrives; warm reload 0 wire bytes. `browser:touch`: first run **FAILED 1 check** (A, cycle 5: avatar moved 0.41 m < 0.5 m while pressed against the Core house ahead of the spawn), immediate rerun **PASSED** (0.91 m; cycles show the avatar sliding along that wall — a marginal probe threshold, M1 recorded 1.3 m there); Hub → 21+ `gateRequired`, **zero** cannabis requests in both runs | this commit | evidence `D:AWE-Scratchm2perf-final`, `touch-final`, `touch-final2` |
 
 ## 6. Findings worth keeping
 
@@ -112,13 +115,26 @@ The Drop's physics (measured in the browser): the official Mover integrates `vel
 
 ## 7. Continuation queue (ranked)
 
-1. ~~Elevation evaluation, city composer + layer + pipeline~~ done.
-2. ~~Runtime: layer, streaming, handoff, descent, relocation, cells~~ done.
-3. ~~Tests, typecheck, spatial check, browser traversal, perf / touch~~ done (headless Mover proof of seams is covered by real-input browser walks).
-4. Local-only audition of real models (scratch, gitignored, never committed).
-5. Tier 2: atmosphere / lighting, facade variety, routes and rooftops, discovery details (a sigil in the city), transitions for the sky lift, mobile comfort, measured optimisation (layer JSON size 264 KB).
-6. Docs: world doc §17 (city truth incl. secrets), pipeline / runtime contract notes, handoff.
+Done: elevation evaluation; composer / layer / pipeline; runtime (layer, streaming, handoff, descent, sky lifts); tests; production probes; local audition; Tier 2 visual pass, roof garden route, plaza dressing, traffic; docs.
+
+Browser evidence (dev server, real key input, `D:AWE-Scratchm2rowserm2-probe.mjs`):
+
+- **The Drop**: walk off the tongue → release at y ≈ 126 → `city-plaza` handoff (no teleport) → 22 m/s glide → landing at (0, 0.1, 28) in ≈ 6 s; location *The City*, URL replaced.
+- **Seams**: all nine crossings of the 3 × 3 region (incl. the Fashion side and a corner) hand off with the visitor never below street level (min y 0); `D:AWE-Scratchm2shotsseams.json`.
+- **Preserved M1 flows**: Hub gateway lift → Music; concourse door → The Club; Club → Music; Music sky lift → Hub; Hub gateway lift → Fashion; runway → Placeholder Brand — **6 / 6 OK**.
+- **Plaza sky lift**: walk-in from the spawn reaches the Hub (after moving a post that blocked it); veil shown.
+- **Roof garden**: both flights climbed, the sigil found by walking onto the roof from a cleared memory.
+- **Mobile-emulated** (390 × 844, touch): Hub arrival shows downtown behind the spire; the fall framed between the joystick and Jump.
+
+Remaining queue (all optional, owner / reviewer may re-rank):
+
+1. District identity in the far field (teal / rose storefront and sign tints around the Music / Fashion plots).
+2. Make the touch probe robust to geometry ahead of the spawn (start scenario A on open ground) — probe-only change, deliberately not made unreviewed.
+3. Rights review for the Sketchfab candidates (owner) → if cleared, register through the asset contract (human `reviewedBy`) and replace district shells by id; the 80s Warehouse is the strongest Club skin, the venue stage the strongest Grand Hall.
+4. A kit-based city needs its own layout (the 3DRT level’s towers pierce the Hub airspace) or per-object placement from `objects/` once entitlement is proven.
+5. Real-device mobile pass (thermal, GPU memory for the layer textures); adaptive quality only if measured (D-009).
+6. Audio ambience (city hum on the plaza, wind during the Drop) — needs cleared audio or WebAudio synthesis.
 
 ## 8. Exact next action
 
-Queue item 4 (local audition), then Tier 2.
+Converged and handed to ChatGPT for review (`handoffs/current/reviewer.md`, `handoffs/STATUS.md`). If resumed by an implementer before review: queue item 1, then re-run `browser:perf` / `browser:touch`; do not merge or deploy.
