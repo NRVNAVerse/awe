@@ -296,3 +296,27 @@ manifest                identity + `webUrl` (resolved by the shell at display ti
 ```
 
 A threshold binds a physical sensor to the stable id whose canonical web context is surfaced while the visitor stands in it; it never travels. Portals and thresholds are kept disjoint by validation (`threshold-is-portal`), and a threshold may name any canonical THE NRVNAVerse destination of this world, placed or not (the web context exists either way). Error codes: `invalid-thresholds`, `invalid-threshold`, `duplicate-threshold`, `threshold-is-portal`, `global-threshold-component`, `threshold-not-sensor`, `threshold-chunk-mismatch`, `threshold-not-the-nrvnaverse`, plus the shared `unexpected-field`, `invalid-component-ref`, `unknown-component`, `unknown-chunk`, `invalid-destination-id`, `unknown-destination`, `world-id-mismatch`. `parseSpatialIndex()` returns `thresholds` (a missing field is an empty set; schema version 1 unchanged). Authoring: a composer returns `thresholds: [{ sensorId, destinationId }]` next to its components (sensors made with `zone()`), and `compose.mjs` writes them into the config per chunk. Consumption (controller, store, window, the same-origin web-context page and why the engine `iframe` was not used) is in the runtime doc §18.
+
+## 19. M2: far-field layers and the streaming grid (additive, schema v1 unchanged)
+
+`spatial-config.m0.json` gains two optional sections, both written by `spatial/authoring/compose.mjs` (from `city.mjs`):
+
+```jsonc
+"layers": [{ "key": "city", "source": "city-layer.m2.json" }],          // a composed data file next to the config
+"streaming": {
+  "cellSize": 200, "margin": 4,
+  "cells": [{ "cell": [0, 0], "chunkKey": "city-plaza" }, …],          // walkable cells → chunk keys
+  "releases": [{ "fromChunkKey": "hub", "belowY": 128 }],             // falling out of the Hub
+  "catchBelowY": -30                                                   // safety
+}
+```
+
+Generation: each layer is serialized as **compact** JSON (one line — large numeric arrays) and content-addressed like a chunk: `spatial/layers/<key>.<token>.json`; the index gains `layers: { <key>: { dataUrl } }` and `streaming` (cells keyed `"i,j"`, releases sorted). `cli.mjs` owns `spatial/layers/` like `spatial/chunks/` (stale versions removed, unexpected files reported). The asset CLI's source loader reads layers too.
+
+Validation codes: `invalid-layers` / `invalid-layer` / `invalid-layer-key` / `duplicate-layer` / `invalid-layer-source` / `missing-layer-source`; `invalid-streaming` / `invalid-streaming-cell` / `duplicate-streaming-cell` / `duplicate-streaming-chunk` / `invalid-streaming-release` / `unknown-chunk`, and **`streaming-gated-chunk`: a chunk that serves any gated destination (manifest gate truth via the placements) can never be a streaming cell or a release source** — a streamed chunk is fetched on proximity alone, so gates must never be in that path.
+
+The layer is geometry only (tested: no destination id, gate or URL in it). It proxies only ungated chunks; the gated compound is an authored neutral shell.
+
+Composition (`compose.mjs`): composers keep authoring in local frames; `CHUNK_ORIGINS` translates components and **spawns** (the composers now own the placements: `LOCAL_SPAWNS`); new city-cell chunks are appended to `config.chunks`; district cells receive the city kit before their portals (portals stay last); composer-declared portal bindings (the plaza lift) join the hand-kept ones; M2 global atmosphere overrides (late-twilight sky, fog 240–2300 m, safety terrain at y −3, wider shadow camera) are deterministic.
+
+Warning budgets (§16) raised for M2: **192 KiB / 160 components** per runtime artifact (district cells now carry collider-only city kits — no draw calls).

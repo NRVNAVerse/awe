@@ -7,6 +7,7 @@
 | **Source of truth** | `apps/the-nrvnaverse/spatial/authoring/hub.mjs` (composer) → `spatial/source/scene.m0.json` + `spatial-config.m0.json` (committed output) → generated runtime artifacts |
 | **Art status** | Every object is replaceable primitive geometry (box / cylinder / sphere / text / reflector). No vault asset, no `assetRef`, no binary. Real art replaces objects **by id** (§6) |
 | **Contains spoilers** | Yes — this is the complete developer truth, including the hidden places. Visitor-facing copy stays spoiler-light |
+| **M2 (2026-10-15)** | The Hub now floats 140 m over a walkable megacity; **every coordinate in §2–§16 is the composer’s LOCAL frame** (world = local + chunk origin, §17). §17 is the city truth incl. the roof garden secret |
 
 ---
 
@@ -256,3 +257,60 @@ The owner works directly with Seattle artist Eddie Anthony and has said he will 
 | Seattle identity, ink / bone / gold | The Club is deliberately un-branded: its palette can shift to ink / bone / gold through the composer's palette constants while the NRVNAVerse frame (concourse, marquee) stays black / gold | a palette block per artist room |
 
 Reality checks the venue system must pass for a real artist (from the brief): the same artist can use the Soundstage for a show and The Club for a listening session (two rooms, one concourse — in place); a release can reskin a room without a new world (arrival-state rules — in place, per-song rules pending); a fan can move from the song page into the exact room (`?destination=<room id>&from=web&return=web` — in place) and from the room to the exact web context (threshold → web window — in place); the room has value between events (reactive room, sigils, the memory — in place). Owner decisions needed before any Eddie content lands: clearance of each asset (photo, audio, logo), the room's name, and whether the artist room is a `venue` or an `artist` destination (both kinds exist in the manifest schema).
+
+---
+
+## 17. M2 — the floating Hub over the megacity  [VERIFIED tests + headless SIC + browser, `feat/m2-megacity-foundation`; developer truth incl. secrets]
+
+The M1 places are no longer three islands joined by teleports. They live in **one world frame**: the city ground is y = 0, the Hub floats **140 m** above Skyfall Plaza (elevation measured, campaign record §4), and the districts are city cells you can walk between. **All M1 coordinates in §2–§16 are now each composer's LOCAL frame**; `CHUNK_ORIGINS` in `spatial/authoring/city.mjs` translates them (world = local + origin):
+
+| Chunk | Origin | World landmarks |
+|---|---|---|
+| `hub` | (0, 140, −20) | spawn (0, 141, −14) facing −Z; the Drop's tongue ends at z 20 over the plaza; gateways (lifts) at x ±9, z −20 |
+| `music` | (−130, −0.5, 0) | floor flush with the street; spawn (−200, 0.5, 6); artist (−200, 0.5, −34); Club door (−195, z 16) |
+| `music-club` | (−130, −0.5, −35) | a walled room on the Music cell (z 24.5..46.4); spawn (−200, 0.5, 40.5) |
+| `fashion-culture` | (130, −0.5, 0) | spawn (200, 0.5, 6); Brand (200, 1.5, −36) |
+| `cannabis-21` | (0, 0, −300) | the gated compound beyond the Ring (z −466..−401); unchanged M0 content, still never fetched before the gate |
+| `city-*` | — (world-authored) | seven walkable cells, below |
+
+### 17.1 The city
+
+`spatial/authoring/city-plan.mjs` generates a 2.4 × 2.4 km city deterministically (road pitch 100 m, avenues every third line, 3,027 buildings / 4,370 tiers, 4,771 lamps, 878 street trees, 77 zebra-crossed intersections; each block draws randomness from a hash of its own coordinates, so a plot change never reshuffles the rest). Heights: 8–40 m inside the Ring (human scale, the Hub floats clear), a downtown skyline to 204 m behind the spire (north), smaller clusters east and south-west. **The walkable region is the 3 × 3 cells of 200 m around the origin (600 × 600 m), closed by the Ring** — an elevated viaduct on the ±300 m avenues (walls in the outer cells).
+
+| Cell | Chunk | What is there |
+|---|---|---|
+| (0, 0) | `city-plaza` | **Skyfall Plaza**: the Drop's landing ring (lights while you stand in it), benches, the **sky lift** under the keel (`portal-plaza-hub`, posts on the diagonals so every approach is open), signs to Music / Fashion / the plaza's name wall; spawn of **The City** (`dst_8w1j39h5e0ezrsjh`) at (0, 1, 40) facing the lift and the Hub |
+| (−1, 0) / (1, 0) | `music` / `fashion-culture` | the M1 districts as pedestrian quarters; their east / west gateways now face the plaza (labels SKYFALL PLAZA); the way back up is a **sky-lift pad** on each floor (`portal-music-hub` / `portal-fashion-hub`, moved off the street approach) |
+| (0, −1) | `city-north` | **North Row** — the avenue frames downtown, the Ring and the 21+ compound's amber beacon; the **roof garden** (§17.3) |
+| corners, (0, 1) | `city-northwest` … `city-south` | streets and blocks (colliders only; the far field draws them) |
+
+Each cell chunk carries an invisible ground collider (cell + 20 m overlap on every side), one invisible collider per building tier in the cell, the Ring wall on outer edges and its authored details. **District cells carry the same kit on top of their composition**, so you can't walk through a building anywhere in the region. Trees and lamp posts are visual only.
+
+### 17.2 Moving between places
+
+| Move | Mechanism | Feel |
+|---|---|---|
+| Walk between neighbouring cells | position-preserving **handoff** (no teleport): the next cell is staged once you are 4 m inside it, then the old one retires | seamless; the location label changes (e.g. *The City* → *Music District*) and the URL is replaced, no banner |
+| **The Drop** (walk off the Hub's south tongue) | below y 128 the Hub releases you into the cell underneath (handoff); a descent cap holds 22 m/s | a ≈ 6 s skydive into Skyfall Plaza, steerable; land on the plaza or on a roof (roofs have colliders) |
+| Sky lifts (plaza / Music / Fashion → Hub; Hub gateways → Music / Fashion) | portal travel (vertical — a real loading boundary) | a **sky-lift veil** (dusk gradient, direction, destination) for ≥ 1.4 s |
+| The Club | portal through the concourse door (an interior) | unchanged M1 behaviour |
+| 21+ | portal / directory → refused at the gate before any fetch | unchanged; never streamed, never proxied |
+
+The Hub's island: a deck 124 × 98 m around the M1 composition (5 cm below the basin datum), parapets on every edge except the Drop's 14 m gap, four lamps, edge benches over the districts with signs *MUSIC DISTRICT ↓* / *FASHION / CULTURE ↓*. The Drop frame glows for 6 s after the plaza lift brings you back (`hub-return-plaza`). Beneath, the far field draws the island's keel (a faceted inverted cone with an ember ring) — visible from every plaza and avenue.
+
+### 17.3 Optional discovery — the roof garden  [technical truth; keep out of visitor copy]
+
+| Item | Value |
+|---|---|
+| Where | North Row, plot x 15..49, z −188..−146 (east of the avenue, ~110 m north of the plaza's north exit) |
+| Clue | six pulsing studs on the avenue's east sidewalk (x 15.5, z −70 … −140) from the plaza's north exit to the ramp foot |
+| Route | flight 1 along −Z (x 17..21, z −150 → −168, 0 → 4 m, 12.5°), landing with rails, flight 2 along +X (z −172..−168, x 25 → 43, 4 → 8 m), top landing with rails, then north onto the roof (8 m) |
+| On the roof | four trees, a bench facing downtown, a lamp that lights while you are up there (`north-roof` zone), the city's **sigil** (`north-roof-sigil` / `-lit`, by the bench) |
+| Memory | discovery key `rooftop` (fourth sigil). With all four places remembered (Core house, booth, atelier, roof), the **Drop's lintel wakes** (`hub-drop-lintel-glow`) |
+| Proof | browser, real input: both flights climbed (y 4, y 8); walking onto the roof from a cleared memory stores `{ "v": 1, "found": ["rooftop"] }` |
+
+Spoiler-light hints: "follow the lights north of the plaza", "the frame over the Drop is listening too".
+
+### 17.4 Art status
+
+Everything in the committed world is **procedural / primitive** — the far field is generated geometry with runtime canvas window textures; no binary art was added. Real candidates (Sketchfab CC BY 4.0 notices, 3DRT Megacity of unknown entitlement) were measured and auditioned **locally only** (campaign record §2); none is in Git, a build or a deploy.
