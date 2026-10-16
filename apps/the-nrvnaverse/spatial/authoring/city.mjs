@@ -72,6 +72,9 @@ export const CITY_CELLS = Object.freeze([
 /** Chunks that are new city cells (composed entirely here). */
 export const CITY_CELL_CHUNKS = CITY_CELLS.filter((c) => c.chunkKey.startsWith("city-"));
 
+/** The island underside (far field): covers the 124 × 98 m deck; the sky-lift beam rises into it. */
+export const KEEL = Object.freeze({ rx: 82, rz: 66, depth: 62 });
+
 /** Streaming hysteresis: a handoff happens only once the visitor is this far inside the new cell. */
 export const STREAMING_MARGIN = 4;
 
@@ -346,13 +349,13 @@ export function buildCityLayer(input) {
       [200, -40, 0, 70, 1.2, PALETTE.fashion],
       [0, -433, 0, 40, 1.0, PALETTE.gated],
       // The sky lift: plaza → under the keel.
-      [0, -37, 0, r1(hub.y - 46), 2.6, PALETTE.warmLight],
+      [0, -37, 0, r1(hub.y - 1.1 - KEEL.depth * 0.7), 2.6, PALETTE.warmLight],
     ],
     // The gated compound: a neutral walled shell (never derived from gated chunk content).
     compounds: [{ rect: [...PLOTS.compound], height: 9, color: "#2a2620" }],
     ring: { half: CITY.ring, deckY: 9, width: 14 },
     // The Hub's island underside: a faceted inverted cone under the deck.
-    keel: { x: hub.x, y: r1(hub.y - 1.1), z: r1(hub.z - 17), radiusX: 66, radiusZ: 52, depth: 46, color: "#3a3631", glow: PALETTE.ember },
+    keel: { x: hub.x, y: r1(hub.y - 1.1), z: r1(hub.z - 17), radiusX: KEEL.rx, radiusZ: KEEL.rz, depth: KEEL.depth, color: "#3a3631", glow: PALETTE.ember },
     proxies: input.proxies,
   };
 }
