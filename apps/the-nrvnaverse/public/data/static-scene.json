@@ -27945,6 +27945,2618 @@
         "tag": "m2-city-detail"
       }
     },
+    "plaza-planter-nw": {
+      "name": "Plaza planter nw",
+      "id": "plaza-planter-nw",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -38,
+        "y": 0.3,
+        "z": -40
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 12,
+          "height": 0.6,
+          "depth": 10
+        },
+        "type": "box"
+      },
+      "color": "#4b4843",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "plaza-planter-nw",
+        "tag": "m2-city-detail"
+      }
+    },
+    "plaza-planter-nw-soil": {
+      "name": "Plaza planter nw soil",
+      "id": "plaza-planter-nw-soil",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -38,
+        "y": 0.62,
+        "z": -40
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 11.2,
+          "height": 0.04,
+          "depth": 9.2
+        },
+        "type": "box"
+      },
+      "color": "#2b3a26",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "plaza-planter-nw-soil",
+        "tag": "m2-city-detail"
+      }
+    },
+    "plaza-planter-nw-tree-1-trunk": {
+      "name": "Plaza tree trunk",
+      "id": "plaza-planter-nw-tree-1-trunk",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -41.5,
+        "y": 1.9,
+        "z": -42
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 0.22,
+          "radiusBottom": 0.22,
+          "height": 2.6,
+          "radialSegments": 8,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1,
+          "height": 1,
+          "depth": 1
+        },
+        "type": "cylinder"
+      },
+      "color": "#3a2e24",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CYLINDER"
+      },
+      "script": {
+        "identifier": "plaza-planter-nw-tree-1-trunk",
+        "tag": "m2-city-detail"
+      }
+    },
+    "plaza-planter-nw-tree-1": {
+      "name": "Plaza tree",
+      "id": "plaza-planter-nw-tree-1",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -41.5,
+        "y": 4.4,
+        "z": -42
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1.9,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1,
+          "height": 1,
+          "depth": 1
+        },
+        "type": "sphere"
+      },
+      "color": "#24482f",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "SPHERE"
+      },
+      "script": {
+        "identifier": "plaza-planter-nw-tree-1",
+        "tag": "m2-city-detail"
+      }
+    },
+    "plaza-planter-nw-tree-2-trunk": {
+      "name": "Plaza tree trunk",
+      "id": "plaza-planter-nw-tree-2-trunk",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -35,
+        "y": 1.9,
+        "z": -42.5
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 0.22,
+          "radiusBottom": 0.22,
+          "height": 2.6,
+          "radialSegments": 8,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1,
+          "height": 1,
+          "depth": 1
+        },
+        "type": "cylinder"
+      },
+      "color": "#3a2e24",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CYLINDER"
+      },
+      "script": {
+        "identifier": "plaza-planter-nw-tree-2-trunk",
+        "tag": "m2-city-detail"
+      }
+    },
+    "plaza-planter-nw-tree-2": {
+      "name": "Plaza tree",
+      "id": "plaza-planter-nw-tree-2",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -35,
+        "y": 4.4,
+        "z": -42.5
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1.9,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1,
+          "height": 1,
+          "depth": 1
+        },
+        "type": "sphere"
+      },
+      "color": "#2f5a3d",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "SPHERE"
+      },
+      "script": {
+        "identifier": "plaza-planter-nw-tree-2",
+        "tag": "m2-city-detail"
+      }
+    },
+    "plaza-planter-nw-tree-3-trunk": {
+      "name": "Plaza tree trunk",
+      "id": "plaza-planter-nw-tree-3-trunk",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -38,
+        "y": 1.9,
+        "z": -37.5
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 0.22,
+          "radiusBottom": 0.22,
+          "height": 2.6,
+          "radialSegments": 8,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1,
+          "height": 1,
+          "depth": 1
+        },
+        "type": "cylinder"
+      },
+      "color": "#3a2e24",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CYLINDER"
+      },
+      "script": {
+        "identifier": "plaza-planter-nw-tree-3-trunk",
+        "tag": "m2-city-detail"
+      }
+    },
+    "plaza-planter-nw-tree-3": {
+      "name": "Plaza tree",
+      "id": "plaza-planter-nw-tree-3",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -38,
+        "y": 4.4,
+        "z": -37.5
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1.9,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1,
+          "height": 1,
+          "depth": 1
+        },
+        "type": "sphere"
+      },
+      "color": "#24482f",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "SPHERE"
+      },
+      "script": {
+        "identifier": "plaza-planter-nw-tree-3",
+        "tag": "m2-city-detail"
+      }
+    },
+    "plaza-planter-ne": {
+      "name": "Plaza planter ne",
+      "id": "plaza-planter-ne",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 38,
+        "y": 0.3,
+        "z": -40
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 12,
+          "height": 0.6,
+          "depth": 10
+        },
+        "type": "box"
+      },
+      "color": "#4b4843",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "plaza-planter-ne",
+        "tag": "m2-city-detail"
+      }
+    },
+    "plaza-planter-ne-soil": {
+      "name": "Plaza planter ne soil",
+      "id": "plaza-planter-ne-soil",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 38,
+        "y": 0.62,
+        "z": -40
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 11.2,
+          "height": 0.04,
+          "depth": 9.2
+        },
+        "type": "box"
+      },
+      "color": "#2b3a26",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "plaza-planter-ne-soil",
+        "tag": "m2-city-detail"
+      }
+    },
+    "plaza-planter-ne-tree-1-trunk": {
+      "name": "Plaza tree trunk",
+      "id": "plaza-planter-ne-tree-1-trunk",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 34.5,
+        "y": 1.9,
+        "z": -42
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 0.22,
+          "radiusBottom": 0.22,
+          "height": 2.6,
+          "radialSegments": 8,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1,
+          "height": 1,
+          "depth": 1
+        },
+        "type": "cylinder"
+      },
+      "color": "#3a2e24",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CYLINDER"
+      },
+      "script": {
+        "identifier": "plaza-planter-ne-tree-1-trunk",
+        "tag": "m2-city-detail"
+      }
+    },
+    "plaza-planter-ne-tree-1": {
+      "name": "Plaza tree",
+      "id": "plaza-planter-ne-tree-1",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 34.5,
+        "y": 4.4,
+        "z": -42
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1.9,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1,
+          "height": 1,
+          "depth": 1
+        },
+        "type": "sphere"
+      },
+      "color": "#24482f",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "SPHERE"
+      },
+      "script": {
+        "identifier": "plaza-planter-ne-tree-1",
+        "tag": "m2-city-detail"
+      }
+    },
+    "plaza-planter-ne-tree-2-trunk": {
+      "name": "Plaza tree trunk",
+      "id": "plaza-planter-ne-tree-2-trunk",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 41,
+        "y": 1.9,
+        "z": -42.5
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 0.22,
+          "radiusBottom": 0.22,
+          "height": 2.6,
+          "radialSegments": 8,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1,
+          "height": 1,
+          "depth": 1
+        },
+        "type": "cylinder"
+      },
+      "color": "#3a2e24",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CYLINDER"
+      },
+      "script": {
+        "identifier": "plaza-planter-ne-tree-2-trunk",
+        "tag": "m2-city-detail"
+      }
+    },
+    "plaza-planter-ne-tree-2": {
+      "name": "Plaza tree",
+      "id": "plaza-planter-ne-tree-2",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 41,
+        "y": 4.4,
+        "z": -42.5
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1.9,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1,
+          "height": 1,
+          "depth": 1
+        },
+        "type": "sphere"
+      },
+      "color": "#2f5a3d",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "SPHERE"
+      },
+      "script": {
+        "identifier": "plaza-planter-ne-tree-2",
+        "tag": "m2-city-detail"
+      }
+    },
+    "plaza-planter-ne-tree-3-trunk": {
+      "name": "Plaza tree trunk",
+      "id": "plaza-planter-ne-tree-3-trunk",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 38,
+        "y": 1.9,
+        "z": -37.5
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 0.22,
+          "radiusBottom": 0.22,
+          "height": 2.6,
+          "radialSegments": 8,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1,
+          "height": 1,
+          "depth": 1
+        },
+        "type": "cylinder"
+      },
+      "color": "#3a2e24",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CYLINDER"
+      },
+      "script": {
+        "identifier": "plaza-planter-ne-tree-3-trunk",
+        "tag": "m2-city-detail"
+      }
+    },
+    "plaza-planter-ne-tree-3": {
+      "name": "Plaza tree",
+      "id": "plaza-planter-ne-tree-3",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 38,
+        "y": 4.4,
+        "z": -37.5
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1.9,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1,
+          "height": 1,
+          "depth": 1
+        },
+        "type": "sphere"
+      },
+      "color": "#24482f",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "SPHERE"
+      },
+      "script": {
+        "identifier": "plaza-planter-ne-tree-3",
+        "tag": "m2-city-detail"
+      }
+    },
+    "plaza-planter-sw": {
+      "name": "Plaza planter sw",
+      "id": "plaza-planter-sw",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -38,
+        "y": 0.3,
+        "z": 36
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 12,
+          "height": 0.6,
+          "depth": 10
+        },
+        "type": "box"
+      },
+      "color": "#4b4843",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "plaza-planter-sw",
+        "tag": "m2-city-detail"
+      }
+    },
+    "plaza-planter-sw-soil": {
+      "name": "Plaza planter sw soil",
+      "id": "plaza-planter-sw-soil",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -38,
+        "y": 0.62,
+        "z": 36
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 11.2,
+          "height": 0.04,
+          "depth": 9.2
+        },
+        "type": "box"
+      },
+      "color": "#2b3a26",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "plaza-planter-sw-soil",
+        "tag": "m2-city-detail"
+      }
+    },
+    "plaza-planter-sw-tree-1-trunk": {
+      "name": "Plaza tree trunk",
+      "id": "plaza-planter-sw-tree-1-trunk",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -41.5,
+        "y": 1.9,
+        "z": 34
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 0.22,
+          "radiusBottom": 0.22,
+          "height": 2.6,
+          "radialSegments": 8,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1,
+          "height": 1,
+          "depth": 1
+        },
+        "type": "cylinder"
+      },
+      "color": "#3a2e24",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CYLINDER"
+      },
+      "script": {
+        "identifier": "plaza-planter-sw-tree-1-trunk",
+        "tag": "m2-city-detail"
+      }
+    },
+    "plaza-planter-sw-tree-1": {
+      "name": "Plaza tree",
+      "id": "plaza-planter-sw-tree-1",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -41.5,
+        "y": 4.4,
+        "z": 34
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1.9,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1,
+          "height": 1,
+          "depth": 1
+        },
+        "type": "sphere"
+      },
+      "color": "#24482f",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "SPHERE"
+      },
+      "script": {
+        "identifier": "plaza-planter-sw-tree-1",
+        "tag": "m2-city-detail"
+      }
+    },
+    "plaza-planter-sw-tree-2-trunk": {
+      "name": "Plaza tree trunk",
+      "id": "plaza-planter-sw-tree-2-trunk",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -35,
+        "y": 1.9,
+        "z": 33.5
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 0.22,
+          "radiusBottom": 0.22,
+          "height": 2.6,
+          "radialSegments": 8,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1,
+          "height": 1,
+          "depth": 1
+        },
+        "type": "cylinder"
+      },
+      "color": "#3a2e24",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CYLINDER"
+      },
+      "script": {
+        "identifier": "plaza-planter-sw-tree-2-trunk",
+        "tag": "m2-city-detail"
+      }
+    },
+    "plaza-planter-sw-tree-2": {
+      "name": "Plaza tree",
+      "id": "plaza-planter-sw-tree-2",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -35,
+        "y": 4.4,
+        "z": 33.5
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1.9,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1,
+          "height": 1,
+          "depth": 1
+        },
+        "type": "sphere"
+      },
+      "color": "#2f5a3d",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "SPHERE"
+      },
+      "script": {
+        "identifier": "plaza-planter-sw-tree-2",
+        "tag": "m2-city-detail"
+      }
+    },
+    "plaza-planter-sw-tree-3-trunk": {
+      "name": "Plaza tree trunk",
+      "id": "plaza-planter-sw-tree-3-trunk",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -38,
+        "y": 1.9,
+        "z": 38.5
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 0.22,
+          "radiusBottom": 0.22,
+          "height": 2.6,
+          "radialSegments": 8,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1,
+          "height": 1,
+          "depth": 1
+        },
+        "type": "cylinder"
+      },
+      "color": "#3a2e24",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CYLINDER"
+      },
+      "script": {
+        "identifier": "plaza-planter-sw-tree-3-trunk",
+        "tag": "m2-city-detail"
+      }
+    },
+    "plaza-planter-sw-tree-3": {
+      "name": "Plaza tree",
+      "id": "plaza-planter-sw-tree-3",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -38,
+        "y": 4.4,
+        "z": 38.5
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1.9,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1,
+          "height": 1,
+          "depth": 1
+        },
+        "type": "sphere"
+      },
+      "color": "#24482f",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "SPHERE"
+      },
+      "script": {
+        "identifier": "plaza-planter-sw-tree-3",
+        "tag": "m2-city-detail"
+      }
+    },
+    "plaza-planter-se": {
+      "name": "Plaza planter se",
+      "id": "plaza-planter-se",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 38,
+        "y": 0.3,
+        "z": 36
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 12,
+          "height": 0.6,
+          "depth": 10
+        },
+        "type": "box"
+      },
+      "color": "#4b4843",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "plaza-planter-se",
+        "tag": "m2-city-detail"
+      }
+    },
+    "plaza-planter-se-soil": {
+      "name": "Plaza planter se soil",
+      "id": "plaza-planter-se-soil",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 38,
+        "y": 0.62,
+        "z": 36
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 11.2,
+          "height": 0.04,
+          "depth": 9.2
+        },
+        "type": "box"
+      },
+      "color": "#2b3a26",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "plaza-planter-se-soil",
+        "tag": "m2-city-detail"
+      }
+    },
+    "plaza-planter-se-tree-1-trunk": {
+      "name": "Plaza tree trunk",
+      "id": "plaza-planter-se-tree-1-trunk",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 34.5,
+        "y": 1.9,
+        "z": 34
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 0.22,
+          "radiusBottom": 0.22,
+          "height": 2.6,
+          "radialSegments": 8,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1,
+          "height": 1,
+          "depth": 1
+        },
+        "type": "cylinder"
+      },
+      "color": "#3a2e24",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CYLINDER"
+      },
+      "script": {
+        "identifier": "plaza-planter-se-tree-1-trunk",
+        "tag": "m2-city-detail"
+      }
+    },
+    "plaza-planter-se-tree-1": {
+      "name": "Plaza tree",
+      "id": "plaza-planter-se-tree-1",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 34.5,
+        "y": 4.4,
+        "z": 34
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1.9,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1,
+          "height": 1,
+          "depth": 1
+        },
+        "type": "sphere"
+      },
+      "color": "#24482f",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "SPHERE"
+      },
+      "script": {
+        "identifier": "plaza-planter-se-tree-1",
+        "tag": "m2-city-detail"
+      }
+    },
+    "plaza-planter-se-tree-2-trunk": {
+      "name": "Plaza tree trunk",
+      "id": "plaza-planter-se-tree-2-trunk",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 41,
+        "y": 1.9,
+        "z": 33.5
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 0.22,
+          "radiusBottom": 0.22,
+          "height": 2.6,
+          "radialSegments": 8,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1,
+          "height": 1,
+          "depth": 1
+        },
+        "type": "cylinder"
+      },
+      "color": "#3a2e24",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CYLINDER"
+      },
+      "script": {
+        "identifier": "plaza-planter-se-tree-2-trunk",
+        "tag": "m2-city-detail"
+      }
+    },
+    "plaza-planter-se-tree-2": {
+      "name": "Plaza tree",
+      "id": "plaza-planter-se-tree-2",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 41,
+        "y": 4.4,
+        "z": 33.5
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1.9,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1,
+          "height": 1,
+          "depth": 1
+        },
+        "type": "sphere"
+      },
+      "color": "#2f5a3d",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "SPHERE"
+      },
+      "script": {
+        "identifier": "plaza-planter-se-tree-2",
+        "tag": "m2-city-detail"
+      }
+    },
+    "plaza-planter-se-tree-3-trunk": {
+      "name": "Plaza tree trunk",
+      "id": "plaza-planter-se-tree-3-trunk",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 38,
+        "y": 1.9,
+        "z": 38.5
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 0.22,
+          "radiusBottom": 0.22,
+          "height": 2.6,
+          "radialSegments": 8,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1,
+          "height": 1,
+          "depth": 1
+        },
+        "type": "cylinder"
+      },
+      "color": "#3a2e24",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CYLINDER"
+      },
+      "script": {
+        "identifier": "plaza-planter-se-tree-3-trunk",
+        "tag": "m2-city-detail"
+      }
+    },
+    "plaza-planter-se-tree-3": {
+      "name": "Plaza tree",
+      "id": "plaza-planter-se-tree-3",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 38,
+        "y": 4.4,
+        "z": 38.5
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1.9,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1,
+          "height": 1,
+          "depth": 1
+        },
+        "type": "sphere"
+      },
+      "color": "#24482f",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "SPHERE"
+      },
+      "script": {
+        "identifier": "plaza-planter-se-tree-3",
+        "tag": "m2-city-detail"
+      }
+    },
+    "plaza-mast-w": {
+      "name": "Plaza light mast w",
+      "id": "plaza-mast-w",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -26,
+        "y": 4.5,
+        "z": -14
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 0.22,
+          "radiusBottom": 0.22,
+          "height": 9,
+          "radialSegments": 10,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1,
+          "height": 1,
+          "depth": 1
+        },
+        "type": "cylinder"
+      },
+      "color": "#1c1f26",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CYLINDER"
+      },
+      "script": {
+        "identifier": "plaza-mast-w",
+        "tag": "m2-city-detail"
+      }
+    },
+    "plaza-mast-w-light": {
+      "name": "Plaza mast light w",
+      "id": "plaza-mast-w-light",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -26,
+        "y": 9.3,
+        "z": -14
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 0.45,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1,
+          "height": 1,
+          "depth": 1
+        },
+        "type": "sphere"
+      },
+      "color": "#fff1cf",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "plugins": [
+        {
+          "id": "FresnelGlowPlugin",
+          "color": "#f5b24a",
+          "intensity": 1.8,
+          "power": 1.4,
+          "speed": 0.4,
+          "pulse": 1
+        }
+      ],
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "SPHERE"
+      },
+      "script": {
+        "identifier": "plaza-mast-w-light",
+        "tag": "m2-city-detail"
+      }
+    },
+    "plaza-mast-e": {
+      "name": "Plaza light mast e",
+      "id": "plaza-mast-e",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 26,
+        "y": 4.5,
+        "z": -14
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 0.22,
+          "radiusBottom": 0.22,
+          "height": 9,
+          "radialSegments": 10,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1,
+          "height": 1,
+          "depth": 1
+        },
+        "type": "cylinder"
+      },
+      "color": "#1c1f26",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CYLINDER"
+      },
+      "script": {
+        "identifier": "plaza-mast-e",
+        "tag": "m2-city-detail"
+      }
+    },
+    "plaza-mast-e-light": {
+      "name": "Plaza mast light e",
+      "id": "plaza-mast-e-light",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 26,
+        "y": 9.3,
+        "z": -14
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 0.45,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1,
+          "height": 1,
+          "depth": 1
+        },
+        "type": "sphere"
+      },
+      "color": "#fff1cf",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "plugins": [
+        {
+          "id": "FresnelGlowPlugin",
+          "color": "#f5b24a",
+          "intensity": 1.8,
+          "power": 1.4,
+          "speed": 0.4,
+          "pulse": 1
+        }
+      ],
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "SPHERE"
+      },
+      "script": {
+        "identifier": "plaza-mast-e-light",
+        "tag": "m2-city-detail"
+      }
+    },
+    "plaza-mast-sw": {
+      "name": "Plaza light mast sw",
+      "id": "plaza-mast-sw",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -26,
+        "y": 4.5,
+        "z": 30
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 0.22,
+          "radiusBottom": 0.22,
+          "height": 9,
+          "radialSegments": 10,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1,
+          "height": 1,
+          "depth": 1
+        },
+        "type": "cylinder"
+      },
+      "color": "#1c1f26",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CYLINDER"
+      },
+      "script": {
+        "identifier": "plaza-mast-sw",
+        "tag": "m2-city-detail"
+      }
+    },
+    "plaza-mast-sw-light": {
+      "name": "Plaza mast light sw",
+      "id": "plaza-mast-sw-light",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -26,
+        "y": 9.3,
+        "z": 30
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 0.45,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1,
+          "height": 1,
+          "depth": 1
+        },
+        "type": "sphere"
+      },
+      "color": "#fff1cf",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "plugins": [
+        {
+          "id": "FresnelGlowPlugin",
+          "color": "#f5b24a",
+          "intensity": 1.8,
+          "power": 1.4,
+          "speed": 0.4,
+          "pulse": 1
+        }
+      ],
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "SPHERE"
+      },
+      "script": {
+        "identifier": "plaza-mast-sw-light",
+        "tag": "m2-city-detail"
+      }
+    },
+    "plaza-mast-se": {
+      "name": "Plaza light mast se",
+      "id": "plaza-mast-se",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 26,
+        "y": 4.5,
+        "z": 30
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 0.22,
+          "radiusBottom": 0.22,
+          "height": 9,
+          "radialSegments": 10,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1,
+          "height": 1,
+          "depth": 1
+        },
+        "type": "cylinder"
+      },
+      "color": "#1c1f26",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CYLINDER"
+      },
+      "script": {
+        "identifier": "plaza-mast-se",
+        "tag": "m2-city-detail"
+      }
+    },
+    "plaza-mast-se-light": {
+      "name": "Plaza mast light se",
+      "id": "plaza-mast-se-light",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 26,
+        "y": 9.3,
+        "z": 30
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 0.45,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1,
+          "height": 1,
+          "depth": 1
+        },
+        "type": "sphere"
+      },
+      "color": "#fff1cf",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "plugins": [
+        {
+          "id": "FresnelGlowPlugin",
+          "color": "#f5b24a",
+          "intensity": 1.8,
+          "power": 1.4,
+          "speed": 0.4,
+          "pulse": 1
+        }
+      ],
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "SPHERE"
+      },
+      "script": {
+        "identifier": "plaza-mast-se-light",
+        "tag": "m2-city-detail"
+      }
+    },
+    "plaza-kiosk-w": {
+      "name": "Plaza info kiosk w",
+      "id": "plaza-kiosk-w",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -46,
+        "y": 1.4,
+        "z": 14
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 3.6,
+          "height": 2.8,
+          "depth": 3.2
+        },
+        "type": "box"
+      },
+      "color": "#2a2c32",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "plaza-kiosk-w",
+        "tag": "m2-city-detail"
+      }
+    },
+    "plaza-kiosk-w-awning": {
+      "name": "Plaza kiosk awning w",
+      "id": "plaza-kiosk-w-awning",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -46,
+        "y": 2.925,
+        "z": 14
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 4.4,
+          "height": 0.25,
+          "depth": 4
+        },
+        "type": "box"
+      },
+      "color": "#ffd98a",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "plugins": [
+        {
+          "id": "FresnelGlowPlugin",
+          "color": "#f5b24a",
+          "intensity": 1.2,
+          "power": 1.6,
+          "speed": 0.3,
+          "pulse": 1
+        }
+      ],
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "plaza-kiosk-w-awning",
+        "tag": "m2-city-detail"
+      }
+    },
+    "plaza-kiosk-e": {
+      "name": "Plaza info kiosk e",
+      "id": "plaza-kiosk-e",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 46,
+        "y": 1.4,
+        "z": 14
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 3.6,
+          "height": 2.8,
+          "depth": 3.2
+        },
+        "type": "box"
+      },
+      "color": "#2a2c32",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "plaza-kiosk-e",
+        "tag": "m2-city-detail"
+      }
+    },
+    "plaza-kiosk-e-awning": {
+      "name": "Plaza kiosk awning e",
+      "id": "plaza-kiosk-e-awning",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 46,
+        "y": 2.925,
+        "z": 14
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 4.4,
+          "height": 0.25,
+          "depth": 4
+        },
+        "type": "box"
+      },
+      "color": "#ffd98a",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "plugins": [
+        {
+          "id": "FresnelGlowPlugin",
+          "color": "#f5b24a",
+          "intensity": 1.2,
+          "power": 1.6,
+          "speed": 0.3,
+          "pulse": 1
+        }
+      ],
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "plaza-kiosk-e-awning",
+        "tag": "m2-city-detail"
+      }
+    },
     "portal-plaza-hub": {
       "name": "Portal Skyfall Plaza → Hub (sky lift)",
       "id": "portal-plaza-hub",

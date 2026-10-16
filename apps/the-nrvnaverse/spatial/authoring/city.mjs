@@ -175,6 +175,24 @@ function plazaDetails() {
   for (const [k, x, z] of [["w", -16, 14], ["e", 16, 14], ["sw", -11, 27], ["se", 11, 27]]) {
     items.push(slab(`plaza-bench-${k}`, Number(x), 0, Number(z), [3.2, 0.45, 0.9], { name: `Plaza bench ${k}`, color: PALETTE.stoneLight, rotation: { x: 0, y: deg(Number(x) < 0 ? 90 : -90), z: 0 }, tag: TAGS.detail }));
   }
+  // Dressing (M2 Tier 2): four planters with trees in the quadrants, light masts, two info kiosks.
+  // The four axes stay open (north to North Row and the roof trail, west / east to the districts, south to South Row).
+  for (const [k, x, z] of [["nw", -38, -40], ["ne", 38, -40], ["sw", -38, 36], ["se", 38, 36]]) {
+    items.push(slab(`plaza-planter-${k}`, Number(x), 0, Number(z), [12, 0.6, 10], { name: `Plaza planter ${k}`, color: "#4b4843", tag: TAGS.detail }));
+    items.push(slab(`plaza-planter-${k}-soil`, Number(x), 0.6, Number(z), [11.2, 0.04, 9.2], { name: `Plaza planter ${k} soil`, color: "#2b3a26", collider: "none", tag: TAGS.detail }));
+    for (const [i, [dx, dz]] of [[-3.5, -2], [3, -2.5], [0, 2.5]].entries()) {
+      items.push(column(`plaza-planter-${k}-tree-${i + 1}-trunk`, Number(x) + dx, 0.6, Number(z) + dz, 0.22, 2.6, { name: "Plaza tree trunk", color: "#3a2e24", segments: 8, collider: "none", tag: TAGS.detail }));
+      items.push(sphere(`plaza-planter-${k}-tree-${i + 1}`, v(Number(x) + dx, 4.4, Number(z) + dz), 1.9, { name: "Plaza tree", color: i === 1 ? "#2f5a3d" : "#24482f", collider: "none", tag: TAGS.detail }));
+    }
+  }
+  for (const [k, x, z] of [["w", -26, -14], ["e", 26, -14], ["sw", -26, 30], ["se", 26, 30]]) {
+    items.push(column(`plaza-mast-${k}`, Number(x), 0, Number(z), 0.22, 9, { name: `Plaza light mast ${k}`, color: PALETTE.charcoal, segments: 10, tag: TAGS.detail }));
+    items.push(sphere(`plaza-mast-${k}-light`, v(Number(x), 9.3, Number(z)), 0.45, { name: `Plaza mast light ${k}`, color: "#fff1cf", collider: "none", plugins: [glow(PALETTE.ember, { intensity: 1.8, power: 1.4, speed: 0.4, pulse: 1 })], tag: TAGS.detail }));
+  }
+  for (const [k, x] of [["w", -46], ["e", 46]]) {
+    items.push(slab(`plaza-kiosk-${k}`, Number(x), 0, 14, [3.6, 2.8, 3.2], { name: `Plaza info kiosk ${k}`, color: "#2a2c32", tag: TAGS.detail }));
+    items.push(slab(`plaza-kiosk-${k}-awning`, Number(x), 2.8, 14, [4.4, 0.25, 4], { name: `Plaza kiosk awning ${k}`, color: PALETTE.warmLight, collider: "none", plugins: [glow(PALETTE.ember, { intensity: 1.2, power: 1.6, speed: 0.3, pulse: 1 })], tag: TAGS.detail }));
+  }
   // Portal last: the lift is vertical travel to the Hub (a meaningful loading boundary).
   items.push(box("portal-plaza-hub", v(0, 1.5, LZ), [5, 3, 5], { name: "Portal Skyfall Plaza → Hub (sky lift)", color: PALETTE.warmLight, opacity: 0.18, collider: "sensor", castShadow: false, receiveShadow: false, tag: TAGS.portal }));
   return {
