@@ -148,7 +148,8 @@ function plazaDetails() {
   const LZ = -37; // lift under the Hub's keel
   items.push(column("plaza-lift-pad", 0, 0.0, LZ, 4.2, 0.04, { name: "Sky lift pad", color: "#2a2a2e", segments: 40, collider: "none", castShadow: false, tag: TAGS.detail }));
   items.push(column("plaza-lift-ring", 0, 0.05, LZ, 4.6, 0.04, { name: "Sky lift ring", color: PALETTE.warmLight, opacity: 0.8, segments: 48, collider: "none", castShadow: false, receiveShadow: false, plugins: [pulse(PALETTE.ember, { intensity: 0.5, speed: 0.5 })], tag: TAGS.detail }));
-  for (const [k, a] of [["n", 0], ["e", 90], ["s", 180], ["w", 270]]) {
+  // Posts on the diagonals so all four approaches to the lift are open (a south post blocked the walk in from the spawn — browser-found).
+  for (const [k, a] of [["n", 45], ["e", 135], ["s", 225], ["w", 315]]) {
     const r = 5.6;
     const x = Math.sin(deg(Number(a))) * r;
     const z = LZ - Math.cos(deg(Number(a))) * r;

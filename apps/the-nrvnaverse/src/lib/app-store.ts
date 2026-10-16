@@ -27,6 +27,7 @@ import { ChunkOrchestrator } from "@/lib/spatial/chunk-orchestrator";
 import { PortalController, type PortalTrigger } from "@/lib/spatial/portal-controller";
 import { placementRefFor, registryFromSpatialIndex, type SpatialIndexFile } from "@/lib/spatial/spatial-index";
 import { StreamingController } from "@/lib/spatial/streaming-controller";
+import { beginSkyLift, liftDirection } from "@/lib/sky-lift";
 import type { CityLayer } from "@/lib/city/city-layer";
 import { FetchSpatialIndexSource, type SpatialIndexSource } from "@/lib/spatial/spatial-index-source";
 import type { ChunkRuntime, SceneStateRuntime, SensorRuntime } from "@/lib/spatial/spatial-runtime";
@@ -140,6 +141,8 @@ interface AppRun {
   detachAudition: (() => void) | null;
   /** M2: chunk key → the destination that names that place (location after a walking handoff). */
   homeOf: Map<string, string>;
+  /** M2: destination id → spawn height (sky-lift presentation of vertical travel). */
+  spawnY: Map<string, number>;
   adapter: AweSpatialAdapter | null;
   unsubscribePhase: (() => void) | null;
   popstateBound: boolean;
@@ -225,6 +228,7 @@ function createRun(): AppRun {
     detachCityLayer: null,
     detachAudition: null,
     homeOf: new Map(),
+    spawnY: new Map(),
     adapter: null,
     unsubscribePhase: null,
     popstateBound: false,
@@ -331,6 +335,7 @@ async function executeBoot(current: AppRun, options: BootOptions): Promise<void>
         }
       }
     }
+    current.spawnY = new Map(Object.entries(spatialIndex.destinations).map(([id, d]) => [id, d.spawn.position.y]));
     // M2 streaming: walking between city cells / falling off the Hub hands the visitor to the next chunk.
     if (spatialIndex.streaming) {
       current.homeOf = homeDestinations(spatialIndex, state.loaded.index.byId);
@@ -540,7 +545,11 @@ export async function travelToDestination(destinationId: string, options: Travel
   const requestId = ++travelSeq;
   appStore.update(beginTravel(state, target));
   const startedAt = now();
-  const result = await current.adapter.travelTo(target.id);
+  // M2: vertical travel (Hub ↔ city) is presented as a sky lift; presentation only, never the outcome.
+  const targetY = current.spawnY.get(target.id);
+  const direction = targetY === undefined ? null : liftDirection(current.runtime?.getVisitorPosition?.()?.y ?? null, targetY);
+  const endLift = direction && !(target.gates?.length) ? beginSkyLift(direction, target.name) : null;
+  const result = await current.adapter.travelTo(target.id).finally(() => endLift?.());
   // Stale: a newer travel owns the state now, or the run was disposed (disposal bumps the
   // sequence). The adapter also reports `superseded`, but the store guards independently so no
   // ordering of adapter results can leak an old outcome into state, diagnostics or the URL.

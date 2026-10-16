@@ -16,7 +16,7 @@
       "dataUrl": "/data/spatial/chunks/city-northwest.770f2792b894855a000e0d9a2862a1e8.json"
     },
     "city-plaza": {
-      "dataUrl": "/data/spatial/chunks/city-plaza.5f48a0986f03d9d4728dfad1c007a9f9.json"
+      "dataUrl": "/data/spatial/chunks/city-plaza.097be8abeee3690d2a6e3b3c2c8b9615.json"
     },
     "city-south": {
       "dataUrl": "/data/spatial/chunks/city-south.3c687e9510496bfd62af037a17592f95.json"
@@ -690,7 +690,7 @@
   },
   "layers": {
     "city": {
-      "dataUrl": "/data/spatial/layers/city.7c6b733b31b5fab6a2951a544d0f3960.json"
+      "dataUrl": "/data/spatial/layers/city.7bc7a6b2cb292827503d1d24f16554a4.json"
     }
   },
   "streaming": {

@@ -10,6 +10,7 @@ import { useInteractionMode } from "@/lib/interaction-mode";
 import { DestinationView } from "@/components/destination-view";
 import { DirectoryNav } from "@/components/directory-nav";
 import { EngineCanvas } from "@/components/engine-canvas";
+import { SkyLiftVeil } from "@/components/sky-lift-veil";
 import { JumpButton } from "@/components/jump-button";
 import { Notices } from "@/components/notices";
 import { SpatialPanel } from "@/components/spatial-panel";
@@ -67,6 +68,7 @@ export function AppShell() {
   return (
     <div className="fixed inset-0 overflow-hidden bg-black text-neutral-100">
       <EngineCanvas />
+      <SkyLiftVeil />
 
       {loading && (
         <div className="absolute inset-0 z-30 flex flex-col items-center justify-center gap-2 bg-neutral-950 p-6 text-center" data-app-phase={state.phase}>
