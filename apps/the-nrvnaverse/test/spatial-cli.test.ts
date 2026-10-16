@@ -141,6 +141,8 @@ describe("spatial CLI — generated-output ownership with content-addressed name
       d.config.chunks = d.config.chunks.filter((c: Mutable) => c.key !== "fashion-culture");
       for (const p of d.config.placements) if (p.chunkKey === "fashion-culture") p.chunkKey = "hub";
       for (const p of d.config.portals) if (p.chunkKey === "fashion-culture") p.chunkKey = "hub";
+      // M2: the fashion cell leaves the streaming grid with its chunk.
+      d.config.streaming.cells = d.config.streaming.cells.filter((c: Mutable) => c.chunkKey !== "fashion-culture");
       // Experience bindings follow their components: zones re-own, the hidden sets merge (one entry per chunk),
       // and a "return from fashion-culture" arrival rule has no chunk to come from any more.
       for (const z of d.config.experience.zones) if (z.chunkKey === "fashion-culture") z.chunkKey = "hub";
@@ -153,7 +155,7 @@ describe("spatial CLI — generated-output ownership with content-addressed name
         d.config.experience.hidden = hidden.filter((h) => h.chunkKey !== "fashion-culture");
       }
     });
-    expect(smaller.chunkKeys).toEqual(["cannabis-21", "hub", "music", "music-club"]);
+    expect(smaller.chunkKeys).toEqual(["cannabis-21", "city-north", "city-northeast", "city-northwest", "city-plaza", "city-south", "city-southeast", "city-southwest", "hub", "music", "music-club"]);
     // The removed chunk's file AND the previous Hub version (the Hub content grew) are stale content versions.
     const staleNames = [full.chunkFiles["fashion-culture"], full.chunkFiles.hub].sort();
     expect(smaller.chunkFiles.hub).not.toBe(full.chunkFiles.hub);

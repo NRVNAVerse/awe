@@ -26,14 +26,71 @@ import { composeHub } from "./hub.mjs";
 import { composeMusic } from "./music.mjs";
 import { composeFashion } from "./fashion.mjs";
 import { composeClub } from "./club.mjs";
+import { composeCannabis } from "./cannabis.mjs";
+import { CHUNK_ORIGINS, CITY_CELLS, CITY_CELL_CHUNKS, CITY_DESTINATION_ID, buildCityLayer, cellKit, composeCityCell, proxyOf, streamingConfig } from "./city.mjs";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const sourceDir = join(here, "..", "source");
 const scenePath = join(sourceDir, "scene.m0.json");
 const configPath = join(sourceDir, "spatial-config.m0.json");
+/** The far-field city layer source (composed; the pipeline content-addresses it). */
+export const CITY_LAYER_SOURCE = "city-layer.m2.json";
+const layerPath = join(sourceDir, CITY_LAYER_SOURCE);
 
 /** chunk key → composer */
-const COMPOSERS = { hub: composeHub, music: composeMusic, "fashion-culture": composeFashion, "music-club": composeClub };
+const COMPOSERS = {
+  hub: composeHub,
+  music: composeMusic,
+  "fashion-culture": composeFashion,
+  "music-club": composeClub,
+  "cannabis-21": composeCannabis,
+  ...Object.fromEntries(CITY_CELL_CHUNKS.map((c) => [c.chunkKey, () => composeCityCell(c.chunkKey)])),
+};
+
+/**
+ * Spawns in each chunk's LOCAL authoring frame (M1 coordinates); `compose` writes the world spawn
+ * (local + chunk origin) into the placements. Yaw 0 faces -Z.
+ */
+const LOCAL_SPAWNS = Object.freeze({
+  dst_7g19n1vm9ackw8a0: { chunkKey: "hub", position: { x: 0, y: 1, z: 6 } },
+  dst_gm3xs4a3tws7bgh3: { chunkKey: "music", position: { x: -70, y: 1, z: 6 } },
+  dst_1qtfn9qjg9kf6jyd: { chunkKey: "music", position: { x: -70, y: 1, z: -34 } },
+  dst_9c4wxtpec8awsx1q: { chunkKey: "fashion-culture", position: { x: 70, y: 1, z: 6 } },
+  dst_tgfh5h5jvm3wj0w7: { chunkKey: "fashion-culture", position: { x: 70, y: 2, z: -36 } },
+  dst_441dtdafq3e3ehjn: { chunkKey: "cannabis-21", position: { x: 0, y: 1, z: -114 } },
+  dst_vfkz626za0vra89j: { chunkKey: "cannabis-21", position: { x: 0, y: 1, z: -154 } },
+  dst_gqq90k2404cy9nf0: { chunkKey: "music-club", position: { x: -70, y: 1, z: 75.5 } },
+  // The City lands on Skyfall Plaza, south of the landing ring, facing the sky lift and the Hub.
+  [CITY_DESTINATION_ID]: { chunkKey: "city-plaza", position: { x: 0, y: 1, z: 40 } },
+});
+
+/** M2 global atmosphere: the city needs a deeper fog and a safety ground below the streets. */
+const GLOBAL_OVERRIDES = Object.freeze({
+  // Late twilight: the sun just under the horizon so the city's window light carries the scene.
+  background: { options: { type: "sky", skyOpts: { turbidity: 9, rayleigh: 2.6, mieCoefficient: 0.006, mieDirectionalG: 0.86, azimuth: 205, elevation: -0.6 } } },
+  fog: { fadeColor: "#1d1c2c", near: 240, far: 2300 },
+  // The terrain is a safety net only (the far-field layer draws the streets at y = 0).
+  ground: { position: { x: 0, y: -3, z: 0 }, scale: { x: 760, y: 1, z: 760 } },
+  lighting: { lightPosition: { x: -60, y: 260, z: 140 }, size: 420, far: 900 },
+});
+
+/** @param {number} n */
+const r3 = (n) => Math.round(n * 1000) / 1000;
+
+/**
+ * Translate every component of a composed chunk by its world origin (positions only; sizes and
+ * rotations are frame-independent).
+ * @param {Record<string, any>} components @param {{ x: number; y: number; z: number } | undefined} origin
+ */
+function translate(components, origin) {
+  if (!origin) return components;
+  /** @type {Record<string, any>} */
+  const out = {};
+  for (const [id, c] of Object.entries(components)) {
+    out[id] = c.position ? { ...c, position: { x: r3(c.position.x + origin.x), y: r3(c.position.y + origin.y), z: r3(c.position.z + origin.z) } } : c;
+  }
+  return out;
+}
 
 /** @param {Record<string, unknown>} obj */
 const serialize = (obj) => JSON.stringify(obj, null, 2) + "\n";
@@ -53,10 +110,33 @@ export function compose() {
   let thresholds = [...(config.thresholds ?? [])];
   let thresholdsTouched = false;
 
+  // M2: the walkable city cells are chunks too (appended once, in cell order).
+  for (const cell of CITY_CELL_CHUNKS) {
+    if (!config.chunks.some((/** @type {{ key: string }} */ c) => c.key === cell.chunkKey)) config.chunks.push({ key: cell.chunkKey, label: `City — ${cell.label}`, componentIds: [] });
+  }
+  /** @type {Record<string, Record<string, any>>} chunk key → final (world) components, for the proxies */
+  const composedByChunk = {};
+  /** @type {Array<{ componentId: string; chunkKey: string; destinationId: string }>} */
+  const composedPortals = [];
+
   for (const chunk of config.chunks) {
-    const composer = COMPOSERS[chunk.key];
+    const composer = /** @type {Record<string, () => any>} */ (COMPOSERS)[chunk.key];
     if (!composer) continue;
-    const { components, componentIds, experience: composed, thresholds: composedThresholds } = composer();
+    const raw = composer();
+    const { experience: composed, thresholds: composedThresholds } = raw;
+    for (const p of raw.portals ?? []) composedPortals.push({ componentId: p.componentId, chunkKey: chunk.key, destinationId: p.destinationId });
+    // Into the world frame, then the city kit of district cells (before their portals, which stay last).
+    let components = translate(raw.components, /** @type {Record<string, { x: number; y: number; z: number }>} */ (CHUNK_ORIGINS)[chunk.key]);
+    const districtCell = CITY_CELLS.find((c) => c.chunkKey === chunk.key && !c.chunkKey.startsWith("city-"));
+    if (districtCell) {
+      const kit = Object.fromEntries(cellKit(chunk.key, /** @type {[number, number]} */ ([...districtCell.cell])).map((it) => [String(it.id), it]));
+      const entries = Object.entries(components);
+      const firstPortal = entries.findIndex(([id]) => id.startsWith("portal-"));
+      const at = firstPortal < 0 ? entries.length : firstPortal;
+      components = Object.fromEntries([...entries.slice(0, at), ...Object.entries(kit), ...entries.slice(at)]);
+    }
+    const componentIds = Object.keys(components);
+    composedByChunk[chunk.key] = components;
     if (composedThresholds) {
       thresholdsTouched = true;
       thresholds = thresholds.filter((t) => t.chunkKey !== chunk.key).concat(composedThresholds.map((t) => ({ componentId: t.sensorId, chunkKey: chunk.key, destinationId: t.destinationId })));
@@ -92,6 +172,50 @@ export function compose() {
     chunk.componentIds = componentIds;
   }
 
+  // Spawns: local authoring frame + chunk origin (the composers own the geometry, so they own the spawns).
+  /** @type {Map<string, any>} */
+  const placements = new Map(config.placements.map((/** @type {any} */ p) => [p.destinationId, p]));
+  for (const [destinationId, local] of Object.entries(LOCAL_SPAWNS)) {
+    const o = /** @type {Record<string, { x: number; y: number; z: number }>} */ (CHUNK_ORIGINS)[local.chunkKey] ?? { x: 0, y: 0, z: 0 };
+    const prev = placements.get(destinationId);
+    placements.set(destinationId, {
+      destinationId,
+      chunkKey: local.chunkKey,
+      spawn: { position: { x: r3(local.position.x + o.x), y: r3(local.position.y + o.y), z: r3(local.position.z + o.z) }, yaw: prev?.spawn.yaw ?? 0 },
+    });
+  }
+  config.placements = [...placements.values()];
+
+  // Portal bindings declared by composers (M2: the plaza's sky lift) join the hand-kept ones.
+  for (const p of composedPortals) {
+    config.portals = config.portals.filter((/** @type {{ componentId: string }} */ q) => q.componentId !== p.componentId).concat([p]);
+  }
+
+  // Global atmosphere for the city (deterministic overrides of the hand-authored globals).
+  for (const [id, patch] of Object.entries(GLOBAL_OVERRIDES)) {
+    if (scene.components[id]) scene.components[id] = { ...scene.components[id], ...patch };
+  }
+
+  // Far-field layer: proxies of every UNGATED composed chunk (state-B geometry excluded); the gated
+  // compound is a neutral shell inside the layer, never derived from its payload.
+  const hiddenByChunk = new Map(experience.hidden.map((h) => [h.chunkKey, new Set(h.componentIds)]));
+  /** @type {Record<string, Array<Array<number | string>>>} */
+  const proxies = {};
+  for (const key of Object.keys(composedByChunk).sort()) {
+    if (key === "cannabis-21") continue;
+    const proxy = proxyOf(composedByChunk[key], hiddenByChunk.get(key) ?? new Set());
+    if (proxy.length > 0) proxies[key] = proxy;
+  }
+  const layerText = JSON.stringify(buildCityLayer({ proxies })) + "\n";
+  config.layers = [{ key: "city", source: CITY_LAYER_SOURCE }];
+  config.streaming = streamingConfig();
+  let layerPrev = "";
+  try {
+    layerPrev = readFileSync(layerPath, "utf8");
+  } catch {
+    layerPrev = "";
+  }
+
   if (experienceTouched) {
     const byChunk = (/** @type {{ chunkKey: string }} */ a, /** @type {{ chunkKey: string }} */ b) => (a.chunkKey < b.chunkKey ? -1 : a.chunkKey > b.chunkKey ? 1 : 0);
     const byId = (/** @type {{ id?: unknown }} */ a, /** @type {{ id?: unknown }} */ b) => (String(a.id) < String(b.id) ? -1 : String(a.id) > String(b.id) ? 1 : 0);
@@ -109,10 +233,11 @@ export function compose() {
   const nextSceneText = serialize(scene);
   const nextConfigText = serialize(config);
   return {
-    changed: nextSceneText !== sceneText || nextConfigText !== configText,
+    changed: nextSceneText !== sceneText || nextConfigText !== configText || layerText !== layerPrev,
     write() {
       writeFileSync(scenePath, nextSceneText);
       writeFileSync(configPath, nextConfigText);
+      writeFileSync(layerPath, layerText);
     },
   };
 }

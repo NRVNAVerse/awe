@@ -181,12 +181,12 @@
         "z": 0.75
       },
       "lightPosition": {
-        "x": -35,
-        "y": 55,
-        "z": 75
+        "x": -60,
+        "y": 260,
+        "z": 140
       },
-      "size": 260,
-      "far": 400,
+      "size": 420,
+      "far": 900,
       "near": 1,
       "bias": -0.001
     },
@@ -198,12 +198,12 @@
       "options": {
         "type": "sky",
         "skyOpts": {
-          "turbidity": 6,
-          "rayleigh": 1.2,
-          "mieCoefficient": 0.008,
-          "mieDirectionalG": 0.85,
+          "turbidity": 9,
+          "rayleigh": 2.6,
+          "mieCoefficient": 0.006,
+          "mieDirectionalG": 0.86,
           "azimuth": 205,
-          "elevation": 1.5
+          "elevation": -0.6
         }
       }
     },
@@ -230,9 +230,9 @@
       "type": "fog",
       "kit": "cyber",
       "enabled": true,
-      "fadeColor": "#1a1826",
-      "near": 160,
-      "far": 760
+      "fadeColor": "#1d1c2c",
+      "near": 240,
+      "far": 2300
     },
     "ground": {
       "name": "Ground",
@@ -241,8 +241,8 @@
       "kit": "cyber",
       "position": {
         "x": 0,
-        "y": 0,
-        "z": -60
+        "y": -3,
+        "z": 0
       },
       "rotation": {
         "x": 0,
@@ -250,9 +250,9 @@
         "z": 0
       },
       "scale": {
-        "x": 420,
+        "x": 760,
         "y": 1,
-        "z": 420
+        "z": 760
       },
       "color": "#2a2f3a",
       "noiseEnabled": false,

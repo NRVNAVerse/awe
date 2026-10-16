@@ -91,6 +91,8 @@ export const OUTPUT = Object.freeze({
   globalSceneBase: "spatial/global-scene",
   /** `spatial/chunks/<key>.<token>.json` */
   chunksDir: "spatial/chunks",
+  /** `spatial/layers/<key>.<token>.json` (M2 far-field layers) */
+  layersDir: "spatial/layers",
 });
 
 /**
@@ -103,9 +105,16 @@ export const OUTPUT = Object.freeze({
 export const CONTENT_ADDRESSED_OUTPUT = Object.freeze({
   globalScene: /^spatial\/global-scene\.([0-9a-f]{32})\.json$/,
   chunk: /^spatial\/chunks\/([a-z0-9]+(?:-[a-z0-9]+)*)\.([0-9a-f]{32})\.json$/,
+  layer: /^spatial\/layers\/([a-z0-9]+(?:-[a-z0-9]+)*)\.([0-9a-f]{32})\.json$/,
 });
 
-const CONFIG_KEYS = ["schemaVersion", "worldId", "scene", "assetRegistry", "assetStorage", "global", "chunks", "placements", "portals", "experience", "thresholds"];
+const CONFIG_KEYS = ["schemaVersion", "worldId", "scene", "assetRegistry", "assetStorage", "global", "chunks", "placements", "portals", "experience", "thresholds", "layers", "streaming"];
+// M2 far-field layers: a named, composed data file next to the config, delivered content-addressed.
+const LAYER_KEYS = ["key", "source"];
+// M2 streaming grid: cells → chunk keys, plus the Hub release rule and a safety catch height.
+const STREAMING_KEYS = ["cellSize", "margin", "cells", "releases", "catchBelowY"];
+const STREAMING_CELL_KEYS = ["cell", "chunkKey"];
+const STREAMING_RELEASE_KEYS = ["fromChunkKey", "belowY"];
 const GLOBAL_KEYS = ["componentIds"];
 const CHUNK_KEYS = ["key", "label", "componentIds"];
 const PLACEMENT_KEYS = ["destinationId", "chunkKey", "spawn"];
@@ -155,7 +164,7 @@ const EXPERIENCE_BEAT_MAX_SECONDS = 30;
  * @typedef {{ components: Record<string, Record<string, unknown>>; [key: string]: unknown }} SceneFile
  * @typedef {{ id: string; status: string; gates?: unknown[]; spatialDestination: { platform: string; worldId?: string } | null }} DestinationRecord
  * @typedef {{ destinations: DestinationRecord[] }} DestinationsFile
- * @typedef {{ config: unknown; scene: unknown; destinations: unknown; assets?: unknown }} SpatialSourceInput
+ * @typedef {{ config: unknown; scene: unknown; destinations: unknown; assets?: unknown; layers?: unknown }} SpatialSourceInput
  *   `assets` is the parsed asset registry named by `config.assetRegistry` (null / absent when the
  *   config declares none or the file does not exist).
  * @typedef {{ code: string; path: string; message: string }} SpatialValidationError
@@ -172,6 +181,7 @@ const EXPERIENCE_BEAT_MAX_SECONDS = 30;
  *   experienceArrivalIds: string[];
  *   thresholdComponentIds: string[];
  *   assetIds: string[];
+ *   layerFiles: Record<string, string>;
  * }} SpatialArtifacts
  *   `files` is keyed by output file name relative to `public/data/` — the content-addressed names
  *   for the global scene and the chunks. `versions` maps each content-addressed file name to its
@@ -559,7 +569,109 @@ export function validateSpatialSource(input) {
     }
   }
 
+  // --- far-field layers (optional, additive; M2) ---
+  if (config.layers !== undefined) validateLayers(config.layers, input.layers, fail);
+
+  // --- streaming grid (optional, additive; M2) ---
+  // Walking between neighbouring cells hands the visitor to the next chunk without a teleport. A
+  // streamed chunk is fetched on proximity alone, so a chunk serving ANY gated destination can never
+  // be a streaming cell or a release source: gates are evaluated before a gated fetch, never skipped.
+  if (config.streaming !== undefined) validateStreaming(config.streaming, { chunkKeys, gatedChunks }, fail);
+
   return errors.length === 0 ? { ok: true, errors: [] } : { ok: false, errors };
+}
+
+/**
+ * M2 layers: `[{ key, source }]`; the source file (read by the CLI into `input.layers[key]`) must be
+ * an object `{ schemaVersion: 1, key }` naming the same key. Its content is opaque to the pipeline.
+ * @param {unknown} layers @param {unknown} sources @param {(code: string, path: string, message: string) => void} fail
+ */
+function validateLayers(layers, sources, fail) {
+  if (!Array.isArray(layers)) return fail("invalid-layers", "config.layers", "layers must be an array of { key, source }");
+  /** @type {Set<string>} */
+  const keys = new Set();
+  layers.forEach((layer, i) => {
+    const path = `config.layers[${i}]`;
+    if (!isRecord(layer)) return fail("invalid-layer", path, "layer must be an object { key, source }");
+    for (const k of Object.keys(layer)) if (!LAYER_KEYS.includes(k)) fail("unexpected-field", `${path}.${k}`, `unexpected field "${k}"`);
+    const { key, source } = layer;
+    if (!isNonEmptyString(key) || !CHUNK_KEY_PATTERN.test(key)) return fail("invalid-layer-key", `${path}.key`, `layer key ${JSON.stringify(key)} must be lowercase kebab-case`);
+    if (keys.has(key)) return fail("duplicate-layer", `${path}.key`, `layer "${key}" is declared more than once`);
+    keys.add(key);
+    if (!isNonEmptyString(source) || !SAFE_FILE_NAME.test(source)) return fail("invalid-layer-source", `${path}.source`, "source must be a plain .json file name next to the config");
+    const data = isRecord(sources) ? sources[key] : undefined;
+    if (!isRecord(data)) return fail("missing-layer-source", `${path}.source`, `layer source "${source}" is missing or not a JSON object`);
+    if (data.schemaVersion !== 1 || data.key !== key) fail("invalid-layer-source", `${path}.source`, `layer source must declare { schemaVersion: 1, key: "${key}" }`);
+  });
+}
+
+/**
+ * M2 streaming grid validation (pure reference checks).
+ * @param {unknown} streaming @param {{ chunkKeys: Set<string>; gatedChunks: Map<string, string[]> }} ctx @param {(code: string, path: string, message: string) => void} fail
+ */
+function validateStreaming(streaming, ctx, fail) {
+  if (!isRecord(streaming)) return fail("invalid-streaming", "config.streaming", "streaming must be an object { cellSize, margin, cells, releases?, catchBelowY? }");
+  for (const k of Object.keys(streaming)) if (!STREAMING_KEYS.includes(k)) fail("unexpected-field", `config.streaming.${k}`, `unexpected field "${k}"`);
+  if (!isFiniteNumber(streaming.cellSize) || streaming.cellSize <= 0) fail("invalid-streaming", "config.streaming.cellSize", "cellSize must be a positive number (metres)");
+  if (!isFiniteNumber(streaming.margin) || streaming.margin < 0 || (isFiniteNumber(streaming.cellSize) && streaming.margin >= streaming.cellSize / 2)) fail("invalid-streaming", "config.streaming.margin", "margin must be ≥ 0 and smaller than half a cell");
+  if (streaming.catchBelowY !== undefined && !isFiniteNumber(streaming.catchBelowY)) fail("invalid-streaming", "config.streaming.catchBelowY", "catchBelowY must be a number");
+  /** @param {unknown} chunkKey @param {string} path */
+  const checkChunk = (chunkKey, path) => {
+    if (!isNonEmptyString(chunkKey) || !ctx.chunkKeys.has(chunkKey)) return fail("unknown-chunk", path, `chunk ${JSON.stringify(chunkKey)} is not declared in config.chunks`);
+    const gated = ctx.gatedChunks.get(chunkKey);
+    if (gated) fail("streaming-gated-chunk", path, `chunk "${chunkKey}" serves gated destination(s) ${gated.join(", ")}; a gated chunk is never streamed by proximity`);
+  };
+  if (!Array.isArray(streaming.cells) || streaming.cells.length === 0) {
+    fail("invalid-streaming", "config.streaming.cells", "cells must be a non-empty array of { cell: [i, j], chunkKey }");
+  } else {
+    /** @type {Set<string>} */
+    const seenCells = new Set();
+    /** @type {Set<string>} */
+    const seenChunks = new Set();
+    streaming.cells.forEach((entry, i) => {
+      const path = `config.streaming.cells[${i}]`;
+      if (!isRecord(entry)) return fail("invalid-streaming-cell", path, "cell must be an object { cell: [i, j], chunkKey }");
+      for (const k of Object.keys(entry)) if (!STREAMING_CELL_KEYS.includes(k)) fail("unexpected-field", `${path}.${k}`, `unexpected field "${k}"`);
+      const { cell, chunkKey } = entry;
+      if (!Array.isArray(cell) || cell.length !== 2 || !cell.every((n) => Number.isInteger(n))) return fail("invalid-streaming-cell", `${path}.cell`, "cell must be two integers [i, j]");
+      const id = cell.join(",");
+      if (seenCells.has(id)) fail("duplicate-streaming-cell", `${path}.cell`, `cell [${id}] is mapped more than once`);
+      seenCells.add(id);
+      if (isNonEmptyString(chunkKey) && seenChunks.has(chunkKey)) fail("duplicate-streaming-chunk", `${path}.chunkKey`, `chunk "${chunkKey}" is mapped to more than one cell`);
+      if (isNonEmptyString(chunkKey)) seenChunks.add(chunkKey);
+      checkChunk(chunkKey, `${path}.chunkKey`);
+    });
+  }
+  if (streaming.releases !== undefined) {
+    if (!Array.isArray(streaming.releases)) return fail("invalid-streaming", "config.streaming.releases", "releases must be an array of { fromChunkKey, belowY }");
+    streaming.releases.forEach((entry, i) => {
+      const path = `config.streaming.releases[${i}]`;
+      if (!isRecord(entry)) return fail("invalid-streaming-release", path, "release must be an object { fromChunkKey, belowY }");
+      for (const k of Object.keys(entry)) if (!STREAMING_RELEASE_KEYS.includes(k)) fail("unexpected-field", `${path}.${k}`, `unexpected field "${k}"`);
+      checkChunk(entry.fromChunkKey, `${path}.fromChunkKey`);
+      if (!isFiniteNumber(entry.belowY)) fail("invalid-streaming-release", `${path}.belowY`, "belowY must be a number");
+    });
+  }
+}
+
+/**
+ * Deterministic index form of the (validated) streaming grid; `null` when the config has none.
+ * @param {any} streaming
+ */
+export function streamingIndexOf(streaming) {
+  if (streaming === undefined) return null;
+  /** @type {Record<string, string>} */
+  const cells = {};
+  for (const entry of [...streaming.cells].sort((a, b) => compareStrings(a.cell.join(","), b.cell.join(",")))) cells[entry.cell.join(",")] = entry.chunkKey;
+  /** @type {{ cellSize: number; margin: number; cells: Record<string, string>; releases: Array<{ fromChunkKey: string; belowY: number }>; catchBelowY?: number }} */
+  const out = {
+    cellSize: streaming.cellSize,
+    margin: streaming.margin,
+    cells,
+    releases: [...(streaming.releases ?? [])].map((r) => ({ fromChunkKey: r.fromChunkKey, belowY: r.belowY })).sort((a, b) => compareStrings(a.fromChunkKey, b.fromChunkKey)),
+  };
+  if (streaming.catchBelowY !== undefined) out.catchBelowY = streaming.catchBelowY;
+  return out;
 }
 
 /**
@@ -881,7 +993,7 @@ export function dataUrl(fileName) {
  * @param {string} fileName
  */
 export function isContentAddressedOutput(fileName) {
-  return CONTENT_ADDRESSED_OUTPUT.globalScene.test(fileName) || CONTENT_ADDRESSED_OUTPUT.chunk.test(fileName);
+  return CONTENT_ADDRESSED_OUTPUT.globalScene.test(fileName) || CONTENT_ADDRESSED_OUTPUT.chunk.test(fileName) || CONTENT_ADDRESSED_OUTPUT.layer.test(fileName);
 }
 
 /**
@@ -987,6 +1099,23 @@ export function generateSpatialArtifacts(input) {
   //    (the zone sensor geometry lives in the chunk payload), no gates, no metadata.
   const experienceIndex = experienceIndexOf(config.experience);
 
+  // H. Far-field layers (M2) — compact JSON (one line: these are large numeric arrays), named by
+  //    their own content like chunks, so a layer change is a new URL and an unchanged one is reused.
+  /** @type {Record<string, { dataUrl: string }>} */
+  const layerIndex = {};
+  /** @type {Record<string, string>} */
+  const layerFiles = {};
+  const layerSources = /** @type {Record<string, unknown>} */ (input.layers ?? {});
+  for (const layer of [...(/** @type {any} */ (config).layers ?? [])].sort((a, b) => compareStrings(a.key, b.key))) {
+    const text = `${JSON.stringify(layerSources[layer.key])}\n`;
+    const fileName = contentAddressedFileName(`${OUTPUT.layersDir}/${layer.key}`, contentVersion(text));
+    files[fileName] = text;
+    versions[fileName] = contentVersion(text);
+    layerFiles[layer.key] = fileName;
+    layerIndex[layer.key] = { dataUrl: dataUrl(fileName) };
+  }
+  const streamingIndex = streamingIndexOf(/** @type {any} */ (config).streaming);
+
   files[OUTPUT.spatialIndex] = serializeArtifact({
     schemaVersion: SPATIAL_SCHEMA_VERSION,
     worldId: config.worldId,
@@ -996,6 +1125,8 @@ export function generateSpatialArtifacts(input) {
     portals: portalIndex,
     experience: experienceIndex,
     thresholds: thresholdIndex,
+    ...(Object.keys(layerIndex).length > 0 ? { layers: layerIndex } : {}),
+    ...(streamingIndex ? { streaming: streamingIndex } : {}),
   });
 
   return {
@@ -1010,6 +1141,7 @@ export function generateSpatialArtifacts(input) {
     experienceArrivalIds: Object.keys(experienceIndex.arrivals),
     thresholdComponentIds: thresholds.map((t) => t.componentId),
     assetIds,
+    layerFiles,
   };
 }
 

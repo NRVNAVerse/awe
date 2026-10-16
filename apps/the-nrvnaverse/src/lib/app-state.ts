@@ -301,6 +301,19 @@ export function withTravelResult(state: AppState, result: TravelResult, duration
   }
 }
 
+/**
+ * M2 streaming: the visitor WALKED (or fell) into a chunk that belongs to another place. Nobody was
+ * teleported and no travel was requested, so there is no banner; the state simply records where the
+ * visitor now is. Only applies while settled — a travel in flight owns the state (and the streaming
+ * controller never hands off during travel anyway). Same destination → unchanged.
+ */
+export function withWalkedInto(state: AppState, destination: Destination, placement: SpatialPlacement): AppState {
+  if (!isSettled(state)) return state;
+  if (state.current.id === destination.id && state.placement.placementRef === placement.placementRef) return state;
+  const { loaded, entry, notices } = state;
+  return { phase: "ready", loaded, entry, current: destination, placement, notices };
+}
+
 /** Re-resolve the deep-link entry (after the URL changed) without moving anyone. */
 export function withEntry(state: AppState, search: string | URLSearchParams | URL): AppState {
   if (!isSettled(state)) return state;

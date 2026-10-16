@@ -1,0 +1,2443 @@
+{
+  "schemaVersion": 1,
+  "worldId": "the-nrvnaverse",
+  "chunkKey": "city-southwest",
+  "components": {
+    "city-southwest-ground": {
+      "name": "city-southwest-ground",
+      "id": "city-southwest-ground",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -200,
+        "y": -1,
+        "z": 200
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 240,
+          "height": 2,
+          "depth": 240
+        },
+        "type": "box"
+      },
+      "color": "#000000",
+      "opacity": 1,
+      "display": false,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "city-southwest-ground",
+        "tag": "m2-city-ground"
+      }
+    },
+    "city-southwest-b9-13-00-t0": {
+      "name": "city-southwest-b9-13-00-t0",
+      "id": "city-southwest-b9-13-00-t0",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -273,
+        "y": 11.95,
+        "z": 123.65
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 14.8,
+          "height": 23.9,
+          "depth": 16.1
+        },
+        "type": "box"
+      },
+      "color": "#000000",
+      "opacity": 1,
+      "display": false,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "city-southwest-b9-13-00-t0",
+        "tag": "m2-city-collider"
+      }
+    },
+    "city-southwest-b9-13-01-t0": {
+      "name": "city-southwest-b9-13-01-t0",
+      "id": "city-southwest-b9-13-01-t0",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -273,
+        "y": 12.15,
+        "z": 150
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 18.6,
+          "height": 24.3,
+          "depth": 20
+        },
+        "type": "box"
+      },
+      "color": "#000000",
+      "opacity": 1,
+      "display": false,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "city-southwest-b9-13-01-t0",
+        "tag": "m2-city-collider"
+      }
+    },
+    "city-southwest-b9-13-01-t1": {
+      "name": "city-southwest-b9-13-01-t1",
+      "id": "city-southwest-b9-13-01-t1",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -273,
+        "y": 31.35,
+        "z": 150
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 12,
+          "height": 14.1,
+          "depth": 13.2
+        },
+        "type": "box"
+      },
+      "color": "#000000",
+      "opacity": 1,
+      "display": false,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "city-southwest-b9-13-01-t1",
+        "tag": "m2-city-collider"
+      }
+    },
+    "city-southwest-b9-13-02-t0": {
+      "name": "city-southwest-b9-13-02-t0",
+      "id": "city-southwest-b9-13-02-t0",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -273,
+        "y": 18.2,
+        "z": 176.3
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 15.8,
+          "height": 36.4,
+          "depth": 17.2
+        },
+        "type": "box"
+      },
+      "color": "#000000",
+      "opacity": 1,
+      "display": false,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "city-southwest-b9-13-02-t0",
+        "tag": "m2-city-collider"
+      }
+    },
+    "city-southwest-b9-13-10-t0": {
+      "name": "city-southwest-b9-13-10-t0",
+      "id": "city-southwest-b9-13-10-t0",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -248,
+        "y": 11.3,
+        "z": 123.65
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 16.8,
+          "height": 22.6,
+          "depth": 18.1
+        },
+        "type": "box"
+      },
+      "color": "#000000",
+      "opacity": 1,
+      "display": false,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "city-southwest-b9-13-10-t0",
+        "tag": "m2-city-collider"
+      }
+    },
+    "city-southwest-b9-13-10-t1": {
+      "name": "city-southwest-b9-13-10-t1",
+      "id": "city-southwest-b9-13-10-t1",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -248,
+        "y": 27.8,
+        "z": 123.7
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 10.6,
+          "height": 10.4,
+          "depth": 12
+        },
+        "type": "box"
+      },
+      "color": "#000000",
+      "opacity": 1,
+      "display": false,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "city-southwest-b9-13-10-t1",
+        "tag": "m2-city-collider"
+      }
+    },
+    "city-southwest-b9-13-11-t0": {
+      "name": "city-southwest-b9-13-11-t0",
+      "id": "city-southwest-b9-13-11-t0",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -248,
+        "y": 12.7,
+        "z": 150
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 17.4,
+          "height": 25.4,
+          "depth": 18.6
+        },
+        "type": "box"
+      },
+      "color": "#000000",
+      "opacity": 1,
+      "display": false,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "city-southwest-b9-13-11-t0",
+        "tag": "m2-city-collider"
+      }
+    },
+    "city-southwest-b9-13-12-t0": {
+      "name": "city-southwest-b9-13-12-t0",
+      "id": "city-southwest-b9-13-12-t0",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -248,
+        "y": 11.35,
+        "z": 176.35
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 14.6,
+          "height": 22.7,
+          "depth": 15.9
+        },
+        "type": "box"
+      },
+      "color": "#000000",
+      "opacity": 1,
+      "display": false,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "city-southwest-b9-13-12-t0",
+        "tag": "m2-city-collider"
+      }
+    },
+    "city-southwest-b9-13-12-t1": {
+      "name": "city-southwest-b9-13-12-t1",
+      "id": "city-southwest-b9-13-12-t1",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -248,
+        "y": 28.9,
+        "z": 176.3
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 9.2,
+          "height": 12.4,
+          "depth": 10.6
+        },
+        "type": "box"
+      },
+      "color": "#000000",
+      "opacity": 1,
+      "display": false,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "city-southwest-b9-13-12-t1",
+        "tag": "m2-city-collider"
+      }
+    },
+    "city-southwest-b9-13-20-t0": {
+      "name": "city-southwest-b9-13-20-t0",
+      "id": "city-southwest-b9-13-20-t0",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -223,
+        "y": 13.45,
+        "z": 123.7
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 18.2,
+          "height": 26.9,
+          "depth": 19.6
+        },
+        "type": "box"
+      },
+      "color": "#000000",
+      "opacity": 1,
+      "display": false,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "city-southwest-b9-13-20-t0",
+        "tag": "m2-city-collider"
+      }
+    },
+    "city-southwest-b9-13-21-t0": {
+      "name": "city-southwest-b9-13-21-t0",
+      "id": "city-southwest-b9-13-21-t0",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -223,
+        "y": 13.1,
+        "z": 150
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 17,
+          "height": 26.2,
+          "depth": 18.4
+        },
+        "type": "box"
+      },
+      "color": "#000000",
+      "opacity": 1,
+      "display": false,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "city-southwest-b9-13-21-t0",
+        "tag": "m2-city-collider"
+      }
+    },
+    "city-southwest-b9-13-22-t0": {
+      "name": "city-southwest-b9-13-22-t0",
+      "id": "city-southwest-b9-13-22-t0",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -223,
+        "y": 17.35,
+        "z": 176.3
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 16.2,
+          "height": 34.7,
+          "depth": 17.6
+        },
+        "type": "box"
+      },
+      "color": "#000000",
+      "opacity": 1,
+      "display": false,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "city-southwest-b9-13-22-t0",
+        "tag": "m2-city-collider"
+      }
+    },
+    "city-southwest-b9-14-00-t0": {
+      "name": "city-southwest-b9-14-00-t0",
+      "id": "city-southwest-b9-14-00-t0",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -273,
+        "y": 14.5,
+        "z": 223
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 15.4,
+          "height": 29,
+          "depth": 15.4
+        },
+        "type": "box"
+      },
+      "color": "#000000",
+      "opacity": 1,
+      "display": false,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "city-southwest-b9-14-00-t0",
+        "tag": "m2-city-collider"
+      }
+    },
+    "city-southwest-b9-14-01-t0": {
+      "name": "city-southwest-b9-14-01-t0",
+      "id": "city-southwest-b9-14-01-t0",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -273,
+        "y": 12.65,
+        "z": 248
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 14.8,
+          "height": 25.3,
+          "depth": 14.8
+        },
+        "type": "box"
+      },
+      "color": "#000000",
+      "opacity": 1,
+      "display": false,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "city-southwest-b9-14-01-t0",
+        "tag": "m2-city-collider"
+      }
+    },
+    "city-southwest-b9-14-10-t0": {
+      "name": "city-southwest-b9-14-10-t0",
+      "id": "city-southwest-b9-14-10-t0",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -248,
+        "y": 12.35,
+        "z": 223
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 16.8,
+          "height": 24.7,
+          "depth": 16.8
+        },
+        "type": "box"
+      },
+      "color": "#000000",
+      "opacity": 1,
+      "display": false,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "city-southwest-b9-14-10-t0",
+        "tag": "m2-city-collider"
+      }
+    },
+    "city-southwest-b9-14-11-t0": {
+      "name": "city-southwest-b9-14-11-t0",
+      "id": "city-southwest-b9-14-11-t0",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -248,
+        "y": 12.15,
+        "z": 248
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 17.2,
+          "height": 24.3,
+          "depth": 17.2
+        },
+        "type": "box"
+      },
+      "color": "#000000",
+      "opacity": 1,
+      "display": false,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "city-southwest-b9-14-11-t0",
+        "tag": "m2-city-collider"
+      }
+    },
+    "city-southwest-b9-14-12-t0": {
+      "name": "city-southwest-b9-14-12-t0",
+      "id": "city-southwest-b9-14-12-t0",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -248,
+        "y": 15.15,
+        "z": 273
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 15.6,
+          "height": 30.3,
+          "depth": 15.6
+        },
+        "type": "box"
+      },
+      "color": "#000000",
+      "opacity": 1,
+      "display": false,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "city-southwest-b9-14-12-t0",
+        "tag": "m2-city-collider"
+      }
+    },
+    "city-southwest-b9-14-20-t0": {
+      "name": "city-southwest-b9-14-20-t0",
+      "id": "city-southwest-b9-14-20-t0",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -223,
+        "y": 13.45,
+        "z": 223
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 17,
+          "height": 26.9,
+          "depth": 17
+        },
+        "type": "box"
+      },
+      "color": "#000000",
+      "opacity": 1,
+      "display": false,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "city-southwest-b9-14-20-t0",
+        "tag": "m2-city-collider"
+      }
+    },
+    "city-southwest-b9-14-21-t0": {
+      "name": "city-southwest-b9-14-21-t0",
+      "id": "city-southwest-b9-14-21-t0",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -223,
+        "y": 8.75,
+        "z": 248
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 17.4,
+          "height": 17.5,
+          "depth": 17.4
+        },
+        "type": "box"
+      },
+      "color": "#000000",
+      "opacity": 1,
+      "display": false,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "city-southwest-b9-14-21-t0",
+        "tag": "m2-city-collider"
+      }
+    },
+    "city-southwest-b9-14-22-t0": {
+      "name": "city-southwest-b9-14-22-t0",
+      "id": "city-southwest-b9-14-22-t0",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -223,
+        "y": 10.3,
+        "z": 273
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 16,
+          "height": 20.6,
+          "depth": 16
+        },
+        "type": "box"
+      },
+      "color": "#000000",
+      "opacity": 1,
+      "display": false,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "city-southwest-b9-14-22-t0",
+        "tag": "m2-city-collider"
+      }
+    },
+    "city-southwest-b10-13-00-t0": {
+      "name": "city-southwest-b10-13-00-t0",
+      "id": "city-southwest-b10-13-00-t0",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -176.35,
+        "y": 13.35,
+        "z": 123.65
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 16.3,
+          "height": 26.7,
+          "depth": 16.3
+        },
+        "type": "box"
+      },
+      "color": "#000000",
+      "opacity": 1,
+      "display": false,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "city-southwest-b10-13-00-t0",
+        "tag": "m2-city-collider"
+      }
+    },
+    "city-southwest-b10-13-01-t0": {
+      "name": "city-southwest-b10-13-01-t0",
+      "id": "city-southwest-b10-13-01-t0",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -176.35,
+        "y": 8.55,
+        "z": 150
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 18.5,
+          "height": 17.1,
+          "depth": 18.4
+        },
+        "type": "box"
+      },
+      "color": "#000000",
+      "opacity": 1,
+      "display": false,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "city-southwest-b10-13-01-t0",
+        "tag": "m2-city-collider"
+      }
+    },
+    "city-southwest-b10-13-02-t0": {
+      "name": "city-southwest-b10-13-02-t0",
+      "id": "city-southwest-b10-13-02-t0",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -176.35,
+        "y": 14.65,
+        "z": 176.35
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 19.1,
+          "height": 29.3,
+          "depth": 19.1
+        },
+        "type": "box"
+      },
+      "color": "#000000",
+      "opacity": 1,
+      "display": false,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "city-southwest-b10-13-02-t0",
+        "tag": "m2-city-collider"
+      }
+    },
+    "city-southwest-b10-13-11-t0": {
+      "name": "city-southwest-b10-13-11-t0",
+      "id": "city-southwest-b10-13-11-t0",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -150,
+        "y": 10,
+        "z": 150
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 19,
+          "height": 20,
+          "depth": 19
+        },
+        "type": "box"
+      },
+      "color": "#000000",
+      "opacity": 1,
+      "display": false,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "city-southwest-b10-13-11-t0",
+        "tag": "m2-city-collider"
+      }
+    },
+    "city-southwest-b10-13-11-t1": {
+      "name": "city-southwest-b10-13-11-t1",
+      "id": "city-southwest-b10-13-11-t1",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -150,
+        "y": 25.4,
+        "z": 150
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 12.2,
+          "height": 10.8,
+          "depth": 12.2
+        },
+        "type": "box"
+      },
+      "color": "#000000",
+      "opacity": 1,
+      "display": false,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "city-southwest-b10-13-11-t1",
+        "tag": "m2-city-collider"
+      }
+    },
+    "city-southwest-b10-13-12-t0": {
+      "name": "city-southwest-b10-13-12-t0",
+      "id": "city-southwest-b10-13-12-t0",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -150,
+        "y": 13.25,
+        "z": 176.3
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 18.8,
+          "height": 26.5,
+          "depth": 18.8
+        },
+        "type": "box"
+      },
+      "color": "#000000",
+      "opacity": 1,
+      "display": false,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "city-southwest-b10-13-12-t0",
+        "tag": "m2-city-collider"
+      }
+    },
+    "city-southwest-b10-13-20-t0": {
+      "name": "city-southwest-b10-13-20-t0",
+      "id": "city-southwest-b10-13-20-t0",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -123.7,
+        "y": 12.5,
+        "z": 123.7
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 17.4,
+          "height": 25,
+          "depth": 17.4
+        },
+        "type": "box"
+      },
+      "color": "#000000",
+      "opacity": 1,
+      "display": false,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "city-southwest-b10-13-20-t0",
+        "tag": "m2-city-collider"
+      }
+    },
+    "city-southwest-b10-13-21-t0": {
+      "name": "city-southwest-b10-13-21-t0",
+      "id": "city-southwest-b10-13-21-t0",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -123.65,
+        "y": 8.35,
+        "z": 150
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 16.7,
+          "height": 16.7,
+          "depth": 16.8
+        },
+        "type": "box"
+      },
+      "color": "#000000",
+      "opacity": 1,
+      "display": false,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "city-southwest-b10-13-21-t0",
+        "tag": "m2-city-collider"
+      }
+    },
+    "city-southwest-b10-13-22-t0": {
+      "name": "city-southwest-b10-13-22-t0",
+      "id": "city-southwest-b10-13-22-t0",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -123.7,
+        "y": 9.25,
+        "z": 176.3
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 19.4,
+          "height": 18.5,
+          "depth": 19.4
+        },
+        "type": "box"
+      },
+      "color": "#000000",
+      "opacity": 1,
+      "display": false,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "city-southwest-b10-13-22-t0",
+        "tag": "m2-city-collider"
+      }
+    },
+    "city-southwest-b10-13-22-t1": {
+      "name": "city-southwest-b10-13-22-t1",
+      "id": "city-southwest-b10-13-22-t1",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -123.7,
+        "y": 25.1,
+        "z": 176.3
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 12.4,
+          "height": 13.2,
+          "depth": 12.4
+        },
+        "type": "box"
+      },
+      "color": "#000000",
+      "opacity": 1,
+      "display": false,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "city-southwest-b10-13-22-t1",
+        "tag": "m2-city-collider"
+      }
+    },
+    "city-southwest-b10-14-00-t0": {
+      "name": "city-southwest-b10-14-00-t0",
+      "id": "city-southwest-b10-14-00-t0",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -176.3,
+        "y": 12.6,
+        "z": 223
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 17.6,
+          "height": 25.2,
+          "depth": 16.2
+        },
+        "type": "box"
+      },
+      "color": "#000000",
+      "opacity": 1,
+      "display": false,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "city-southwest-b10-14-00-t0",
+        "tag": "m2-city-collider"
+      }
+    },
+    "city-southwest-b10-14-01-t0": {
+      "name": "city-southwest-b10-14-01-t0",
+      "id": "city-southwest-b10-14-01-t0",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -176.3,
+        "y": 10.25,
+        "z": 248
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 16.2,
+          "height": 20.5,
+          "depth": 14.8
+        },
+        "type": "box"
+      },
+      "color": "#000000",
+      "opacity": 1,
+      "display": false,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "city-southwest-b10-14-01-t0",
+        "tag": "m2-city-collider"
+      }
+    },
+    "city-southwest-b10-14-02-t0": {
+      "name": "city-southwest-b10-14-02-t0",
+      "id": "city-southwest-b10-14-02-t0",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -176.35,
+        "y": 8.2,
+        "z": 273
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 19.7,
+          "height": 16.4,
+          "depth": 18.4
+        },
+        "type": "box"
+      },
+      "color": "#000000",
+      "opacity": 1,
+      "display": false,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "city-southwest-b10-14-02-t0",
+        "tag": "m2-city-collider"
+      }
+    },
+    "city-southwest-b10-14-10-t0": {
+      "name": "city-southwest-b10-14-10-t0",
+      "id": "city-southwest-b10-14-10-t0",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -150,
+        "y": 13.9,
+        "z": 223
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 16.2,
+          "height": 27.8,
+          "depth": 14.8
+        },
+        "type": "box"
+      },
+      "color": "#000000",
+      "opacity": 1,
+      "display": false,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "city-southwest-b10-14-10-t0",
+        "tag": "m2-city-collider"
+      }
+    },
+    "city-southwest-b10-14-11-t0": {
+      "name": "city-southwest-b10-14-11-t0",
+      "id": "city-southwest-b10-14-11-t0",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -150,
+        "y": 9.3,
+        "z": 248
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 15.8,
+          "height": 18.6,
+          "depth": 14.6
+        },
+        "type": "box"
+      },
+      "color": "#000000",
+      "opacity": 1,
+      "display": false,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "city-southwest-b10-14-11-t0",
+        "tag": "m2-city-collider"
+      }
+    },
+    "city-southwest-b10-14-12-t0": {
+      "name": "city-southwest-b10-14-12-t0",
+      "id": "city-southwest-b10-14-12-t0",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -150,
+        "y": 10.15,
+        "z": 273
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 20.2,
+          "height": 20.3,
+          "depth": 18.8
+        },
+        "type": "box"
+      },
+      "color": "#000000",
+      "opacity": 1,
+      "display": false,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "city-southwest-b10-14-12-t0",
+        "tag": "m2-city-collider"
+      }
+    },
+    "city-southwest-b10-14-20-t0": {
+      "name": "city-southwest-b10-14-20-t0",
+      "id": "city-southwest-b10-14-20-t0",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -123.65,
+        "y": 9.1,
+        "z": 223
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 19.9,
+          "height": 18.2,
+          "depth": 18.6
+        },
+        "type": "box"
+      },
+      "color": "#000000",
+      "opacity": 1,
+      "display": false,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "city-southwest-b10-14-20-t0",
+        "tag": "m2-city-collider"
+      }
+    },
+    "city-southwest-b10-14-21-t0": {
+      "name": "city-southwest-b10-14-21-t0",
+      "id": "city-southwest-b10-14-21-t0",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -123.65,
+        "y": 9.75,
+        "z": 248
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 17.9,
+          "height": 19.5,
+          "depth": 16.6
+        },
+        "type": "box"
+      },
+      "color": "#000000",
+      "opacity": 1,
+      "display": false,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "city-southwest-b10-14-21-t0",
+        "tag": "m2-city-collider"
+      }
+    },
+    "city-southwest-b10-14-22-t0": {
+      "name": "city-southwest-b10-14-22-t0",
+      "id": "city-southwest-b10-14-22-t0",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -123.65,
+        "y": 12.25,
+        "z": 273
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 16.7,
+          "height": 24.5,
+          "depth": 15.4
+        },
+        "type": "box"
+      },
+      "color": "#000000",
+      "opacity": 1,
+      "display": false,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "city-southwest-b10-14-22-t0",
+        "tag": "m2-city-collider"
+      }
+    },
+    "city-southwest-ring-w": {
+      "name": "city-southwest-ring-w",
+      "id": "city-southwest-ring-w",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -300,
+        "y": 4.5,
+        "z": 200
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 2,
+          "height": 9,
+          "depth": 204
+        },
+        "type": "box"
+      },
+      "color": "#000000",
+      "opacity": 1,
+      "display": false,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "city-southwest-ring-w",
+        "tag": "m2-city-ring"
+      }
+    },
+    "city-southwest-ring-s": {
+      "name": "city-southwest-ring-s",
+      "id": "city-southwest-ring-s",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -200,
+        "y": 4.5,
+        "z": 300
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 204,
+          "height": 9,
+          "depth": 2
+        },
+        "type": "box"
+      },
+      "color": "#000000",
+      "opacity": 1,
+      "display": false,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "city-southwest-ring-s",
+        "tag": "m2-city-ring"
+      }
+    }
+  }
+}

@@ -216,6 +216,37 @@ export function pulse(color, { intensity = 0.4, speed = 0.6 } = {}) {
 }
 
 /**
+ * A sky-lift pad (M2): four slim posts and a hovering glow ring around an open floor spot, with a
+ * label overhead. No floor disc (it would fight with patterned floors); the portal sensor that
+ * makes it a lift is authored by the caller (portals stay last in a chunk).
+ * @param {string} prefix @param {number} x @param {number} datum floor top @param {number} z
+ * @param {{ color: string; glowColor: string; text: string; labelRotY?: number; tag: string }} opts
+ */
+export function liftPad(prefix, x, datum, z, opts) {
+  const r = 2.8;
+  /** @type {Array<Record<string, unknown> & { id: string }>} */
+  const items = [];
+  for (const [k, dx, dz] of [["nw", -1, -1], ["ne", 1, -1], ["sw", -1, 1], ["se", 1, 1]]) {
+    items.push(column(`${prefix}-post-${k}`, x + Number(dx) * r * 0.72, datum, z + Number(dz) * r * 0.72, 0.16, 3.6, { name: `Sky lift post ${k}`, color: "#1c1f26", segments: 10, collider: "none", tag: opts.tag }));
+  }
+  items.push(
+    column(`${prefix}-ring`, x, datum + 3.5, z, r, 0.14, {
+      name: "Sky lift ring",
+      color: opts.color,
+      opacity: 0.85,
+      segments: 40,
+      collider: "none",
+      castShadow: false,
+      receiveShadow: false,
+      plugins: [glow(opts.glowColor, { intensity: 1.8, power: 1.3, speed: 0.6, pulse: 1 })],
+      tag: opts.tag,
+    }),
+  );
+  items.push(label(`${prefix}-label`, opts.text, v(x, datum + 4.6, z), { scale: 0.75, color: opts.color, width: 1200, rotation: { x: 0, y: deg(opts.labelRotY ?? 0), z: 0 }, name: "Label sky lift" }));
+  return items;
+}
+
+/**
  * Collect builders into an ordered `{ id: data }` map, refusing duplicate ids.
  * @param {Array<Record<string, unknown> & { id: string }>} items
  */

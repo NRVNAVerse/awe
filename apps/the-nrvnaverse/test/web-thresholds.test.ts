@@ -32,7 +32,7 @@ const index = parseSpatialIndex(spatialIndexJson);
 function source(mutate?: (draft: { config: Mutable; scene: Mutable }) => void): SpatialSourceInput {
   const draft = { config: structuredClone(sourceConfig), scene: structuredClone(sourceScene) };
   mutate?.(draft);
-  return { config: draft.config, scene: draft.scene, destinations };
+  return { config: draft.config, scene: draft.scene, destinations, layers: { city: JSON.parse(readFileSync(join(SOURCE_DIR, "city-layer.m2.json"), "utf8")) } };
 }
 const codesOf = (input: SpatialSourceInput) => {
   const result = validateSpatialSource(input);
@@ -62,7 +62,7 @@ describe("spatial source — thresholds validate and generate", () => {
   it("generates a sorted thresholds section keyed by sensor id, and the sensor is plain hidden geometry in its chunk payload", () => {
     const artifacts = generateSpatialArtifacts(source());
     const generated = JSON.parse(artifacts.files[OUTPUT.spatialIndex]);
-    expect(Object.keys(generated)).toEqual(["schemaVersion", "worldId", "globalSceneUrl", "chunks", "destinations", "portals", "experience", "thresholds"]);
+    expect(Object.keys(generated)).toEqual(["schemaVersion", "worldId", "globalSceneUrl", "chunks", "destinations", "portals", "experience", "thresholds", "layers", "streaming"]);
     expect(Object.keys(generated.thresholds)).toEqual(THRESHOLD_IDS);
     expect(artifacts.thresholdComponentIds).toEqual(THRESHOLD_IDS);
     for (const [componentId, binding] of Object.entries<Mutable>(generated.thresholds)) {

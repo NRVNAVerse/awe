@@ -112,7 +112,7 @@ describe("content-addressed delivery URLs — consumers pass them through untouc
 
   it("the content digest never appears in a canonical navigation URL", () => {
     const tokens = [index.globalSceneUrl, ...Object.values(index.chunks).map((c) => c.dataUrl)].map((u) => u.match(CONTENT_ADDRESSED)![2]);
-    expect(tokens).toHaveLength(6);
+    expect(tokens).toHaveLength(13); // M2: global scene + 12 chunks
     for (const token of tokens) expect(token).toMatch(/^[0-9a-f]{32}$/);
     for (const id of Object.keys(index.destinations)) {
       const query = buildDeepLinkQuery(id, { from: "spatial" });

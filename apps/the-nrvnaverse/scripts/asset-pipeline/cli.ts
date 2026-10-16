@@ -166,9 +166,16 @@ function loadSourceFrom(sourceDir: string, configFile: string): SpatialSourceInp
   const config = JSON.parse(readFileSync(configFile, "utf8")) as Record<string, unknown>;
   const scene = JSON.parse(readFileSync(join(sourceDir, String(config.scene)), "utf8"));
   const destinations = JSON.parse(readFileSync(DESTINATIONS_FILE, "utf8"));
-  if (typeof config.assetRegistry !== "string") return { config, scene, destinations };
+  // M2 far-field layers named by the config (same rule as `loadSpatialSource`).
+  const layers: Record<string, unknown> = {};
+  for (const ref of Array.isArray(config.layers) ? (config.layers as Array<{ key?: unknown; source?: unknown }>) : []) {
+    if (typeof ref.key !== "string" || typeof ref.source !== "string") continue;
+    const layerPath = join(sourceDir, ref.source);
+    if (existsSync(layerPath)) layers[ref.key] = JSON.parse(readFileSync(layerPath, "utf8"));
+  }
+  if (typeof config.assetRegistry !== "string") return { config, scene, destinations, layers };
   const registryPath = join(sourceDir, config.assetRegistry);
-  return { config, scene, destinations, assets: existsSync(registryPath) ? readAssetRegistry(registryPath) : null };
+  return { config, scene, destinations, layers, assets: existsSync(registryPath) ? readAssetRegistry(registryPath) : null };
 }
 
 /** The `register` command. `sourceDir` / `configFile` are injectable for tests (default: the committed source). */

@@ -56,7 +56,7 @@ beforeEach(() => {
   sourceDir = join(dir, "source");
   outputDir = join(dir, "data");
   mkdirSync(sourceDir);
-  for (const f of ["spatial-config.m0.json", "scene.m0.json"]) copyFileSync(join(COMMITTED_SOURCE, f), join(sourceDir, f));
+  for (const f of ["spatial-config.m0.json", "scene.m0.json", "city-layer.m2.json"]) copyFileSync(join(COMMITTED_SOURCE, f), join(sourceDir, f));
   cpSync(join(APP_ROOT, "public", "data"), outputDir, { recursive: true });
   withRegistry();
 });
@@ -117,7 +117,7 @@ describe("asset:place --apply", () => {
     expect(hub.components["hub-centrepiece"].assetRef).toBeUndefined();
 
     // The resulting source validates and regenerates to exactly what was written.
-    const source = { config, scene: readJson(scenePath()), destinations: readJson(join(APP_ROOT, "../../packages/nrvna-manifest/generated/destinations.json")), assets: readJson(join(sourceDir, "asset-registry.json")) };
+    const source = { config, scene: readJson(scenePath()), destinations: readJson(join(APP_ROOT, "../../packages/nrvna-manifest/generated/destinations.json")), assets: readJson(join(sourceDir, "asset-registry.json")), layers: { city: readJson(join(sourceDir, "city-layer.m2.json")) } };
     expect(validateSpatialSource(source).ok).toBe(true);
     // untouched outputs keep the worktree CRLF under autocrlf: compare content, not line endings
     for (const [name, text] of Object.entries(generateSpatialArtifacts(source).files)) expect(dataAfter[name]?.replace(/\r\n/g, "\n"), name).toBe(text);

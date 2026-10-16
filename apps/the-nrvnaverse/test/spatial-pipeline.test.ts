@@ -42,9 +42,11 @@ function readJson<T = Mutable>(path: string): T {
 const sourceConfig = readJson(join(SOURCE_DIR, "spatial-config.m0.json"));
 const sourceScene = readJson(join(SOURCE_DIR, sourceConfig.scene as string));
 const destinations = destinationsJson as unknown as DestinationsFile;
+/** M2: the composed far-field layer source named by `config.layers`. */
+const sourceLayers = { city: JSON.parse(readFileSync(join(SOURCE_DIR, "city-layer.m2.json"), "utf8")) };
 
 function source(mutate?: (draft: { config: Mutable; scene: Mutable; destinations: Mutable }) => void): SpatialSourceInput {
-  const draft = structuredClone({ config: sourceConfig, scene: sourceScene, destinations: destinations as unknown as Mutable });
+  const draft = structuredClone({ config: sourceConfig, scene: sourceScene, destinations: destinations as unknown as Mutable, layers: sourceLayers as Mutable });
   mutate?.(draft);
   return draft;
 }
@@ -54,7 +56,8 @@ function codesOf(input: SpatialSourceInput): string[] {
   return result.ok ? [] : result.errors.map((e) => e.code);
 }
 
-const EXPECTED_CHUNKS = ["cannabis-21", "fashion-culture", "hub", "music", "music-club"];
+// M2: the seven walkable city cells joined the four M0 chunks and the Club venue room.
+const EXPECTED_CHUNKS = ["cannabis-21", "city-north", "city-northeast", "city-northwest", "city-plaza", "city-south", "city-southeast", "city-southwest", "fashion-culture", "hub", "music", "music-club"];
 const activeWorldDestinations = destinations.destinations
   .filter((d) => d.status === "active" && d.spatialDestination?.platform === "the-nrvnaverse")
   .map((d) => d.id)
@@ -66,24 +69,24 @@ describe("spatial source — valid M0 input", () => {
     const artifacts = generateSpatialArtifacts(source());
     expect(Object.keys(artifacts.chunkFiles)).toEqual(EXPECTED_CHUNKS);
     expect(Object.keys(artifacts.files).sort()).toEqual(
-      [OUTPUT.compatibilityScene, artifacts.globalSceneFile, OUTPUT.spatialIndex, ...EXPECTED_CHUNKS.map((k) => artifacts.chunkFiles[k])].sort(),
+      [OUTPUT.compatibilityScene, artifacts.globalSceneFile, OUTPUT.spatialIndex, ...EXPECTED_CHUNKS.map((k) => artifacts.chunkFiles[k]), artifacts.layerFiles.city].sort(),
     );
     expect(artifacts.globalSceneFile).toMatch(CONTENT_ADDRESSED_OUTPUT.globalScene);
     for (const k of EXPECTED_CHUNKS) expect(artifacts.chunkFiles[k]).toMatch(CONTENT_ADDRESSED_OUTPUT.chunk);
   });
 
-  it("places all eight active destination ids exactly once in the spatial index", () => {
+  it("places all nine active destination ids exactly once in the spatial index (M2: The City)", () => {
     const artifacts = generateSpatialArtifacts(source());
     const index = JSON.parse(artifacts.files[OUTPUT.spatialIndex]);
     const ids = Object.keys(index.destinations);
-    expect(ids.length).toBe(8);
-    expect(new Set(ids).size).toBe(8);
+    expect(ids.length).toBe(9);
+    expect(new Set(ids).size).toBe(9);
     expect(ids).toEqual(activeWorldDestinations);
     expect(artifacts.destinationIds).toEqual(activeWorldDestinations);
     for (const id of ids) expect(index.chunks[index.destinations[id].chunkKey]).toBeDefined();
   });
 
-  it("produces exactly five chunk outputs with the expected logical grouping (four M0 chunks + the Club venue room)", () => {
+  it("produces exactly twelve chunk outputs with the expected logical grouping (four M0 chunks + the Club venue room + seven city cells)", () => {
     const artifacts = generateSpatialArtifacts(source());
     expect(artifacts.chunkKeys).toEqual(EXPECTED_CHUNKS);
     const index = JSON.parse(artifacts.files[OUTPUT.spatialIndex]);
@@ -98,6 +101,7 @@ describe("spatial source — valid M0 input", () => {
     expect(chunkOf("placeholder-fashion-culture-brand")).toBe("fashion-culture");
     expect(chunkOf("cannabis-21")).toBe("cannabis-21");
     expect(chunkOf("nrvna-farms-placeholder")).toBe("cannabis-21");
+    expect(chunkOf("city")).toBe("city-plaza");
   });
 
   it("accounts for every authored component exactly once: global ∪ chunks == scene, pairwise disjoint", () => {
@@ -233,15 +237,15 @@ describe("spatial source — validation rejects", () => {
         target.spatialDestination = { platform: "external", url: "https://example.com/" };
       }),
     );
-    // placements[0] is the Hub, which two M0 portals target: the portal check reports it too.
-    expect(codes).toEqual(["placement-not-the-nrvnaverse", "portal-not-the-nrvnaverse", "portal-not-the-nrvnaverse"]);
+    // placements[0] is the Hub, which three sky lifts target (M2: Music, Fashion, Skyfall Plaza): the portal check reports them too.
+    expect(codes).toEqual(["placement-not-the-nrvnaverse", "portal-not-the-nrvnaverse", "portal-not-the-nrvnaverse", "portal-not-the-nrvnaverse"]);
     const nullCodes = codesOf(
       source((d) => {
         const target = d.destinations.destinations.find((x: Mutable) => x.id === d.config.placements[0].destinationId);
         target.spatialDestination = null;
       }),
     );
-    expect(nullCodes).toEqual(["placement-not-the-nrvnaverse", "portal-not-the-nrvnaverse", "portal-not-the-nrvnaverse"]);
+    expect(nullCodes).toEqual(["placement-not-the-nrvnaverse", "portal-not-the-nrvnaverse", "portal-not-the-nrvnaverse", "portal-not-the-nrvnaverse"]);
   });
 
   it("gates or destination metadata smuggled into the spatial source", () => {
@@ -299,7 +303,7 @@ describe("spatial generation — determinism and committed outputs", () => {
 describe("canonical destination manifests stay coordinate- and chunk-free", () => {
   it("neither the source manifests nor destinations.json carry physical placement", () => {
     const files = readdirSync(MANIFESTS_DIR).filter((n) => n.endsWith(".json"));
-    expect(files.length).toBe(8);
+    expect(files.length).toBe(9);
     for (const name of files) {
       const text = readFileSync(join(MANIFESTS_DIR, name), "utf8");
       expect(text, name).not.toMatch(/"(chunkKey|chunk|spawn|position|yaw|coordinates|placementRef)"/);
@@ -323,6 +327,8 @@ const PORTAL_BINDINGS: Record<string, { chunkKey: string; slug: string }> = {
   // M1 experience campaign: the Club venue room (its own chunk) and its concourse door.
   "portal-music-club": { chunkKey: "music", slug: "music-club" },
   "portal-club-music": { chunkKey: "music-club", slug: "music" },
+  // M2: the sky lift from Skyfall Plaza back up to the Hub.
+  "portal-plaza-hub": { chunkKey: "city-plaza", slug: "hub" },
 };
 const PORTAL_IDS = Object.keys(PORTAL_BINDINGS).sort();
 const portalCodes = (mutate: (portal: Mutable, d: { config: Mutable; scene: Mutable; destinations: Mutable }) => void, i = 0) =>
@@ -342,7 +348,7 @@ describe("spatial source — physical portal bindings (M0 Step 2B.3)", () => {
   it("generates exactly nine deterministic portal bindings keyed by physical component id", () => {
     const artifacts = generateSpatialArtifacts(source());
     const index = JSON.parse(artifacts.files[OUTPUT.spatialIndex]);
-    expect(Object.keys(index)).toEqual(["schemaVersion", "worldId", "globalSceneUrl", "chunks", "destinations", "portals", "experience", "thresholds"]);
+    expect(Object.keys(index)).toEqual(["schemaVersion", "worldId", "globalSceneUrl", "chunks", "destinations", "portals", "experience", "thresholds", "layers", "streaming"]);
     expect(Object.keys(index.portals)).toEqual(PORTAL_IDS); // sorted, code-unit order
     expect(artifacts.portalComponentIds).toEqual(PORTAL_IDS);
     for (const [componentId, binding] of Object.entries<Mutable>(index.portals)) {
@@ -517,7 +523,7 @@ type Artifacts = ReturnType<typeof generateSpatialArtifacts>;
 
 /** Content-addressed output file names of a generation: logical name → file name. */
 function contentAddressedFilesOf(artifacts: Artifacts): Record<string, string> {
-  return { "global-scene": artifacts.globalSceneFile, ...artifacts.chunkFiles };
+  return { "global-scene": artifacts.globalSceneFile, ...artifacts.chunkFiles, ...Object.fromEntries(Object.entries(artifacts.layerFiles).map(([k, f]) => [`layer:${k}`, f])) };
 }
 
 /** Split a content-addressed delivery URL into its `public/data`-relative file name, base and token. */
@@ -537,6 +543,7 @@ function urlsOf(artifacts: Artifacts): Record<string, string> {
   const index = JSON.parse(artifacts.files[OUTPUT.spatialIndex]);
   const urls: Record<string, string> = { "global-scene": index.globalSceneUrl };
   for (const [key, entry] of Object.entries<{ dataUrl: string }>(index.chunks)) urls[key] = entry.dataUrl;
+  for (const [key, entry] of Object.entries<{ dataUrl: string }>(index.layers ?? {})) urls[`layer:${key}`] = entry.dataUrl;
   return urls;
 }
 
@@ -550,7 +557,7 @@ describe("spatial generation — content-addressed delivery (M0 Step 2B.4B.2)", 
       const { file, base, token } = splitAddressed(url);
       expect(file).toBe(files[logical]); // the URL IS the file the generation writes
       expect(url).toBe(dataUrl(file));
-      expect(base).toBe(logical === "global-scene" ? OUTPUT.globalSceneBase : `${OUTPUT.chunksDir}/${logical}`);
+      expect(base).toBe(logical === "global-scene" ? OUTPUT.globalSceneBase : logical.startsWith("layer:") ? `${OUTPUT.layersDir}/${logical.slice("layer:".length)}` : `${OUTPUT.chunksDir}/${logical}`);
       expect(file).toBe(contentAddressedFileName(base, token));
       expect(token).toBe(artifacts.versions[file]);
       expect(isContentAddressedOutput(file)).toBe(true);
@@ -759,7 +766,7 @@ describe("spatial generation — content-addressed delivery (M0 Step 2B.4B.2)", 
     const artifacts = generateSpatialArtifacts(source());
     const index = JSON.parse(artifacts.files[OUTPUT.spatialIndex]);
     expect(index.schemaVersion).toBe(1);
-    expect(Object.keys(index)).toEqual(["schemaVersion", "worldId", "globalSceneUrl", "chunks", "destinations", "portals", "experience", "thresholds"]); // no new field for the digest
+    expect(Object.keys(index)).toEqual(["schemaVersion", "worldId", "globalSceneUrl", "chunks", "destinations", "portals", "experience", "thresholds", "layers", "streaming"]); // no new field for the digest
     for (const key of EXPECTED_CHUNKS) {
       expect(Object.keys(index.chunks[key])).toEqual(["dataUrl"]);
       const file = artifacts.chunkFiles[key];

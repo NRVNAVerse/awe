@@ -100,6 +100,26 @@ export interface SpatialIndexThreshold {
   destinationId: string;
 }
 
+/** A far-field layer (M2): an opaque content-addressed data file the application renders itself. */
+export interface SpatialIndexLayer {
+  dataUrl: string;
+}
+
+/**
+ * The streaming grid (M2): walkable cells of `cellSize` metres centred on multiples of it, each
+ * mapped to the chunk that holds it. `releases`: falling below `belowY` while `fromChunkKey` is
+ * active hands the visitor to the cell underneath. `catchBelowY`: a visitor below this height is
+ * returned to safety. Gated chunks are never cells (validated by the pipeline; re-checked at runtime).
+ */
+export interface SpatialIndexStreaming {
+  cellSize: number;
+  margin: number;
+  /** "i,j" → chunk key. */
+  cells: Record<string, string>;
+  releases: ReadonlyArray<{ fromChunkKey: string; belowY: number }>;
+  catchBelowY?: number;
+}
+
 export interface SpatialIndexFile {
   schemaVersion: typeof SPATIAL_SCHEMA_VERSION;
   worldId: string;
@@ -112,6 +132,10 @@ export interface SpatialIndexFile {
   experience: SpatialIndexExperience;
   /** Keyed by physical sensor component id. Empty when the index declares none. */
   thresholds: Record<string, SpatialIndexThreshold>;
+  /** Far-field layers by key (M2). Empty when the index declares none. */
+  layers: Record<string, SpatialIndexLayer>;
+  /** The streaming grid (M2), or null when the index declares none. */
+  streaming: SpatialIndexStreaming | null;
 }
 
 const CHUNK_KEY_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
@@ -196,7 +220,43 @@ export function parseSpatialIndex(input: unknown): SpatialIndexFile {
     }
   }
 
-  return { schemaVersion: SPATIAL_SCHEMA_VERSION, worldId: input.worldId, globalSceneUrl: input.globalSceneUrl, chunks, destinations, portals, experience, thresholds };
+  // Additive (M2): far-field layers and the streaming grid.
+  const layers: Record<string, SpatialIndexLayer> = {};
+  if (input.layers !== undefined) {
+    if (!isRecord(input.layers)) throw new Error("spatial index is malformed: layers must be an object keyed by layer key");
+    for (const [key, entry] of Object.entries(input.layers)) {
+      if (!CHUNK_KEY_PATTERN.test(key) || !isRecord(entry) || typeof entry.dataUrl !== "string" || entry.dataUrl.length === 0) throw new Error(`spatial index is malformed: layer "${key}"`);
+      layers[key] = { dataUrl: entry.dataUrl };
+    }
+  }
+  const streaming = parseStreaming(input.streaming, chunks);
+
+  return { schemaVersion: SPATIAL_SCHEMA_VERSION, worldId: input.worldId, globalSceneUrl: input.globalSceneUrl, chunks, destinations, portals, experience, thresholds, layers, streaming };
+}
+
+function parseStreaming(input: unknown, chunks: Record<string, SpatialIndexChunk>): SpatialIndexStreaming | null {
+  if (input === undefined) return null;
+  if (!isRecord(input) || !isRecord(input.cells)) throw new Error("spatial index is malformed: streaming");
+  const cellSize = finite(input.cellSize, "streaming.cellSize");
+  const margin = finite(input.margin, "streaming.margin");
+  if (cellSize <= 0 || margin < 0 || margin >= cellSize / 2) throw new Error("spatial index is malformed: streaming cellSize / margin");
+  const cells: Record<string, string> = {};
+  for (const [cell, chunkKey] of Object.entries(input.cells)) {
+    if (!/^-?\d+,-?\d+$/.test(cell)) throw new Error(`spatial index is malformed: streaming cell "${cell}"`);
+    if (typeof chunkKey !== "string" || !(chunkKey in chunks)) throw new Error(`spatial index is malformed: streaming cell "${cell}" references unknown chunk "${String(chunkKey)}"`);
+    cells[cell] = chunkKey;
+  }
+  const releases: Array<{ fromChunkKey: string; belowY: number }> = [];
+  if (input.releases !== undefined) {
+    if (!Array.isArray(input.releases)) throw new Error("spatial index is malformed: streaming.releases");
+    for (const r of input.releases) {
+      if (!isRecord(r) || typeof r.fromChunkKey !== "string" || !(r.fromChunkKey in chunks)) throw new Error("spatial index is malformed: streaming release");
+      releases.push({ fromChunkKey: r.fromChunkKey, belowY: finite(r.belowY, "streaming release belowY") });
+    }
+  }
+  const out: SpatialIndexStreaming = { cellSize, margin, cells, releases };
+  if (input.catchBelowY !== undefined) out.catchBelowY = finite(input.catchBelowY, "streaming.catchBelowY");
+  return out;
 }
 
 const EXPERIENCE_ID_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;

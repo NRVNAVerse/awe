@@ -36,6 +36,11 @@ import { now, perfRecord } from "@/lib/perf";
  *   entry of the mutation queue. The promise never rejects: cleanup failures are reported
  *   through `warn`. Callers destroy the engine runtime only after this promise resolves.
  *
+ * - Position-preserving handoff (M2 streaming). A request with `spawn: null` stages the target,
+ *   commits it and retires the old chunk WITHOUT moving the visitor: walking from one city cell into
+ *   the next, or falling off the Hub into the cell below. Every other rule above applies unchanged
+ *   (stage-before-retire, latest request wins, single writer). Same-chunk with `spawn: null` is a no-op.
+ *
  * The orchestrator knows chunk keys and spawns, never destination ids as identity (the
  * `destinationId` it receives is diagnostics for perf/log detail only) and never gates: the
  * adapter evaluates the manifest gate BEFORE asking for a transition (D-006), so this class is
@@ -44,7 +49,8 @@ import { now, perfRecord } from "@/lib/perf";
 
 export interface ChunkTransitionRequest {
   chunkKey: string;
-  spawn: SpawnPoint;
+  /** Where to place the visitor; `null` = position-preserving handoff (M2 streaming): the visitor is not moved. */
+  spawn: SpawnPoint | null;
   /** Diagnostics only (perf detail / log). Not used for any decision here. */
   destinationId: string;
   /** Invoked once when (and only when) this request starts real cross-chunk work and is current. */
@@ -144,6 +150,7 @@ export class ChunkOrchestrator {
 
     // ---- Same-chunk travel: teleport only. Nothing is fetched, created or destroyed.
     if (this.active && this.active.chunkKey === chunkKey) {
+      if (spawn === null) return { status: "arrived", chunkKey, kind: "same-chunk" };
       try {
         this.runtime.placeVisitor(spawn);
       } catch (err) {
@@ -158,7 +165,7 @@ export class ChunkOrchestrator {
     this.crossChunkInFlight++;
     try {
       const result = await this.crossChunk(request, signal, isCurrent);
-      perfRecord("cross-chunk-travel", now() - started, { chunkKey, destinationId, outcome: result.status === "failed" ? `failed:${result.step}` : result.status });
+      perfRecord(spawn === null ? "chunk-handoff" : "cross-chunk-travel", now() - started, { chunkKey, destinationId, outcome: result.status === "failed" ? `failed:${result.step}` : result.status });
       return result;
     } finally {
       this.crossChunkInFlight--;
@@ -227,7 +234,7 @@ export class ChunkOrchestrator {
 
       // 4. Teleport with both chunks alive. Failure → discard the target, keep the old chunk and position.
       try {
-        this.runtime.placeVisitor(spawn);
+        if (spawn !== null) this.runtime.placeVisitor(spawn);
       } catch (err) {
         this.retireQuietly(batch, "target after placement failure");
         return { status: "failed", chunkKey, step: "place", reason: errorMessage(err) };

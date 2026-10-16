@@ -25,7 +25,8 @@ function committed() {
   const config = readJson(join(APP_ROOT, "spatial", "source", "spatial-config.m0.json")) as Config;
   const scene = readJson(join(APP_ROOT, "spatial", "source", "scene.m0.json")) as { components: Record<string, unknown> };
   const destinations = readJson(join(APP_ROOT, "../../packages/nrvna-manifest/generated/destinations.json")) as { destinations: Destination[] };
-  return { config, scene, destinations };
+  const layers = { city: readJson(join(APP_ROOT, "spatial", "source", "city-layer.m2.json")) };
+  return { config, scene, destinations, layers };
 }
 
 const registry = {
@@ -63,7 +64,7 @@ function withArtIn(chunkKey: string, destinations?: { destinations: Destination[
   const componentId = "hand-edited-art";
   scene.components[componentId] = { name: "Hand-edited art", id: componentId, type: "model", kit: "cyber", assetRef: ID, position: { x: 0, y: 0.5, z: -4 }, rotation: { x: 0, y: 0, z: 0 }, scale: { x: 1, y: 1, z: 1 } };
   config.chunks.find((c) => c.key === chunkKey)!.componentIds.push(componentId);
-  return { config: { ...config, assetRegistry: "asset-registry.json" }, scene, destinations: destinations ?? base.destinations, assets: registry };
+  return { config: { ...config, assetRegistry: "asset-registry.json" }, scene, destinations: destinations ?? base.destinations, assets: registry, layers: base.layers };
 }
 
 const codes = (input: SpatialSourceInput) => validateSpatialSource(input).errors.map((e) => e.code);
@@ -102,6 +103,9 @@ describe("gated delivery invariant — validateSpatialSource", () => {
     const target = ungated[0];
     const servedIds = new Set(config.placements.filter((p) => p.chunkKey === target).map((p) => p.destinationId));
     const newlyGated = { destinations: structuredClone(destinations.destinations).map((d) => (servedIds.has(d.id) ? { ...d, gates: [{ type: "synthetic-future-gate" }] } : d)) };
-    expect(codes(withArtIn(target, newlyGated))).toEqual(["asset-in-gated-chunk"]);
+    // M2: a gated chunk can never be a streaming cell either — gating a city cell also refuses its streaming.
+    const streaming = (config as Record<string, any>).streaming; // eslint-disable-line @typescript-eslint/no-explicit-any
+    const isStreamingCell = [...(streaming?.cells ?? []), ...(streaming?.releases ?? []).map((r: { fromChunkKey: string }) => ({ chunkKey: r.fromChunkKey }))].some((c: { chunkKey: string }) => c.chunkKey === target);
+    expect(codes(withArtIn(target, newlyGated))).toEqual(["asset-in-gated-chunk", ...(isStreamingCell ? ["streaming-gated-chunk"] : [])]);
   });
 });

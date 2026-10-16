@@ -199,6 +199,69 @@
     },
     {
       "ageRestriction": null,
+      "analyticsId": "dst_8w1j39h5e0ezrsjh",
+      "auth": {
+        "roles": []
+      },
+      "capabilities": [
+        "discovery",
+        "entertainment"
+      ],
+      "categories": [
+        "city",
+        "exploration"
+      ],
+      "commerceRefs": [],
+      "description": "M2 placeholder. The streets beneath the floating Hub: Skyfall Plaza is where the Drop lands and the sky lift rises; the Music and Fashion / Culture districts are a walk away.",
+      "devices": [
+        "desktop",
+        "mobile",
+        "tablet"
+      ],
+      "gates": [],
+      "id": "dst_8w1j39h5e0ezrsjh",
+      "jurisdictions": {
+        "note": null,
+        "policy": "unrestricted",
+        "regions": []
+      },
+      "kind": "district",
+      "media": {
+        "heroUrl": null,
+        "logoUrl": null,
+        "thumbnailUrl": null
+      },
+      "name": "The City",
+      "owner": {
+        "name": "NRVNAVerse",
+        "organizationId": null,
+        "webUrl": "https://www.nrvnaverse.com/"
+      },
+      "previousSlugs": [],
+      "primaryDistrictId": null,
+      "relatedDestinationIds": [
+        "dst_7g19n1vm9ackw8a0",
+        "dst_gm3xs4a3tws7bgh3",
+        "dst_9c4wxtpec8awsx1q"
+      ],
+      "schemaVersion": 1,
+      "slug": "city",
+      "spatialDestination": {
+        "platform": "the-nrvnaverse",
+        "worldId": "the-nrvnaverse"
+      },
+      "spatialUrl": "https://worlds.nrvnaverse.com/?destination=dst_8w1j39h5e0ezrsjh",
+      "status": "active",
+      "tags": [
+        "m2",
+        "placeholder",
+        "skyfall-plaza"
+      ],
+      "updatedAt": "2026-10-15T00:00:00Z",
+      "webUrl": "https://www.nrvnaverse.com/worlds/city"
+    },
+    {
+      "ageRestriction": null,
       "analyticsId": "dst_9c4wxtpec8awsx1q",
       "auth": {
         "roles": []
@@ -535,6 +598,7 @@
       "dst_1qtfn9qjg9kf6jyd": "dst_1qtfn9qjg9kf6jyd",
       "dst_441dtdafq3e3ehjn": "dst_441dtdafq3e3ehjn",
       "dst_7g19n1vm9ackw8a0": "dst_7g19n1vm9ackw8a0",
+      "dst_8w1j39h5e0ezrsjh": "dst_8w1j39h5e0ezrsjh",
       "dst_9c4wxtpec8awsx1q": "dst_9c4wxtpec8awsx1q",
       "dst_gm3xs4a3tws7bgh3": "dst_gm3xs4a3tws7bgh3",
       "dst_gqq90k2404cy9nf0": "dst_gqq90k2404cy9nf0",
@@ -544,6 +608,7 @@
     "byPreviousSlug": {},
     "bySlug": {
       "cannabis-21": "dst_441dtdafq3e3ehjn",
+      "city": "dst_8w1j39h5e0ezrsjh",
       "fashion-culture": "dst_9c4wxtpec8awsx1q",
       "hub": "dst_7g19n1vm9ackw8a0",
       "music": "dst_gm3xs4a3tws7bgh3",

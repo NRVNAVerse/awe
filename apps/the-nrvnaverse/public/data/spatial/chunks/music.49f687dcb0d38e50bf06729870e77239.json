@@ -9,8 +9,8 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": -70,
-        "y": 0.25,
+        "x": -200,
+        "y": -0.25,
         "z": 0
       },
       "rotation": {
@@ -67,8 +67,8 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": -70,
-        "y": 0.253,
+        "x": -200,
+        "y": -0.247,
         "z": 0
       },
       "rotation": {
@@ -125,8 +125,8 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": -70,
-        "y": 0.255,
+        "x": -200,
+        "y": -0.245,
         "z": 0
       },
       "rotation": {
@@ -183,8 +183,8 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": -70,
-        "y": 0.257,
+        "x": -200,
+        "y": -0.243,
         "z": 0
       },
       "rotation": {
@@ -241,8 +241,8 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": -70,
-        "y": 0.25,
+        "x": -200,
+        "y": -0.25,
         "z": -20
       },
       "rotation": {
@@ -299,8 +299,8 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": -70,
-        "y": 0.25,
+        "x": -200,
+        "y": -0.25,
         "z": -40
       },
       "rotation": {
@@ -357,8 +357,8 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": -74.5,
-        "y": 2.6,
+        "x": -204.5,
+        "y": 2.1,
         "z": -16
       },
       "rotation": {
@@ -415,8 +415,8 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": -74.5,
-        "y": 2.65,
+        "x": -204.5,
+        "y": 2.15,
         "z": -16
       },
       "rotation": {
@@ -481,8 +481,8 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": -74.5,
-        "y": 2.65,
+        "x": -204.5,
+        "y": 2.15,
         "z": -16
       },
       "rotation": {
@@ -549,8 +549,8 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": -65.5,
-        "y": 2.6,
+        "x": -195.5,
+        "y": 2.1,
         "z": -16
       },
       "rotation": {
@@ -607,8 +607,8 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": -65.5,
-        "y": 2.65,
+        "x": -195.5,
+        "y": 2.15,
         "z": -16
       },
       "rotation": {
@@ -673,8 +673,8 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": -65.5,
-        "y": 2.65,
+        "x": -195.5,
+        "y": 2.15,
         "z": -16
       },
       "rotation": {
@@ -741,8 +741,8 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": -74.5,
-        "y": 2.6,
+        "x": -204.5,
+        "y": 2.1,
         "z": -24
       },
       "rotation": {
@@ -799,8 +799,8 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": -74.5,
-        "y": 2.65,
+        "x": -204.5,
+        "y": 2.15,
         "z": -24
       },
       "rotation": {
@@ -865,8 +865,8 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": -74.5,
-        "y": 2.65,
+        "x": -204.5,
+        "y": 2.15,
         "z": -24
       },
       "rotation": {
@@ -933,8 +933,8 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": -65.5,
-        "y": 2.6,
+        "x": -195.5,
+        "y": 2.1,
         "z": -24
       },
       "rotation": {
@@ -991,8 +991,8 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": -65.5,
-        "y": 2.65,
+        "x": -195.5,
+        "y": 2.15,
         "z": -24
       },
       "rotation": {
@@ -1057,8 +1057,8 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": -65.5,
-        "y": 2.65,
+        "x": -195.5,
+        "y": 2.15,
         "z": -24
       },
       "rotation": {
@@ -1125,8 +1125,8 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": -70,
-        "y": 1,
+        "x": -200,
+        "y": 0.5,
         "z": -46
       },
       "rotation": {
@@ -1183,8 +1183,8 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": -78.5,
-        "y": 0.753,
+        "x": -208.5,
+        "y": 0.253,
         "z": -40.535
       },
       "rotation": {
@@ -1241,8 +1241,8 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": -61.5,
-        "y": 0.753,
+        "x": -191.5,
+        "y": 0.253,
         "z": -40.535
       },
       "rotation": {
@@ -1299,8 +1299,8 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": -76.511,
-        "y": 4.5,
+        "x": -206.511,
+        "y": 4,
         "z": -52.464
       },
       "rotation": {
@@ -1357,8 +1357,8 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": -76.511,
-        "y": 5.075,
+        "x": -206.511,
+        "y": 4.575,
         "z": -52.464
       },
       "rotation": {
@@ -1425,8 +1425,8 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": -76.511,
-        "y": 4.5,
+        "x": -206.511,
+        "y": 4,
         "z": -52.464
       },
       "rotation": {
@@ -1493,8 +1493,8 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": -73.592,
-        "y": 6,
+        "x": -203.592,
+        "y": 5.5,
         "z": -54.704
       },
       "rotation": {
@@ -1551,8 +1551,8 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": -73.592,
-        "y": 6.725,
+        "x": -203.592,
+        "y": 6.225,
         "z": -54.704
       },
       "rotation": {
@@ -1619,8 +1619,8 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": -73.592,
-        "y": 6,
+        "x": -203.592,
+        "y": 5.5,
         "z": -54.704
       },
       "rotation": {
@@ -1687,8 +1687,8 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": -70,
-        "y": 7,
+        "x": -200,
+        "y": 6.5,
         "z": -55.5
       },
       "rotation": {
@@ -1745,8 +1745,8 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": -70,
-        "y": 7.825,
+        "x": -200,
+        "y": 7.325,
         "z": -55.5
       },
       "rotation": {
@@ -1813,8 +1813,8 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": -70,
-        "y": 7,
+        "x": -200,
+        "y": 6.5,
         "z": -55.5
       },
       "rotation": {
@@ -1881,8 +1881,8 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": -66.408,
-        "y": 6,
+        "x": -196.408,
+        "y": 5.5,
         "z": -54.704
       },
       "rotation": {
@@ -1939,8 +1939,8 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": -66.408,
-        "y": 6.725,
+        "x": -196.408,
+        "y": 6.225,
         "z": -54.704
       },
       "rotation": {
@@ -2007,8 +2007,8 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": -66.408,
-        "y": 6,
+        "x": -196.408,
+        "y": 5.5,
         "z": -54.704
       },
       "rotation": {
@@ -2075,8 +2075,8 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": -63.489,
-        "y": 4.5,
+        "x": -193.489,
+        "y": 4,
         "z": -52.464
       },
       "rotation": {
@@ -2133,8 +2133,8 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": -63.489,
-        "y": 5.075,
+        "x": -193.489,
+        "y": 4.575,
         "z": -52.464
       },
       "rotation": {
@@ -2201,8 +2201,8 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": -63.489,
-        "y": 4.5,
+        "x": -193.489,
+        "y": 4,
         "z": -52.464
       },
       "rotation": {
@@ -2269,8 +2269,8 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": -70,
-        "y": 1.515,
+        "x": -200,
+        "y": 1.015,
         "z": -46.6
       },
       "rotation": {
@@ -2335,8 +2335,8 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": -70,
-        "y": 8.5,
+        "x": -200,
+        "y": 8,
         "z": -46
       },
       "rotation": {
@@ -2394,8 +2394,8 @@
       "kit": "cyber",
       "text": "Placeholder Artist",
       "position": {
-        "x": -70,
-        "y": 7.2,
+        "x": -200,
+        "y": 6.7,
         "z": -54.2
       },
       "rotation": {
@@ -2422,8 +2422,8 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": -79,
-        "y": 0.725,
+        "x": -209,
+        "y": 0.225,
         "z": -36
       },
       "rotation": {
@@ -2480,8 +2480,8 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": -61,
-        "y": 0.725,
+        "x": -191,
+        "y": 0.225,
         "z": -36
       },
       "rotation": {
@@ -2539,8 +2539,8 @@
       "kit": "cyber",
       "text": "MUSIC DISTRICT",
       "position": {
-        "x": -70,
-        "y": 7,
+        "x": -200,
+        "y": 6.5,
         "z": -12.3
       },
       "rotation": {
@@ -2567,8 +2567,8 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": -61,
-        "y": 3,
+        "x": -191,
+        "y": 2.5,
         "z": -7.9
       },
       "rotation": {
@@ -2625,8 +2625,8 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": -61,
-        "y": 3,
+        "x": -191,
+        "y": 2.5,
         "z": 7.9
       },
       "rotation": {
@@ -2683,8 +2683,8 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": -61,
-        "y": 5.85,
+        "x": -191,
+        "y": 5.35,
         "z": 0
       },
       "rotation": {
@@ -2736,14 +2736,14 @@
       }
     },
     "music-gate-hub-label": {
-      "name": "Label Hub gateway",
+      "name": "Label plaza gateway",
       "id": "music-gate-hub-label",
       "type": "text",
       "kit": "cyber",
-      "text": "HUB",
+      "text": "SKYFALL PLAZA",
       "position": {
-        "x": -61.7,
-        "y": 7.1,
+        "x": -191.7,
+        "y": 6.6,
         "z": 0
       },
       "rotation": {
@@ -2752,16 +2752,345 @@
         "z": 0
       },
       "scale": {
-        "x": 0.95,
-        "y": 0.95,
-        "z": 0.95
+        "x": 0.85,
+        "y": 0.85,
+        "z": 0.85
       },
       "align": "center",
       "font": "aeonik-bold",
       "lineHeight": 60,
       "textColor": "#ffd98a",
       "textTransform": "none",
-      "width": 900,
+      "width": 1400,
+      "opacity": 1
+    },
+    "music-lift-post-nw": {
+      "name": "Sky lift post nw",
+      "id": "music-lift-post-nw",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -196.016,
+        "y": 1.8,
+        "z": -9.016
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 0.16,
+          "radiusBottom": 0.16,
+          "height": 3.6,
+          "radialSegments": 10,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1,
+          "height": 1,
+          "depth": 1
+        },
+        "type": "cylinder"
+      },
+      "color": "#1c1f26",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CYLINDER"
+      },
+      "script": {
+        "identifier": "music-lift-post-nw",
+        "tag": "m1-music-structure"
+      }
+    },
+    "music-lift-post-ne": {
+      "name": "Sky lift post ne",
+      "id": "music-lift-post-ne",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -191.984,
+        "y": 1.8,
+        "z": -9.016
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 0.16,
+          "radiusBottom": 0.16,
+          "height": 3.6,
+          "radialSegments": 10,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1,
+          "height": 1,
+          "depth": 1
+        },
+        "type": "cylinder"
+      },
+      "color": "#1c1f26",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CYLINDER"
+      },
+      "script": {
+        "identifier": "music-lift-post-ne",
+        "tag": "m1-music-structure"
+      }
+    },
+    "music-lift-post-sw": {
+      "name": "Sky lift post sw",
+      "id": "music-lift-post-sw",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -196.016,
+        "y": 1.8,
+        "z": -4.984
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 0.16,
+          "radiusBottom": 0.16,
+          "height": 3.6,
+          "radialSegments": 10,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1,
+          "height": 1,
+          "depth": 1
+        },
+        "type": "cylinder"
+      },
+      "color": "#1c1f26",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CYLINDER"
+      },
+      "script": {
+        "identifier": "music-lift-post-sw",
+        "tag": "m1-music-structure"
+      }
+    },
+    "music-lift-post-se": {
+      "name": "Sky lift post se",
+      "id": "music-lift-post-se",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -191.984,
+        "y": 1.8,
+        "z": -4.984
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 0.16,
+          "radiusBottom": 0.16,
+          "height": 3.6,
+          "radialSegments": 10,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1,
+          "height": 1,
+          "depth": 1
+        },
+        "type": "cylinder"
+      },
+      "color": "#1c1f26",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CYLINDER"
+      },
+      "script": {
+        "identifier": "music-lift-post-se",
+        "tag": "m1-music-structure"
+      }
+    },
+    "music-lift-ring": {
+      "name": "Sky lift ring",
+      "id": "music-lift-ring",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -194,
+        "y": 3.57,
+        "z": -7
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 2.8,
+          "radiusBottom": 2.8,
+          "height": 0.14,
+          "radialSegments": 40,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1,
+          "height": 1,
+          "depth": 1
+        },
+        "type": "cylinder"
+      },
+      "color": "#ffd98a",
+      "opacity": 0.85,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "plugins": [
+        {
+          "id": "FresnelGlowPlugin",
+          "color": "#f5b24a",
+          "intensity": 1.8,
+          "power": 1.3,
+          "speed": 0.6,
+          "pulse": 1
+        }
+      ],
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CYLINDER"
+      },
+      "script": {
+        "identifier": "music-lift-ring",
+        "tag": "m1-music-structure"
+      }
+    },
+    "music-lift-label": {
+      "name": "Label sky lift",
+      "id": "music-lift-label",
+      "type": "text",
+      "kit": "cyber",
+      "text": "SKY LIFT · HUB",
+      "position": {
+        "x": -194,
+        "y": 4.6,
+        "z": -7
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 0.75,
+        "y": 0.75,
+        "z": 0.75
+      },
+      "align": "center",
+      "font": "aeonik-bold",
+      "lineHeight": 60,
+      "textColor": "#ffd98a",
+      "textTransform": "none",
+      "width": 1200,
       "opacity": 1
     },
     "music-gate-artist-post-w": {
@@ -2770,8 +3099,8 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": -73.5,
-        "y": 2.3,
+        "x": -203.5,
+        "y": 1.8,
         "z": -30
       },
       "rotation": {
@@ -2828,8 +3157,8 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": -66.5,
-        "y": 2.3,
+        "x": -196.5,
+        "y": 1.8,
         "z": -30
       },
       "rotation": {
@@ -2886,8 +3215,8 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": -65,
-        "y": 0.25,
+        "x": -195,
+        "y": -0.25,
         "z": 15
       },
       "rotation": {
@@ -2944,8 +3273,8 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": -68.25,
-        "y": 2.6,
+        "x": -198.25,
+        "y": 2.1,
         "z": 15
       },
       "rotation": {
@@ -3002,8 +3331,8 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": -61.75,
-        "y": 2.6,
+        "x": -191.75,
+        "y": 2.1,
         "z": 15
       },
       "rotation": {
@@ -3060,8 +3389,8 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": -65,
-        "y": 2.6,
+        "x": -195,
+        "y": 2.1,
         "z": 18.25
       },
       "rotation": {
@@ -3118,8 +3447,8 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": -65,
-        "y": 5.1,
+        "x": -195,
+        "y": 4.6,
         "z": 12.3
       },
       "rotation": {
@@ -3177,8 +3506,8 @@
       "kit": "cyber",
       "text": "THE CLUB",
       "position": {
-        "x": -65,
-        "y": 3.8,
+        "x": -195,
+        "y": 3.3,
         "z": 12
       },
       "rotation": {
@@ -3205,8 +3534,8 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": -65,
-        "y": 5.1,
+        "x": -195,
+        "y": 4.6,
         "z": 12.3
       },
       "rotation": {
@@ -3273,8 +3602,8 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": -65,
-        "y": 6.6,
+        "x": -195,
+        "y": 6.1,
         "z": 12.2
       },
       "rotation": {
@@ -3332,8 +3661,8 @@
       "kit": "cyber",
       "text": "TONIGHT",
       "position": {
-        "x": -65,
-        "y": 6.85,
+        "x": -195,
+        "y": 6.35,
         "z": 11.95
       },
       "rotation": {
@@ -3361,8 +3690,8 @@
       "kit": "cyber",
       "text": "THE CLUB — placeholder listening session",
       "position": {
-        "x": -65,
-        "y": 5.95,
+        "x": -195,
+        "y": 5.45,
         "z": 11.95
       },
       "rotation": {
@@ -3389,8 +3718,8 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": -79.5,
-        "y": 2.76,
+        "x": -209.5,
+        "y": 2.26,
         "z": -2.429
       },
       "rotation": {
@@ -3447,8 +3776,8 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": -79.5,
-        "y": 0.25,
+        "x": -209.5,
+        "y": -0.25,
         "z": -12.5
       },
       "rotation": {
@@ -3505,8 +3834,8 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": -79.5,
-        "y": 5.25,
+        "x": -209.5,
+        "y": 4.75,
         "z": 9
       },
       "rotation": {
@@ -3563,8 +3892,8 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": -82,
-        "y": 2.5,
+        "x": -212,
+        "y": 2,
         "z": 11.5
       },
       "rotation": {
@@ -3621,8 +3950,8 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": -79.5,
-        "y": 5.95,
+        "x": -209.5,
+        "y": 5.45,
         "z": 10.6
       },
       "rotation": {
@@ -3679,8 +4008,8 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": -79.5,
-        "y": 6.46,
+        "x": -209.5,
+        "y": 5.96,
         "z": 10.6
       },
       "rotation": {
@@ -3746,8 +4075,8 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": -79.5,
-        "y": 6.5,
+        "x": -209.5,
+        "y": 6,
         "z": 10.6
       },
       "rotation": {
@@ -3814,8 +4143,8 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": -79.5,
-        "y": 6,
+        "x": -209.5,
+        "y": 5.5,
         "z": 12
       },
       "rotation": {
@@ -3872,8 +4201,8 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": -81.2,
-        "y": 6.8,
+        "x": -211.2,
+        "y": 6.3,
         "z": 10.6
       },
       "rotation": {
@@ -3938,8 +4267,8 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": -81.2,
-        "y": 6.8,
+        "x": -211.2,
+        "y": 6.3,
         "z": 10.6
       },
       "rotation": {
@@ -4006,8 +4335,8 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": -76,
-        "y": 0.505,
+        "x": -206,
+        "y": 0.005,
         "z": -2
       },
       "rotation": {
@@ -4072,8 +4401,8 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": -76.5,
-        "y": 0.505,
+        "x": -206.5,
+        "y": 0.005,
         "z": -6
       },
       "rotation": {
@@ -4138,8 +4467,8 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": -77.5,
-        "y": 0.505,
+        "x": -207.5,
+        "y": 0.005,
         "z": -10
       },
       "rotation": {
@@ -4204,8 +4533,8 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": -79.5,
-        "y": 0.505,
+        "x": -209.5,
+        "y": 0.005,
         "z": -12.6
       },
       "rotation": {
@@ -4270,8 +4599,8 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": -70,
-        "y": 2,
+        "x": -200,
+        "y": 1.5,
         "z": -16
       },
       "rotation": {
@@ -4329,8 +4658,8 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": -70,
-        "y": 2,
+        "x": -200,
+        "y": 1.5,
         "z": -24
       },
       "rotation": {
@@ -4388,8 +4717,8 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": -79.5,
-        "y": 7,
+        "x": -209.5,
+        "y": 6.5,
         "z": 9
       },
       "rotation": {
@@ -4447,8 +4776,8 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": -65,
-        "y": 2,
+        "x": -195,
+        "y": 1.5,
         "z": 10.5
       },
       "rotation": {
@@ -4500,14 +4829,14 @@
         "tag": "m1-music-zone"
       }
     },
-    "portal-music-hub": {
-      "name": "Portal Music District → Hub",
-      "id": "portal-music-hub",
+    "music-ground": {
+      "name": "music-ground",
+      "id": "music-ground",
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": -61,
-        "y": 2,
+        "x": -200,
+        "y": -1,
         "z": 0
       },
       "rotation": {
@@ -4535,9 +4864,1691 @@
           "openEnded": false
         },
         "boxParams": {
-          "width": 1,
+          "width": 240,
+          "height": 2,
+          "depth": 240
+        },
+        "type": "box"
+      },
+      "color": "#000000",
+      "opacity": 1,
+      "display": false,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "music-ground",
+        "tag": "m2-city-ground"
+      }
+    },
+    "music-b9-11-00-t0": {
+      "name": "music-b9-11-00-t0",
+      "id": "music-b9-11-00-t0",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -273,
+        "y": 13.6,
+        "z": -77
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 18.8,
+          "height": 27.2,
+          "depth": 18.8
+        },
+        "type": "box"
+      },
+      "color": "#000000",
+      "opacity": 1,
+      "display": false,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "music-b9-11-00-t0",
+        "tag": "m2-city-collider"
+      }
+    },
+    "music-b9-11-01-t0": {
+      "name": "music-b9-11-01-t0",
+      "id": "music-b9-11-01-t0",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -273,
+        "y": 13.15,
+        "z": -52
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 14.6,
+          "height": 26.3,
+          "depth": 14.6
+        },
+        "type": "box"
+      },
+      "color": "#000000",
+      "opacity": 1,
+      "display": false,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "music-b9-11-01-t0",
+        "tag": "m2-city-collider"
+      }
+    },
+    "music-b9-11-02-t0": {
+      "name": "music-b9-11-02-t0",
+      "id": "music-b9-11-02-t0",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -273,
+        "y": 10.1,
+        "z": -27
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 15.8,
+          "height": 20.2,
+          "depth": 15.8
+        },
+        "type": "box"
+      },
+      "color": "#000000",
+      "opacity": 1,
+      "display": false,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "music-b9-11-02-t0",
+        "tag": "m2-city-collider"
+      }
+    },
+    "music-b9-11-10-t0": {
+      "name": "music-b9-11-10-t0",
+      "id": "music-b9-11-10-t0",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -248,
+        "y": 15.25,
+        "z": -77
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 16,
+          "height": 30.5,
+          "depth": 16
+        },
+        "type": "box"
+      },
+      "color": "#000000",
+      "opacity": 1,
+      "display": false,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "music-b9-11-10-t0",
+        "tag": "m2-city-collider"
+      }
+    },
+    "music-b9-11-11-t0": {
+      "name": "music-b9-11-11-t0",
+      "id": "music-b9-11-11-t0",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -248,
+        "y": 9.95,
+        "z": -52
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 17,
+          "height": 19.9,
+          "depth": 17
+        },
+        "type": "box"
+      },
+      "color": "#000000",
+      "opacity": 1,
+      "display": false,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "music-b9-11-11-t0",
+        "tag": "m2-city-collider"
+      }
+    },
+    "music-b9-11-12-t0": {
+      "name": "music-b9-11-12-t0",
+      "id": "music-b9-11-12-t0",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -248,
+        "y": 11.45,
+        "z": -27
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 17,
+          "height": 22.9,
+          "depth": 17
+        },
+        "type": "box"
+      },
+      "color": "#000000",
+      "opacity": 1,
+      "display": false,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "music-b9-11-12-t0",
+        "tag": "m2-city-collider"
+      }
+    },
+    "music-b9-11-12-t1": {
+      "name": "music-b9-11-12-t1",
+      "id": "music-b9-11-12-t1",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -248,
+        "y": 27.7,
+        "z": -27
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 11,
+          "height": 9.6,
+          "depth": 11
+        },
+        "type": "box"
+      },
+      "color": "#000000",
+      "opacity": 1,
+      "display": false,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "music-b9-11-12-t1",
+        "tag": "m2-city-collider"
+      }
+    },
+    "music-b9-12-00-t0": {
+      "name": "music-b9-12-00-t0",
+      "id": "music-b9-12-00-t0",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -273,
+        "y": 13.65,
+        "z": 27
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 17.2,
+          "height": 27.3,
+          "depth": 17.2
+        },
+        "type": "box"
+      },
+      "color": "#000000",
+      "opacity": 1,
+      "display": false,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "music-b9-12-00-t0",
+        "tag": "m2-city-collider"
+      }
+    },
+    "music-b9-12-01-t0": {
+      "name": "music-b9-12-01-t0",
+      "id": "music-b9-12-01-t0",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -273,
+        "y": 12.5,
+        "z": 52
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 16.4,
+          "height": 25,
+          "depth": 16.4
+        },
+        "type": "box"
+      },
+      "color": "#000000",
+      "opacity": 1,
+      "display": false,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "music-b9-12-01-t0",
+        "tag": "m2-city-collider"
+      }
+    },
+    "music-b9-12-02-t0": {
+      "name": "music-b9-12-02-t0",
+      "id": "music-b9-12-02-t0",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -273,
+        "y": 14.4,
+        "z": 77
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 14.6,
+          "height": 28.8,
+          "depth": 14.6
+        },
+        "type": "box"
+      },
+      "color": "#000000",
+      "opacity": 1,
+      "display": false,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "music-b9-12-02-t0",
+        "tag": "m2-city-collider"
+      }
+    },
+    "music-b9-12-10-t0": {
+      "name": "music-b9-12-10-t0",
+      "id": "music-b9-12-10-t0",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -248,
+        "y": 15.1,
+        "z": 27
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 14.8,
+          "height": 30.2,
+          "depth": 14.8
+        },
+        "type": "box"
+      },
+      "color": "#000000",
+      "opacity": 1,
+      "display": false,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "music-b9-12-10-t0",
+        "tag": "m2-city-collider"
+      }
+    },
+    "music-b9-12-12-t0": {
+      "name": "music-b9-12-12-t0",
+      "id": "music-b9-12-12-t0",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -248,
+        "y": 15.35,
+        "z": 77
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 17.4,
+          "height": 30.7,
+          "depth": 17.4
+        },
+        "type": "box"
+      },
+      "color": "#000000",
+      "opacity": 1,
+      "display": false,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "music-b9-12-12-t0",
+        "tag": "m2-city-collider"
+      }
+    },
+    "music-b9-12-22-t0": {
+      "name": "music-b9-12-22-t0",
+      "id": "music-b9-12-22-t0",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -223,
+        "y": 11.85,
+        "z": 77
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 16.2,
+          "height": 23.7,
+          "depth": 16.2
+        },
+        "type": "box"
+      },
+      "color": "#000000",
+      "opacity": 1,
+      "display": false,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "music-b9-12-22-t0",
+        "tag": "m2-city-collider"
+      }
+    },
+    "music-b10-11-10-t0": {
+      "name": "music-b10-11-10-t0",
+      "id": "music-b10-11-10-t0",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -150,
+        "y": 15.2,
+        "z": -77
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 20,
+          "height": 30.4,
+          "depth": 18.6
+        },
+        "type": "box"
+      },
+      "color": "#000000",
+      "opacity": 1,
+      "display": false,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "music-b10-11-10-t0",
+        "tag": "m2-city-collider"
+      }
+    },
+    "music-b10-11-11-t0": {
+      "name": "music-b10-11-11-t0",
+      "id": "music-b10-11-11-t0",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -150,
+        "y": 9.25,
+        "z": -52
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 16.6,
+          "height": 18.5,
+          "depth": 15.4
+        },
+        "type": "box"
+      },
+      "color": "#000000",
+      "opacity": 1,
+      "display": false,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "music-b10-11-11-t0",
+        "tag": "m2-city-collider"
+      }
+    },
+    "music-b10-11-12-t0": {
+      "name": "music-b10-11-12-t0",
+      "id": "music-b10-11-12-t0",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -150,
+        "y": 8.3,
+        "z": -27
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 19.2,
+          "height": 16.6,
+          "depth": 17.8
+        },
+        "type": "box"
+      },
+      "color": "#000000",
+      "opacity": 1,
+      "display": false,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "music-b10-11-12-t0",
+        "tag": "m2-city-collider"
+      }
+    },
+    "music-b10-11-20-t0": {
+      "name": "music-b10-11-20-t0",
+      "id": "music-b10-11-20-t0",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -123.65,
+        "y": 9.7,
+        "z": -77
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 19.1,
+          "height": 19.4,
+          "depth": 17.8
+        },
+        "type": "box"
+      },
+      "color": "#000000",
+      "opacity": 1,
+      "display": false,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "music-b10-11-20-t0",
+        "tag": "m2-city-collider"
+      }
+    },
+    "music-b10-11-21-t0": {
+      "name": "music-b10-11-21-t0",
+      "id": "music-b10-11-21-t0",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -123.7,
+        "y": 9.65,
+        "z": -52
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 19.4,
+          "height": 19.3,
+          "depth": 18
+        },
+        "type": "box"
+      },
+      "color": "#000000",
+      "opacity": 1,
+      "display": false,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "music-b10-11-21-t0",
+        "tag": "m2-city-collider"
+      }
+    },
+    "music-b10-11-22-t0": {
+      "name": "music-b10-11-22-t0",
+      "id": "music-b10-11-22-t0",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -123.65,
+        "y": 9.65,
+        "z": -27
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 16.1,
+          "height": 19.3,
+          "depth": 14.8
+        },
+        "type": "box"
+      },
+      "color": "#000000",
+      "opacity": 1,
+      "display": false,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "music-b10-11-22-t0",
+        "tag": "m2-city-collider"
+      }
+    },
+    "music-b10-12-02-t0": {
+      "name": "music-b10-12-02-t0",
+      "id": "music-b10-12-02-t0",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -176.35,
+        "y": 10.8,
+        "z": 77
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 17.1,
+          "height": 21.6,
+          "depth": 15.8
+        },
+        "type": "box"
+      },
+      "color": "#000000",
+      "opacity": 1,
+      "display": false,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "music-b10-12-02-t0",
+        "tag": "m2-city-collider"
+      }
+    },
+    "music-b10-12-10-t0": {
+      "name": "music-b10-12-10-t0",
+      "id": "music-b10-12-10-t0",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -150,
+        "y": 8.45,
+        "z": 27
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 17.6,
+          "height": 16.9,
+          "depth": 16.2
+        },
+        "type": "box"
+      },
+      "color": "#000000",
+      "opacity": 1,
+      "display": false,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "music-b10-12-10-t0",
+        "tag": "m2-city-collider"
+      }
+    },
+    "music-b10-12-11-t0": {
+      "name": "music-b10-12-11-t0",
+      "id": "music-b10-12-11-t0",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -150,
+        "y": 10.75,
+        "z": 52
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 17.4,
+          "height": 21.5,
+          "depth": 16.2
+        },
+        "type": "box"
+      },
+      "color": "#000000",
+      "opacity": 1,
+      "display": false,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "music-b10-12-11-t0",
+        "tag": "m2-city-collider"
+      }
+    },
+    "music-b10-12-12-t0": {
+      "name": "music-b10-12-12-t0",
+      "id": "music-b10-12-12-t0",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -150,
+        "y": 17.6,
+        "z": 77
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 19.4,
+          "height": 35.2,
+          "depth": 18
+        },
+        "type": "box"
+      },
+      "color": "#000000",
+      "opacity": 1,
+      "display": false,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "music-b10-12-12-t0",
+        "tag": "m2-city-collider"
+      }
+    },
+    "music-b10-12-20-t0": {
+      "name": "music-b10-12-20-t0",
+      "id": "music-b10-12-20-t0",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -123.65,
+        "y": 8.45,
+        "z": 27
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 19.5,
+          "height": 16.9,
+          "depth": 18.2
+        },
+        "type": "box"
+      },
+      "color": "#000000",
+      "opacity": 1,
+      "display": false,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "music-b10-12-20-t0",
+        "tag": "m2-city-collider"
+      }
+    },
+    "music-b10-12-21-t0": {
+      "name": "music-b10-12-21-t0",
+      "id": "music-b10-12-21-t0",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -123.65,
+        "y": 7.45,
+        "z": 52
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 16.5,
+          "height": 14.9,
+          "depth": 15.2
+        },
+        "type": "box"
+      },
+      "color": "#000000",
+      "opacity": 1,
+      "display": false,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "music-b10-12-21-t0",
+        "tag": "m2-city-collider"
+      }
+    },
+    "music-b10-12-22-t0": {
+      "name": "music-b10-12-22-t0",
+      "id": "music-b10-12-22-t0",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -123.65,
+        "y": 10.85,
+        "z": 77
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 16.9,
+          "height": 21.7,
+          "depth": 15.6
+        },
+        "type": "box"
+      },
+      "color": "#000000",
+      "opacity": 1,
+      "display": false,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "music-b10-12-22-t0",
+        "tag": "m2-city-collider"
+      }
+    },
+    "music-ring-w": {
+      "name": "music-ring-w",
+      "id": "music-ring-w",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -300,
+        "y": 4.5,
+        "z": 0
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 2,
+          "height": 9,
+          "depth": 204
+        },
+        "type": "box"
+      },
+      "color": "#000000",
+      "opacity": 1,
+      "display": false,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "music-ring-w",
+        "tag": "m2-city-ring"
+      }
+    },
+    "music-club-massing": {
+      "name": "music-club-massing",
+      "id": "music-club-massing",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -200,
+        "y": 3,
+        "z": 35.5
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 24,
+          "height": 6,
+          "depth": 23
+        },
+        "type": "box"
+      },
+      "color": "#000000",
+      "opacity": 1,
+      "display": false,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "music-club-massing",
+        "tag": "m2-city-collider"
+      }
+    },
+    "portal-music-hub": {
+      "name": "Portal Music District → Hub (sky lift)",
+      "id": "portal-music-hub",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -194,
+        "y": 1.5,
+        "z": -7
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 3.4,
           "height": 3,
-          "depth": 14
+          "depth": 3.4
         },
         "type": "box"
       },
@@ -4565,8 +6576,8 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": -65,
-        "y": 2,
+        "x": -195,
+        "y": 1.5,
         "z": 16
       },
       "rotation": {
@@ -4624,8 +6635,8 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": -70,
-        "y": 2,
+        "x": -200,
+        "y": 1.5,
         "z": -30
       },
       "rotation": {

@@ -23,10 +23,19 @@
 
 /** Warning thresholds. Bytes are the serialized (LF) artifact text; counts are top-level components. */
 export const SPATIAL_WARNING_BUDGETS = Object.freeze({
-  /** 64 KiB per runtime global-scene / chunk artifact. */
-  artifactBytes: 128 * 1024,
-  /** 64 components per runtime global-scene / chunk artifact. */
-  artifactComponents: 96,
+  /**
+   * Bytes per runtime global-scene / chunk artifact. M0 started at 64 KiB, M1 raised it to 128 KiB;
+   * M2 (2026-10-15) raises it to 192 KiB: district cells now also carry their city kit (an invisible
+   * ground collider and one invisible collider per building tier, ≈1.2 KiB each) — measured
+   * fashion-culture 166 KiB, music / hub ≈ 143 KiB.
+   */
+  artifactBytes: 192 * 1024,
+  /**
+   * Components per runtime global-scene / chunk artifact (M0 64 → M1 96 → M2 160). The M2 growth is
+   * collider-only components (`display: false`): physics bodies, no draw calls — measured
+   * fashion-culture 129, music / hub 114.
+   */
+  artifactComponents: 160,
 });
 
 /**

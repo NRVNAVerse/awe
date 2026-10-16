@@ -57,7 +57,7 @@ describe("chunk orchestrator — initial load and same-chunk travel", () => {
     expect(runtime.liveOf(HUB)).toEqual([]);
     expect(runtime.placed).toEqual([spawn(ids.music)]);
     // Placement happens only after every component of the chunk exists.
-    expect(runtime.log.indexOf("place:-70,1,6")).toBeGreaterThan(runtime.log.lastIndexOf("create:path-music-north"));
+    expect(runtime.log.indexOf("place:-200,0.5,6")).toBeGreaterThan(runtime.log.lastIndexOf("create:path-music-north"));
   });
 
   it("same-chunk travel neither fetches nor rebuilds: Music District → Placeholder Artist is a teleport", async () => {
@@ -69,7 +69,7 @@ describe("chunk orchestrator — initial load and same-chunk travel", () => {
     expect(result).toEqual({ status: "arrived", chunkKey: "music", kind: "same-chunk" });
     expect(loading).toBe(0);
     expect(source.requests.map((r) => r.chunkKey)).toEqual(["music"]);
-    expect(runtime.log).toEqual(["place:-70,1,-34"]);
+    expect(runtime.log).toEqual(["place:-200,0.5,-34"]);
     expect(runtime.liveOf(MUSIC)).toEqual(Object.keys(MUSIC.components));
   });
 
@@ -102,7 +102,7 @@ describe("chunk orchestrator — cross-chunk transition order", () => {
     const log = runtime.log;
     const stageAt = log.indexOf("stage:music");
     const lastCreateAt = log.lastIndexOf("create:path-music-north");
-    const placeAt = log.indexOf("place:-70,1,6");
+    const placeAt = log.indexOf("place:-200,0.5,6");
     const retireAt = log.indexOf("retire:hub");
     expect(stageAt).toBeGreaterThanOrEqual(0);
     expect(lastCreateAt).toBeGreaterThan(stageAt);

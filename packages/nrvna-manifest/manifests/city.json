@@ -1,0 +1,62 @@
+{
+  "schemaVersion": 1,
+  "id": "dst_8w1j39h5e0ezrsjh",
+  "slug": "city",
+  "previousSlugs": [],
+  "kind": "district",
+  "name": "The City",
+  "owner": {
+    "name": "NRVNAVerse",
+    "organizationId": null,
+    "webUrl": "https://www.nrvnaverse.com/"
+  },
+  "primaryDistrictId": null,
+  "categories": [
+    "city",
+    "exploration"
+  ],
+  "tags": [
+    "m2",
+    "placeholder",
+    "skyfall-plaza"
+  ],
+  "relatedDestinationIds": [
+    "dst_7g19n1vm9ackw8a0",
+    "dst_gm3xs4a3tws7bgh3",
+    "dst_9c4wxtpec8awsx1q"
+  ],
+  "description": "M2 placeholder. The streets beneath the floating Hub: Skyfall Plaza is where the Drop lands and the sky lift rises; the Music and Fashion / Culture districts are a walk away.",
+  "webUrl": "https://www.nrvnaverse.com/worlds/city",
+  "spatialDestination": {
+    "platform": "the-nrvnaverse",
+    "worldId": "the-nrvnaverse"
+  },
+  "media": {
+    "thumbnailUrl": null,
+    "heroUrl": null,
+    "logoUrl": null
+  },
+  "status": "active",
+  "ageRestriction": null,
+  "jurisdictions": {
+    "policy": "unrestricted",
+    "regions": [],
+    "note": null
+  },
+  "capabilities": [
+    "discovery",
+    "entertainment"
+  ],
+  "devices": [
+    "desktop",
+    "mobile",
+    "tablet"
+  ],
+  "commerceRefs": [],
+  "analyticsId": "dst_8w1j39h5e0ezrsjh",
+  "updatedAt": "2026-10-15T00:00:00Z",
+  "auth": {
+    "roles": []
+  },
+  "gates": []
+}

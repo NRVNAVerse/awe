@@ -26,7 +26,7 @@ describe("generated views", () => {
     const views = generateViews(seven);
     const directory = views["directory.json"];
     expect(directory.hub.id).toBe(bySlug(seven, SLUGS.hub).id);
-    expect(directory.districts.map((d) => d.slug).sort()).toEqual([SLUGS.cannabis, SLUGS.fashion, SLUGS.music].sort());
+    expect(directory.districts.map((d) => d.slug).sort()).toEqual([SLUGS.cannabis, "city", SLUGS.fashion, SLUGS.music].sort()); // M2: The City (Skyfall Plaza)
     const cannabis = directory.districts.find((d) => d.slug === SLUGS.cannabis)!;
     expect(cannabis.gates).toEqual(["age21"]);
     expect(cannabis.minimumAge).toBe(21);
@@ -38,7 +38,7 @@ describe("generated views", () => {
     const seven = loadSeven();
     const views = generateViews(seven);
     const file = views["destinations.json"];
-    expect(file.destinations).toHaveLength(8);
+    expect(file.destinations).toHaveLength(9);
     expect(file.hubId).toBe(bySlug(seven, SLUGS.hub).id);
     for (const d of seven) {
       expect(file.index.bySlug[d.slug]).toBe(d.id);

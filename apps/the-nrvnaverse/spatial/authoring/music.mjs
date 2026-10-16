@@ -15,7 +15,7 @@
  * facing -Z, artist (-70, 1, -34).
  */
 
-import { box, slab, column, sphere, rampZ, label, glow, pulse, collect, v, deg, zone, experienceOf } from "./lib.mjs";
+import { box, slab, column, sphere, rampZ, label, glow, pulse, collect, v, deg, zone, experienceOf, liftPad } from "./lib.mjs";
 import { PALETTE } from "./hub.mjs";
 
 /** Stable destination ids the Music arrival beats bind to (references; identity lives in the manifest). */
@@ -40,6 +40,8 @@ export const TONIGHT = Object.freeze({ room: /** @type {keyof typeof VENUE_ROOMS
 
 const CX = -70; // district centre x
 const DATUM = 0.5;
+/** M2 sky-lift pad (local frame): the floor's north-east quarter, clear of the spawn, the path and the gateway. */
+const LIFT = Object.freeze({ x: CX + 6, z: -7 });
 
 export const MUSIC_TAGS = Object.freeze({
   structure: "m1-music-structure",
@@ -180,7 +182,10 @@ export function composeMusic() {
   items.push(column("music-gate-hub-post-n", CX + 9, DATUM, -7.9, 0.45, 5, { name: "Hub gateway post north", color: PALETTE.stoneLight, segments: 16, tag: T.structure }));
   items.push(column("music-gate-hub-post-s", CX + 9, DATUM, 7.9, 0.45, 5, { name: "Hub gateway post south", color: PALETTE.stoneLight, segments: 16, tag: T.structure }));
   items.push(slab("music-gate-hub-lintel", CX + 9, DATUM + 5, 0, [1.2, 0.7, 17], { name: "Hub gateway lintel", color: PALETTE.stoneLight, tag: T.structure }));
-  items.push(label("music-gate-hub-label", "HUB", v(CX + 8.3, DATUM + 6.6, 0), { scale: 0.95, name: "Label Hub gateway", color: PALETTE.warmLight, rotation: { x: 0, y: deg(-90), z: 0 } }));
+  // M2: the east gateway is the district's street entrance from Skyfall Plaza (no longer a portal);
+  // the way back up to the Hub is the sky lift pad on the floor's north-east quarter.
+  items.push(label("music-gate-hub-label", "SKYFALL PLAZA", v(CX + 8.3, DATUM + 6.6, 0), { scale: 0.85, name: "Label plaza gateway", color: PALETTE.warmLight, rotation: { x: 0, y: deg(-90), z: 0 }, width: 1400 }));
+  items.push(...liftPad("music-lift", LIFT.x, DATUM, LIFT.z, { color: PALETTE.warmLight, glowColor: PALETTE.ember, text: "SKY LIFT · HUB", tag: T.structure }));
   items.push(column("music-gate-artist-post-w", CX - 3.5, DATUM, -30, 0.3, 3.6, { name: "Stage threshold post west", color: PALETTE.charcoal, segments: 12, tag: T.structure }));
   items.push(column("music-gate-artist-post-e", CX + 3.5, DATUM, -30, 0.3, 3.6, { name: "Stage threshold post east", color: PALETTE.charcoal, segments: 12, tag: T.structure }));
 
@@ -272,7 +277,7 @@ export function composeMusic() {
   items.push(zone("music-threshold-club", v(DOOR_X, DATUM + 1.5, 10.5), [8, 3, 7], { name: "Threshold: The Club on the web", tag: T.zone }));
 
   // --- 6. Portal sensors last (ids and sensor semantics unchanged from M0; the Club door is new) ----
-  items.push(portal("portal-music-hub", "Portal Music District → Hub", v(CX + 9, 2, 0), [1, 3, 14], PALETTE.warmLight));
+  items.push(portal("portal-music-hub", "Portal Music District → Hub (sky lift)", v(LIFT.x, 2, LIFT.z), [3.4, 3, 3.4], PALETTE.warmLight));
   items.push(portal("portal-music-club", "Portal Music District → The Club", v(DOOR_X, 2, 16), [5, 3, 1], TEAL));
   // Artist threshold at the END of the processional path (z -30): the walk past the speaker stacks is real,
   // and the artist spawn (-70, 1, -34) is four metres beyond the sensor, facing the stage.

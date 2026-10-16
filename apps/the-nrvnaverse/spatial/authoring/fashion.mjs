@@ -17,7 +17,7 @@
  * seamless step into the loggia.
  */
 
-import { box, slab, column, sphere, rampZ, label, glow, pulse, collect, v, deg, zone, experienceOf } from "./lib.mjs";
+import { box, slab, column, sphere, rampZ, label, glow, pulse, collect, v, deg, zone, experienceOf, liftPad } from "./lib.mjs";
 import { PALETTE } from "./hub.mjs";
 
 /** Stable destination id the Fashion arrival beats bind to (a reference; identity lives in the manifest). */
@@ -25,6 +25,8 @@ export const PLACEHOLDER_BRAND_ID = "dst_tgfh5h5jvm3wj0w7";
 
 const CX = 70;
 const DATUM = 0.5;
+/** M2 sky-lift pad (local frame): the court's north-west quarter, clear of the spawn, the runway ramp and the gateway. */
+const LIFT = Object.freeze({ x: CX - 6, z: -7 });
 const RUNWAY_TOP = 1.5;
 const ROOF_TOP = 7.1;
 const ROSE = PALETTE.fashion;
@@ -232,7 +234,10 @@ export function composeFashion() {
   items.push(column("fashion-gate-hub-post-n", CX - 9, DATUM, -7.9, 0.45, 5, { name: "Hub gateway post north", color: TRAVERTINE_DARK, segments: 16, tag: T.structure }));
   items.push(column("fashion-gate-hub-post-s", CX - 9, DATUM, 7.9, 0.45, 5, { name: "Hub gateway post south", color: TRAVERTINE_DARK, segments: 16, tag: T.structure }));
   items.push(slab("fashion-gate-hub-lintel", CX - 9, DATUM + 5, 0, [1.2, 0.7, 17], { name: "Hub gateway lintel", color: TRAVERTINE_DARK, tag: T.structure }));
-  items.push(label("fashion-gate-hub-label", "HUB", v(CX - 8.3, DATUM + 6.6, 0), { scale: 0.95, name: "Label Hub gateway", color: PALETTE.warmLight, rotation: { x: 0, y: deg(90), z: 0 } }));
+  // M2: the west gateway is the district's street entrance from Skyfall Plaza (no longer a portal);
+  // the way back up to the Hub is the sky lift pad on the court's north-west quarter.
+  items.push(label("fashion-gate-hub-label", "SKYFALL PLAZA", v(CX - 8.3, DATUM + 6.6, 0), { scale: 0.85, name: "Label plaza gateway", color: PALETTE.warmLight, rotation: { x: 0, y: deg(90), z: 0 }, width: 1400 }));
+  items.push(...liftPad("fashion-lift", LIFT.x, DATUM, LIFT.z, { color: PALETTE.warmLight, glowColor: PALETTE.ember, text: "SKY LIFT · HUB", tag: T.structure }));
   items.push(column("fashion-gate-brand-post-w", CX - 3, DATUM, -33, 0.3, 3.6, { name: "Brand threshold post west", color: TRAVERTINE_DARK, segments: 12, tag: T.structure }));
   items.push(column("fashion-gate-brand-post-e", CX + 3, DATUM, -33, 0.3, 3.6, { name: "Brand threshold post east", color: TRAVERTINE_DARK, segments: 12, tag: T.structure }));
 
@@ -250,7 +255,7 @@ export function composeFashion() {
   items.push(zone("fashion-threshold-brand", v(CX, DATUM + 1.5, -50.5), [10, 3, 4], { name: "Threshold: the brand on the web", tag: T.zone }));
 
   // --- 6. Portal sensors last (ids and sensor semantics unchanged from M0) --------------------
-  items.push(portal("portal-fashion-hub", "Portal Fashion / Culture District → Hub", v(CX - 9, 2, 0), [1, 3, 14], PALETTE.warmLight));
+  items.push(portal("portal-fashion-hub", "Portal Fashion / Culture District → Hub (sky lift)", v(LIFT.x, 2, LIFT.z), [3.4, 3, 3.4], PALETTE.warmLight));
   // Brand threshold: at the runway's north end (deck top 1.5, slab spans y 0.5..3.5), so the brand
   // destination is entered by walking the runway, not by stepping off the spawn.
   items.push(portal("portal-fashion-brand", "Portal Fashion / Culture District → Placeholder Brand", v(CX, 2, -33), [6, 3, 1], ROSE));

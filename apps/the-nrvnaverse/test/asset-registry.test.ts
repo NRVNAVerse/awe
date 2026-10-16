@@ -85,7 +85,7 @@ function fixtureAsset(sha = SHA, bytes = BYTES.length, assetId = ID): Mutable {
 
 /** The real committed source plus: a registry declared next to the config, and one model in the Hub. */
 function source(mutate?: (draft: Draft) => void): SpatialSourceInput {
-  const draft = structuredClone({ config: committed.config, scene: committed.scene, destinations: committed.destinations }) as unknown as Draft;
+  const draft = structuredClone({ config: committed.config, scene: committed.scene, destinations: committed.destinations, layers: committed.layers }) as unknown as Draft;
   draft.config.assetRegistry = "asset-registry.json";
   draft.assets = { schemaVersion: 1, assets: { [ID]: fixtureAsset() } };
   draft.scene.components[COMPONENT] = {

@@ -9,8 +9,8 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": 70,
-        "y": 0.25,
+        "x": 200,
+        "y": -0.25,
         "z": 0
       },
       "rotation": {
@@ -67,8 +67,8 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": 70,
-        "y": 0.25,
+        "x": 200,
+        "y": -0.25,
         "z": -20
       },
       "rotation": {
@@ -125,8 +125,8 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": 70,
-        "y": 0.25,
+        "x": 200,
+        "y": -0.25,
         "z": -40
       },
       "rotation": {
@@ -183,8 +183,8 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": 70,
-        "y": 1,
+        "x": 200,
+        "y": 0.5,
         "z": -22
       },
       "rotation": {
@@ -241,8 +241,8 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": 70,
-        "y": 0.753,
+        "x": 200,
+        "y": 0.253,
         "z": -9.041
       },
       "rotation": {
@@ -299,8 +299,8 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": 70,
-        "y": 0.753,
+        "x": 200,
+        "y": 0.253,
         "z": -34.959
       },
       "rotation": {
@@ -357,8 +357,8 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": 65,
-        "y": 4.5,
+        "x": 195,
+        "y": 4,
         "z": -14
       },
       "rotation": {
@@ -415,8 +415,8 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": 65,
-        "y": 5.875,
+        "x": 195,
+        "y": 5.375,
         "z": -14
       },
       "rotation": {
@@ -481,8 +481,8 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": 65,
-        "y": 5.875,
+        "x": 195,
+        "y": 5.375,
         "z": -14
       },
       "rotation": {
@@ -549,8 +549,8 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": 75,
-        "y": 4.5,
+        "x": 205,
+        "y": 4,
         "z": -14
       },
       "rotation": {
@@ -607,8 +607,8 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": 75,
-        "y": 5.875,
+        "x": 205,
+        "y": 5.375,
         "z": -14
       },
       "rotation": {
@@ -673,8 +673,8 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": 75,
-        "y": 5.875,
+        "x": 205,
+        "y": 5.375,
         "z": -14
       },
       "rotation": {
@@ -741,8 +741,8 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": 65,
-        "y": 4.5,
+        "x": 195,
+        "y": 4,
         "z": -22
       },
       "rotation": {
@@ -799,8 +799,8 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": 65,
-        "y": 5.875,
+        "x": 195,
+        "y": 5.375,
         "z": -22
       },
       "rotation": {
@@ -865,8 +865,8 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": 65,
-        "y": 5.875,
+        "x": 195,
+        "y": 5.375,
         "z": -22
       },
       "rotation": {
@@ -933,8 +933,8 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": 75,
-        "y": 4.5,
+        "x": 205,
+        "y": 4,
         "z": -22
       },
       "rotation": {
@@ -991,8 +991,8 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": 75,
-        "y": 5.875,
+        "x": 205,
+        "y": 5.375,
         "z": -22
       },
       "rotation": {
@@ -1057,8 +1057,8 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": 75,
-        "y": 5.875,
+        "x": 205,
+        "y": 5.375,
         "z": -22
       },
       "rotation": {
@@ -1125,8 +1125,8 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": 65,
-        "y": 4.5,
+        "x": 195,
+        "y": 4,
         "z": -30
       },
       "rotation": {
@@ -1183,8 +1183,8 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": 65,
-        "y": 5.875,
+        "x": 195,
+        "y": 5.375,
         "z": -30
       },
       "rotation": {
@@ -1249,8 +1249,8 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": 65,
-        "y": 5.875,
+        "x": 195,
+        "y": 5.375,
         "z": -30
       },
       "rotation": {
@@ -1317,8 +1317,8 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": 75,
-        "y": 4.5,
+        "x": 205,
+        "y": 4,
         "z": -30
       },
       "rotation": {
@@ -1375,8 +1375,8 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": 75,
-        "y": 5.875,
+        "x": 205,
+        "y": 5.375,
         "z": -30
       },
       "rotation": {
@@ -1441,8 +1441,8 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": 75,
-        "y": 5.875,
+        "x": 205,
+        "y": 5.375,
         "z": -30
       },
       "rotation": {
@@ -1509,8 +1509,8 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": 61,
-        "y": 0.725,
+        "x": 191,
+        "y": 0.225,
         "z": -22
       },
       "rotation": {
@@ -1567,8 +1567,8 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": 79,
-        "y": 0.725,
+        "x": 209,
+        "y": 0.225,
         "z": -22
       },
       "rotation": {
@@ -1625,8 +1625,8 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": 62,
-        "y": 3.5,
+        "x": 192,
+        "y": 3,
         "z": -42.5
       },
       "rotation": {
@@ -1683,8 +1683,8 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": 62,
-        "y": 3.5,
+        "x": 192,
+        "y": 3,
         "z": -46
       },
       "rotation": {
@@ -1741,8 +1741,8 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": 62,
-        "y": 3.5,
+        "x": 192,
+        "y": 3,
         "z": -49.5
       },
       "rotation": {
@@ -1799,8 +1799,8 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": 62,
-        "y": 3.5,
+        "x": 192,
+        "y": 3,
         "z": -53
       },
       "rotation": {
@@ -1857,8 +1857,8 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": 78,
-        "y": 3.5,
+        "x": 208,
+        "y": 3,
         "z": -42.5
       },
       "rotation": {
@@ -1915,8 +1915,8 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": 78,
-        "y": 3.5,
+        "x": 208,
+        "y": 3,
         "z": -46
       },
       "rotation": {
@@ -1973,8 +1973,8 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": 78,
-        "y": 3.5,
+        "x": 208,
+        "y": 3,
         "z": -49.5
       },
       "rotation": {
@@ -2031,8 +2031,8 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": 78,
-        "y": 3.5,
+        "x": 208,
+        "y": 3,
         "z": -53
       },
       "rotation": {
@@ -2089,8 +2089,8 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": 70,
-        "y": 6.8,
+        "x": 200,
+        "y": 6.3,
         "z": -47.5
       },
       "rotation": {
@@ -2147,8 +2147,8 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": 70,
-        "y": 3.5,
+        "x": 200,
+        "y": 3,
         "z": -53.75
       },
       "rotation": {
@@ -2205,8 +2205,8 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": 64,
-        "y": 1,
+        "x": 194,
+        "y": 0.5,
         "z": -47.5
       },
       "rotation": {
@@ -2263,8 +2263,8 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": 64,
-        "y": 3.5,
+        "x": 194,
+        "y": 3,
         "z": -53.4
       },
       "rotation": {
@@ -2329,8 +2329,8 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": 64,
-        "y": 3.5,
+        "x": 194,
+        "y": 3,
         "z": -53.33
       },
       "rotation": {
@@ -2397,8 +2397,8 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": 70,
-        "y": 1,
+        "x": 200,
+        "y": 0.5,
         "z": -47.5
       },
       "rotation": {
@@ -2455,8 +2455,8 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": 70,
-        "y": 3.5,
+        "x": 200,
+        "y": 3,
         "z": -53.4
       },
       "rotation": {
@@ -2521,8 +2521,8 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": 70,
-        "y": 3.5,
+        "x": 200,
+        "y": 3,
         "z": -53.33
       },
       "rotation": {
@@ -2589,8 +2589,8 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": 76,
-        "y": 1,
+        "x": 206,
+        "y": 0.5,
         "z": -47.5
       },
       "rotation": {
@@ -2647,8 +2647,8 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": 76,
-        "y": 3.5,
+        "x": 206,
+        "y": 3,
         "z": -53.4
       },
       "rotation": {
@@ -2713,8 +2713,8 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": 76,
-        "y": 3.5,
+        "x": 206,
+        "y": 3,
         "z": -53.33
       },
       "rotation": {
@@ -2781,8 +2781,8 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": 82.5,
-        "y": 0.25,
+        "x": 212.5,
+        "y": -0.25,
         "z": -27
       },
       "rotation": {
@@ -2839,8 +2839,8 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": 84,
-        "y": 3.559,
+        "x": 214,
+        "y": 3.059,
         "z": -40.066
       },
       "rotation": {
@@ -2897,8 +2897,8 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": 83.25,
-        "y": 6.8,
+        "x": 213.25,
+        "y": 6.3,
         "z": -53
       },
       "rotation": {
@@ -2955,8 +2955,8 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": 84,
-        "y": 1.7,
+        "x": 214,
+        "y": 1.2,
         "z": -40
       },
       "rotation": {
@@ -3013,8 +3013,8 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": 66,
-        "y": 7.325,
+        "x": 196,
+        "y": 6.825,
         "z": -46
       },
       "rotation": {
@@ -3071,8 +3071,8 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": 76,
-        "y": 7.75,
+        "x": 206,
+        "y": 7.25,
         "z": -44
       },
       "rotation": {
@@ -3129,8 +3129,8 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": 76,
-        "y": 8.7,
+        "x": 206,
+        "y": 8.2,
         "z": -44
       },
       "rotation": {
@@ -3195,8 +3195,8 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": 76,
-        "y": 8.7,
+        "x": 206,
+        "y": 8.2,
         "z": -44
       },
       "rotation": {
@@ -3263,8 +3263,8 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": 76,
-        "y": 7.115,
+        "x": 206,
+        "y": 6.615,
         "z": -44
       },
       "rotation": {
@@ -3321,8 +3321,8 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": 70,
-        "y": 0.25,
+        "x": 200,
+        "y": -0.25,
         "z": -58
       },
       "rotation": {
@@ -3379,8 +3379,8 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": 70,
-        "y": 3,
+        "x": 200,
+        "y": 2.5,
         "z": -63.75
       },
       "rotation": {
@@ -3437,8 +3437,8 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": 76.75,
-        "y": 3,
+        "x": 206.75,
+        "y": 2.5,
         "z": -59
       },
       "rotation": {
@@ -3495,8 +3495,8 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": 63.25,
-        "y": 3,
+        "x": 193.25,
+        "y": 2.5,
         "z": -61.25
       },
       "rotation": {
@@ -3553,8 +3553,8 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": 70,
-        "y": 1.1,
+        "x": 200,
+        "y": 0.6,
         "z": -56.2
       },
       "rotation": {
@@ -3611,8 +3611,8 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": 70,
-        "y": 2.5,
+        "x": 200,
+        "y": 2,
         "z": -56.2
       },
       "rotation": {
@@ -3678,8 +3678,8 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": 72.663,
-        "y": 1.1,
+        "x": 202.663,
+        "y": 0.6,
         "z": -58.135
       },
       "rotation": {
@@ -3736,8 +3736,8 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": 72.663,
-        "y": 2.5,
+        "x": 202.663,
+        "y": 2,
         "z": -58.135
       },
       "rotation": {
@@ -3803,8 +3803,8 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": 71.646,
-        "y": 1.1,
+        "x": 201.646,
+        "y": 0.6,
         "z": -61.265
       },
       "rotation": {
@@ -3861,8 +3861,8 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": 71.646,
-        "y": 2.5,
+        "x": 201.646,
+        "y": 2,
         "z": -61.265
       },
       "rotation": {
@@ -3928,8 +3928,8 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": 68.354,
-        "y": 1.1,
+        "x": 198.354,
+        "y": 0.6,
         "z": -61.265
       },
       "rotation": {
@@ -3986,8 +3986,8 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": 68.354,
-        "y": 2.5,
+        "x": 198.354,
+        "y": 2,
         "z": -61.265
       },
       "rotation": {
@@ -4053,8 +4053,8 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": 67.337,
-        "y": 1.1,
+        "x": 197.337,
+        "y": 0.6,
         "z": -58.135
       },
       "rotation": {
@@ -4111,8 +4111,8 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": 67.337,
-        "y": 2.5,
+        "x": 197.337,
+        "y": 2,
         "z": -58.135
       },
       "rotation": {
@@ -4179,8 +4179,8 @@
       "kit": "cyber",
       "text": "the atelier is quiet — nothing is hung yet",
       "position": {
-        "x": 70,
-        "y": 2.6,
+        "x": 200,
+        "y": 2.1,
         "z": -63.45
       },
       "rotation": {
@@ -4207,8 +4207,8 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": 70,
-        "y": 1.8,
+        "x": 200,
+        "y": 1.3,
         "z": -59
       },
       "rotation": {
@@ -4273,8 +4273,8 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": 70,
-        "y": 1.8,
+        "x": 200,
+        "y": 1.3,
         "z": -59
       },
       "rotation": {
@@ -4341,8 +4341,8 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": 70,
-        "y": 0.54,
+        "x": 200,
+        "y": 0.04,
         "z": -59
       },
       "rotation": {
@@ -4407,8 +4407,8 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": 59.5,
-        "y": 0.505,
+        "x": 189.5,
+        "y": 0.005,
         "z": -49
       },
       "rotation": {
@@ -4473,8 +4473,8 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": 58.8,
-        "y": 0.505,
+        "x": 188.8,
+        "y": 0.005,
         "z": -53
       },
       "rotation": {
@@ -4539,8 +4539,8 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": 59.5,
-        "y": 0.505,
+        "x": 189.5,
+        "y": 0.005,
         "z": -56.5
       },
       "rotation": {
@@ -4605,8 +4605,8 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": 62,
-        "y": 0.505,
+        "x": 192,
+        "y": 0.005,
         "z": -56.5
       },
       "rotation": {
@@ -4672,8 +4672,8 @@
       "kit": "cyber",
       "text": "FASHION / CULTURE",
       "position": {
-        "x": 70,
-        "y": 9.2,
+        "x": 200,
+        "y": 8.7,
         "z": -13.5
       },
       "rotation": {
@@ -4701,8 +4701,8 @@
       "kit": "cyber",
       "text": "Placeholder Fashion / Culture Brand",
       "position": {
-        "x": 70,
-        "y": 6.1,
+        "x": 200,
+        "y": 5.6,
         "z": -40.8
       },
       "rotation": {
@@ -4729,8 +4729,8 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": 61,
-        "y": 3,
+        "x": 191,
+        "y": 2.5,
         "z": -7.9
       },
       "rotation": {
@@ -4787,8 +4787,8 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": 61,
-        "y": 3,
+        "x": 191,
+        "y": 2.5,
         "z": 7.9
       },
       "rotation": {
@@ -4845,8 +4845,8 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": 61,
-        "y": 5.85,
+        "x": 191,
+        "y": 5.35,
         "z": 0
       },
       "rotation": {
@@ -4898,14 +4898,14 @@
       }
     },
     "fashion-gate-hub-label": {
-      "name": "Label Hub gateway",
+      "name": "Label plaza gateway",
       "id": "fashion-gate-hub-label",
       "type": "text",
       "kit": "cyber",
-      "text": "HUB",
+      "text": "SKYFALL PLAZA",
       "position": {
-        "x": 61.7,
-        "y": 7.1,
+        "x": 191.7,
+        "y": 6.6,
         "z": 0
       },
       "rotation": {
@@ -4914,16 +4914,345 @@
         "z": 0
       },
       "scale": {
-        "x": 0.95,
-        "y": 0.95,
-        "z": 0.95
+        "x": 0.85,
+        "y": 0.85,
+        "z": 0.85
       },
       "align": "center",
       "font": "aeonik-bold",
       "lineHeight": 60,
       "textColor": "#ffd98a",
       "textTransform": "none",
-      "width": 900,
+      "width": 1400,
+      "opacity": 1
+    },
+    "fashion-lift-post-nw": {
+      "name": "Sky lift post nw",
+      "id": "fashion-lift-post-nw",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 191.984,
+        "y": 1.8,
+        "z": -9.016
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 0.16,
+          "radiusBottom": 0.16,
+          "height": 3.6,
+          "radialSegments": 10,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1,
+          "height": 1,
+          "depth": 1
+        },
+        "type": "cylinder"
+      },
+      "color": "#1c1f26",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CYLINDER"
+      },
+      "script": {
+        "identifier": "fashion-lift-post-nw",
+        "tag": "m1-fashion-structure"
+      }
+    },
+    "fashion-lift-post-ne": {
+      "name": "Sky lift post ne",
+      "id": "fashion-lift-post-ne",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 196.016,
+        "y": 1.8,
+        "z": -9.016
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 0.16,
+          "radiusBottom": 0.16,
+          "height": 3.6,
+          "radialSegments": 10,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1,
+          "height": 1,
+          "depth": 1
+        },
+        "type": "cylinder"
+      },
+      "color": "#1c1f26",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CYLINDER"
+      },
+      "script": {
+        "identifier": "fashion-lift-post-ne",
+        "tag": "m1-fashion-structure"
+      }
+    },
+    "fashion-lift-post-sw": {
+      "name": "Sky lift post sw",
+      "id": "fashion-lift-post-sw",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 191.984,
+        "y": 1.8,
+        "z": -4.984
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 0.16,
+          "radiusBottom": 0.16,
+          "height": 3.6,
+          "radialSegments": 10,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1,
+          "height": 1,
+          "depth": 1
+        },
+        "type": "cylinder"
+      },
+      "color": "#1c1f26",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CYLINDER"
+      },
+      "script": {
+        "identifier": "fashion-lift-post-sw",
+        "tag": "m1-fashion-structure"
+      }
+    },
+    "fashion-lift-post-se": {
+      "name": "Sky lift post se",
+      "id": "fashion-lift-post-se",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 196.016,
+        "y": 1.8,
+        "z": -4.984
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 0.16,
+          "radiusBottom": 0.16,
+          "height": 3.6,
+          "radialSegments": 10,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1,
+          "height": 1,
+          "depth": 1
+        },
+        "type": "cylinder"
+      },
+      "color": "#1c1f26",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CYLINDER"
+      },
+      "script": {
+        "identifier": "fashion-lift-post-se",
+        "tag": "m1-fashion-structure"
+      }
+    },
+    "fashion-lift-ring": {
+      "name": "Sky lift ring",
+      "id": "fashion-lift-ring",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 194,
+        "y": 3.57,
+        "z": -7
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 2.8,
+          "radiusBottom": 2.8,
+          "height": 0.14,
+          "radialSegments": 40,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1,
+          "height": 1,
+          "depth": 1
+        },
+        "type": "cylinder"
+      },
+      "color": "#ffd98a",
+      "opacity": 0.85,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "plugins": [
+        {
+          "id": "FresnelGlowPlugin",
+          "color": "#f5b24a",
+          "intensity": 1.8,
+          "power": 1.3,
+          "speed": 0.6,
+          "pulse": 1
+        }
+      ],
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CYLINDER"
+      },
+      "script": {
+        "identifier": "fashion-lift-ring",
+        "tag": "m1-fashion-structure"
+      }
+    },
+    "fashion-lift-label": {
+      "name": "Label sky lift",
+      "id": "fashion-lift-label",
+      "type": "text",
+      "kit": "cyber",
+      "text": "SKY LIFT · HUB",
+      "position": {
+        "x": 194,
+        "y": 4.6,
+        "z": -7
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 0.75,
+        "y": 0.75,
+        "z": 0.75
+      },
+      "align": "center",
+      "font": "aeonik-bold",
+      "lineHeight": 60,
+      "textColor": "#ffd98a",
+      "textTransform": "none",
+      "width": 1200,
       "opacity": 1
     },
     "fashion-gate-brand-post-w": {
@@ -4932,8 +5261,8 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": 67,
-        "y": 2.3,
+        "x": 197,
+        "y": 1.8,
         "z": -33
       },
       "rotation": {
@@ -4990,8 +5319,8 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": 73,
-        "y": 2.3,
+        "x": 203,
+        "y": 1.8,
         "z": -33
       },
       "rotation": {
@@ -5048,8 +5377,8 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": 70,
-        "y": 3,
+        "x": 200,
+        "y": 2.5,
         "z": -14
       },
       "rotation": {
@@ -5107,8 +5436,8 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": 70,
-        "y": 3,
+        "x": 200,
+        "y": 2.5,
         "z": -22
       },
       "rotation": {
@@ -5166,8 +5495,8 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": 70,
-        "y": 3,
+        "x": 200,
+        "y": 2.5,
         "z": -30
       },
       "rotation": {
@@ -5225,8 +5554,8 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": 70,
-        "y": 2.5,
+        "x": 200,
+        "y": 2,
         "z": -47.5
       },
       "rotation": {
@@ -5284,8 +5613,8 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": 72,
-        "y": 8.6,
+        "x": 202,
+        "y": 8.1,
         "z": -47.5
       },
       "rotation": {
@@ -5343,8 +5672,8 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": 70,
-        "y": 2.5,
+        "x": 200,
+        "y": 2,
         "z": -58.75
       },
       "rotation": {
@@ -5402,8 +5731,8 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": 70,
-        "y": 2,
+        "x": 200,
+        "y": 1.5,
         "z": -50.5
       },
       "rotation": {
@@ -5455,14 +5784,14 @@
         "tag": "m1-fashion-zone"
       }
     },
-    "portal-fashion-hub": {
-      "name": "Portal Fashion / Culture District → Hub",
-      "id": "portal-fashion-hub",
+    "fashion-culture-ground": {
+      "name": "fashion-culture-ground",
+      "id": "fashion-culture-ground",
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": 61,
-        "y": 2,
+        "x": 200,
+        "y": -1,
         "z": 0
       },
       "rotation": {
@@ -5490,9 +5819,1749 @@
           "openEnded": false
         },
         "boxParams": {
-          "width": 1,
+          "width": 240,
+          "height": 2,
+          "depth": 240
+        },
+        "type": "box"
+      },
+      "color": "#000000",
+      "opacity": 1,
+      "display": false,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "fashion-culture-ground",
+        "tag": "m2-city-ground"
+      }
+    },
+    "fashion-culture-b13-11-00-t0": {
+      "name": "fashion-culture-b13-11-00-t0",
+      "id": "fashion-culture-b13-11-00-t0",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 123.7,
+        "y": 9.25,
+        "z": -77
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 19.4,
+          "height": 18.5,
+          "depth": 18
+        },
+        "type": "box"
+      },
+      "color": "#000000",
+      "opacity": 1,
+      "display": false,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "fashion-culture-b13-11-00-t0",
+        "tag": "m2-city-collider"
+      }
+    },
+    "fashion-culture-b13-11-01-t0": {
+      "name": "fashion-culture-b13-11-01-t0",
+      "id": "fashion-culture-b13-11-01-t0",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 123.65,
+        "y": 9.2,
+        "z": -52
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 19.1,
+          "height": 18.4,
+          "depth": 17.8
+        },
+        "type": "box"
+      },
+      "color": "#000000",
+      "opacity": 1,
+      "display": false,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "fashion-culture-b13-11-01-t0",
+        "tag": "m2-city-collider"
+      }
+    },
+    "fashion-culture-b13-11-02-t0": {
+      "name": "fashion-culture-b13-11-02-t0",
+      "id": "fashion-culture-b13-11-02-t0",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 123.65,
+        "y": 8.95,
+        "z": -27
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 19.9,
+          "height": 17.9,
+          "depth": 18.6
+        },
+        "type": "box"
+      },
+      "color": "#000000",
+      "opacity": 1,
+      "display": false,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "fashion-culture-b13-11-02-t0",
+        "tag": "m2-city-collider"
+      }
+    },
+    "fashion-culture-b13-11-10-t0": {
+      "name": "fashion-culture-b13-11-10-t0",
+      "id": "fashion-culture-b13-11-10-t0",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 150,
+        "y": 12.05,
+        "z": -77
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 19.8,
+          "height": 24.1,
+          "depth": 18.4
+        },
+        "type": "box"
+      },
+      "color": "#000000",
+      "opacity": 1,
+      "display": false,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "fashion-culture-b13-11-10-t0",
+        "tag": "m2-city-collider"
+      }
+    },
+    "fashion-culture-b13-11-11-t0": {
+      "name": "fashion-culture-b13-11-11-t0",
+      "id": "fashion-culture-b13-11-11-t0",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 150,
+        "y": 7.75,
+        "z": -52
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 16,
+          "height": 15.5,
+          "depth": 14.6
+        },
+        "type": "box"
+      },
+      "color": "#000000",
+      "opacity": 1,
+      "display": false,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "fashion-culture-b13-11-11-t0",
+        "tag": "m2-city-collider"
+      }
+    },
+    "fashion-culture-b13-11-12-t0": {
+      "name": "fashion-culture-b13-11-12-t0",
+      "id": "fashion-culture-b13-11-12-t0",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 150,
+        "y": 9.5,
+        "z": -27
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 20,
+          "height": 19,
+          "depth": 18.6
+        },
+        "type": "box"
+      },
+      "color": "#000000",
+      "opacity": 1,
+      "display": false,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "fashion-culture-b13-11-12-t0",
+        "tag": "m2-city-collider"
+      }
+    },
+    "fashion-culture-b13-12-02-t0": {
+      "name": "fashion-culture-b13-12-02-t0",
+      "id": "fashion-culture-b13-12-02-t0",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 123.65,
+        "y": 7.75,
+        "z": 77
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 19.3,
+          "height": 15.5,
+          "depth": 18
+        },
+        "type": "box"
+      },
+      "color": "#000000",
+      "opacity": 1,
+      "display": false,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "fashion-culture-b13-12-02-t0",
+        "tag": "m2-city-collider"
+      }
+    },
+    "fashion-culture-b13-12-10-t0": {
+      "name": "fashion-culture-b13-12-10-t0",
+      "id": "fashion-culture-b13-12-10-t0",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 150,
+        "y": 9.8,
+        "z": 27
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 19.2,
+          "height": 19.6,
+          "depth": 17.8
+        },
+        "type": "box"
+      },
+      "color": "#000000",
+      "opacity": 1,
+      "display": false,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "fashion-culture-b13-12-10-t0",
+        "tag": "m2-city-collider"
+      }
+    },
+    "fashion-culture-b13-12-11-t0": {
+      "name": "fashion-culture-b13-12-11-t0",
+      "id": "fashion-culture-b13-12-11-t0",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 150,
+        "y": 5.9,
+        "z": 52
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 19,
+          "height": 11.8,
+          "depth": 17.6
+        },
+        "type": "box"
+      },
+      "color": "#000000",
+      "opacity": 1,
+      "display": false,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "fashion-culture-b13-12-11-t0",
+        "tag": "m2-city-collider"
+      }
+    },
+    "fashion-culture-b13-12-12-t0": {
+      "name": "fashion-culture-b13-12-12-t0",
+      "id": "fashion-culture-b13-12-12-t0",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 150,
+        "y": 13.85,
+        "z": 77
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 17.6,
+          "height": 27.7,
+          "depth": 16.4
+        },
+        "type": "box"
+      },
+      "color": "#000000",
+      "opacity": 1,
+      "display": false,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "fashion-culture-b13-12-12-t0",
+        "tag": "m2-city-collider"
+      }
+    },
+    "fashion-culture-b13-12-21-t0": {
+      "name": "fashion-culture-b13-12-21-t0",
+      "id": "fashion-culture-b13-12-21-t0",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 176.35,
+        "y": 10.25,
+        "z": 52
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 16.9,
+          "height": 20.5,
+          "depth": 15.6
+        },
+        "type": "box"
+      },
+      "color": "#000000",
+      "opacity": 1,
+      "display": false,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "fashion-culture-b13-12-21-t0",
+        "tag": "m2-city-collider"
+      }
+    },
+    "fashion-culture-b13-12-22-t0": {
+      "name": "fashion-culture-b13-12-22-t0",
+      "id": "fashion-culture-b13-12-22-t0",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 176.35,
+        "y": 10.1,
+        "z": 77
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 18.3,
+          "height": 20.2,
+          "depth": 17
+        },
+        "type": "box"
+      },
+      "color": "#000000",
+      "opacity": 1,
+      "display": false,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "fashion-culture-b13-12-22-t0",
+        "tag": "m2-city-collider"
+      }
+    },
+    "fashion-culture-b14-11-10-t0": {
+      "name": "fashion-culture-b14-11-10-t0",
+      "id": "fashion-culture-b14-11-10-t0",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 248,
+        "y": 11.35,
+        "z": -77
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 17,
+          "height": 22.7,
+          "depth": 17
+        },
+        "type": "box"
+      },
+      "color": "#000000",
+      "opacity": 1,
+      "display": false,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "fashion-culture-b14-11-10-t0",
+        "tag": "m2-city-collider"
+      }
+    },
+    "fashion-culture-b14-11-11-t0": {
+      "name": "fashion-culture-b14-11-11-t0",
+      "id": "fashion-culture-b14-11-11-t0",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 248,
+        "y": 11.1,
+        "z": -52
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 15,
+          "height": 22.2,
+          "depth": 15
+        },
+        "type": "box"
+      },
+      "color": "#000000",
+      "opacity": 1,
+      "display": false,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "fashion-culture-b14-11-11-t0",
+        "tag": "m2-city-collider"
+      }
+    },
+    "fashion-culture-b14-11-12-t0": {
+      "name": "fashion-culture-b14-11-12-t0",
+      "id": "fashion-culture-b14-11-12-t0",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 248,
+        "y": 8.4,
+        "z": -27
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 17.2,
+          "height": 16.8,
+          "depth": 17.2
+        },
+        "type": "box"
+      },
+      "color": "#000000",
+      "opacity": 1,
+      "display": false,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "fashion-culture-b14-11-12-t0",
+        "tag": "m2-city-collider"
+      }
+    },
+    "fashion-culture-b14-11-20-t0": {
+      "name": "fashion-culture-b14-11-20-t0",
+      "id": "fashion-culture-b14-11-20-t0",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 273,
+        "y": 10.4,
+        "z": -77
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 16.8,
+          "height": 20.8,
+          "depth": 16.8
+        },
+        "type": "box"
+      },
+      "color": "#000000",
+      "opacity": 1,
+      "display": false,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "fashion-culture-b14-11-20-t0",
+        "tag": "m2-city-collider"
+      }
+    },
+    "fashion-culture-b14-11-21-t0": {
+      "name": "fashion-culture-b14-11-21-t0",
+      "id": "fashion-culture-b14-11-21-t0",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 273,
+        "y": 11.35,
+        "z": -52
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 18.4,
+          "height": 22.7,
+          "depth": 18.4
+        },
+        "type": "box"
+      },
+      "color": "#000000",
+      "opacity": 1,
+      "display": false,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "fashion-culture-b14-11-21-t0",
+        "tag": "m2-city-collider"
+      }
+    },
+    "fashion-culture-b14-11-21-t1": {
+      "name": "fashion-culture-b14-11-21-t1",
+      "id": "fashion-culture-b14-11-21-t1",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 273,
+        "y": 26.6,
+        "z": -52
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 11.8,
+          "height": 7.8,
+          "depth": 11.8
+        },
+        "type": "box"
+      },
+      "color": "#000000",
+      "opacity": 1,
+      "display": false,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "fashion-culture-b14-11-21-t1",
+        "tag": "m2-city-collider"
+      }
+    },
+    "fashion-culture-b14-11-22-t0": {
+      "name": "fashion-culture-b14-11-22-t0",
+      "id": "fashion-culture-b14-11-22-t0",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 273,
+        "y": 8.45,
+        "z": -27
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 17.4,
+          "height": 16.9,
+          "depth": 17.4
+        },
+        "type": "box"
+      },
+      "color": "#000000",
+      "opacity": 1,
+      "display": false,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "fashion-culture-b14-11-22-t0",
+        "tag": "m2-city-collider"
+      }
+    },
+    "fashion-culture-b14-12-01-t0": {
+      "name": "fashion-culture-b14-12-01-t0",
+      "id": "fashion-culture-b14-12-01-t0",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 223,
+        "y": 10.6,
+        "z": 52
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 17.2,
+          "height": 21.2,
+          "depth": 17.2
+        },
+        "type": "box"
+      },
+      "color": "#000000",
+      "opacity": 1,
+      "display": false,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "fashion-culture-b14-12-01-t0",
+        "tag": "m2-city-collider"
+      }
+    },
+    "fashion-culture-b14-12-01-t1": {
+      "name": "fashion-culture-b14-12-01-t1",
+      "id": "fashion-culture-b14-12-01-t1",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 223,
+        "y": 25.4,
+        "z": 52
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 11,
+          "height": 8.4,
+          "depth": 11
+        },
+        "type": "box"
+      },
+      "color": "#000000",
+      "opacity": 1,
+      "display": false,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "fashion-culture-b14-12-01-t1",
+        "tag": "m2-city-collider"
+      }
+    },
+    "fashion-culture-b14-12-02-t0": {
+      "name": "fashion-culture-b14-12-02-t0",
+      "id": "fashion-culture-b14-12-02-t0",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 223,
+        "y": 9.1,
+        "z": 77
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 14.6,
+          "height": 18.2,
+          "depth": 14.6
+        },
+        "type": "box"
+      },
+      "color": "#000000",
+      "opacity": 1,
+      "display": false,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "fashion-culture-b14-12-02-t0",
+        "tag": "m2-city-collider"
+      }
+    },
+    "fashion-culture-b14-12-10-t0": {
+      "name": "fashion-culture-b14-12-10-t0",
+      "id": "fashion-culture-b14-12-10-t0",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 248,
+        "y": 13.25,
+        "z": 27
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 15,
+          "height": 26.5,
+          "depth": 15
+        },
+        "type": "box"
+      },
+      "color": "#000000",
+      "opacity": 1,
+      "display": false,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "fashion-culture-b14-12-10-t0",
+        "tag": "m2-city-collider"
+      }
+    },
+    "fashion-culture-b14-12-11-t0": {
+      "name": "fashion-culture-b14-12-11-t0",
+      "id": "fashion-culture-b14-12-11-t0",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 248,
+        "y": 10.45,
+        "z": 52
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 15.8,
+          "height": 20.9,
+          "depth": 15.8
+        },
+        "type": "box"
+      },
+      "color": "#000000",
+      "opacity": 1,
+      "display": false,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "fashion-culture-b14-12-11-t0",
+        "tag": "m2-city-collider"
+      }
+    },
+    "fashion-culture-b14-12-12-t0": {
+      "name": "fashion-culture-b14-12-12-t0",
+      "id": "fashion-culture-b14-12-12-t0",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 248,
+        "y": 11.55,
+        "z": 77
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 14.4,
+          "height": 23.1,
+          "depth": 14.4
+        },
+        "type": "box"
+      },
+      "color": "#000000",
+      "opacity": 1,
+      "display": false,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "fashion-culture-b14-12-12-t0",
+        "tag": "m2-city-collider"
+      }
+    },
+    "fashion-culture-b14-12-20-t0": {
+      "name": "fashion-culture-b14-12-20-t0",
+      "id": "fashion-culture-b14-12-20-t0",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 273,
+        "y": 8.6,
+        "z": 27
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 17.4,
+          "height": 17.2,
+          "depth": 17.4
+        },
+        "type": "box"
+      },
+      "color": "#000000",
+      "opacity": 1,
+      "display": false,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "fashion-culture-b14-12-20-t0",
+        "tag": "m2-city-collider"
+      }
+    },
+    "fashion-culture-b14-12-21-t0": {
+      "name": "fashion-culture-b14-12-21-t0",
+      "id": "fashion-culture-b14-12-21-t0",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 273,
+        "y": 8.65,
+        "z": 52
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 18,
+          "height": 17.3,
+          "depth": 18
+        },
+        "type": "box"
+      },
+      "color": "#000000",
+      "opacity": 1,
+      "display": false,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "fashion-culture-b14-12-21-t0",
+        "tag": "m2-city-collider"
+      }
+    },
+    "fashion-culture-b14-12-22-t0": {
+      "name": "fashion-culture-b14-12-22-t0",
+      "id": "fashion-culture-b14-12-22-t0",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 273,
+        "y": 14.35,
+        "z": 77
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 15,
+          "height": 28.7,
+          "depth": 15
+        },
+        "type": "box"
+      },
+      "color": "#000000",
+      "opacity": 1,
+      "display": false,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "fashion-culture-b14-12-22-t0",
+        "tag": "m2-city-collider"
+      }
+    },
+    "fashion-culture-ring-e": {
+      "name": "fashion-culture-ring-e",
+      "id": "fashion-culture-ring-e",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 300,
+        "y": 4.5,
+        "z": 0
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 2,
+          "height": 9,
+          "depth": 204
+        },
+        "type": "box"
+      },
+      "color": "#000000",
+      "opacity": 1,
+      "display": false,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "fashion-culture-ring-e",
+        "tag": "m2-city-ring"
+      }
+    },
+    "portal-fashion-hub": {
+      "name": "Portal Fashion / Culture District → Hub (sky lift)",
+      "id": "portal-fashion-hub",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 194,
+        "y": 1.5,
+        "z": -7
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 3.4,
           "height": 3,
-          "depth": 14
+          "depth": 3.4
         },
         "type": "box"
       },
@@ -5520,8 +7589,8 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": 70,
-        "y": 2,
+        "x": 200,
+        "y": 1.5,
         "z": -33
       },
       "rotation": {

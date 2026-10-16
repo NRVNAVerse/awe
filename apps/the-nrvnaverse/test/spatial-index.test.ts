@@ -31,7 +31,7 @@ describe("generated spatial index → placement registry", () => {
     expect(index.schemaVersion).toBe(SPATIAL_SCHEMA_VERSION);
     expect(index.worldId).toBe("the-nrvnaverse");
     expect(index.globalSceneUrl).toMatch(/^\/data\/spatial\/global-scene\.[0-9a-f]{32}\.json$/); // content-addressed since 2B.4B.2
-    expect(Object.keys(index.chunks)).toEqual(["cannabis-21", "fashion-culture", "hub", "music", "music-club"]);
+    expect(Object.keys(index.chunks)).toEqual(["cannabis-21", "city-north", "city-northeast", "city-northwest", "city-plaza", "city-south", "city-southeast", "city-southwest", "fashion-culture", "hub", "music", "music-club"]);
     expect(Object.keys(index.destinations).sort()).toEqual(activeWorldIds);
   });
 
@@ -102,6 +102,7 @@ describe("generated spatial index → portal bindings (M0 Step 2B.3, additive)",
       "portal-music-artist",
       "portal-music-club",
       "portal-music-hub",
+      "portal-plaza-hub",
     ]);
     for (const [componentId, binding] of Object.entries(index.portals)) {
       expect(Object.keys(binding)).toEqual(["chunkKey", "destinationId"]);

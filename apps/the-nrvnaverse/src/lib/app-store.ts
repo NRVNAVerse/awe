@@ -12,6 +12,7 @@ import {
   withInitialDeepLink,
   withInitialPlacement,
   withTravelResult,
+  withWalkedInto,
   type AppState,
   type InitialPlacementOutcome,
 } from "@/lib/app-state";
@@ -24,7 +25,9 @@ import { AweSpatialAdapter } from "@/lib/spatial/awe-spatial-adapter";
 import { FetchChunkDataSource, type ChunkDataSource } from "@/lib/spatial/chunk-data-source";
 import { ChunkOrchestrator } from "@/lib/spatial/chunk-orchestrator";
 import { PortalController, type PortalTrigger } from "@/lib/spatial/portal-controller";
-import { registryFromSpatialIndex } from "@/lib/spatial/spatial-index";
+import { placementRefFor, registryFromSpatialIndex, type SpatialIndexFile } from "@/lib/spatial/spatial-index";
+import { StreamingController } from "@/lib/spatial/streaming-controller";
+import type { CityLayer } from "@/lib/city/city-layer";
 import { FetchSpatialIndexSource, type SpatialIndexSource } from "@/lib/spatial/spatial-index-source";
 import type { ChunkRuntime, SceneStateRuntime, SensorRuntime } from "@/lib/spatial/spatial-runtime";
 import { now, perfMark, perfMeasure } from "@/lib/perf";
@@ -52,8 +55,11 @@ export interface SpatialDiagnostics {
   boundThresholds: number;
   /** Sigils remembered by this browser (discovery memory; diagnostics only). */
   remembered: number;
+  /** M2: the last streaming handoff ("walk:<chunk>" / "release:<chunk>") and the city layer's stats. */
+  lastHandoff: string | null;
+  cityLayer: { drawCalls: number; triangles: number; buildings: number; visibleProxies: number } | null;
 }
-const IDLE_DIAGNOSTICS: SpatialDiagnostics = { adapterName: null, phase: "idle", destinationId: null, runtimeReady: false, activeChunkKey: null, boundPortals: 0, lastPortal: null, boundZones: 0, lastExperience: null, boundThresholds: 0, remembered: 0 };
+const IDLE_DIAGNOSTICS: SpatialDiagnostics = { adapterName: null, phase: "idle", destinationId: null, runtimeReady: false, activeChunkKey: null, boundPortals: 0, lastPortal: null, boundZones: 0, lastExperience: null, boundThresholds: 0, remembered: 0, lastHandoff: null, cityLayer: null };
 export const spatialDiagnostics = new Store<SpatialDiagnostics>(IDLE_DIAGNOSTICS);
 
 /**
@@ -63,6 +69,14 @@ export const spatialDiagnostics = new Store<SpatialDiagnostics>(IDLE_DIAGNOSTICS
  */
 export interface BootableRuntime extends ChunkRuntime, SensorRuntime, SceneStateRuntime {
   init(options: { sceneUrl: string }): Promise<void>;
+  /** M2 streaming: the visitor's world position (optional so test runtimes may omit it). */
+  getVisitorPosition?(): { x: number; y: number; z: number } | null;
+  /** M2 descent: cap the fall speed (m/s) while falling from the Hub; null restores normal falling. */
+  setFallSpeedLimit?(metresPerSecond: number | null): void;
+  /** M2 descent: whether the avatar stands on the ground. */
+  readonly isGrounded?: boolean;
+  /** M2 far-field layer: attach an app-owned three.js object; returns a detach function. */
+  attachObject?(object: import("three").Object3D): () => void;
   reveal(): Promise<void>;
   /** Destroy the space. May be asynchronous (the real runtime waits for the engine session to settle). */
   dispose(): void | Promise<void>;
@@ -77,6 +91,10 @@ export interface BootOptions {
   search?: string;
   /** Discovery-memory storage (defaults to the browser's localStorage; `null` = this visit only). */
   discoveryStorage?: ConstructorParameters<typeof DiscoveryMemory>[0]["storage"];
+  /** M2: load and mount the far-field city layer (default true; tests without a renderer pass false). */
+  cityLayer?: boolean;
+  /** M2: run the streaming controller on a timer (default true; tests drive `currentStreaming()?.tick()`). */
+  streamingTimer?: boolean;
 }
 
 async function createAweRuntime(): Promise<BootableRuntime> {
@@ -115,6 +133,11 @@ interface AppRun {
   experience: ExperienceController | null;
   thresholds: ThresholdController | null;
   discovery: DiscoveryMemory | null;
+  streaming: StreamingController | null;
+  cityLayer: CityLayer | null;
+  detachCityLayer: (() => void) | null;
+  /** M2: chunk key → the destination that names that place (location after a walking handoff). */
+  homeOf: Map<string, string>;
   adapter: AweSpatialAdapter | null;
   unsubscribePhase: (() => void) | null;
   popstateBound: boolean;
@@ -126,6 +149,8 @@ interface AppRun {
 }
 
 let run: AppRun | null = null;
+/** M2: the Drop's terminal speed (m/s) — ≈6 s from the Hub to Skyfall Plaza, readable, steerable. */
+const DESCENT_SPEED = 22;
 let runSeq = 0;
 /** Store-level travel sequence: only the newest request may settle state or touch the URL. */
 let travelSeq = 0;
@@ -193,6 +218,10 @@ function createRun(): AppRun {
     experience: null,
     thresholds: null,
     discovery: null,
+    streaming: null,
+    cityLayer: null,
+    detachCityLayer: null,
+    homeOf: new Map(),
     adapter: null,
     unsubscribePhase: null,
     popstateBound: false,
@@ -263,7 +292,39 @@ async function executeBoot(current: AppRun, options: BootOptions): Promise<void>
     if (current.disposeRequested) return;
     if (process.env.NODE_ENV !== "production") {
       // Dev-only handle for browser debugging (never used by application code).
-      (globalThis as Record<string, unknown>).__nrvnaverse = { runtime: bootRuntime, adapter, orchestrator, portals: current.portals, experience: current.experience, thresholds: current.thresholds };
+      (globalThis as Record<string, unknown>).__nrvnaverse = { runtime: bootRuntime, adapter, orchestrator, portals: current.portals, experience: current.experience, thresholds: current.thresholds, run: current };
+    }
+    // M2 far-field city: decoration only — a failure is reported and the world still boots.
+    if (options.cityLayer !== false && spatialIndex.layers.city && bootRuntime.attachObject) {
+      try {
+        const res = await fetch(spatialIndex.layers.city.dataUrl, { headers: { accept: "application/json" } });
+        if (!res.ok) throw new Error(`city layer request failed: ${res.status}`);
+        const layerData: unknown = await res.json();
+        if (current.disposeRequested) return;
+        const { CityLayer } = await import("@/lib/city/city-layer");
+        const layer = new CityLayer(layerData);
+        current.cityLayer = layer;
+        current.detachCityLayer = bootRuntime.attachObject(layer.root);
+      } catch (err) {
+        console.warn("[app-store] city layer unavailable", err);
+      }
+      if (current.disposeRequested) return;
+    }
+    // M2 streaming: walking between city cells / falling off the Hub hands the visitor to the next chunk.
+    if (spatialIndex.streaming) {
+      current.homeOf = homeDestinations(spatialIndex, state.loaded.index.byId);
+      const gatedChunks = gatedChunkKeys(spatialIndex, state.loaded.index.byId);
+      const rescueTo = current.homeOf.get(spatialIndex.streaming.cells["0,0"] ?? "") ?? state.loaded.index.hub.id;
+      current.streaming = new StreamingController({
+        streaming: spatialIndex.streaming,
+        position: () => bootRuntime.getVisitorPosition?.() ?? null,
+        activeChunk: () => orchestrator.activeChunkKey,
+        isBusy: () => orchestrator.isTransitioning || appStore.state.phase === "traveling" || appStore.state.phase === "loadingChunk",
+        isStreamable: (chunkKey) => !gatedChunks.has(chunkKey),
+        handoff: (chunkKey, reason) => void handoffToChunk(current, chunkKey, reason),
+        rescue: () => void travelToDestination(rescueTo),
+        descent: bootRuntime.setFallSpeedLimit ? { speed: DESCENT_SPEED, set: (mps) => bootRuntime.setFallSpeedLimit?.(mps), grounded: () => bootRuntime.isGrounded ?? true } : undefined,
+      });
     }
     perfMark("engine-ready");
     perfMeasure("boot→engine-ready", "app-boot", "engine-ready");
@@ -286,6 +347,7 @@ async function executeBoot(current: AppRun, options: BootOptions): Promise<void>
     window.addEventListener("popstate", onPopState);
     current.popstateBound = true;
     current.status = "running";
+    if (options.streamingTimer !== false) current.streaming?.start();
   } catch (err) {
     failed = true;
     if (!current.disposeRequested) appStore.update(errorState(err instanceof Error ? err.message : String(err), appStore.state.notices));
@@ -342,6 +404,7 @@ function onSpatialPhase(phase: SpatialTravelPhase, destinationId: string | null)
 function syncExperience(destinationId: string | null, fromChunkKey: string | null) {
   const current = run;
   const chunkKey = current?.orchestrator?.activeChunkKey ?? null;
+  current?.cityLayer?.setActiveChunk(chunkKey);
   current?.experience?.activate(chunkKey);
   current?.thresholds?.activate(chunkKey);
   if (destinationId && chunkKey) current?.experience?.onArrival({ destinationId, chunkKey, fromChunkKey });
@@ -373,7 +436,63 @@ function refreshDiagnostics(phase?: SpatialTravelPhase, destinationId?: string |
     lastExperience: current?.experience?.lastTrigger ?? null,
     boundThresholds: current?.thresholds?.boundComponentIds.length ?? 0,
     remembered: current?.discovery?.remembered.length ?? 0,
+    lastHandoff: prev.lastHandoff,
+    cityLayer: current?.cityLayer ? { drawCalls: current.cityLayer.stats.drawCalls, triangles: current.cityLayer.stats.triangles, buildings: current.cityLayer.stats.buildings, visibleProxies: current.cityLayer.visibleProxies.length } : null,
   }));
+}
+
+/**
+ * M2: chunk key → the destination that names that place. A chunk with placed destinations is named
+ * by its district (else its first placement, id order); a placement-less city cell is named by the
+ * destination of the origin cell (The City / Skyfall Plaza).
+ */
+function homeDestinations(index: SpatialIndexFile, byId: ReadonlyMap<string, { kind: string }>): Map<string, string> {
+  const out = new Map<string, string>();
+  const placed = Object.entries(index.destinations).sort(([a], [b]) => (a < b ? -1 : a > b ? 1 : 0));
+  for (const chunkKey of Object.keys(index.chunks)) {
+    const here = placed.filter(([, d]) => d.chunkKey === chunkKey).map(([id]) => id);
+    const district = here.find((id) => byId.get(id)?.kind === "district" || byId.get(id)?.kind === "hub");
+    if (district ?? here[0]) out.set(chunkKey, (district ?? here[0]) as string);
+  }
+  const origin = index.streaming?.cells["0,0"];
+  const fallback = origin ? out.get(origin) : undefined;
+  if (fallback) for (const chunkKey of Object.values(index.streaming?.cells ?? {})) if (!out.has(chunkKey)) out.set(chunkKey, fallback);
+  return out;
+}
+
+/** M2: chunks that serve any gated destination (manifest gate truth) — never streamed by proximity. */
+function gatedChunkKeys(index: SpatialIndexFile, byId: ReadonlyMap<string, { gates?: readonly unknown[] }>): Set<string> {
+  const out = new Set<string>();
+  for (const [id, d] of Object.entries(index.destinations)) if ((byId.get(id)?.gates?.length ?? 0) > 0) out.add(d.chunkKey);
+  return out;
+}
+
+/**
+ * M2: position-preserving handoff (walked into the next cell / fell off the Hub). Same orchestrator,
+ * same safety rules as travel; the visitor is not moved. On arrival the chunk's portals, zones and
+ * thresholds are bound, the city layer swaps stand-ins, and the location becomes the place's
+ * destination (no banner; the URL is REPLACED so a reload returns here, history is not spammed).
+ */
+async function handoffToChunk(current: AppRun, chunkKey: string, reason: "walk" | "release"): Promise<void> {
+  const orchestrator = current.orchestrator;
+  if (!orchestrator || current.status !== "running") return;
+  const fromChunkKey = orchestrator.activeChunkKey;
+  const result = await orchestrator.transitionTo({ chunkKey, spawn: null, destinationId: `handoff:${chunkKey}` });
+  if (run !== current || current.status !== "running" || result.status !== "arrived" || result.kind !== "cross-chunk") return;
+  syncPortals();
+  syncExperience(null, fromChunkKey);
+  spatialDiagnostics.update((prev) => ({ ...prev, lastHandoff: `${reason}:${chunkKey}` }));
+  const homeId = current.homeOf.get(chunkKey);
+  const state = appStore.state;
+  const home = homeId && "loaded" in state ? state.loaded.index.byId.get(homeId) : undefined;
+  if (home && "current" in state) {
+    const placement = { destinationId: home.id, platform: state.placement.platform, worldId: state.placement.worldId, placementRef: placementRefFor(chunkKey) };
+    appStore.update(withWalkedInto(state, home, placement));
+    const query = buildDeepLinkQuery(home.id, { from: "spatial", ref: state.entry.ref ?? undefined });
+    if (window.location.search !== query) window.history.replaceState(null, "", `${window.location.pathname}${query}`);
+    appStore.update(withEntry(appStore.state, window.location.search));
+  }
+  refreshDiagnostics();
 }
 
 export interface TravelOptions {
@@ -491,6 +610,12 @@ async function teardown(current: AppRun, options: { keepAppState: boolean }): Pr
   current.thresholds = null;
   attempt("dispose discovery", () => current.discovery?.dispose());
   current.discovery = null;
+  attempt("dispose streaming", () => current.streaming?.dispose());
+  current.streaming = null;
+  attempt("detach city layer", () => current.detachCityLayer?.());
+  attempt("dispose city layer", () => current.cityLayer?.dispose());
+  current.detachCityLayer = null;
+  current.cityLayer = null;
   attempt("dispose adapter", () => current.adapter?.dispose());
   current.adapter = null;
   await attemptAsync("dispose orchestrator", () => current.orchestrator?.dispose());
@@ -544,6 +669,16 @@ export function currentExperience(): ExperienceController | null {
 /** Diagnostics/tests/UI: the threshold controller of the booted app. */
 export function currentThresholds(): ThresholdController | null {
   return run?.thresholds ?? null;
+}
+
+/** Diagnostics/tests: the streaming controller of the booted app (M2). */
+export function currentStreaming(): StreamingController | null {
+  return run?.streaming ?? null;
+}
+
+/** Diagnostics/tests: the far-field city layer of the booted app (M2). */
+export function currentCityLayer(): CityLayer | null {
+  return run?.cityLayer ?? null;
 }
 
 /** Diagnostics/tests: the discovery memory of the booted app. */

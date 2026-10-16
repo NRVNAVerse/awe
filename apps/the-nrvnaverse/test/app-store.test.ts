@@ -547,7 +547,7 @@ describe("app store — lifecycle hardening (boot / dispose coordination)", () =
         expect(runtime.revealed).toBe(0);
         expect(runtime.world.size).toBe(0);
         expect(runtime.batches.size).toBe(0);
-        expect(spatialDiagnostics.state).toEqual({ adapterName: null, phase: "idle", destinationId: null, runtimeReady: false, activeChunkKey: null, boundPortals: 0, lastPortal: null, boundZones: 0, lastExperience: null, boundThresholds: 0, remembered: 0 });
+        expect(spatialDiagnostics.state).toEqual({ adapterName: null, phase: "idle", destinationId: null, runtimeReady: false, activeChunkKey: null, boundPortals: 0, lastPortal: null, boundZones: 0, lastExperience: null, boundThresholds: 0, remembered: 0, lastHandoff: null, cityLayer: null });
         // A runtime whose init ran is disposed again (init may have created a Space); one never initialised is disposed too (harmless, idempotent).
         if (runtime.initOptions) expect(runtime.disposed).toBe(1);
         // Unmount after a failed boot only resets the stores.

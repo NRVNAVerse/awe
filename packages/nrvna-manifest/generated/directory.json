@@ -48,6 +48,27 @@
     },
     {
       "categories": [
+        "city",
+        "exploration"
+      ],
+      "description": "M2 placeholder. The streets beneath the floating Hub: Skyfall Plaza is where the Drop lands and the sky lift rises; the Music and Fashion / Culture districts are a walk away.",
+      "destinations": [],
+      "gates": [],
+      "id": "dst_8w1j39h5e0ezrsjh",
+      "kind": "district",
+      "minimumAge": null,
+      "name": "The City",
+      "slug": "city",
+      "spatialUrl": "https://worlds.nrvnaverse.com/?destination=dst_8w1j39h5e0ezrsjh",
+      "tags": [
+        "m2",
+        "placeholder",
+        "skyfall-plaza"
+      ],
+      "webUrl": "https://www.nrvnaverse.com/worlds/city"
+    },
+    {
+      "categories": [
         "fashion",
         "culture"
       ],

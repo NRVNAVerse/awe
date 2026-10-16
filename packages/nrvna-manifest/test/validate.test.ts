@@ -13,7 +13,7 @@ function singleCodes(manifest: unknown): ValidationCode[] {
 describe("seven M0 placeholder manifests", () => {
   it("are exactly eight and valid as a set", () => {
     const seven = loadSeven();
-    expect(seven).toHaveLength(8);
+    expect(seven).toHaveLength(9); // M2: + The City
     const result = validateDestinationSet(seven);
     expect(result.errors).toEqual([]);
     expect(result.ok).toBe(true);

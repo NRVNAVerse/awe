@@ -78,7 +78,7 @@ beforeEach(() => {
   dir = mkdtempSync(join(tmpdir(), "nrvnaverse-register-"));
   sourceDir = join(dir, "source");
   mkdirSync(sourceDir);
-  for (const f of ["spatial-config.m0.json", "scene.m0.json"]) copyFileSync(join(COMMITTED_SOURCE, f), join(sourceDir, f));
+  for (const f of ["spatial-config.m0.json", "scene.m0.json", "city-layer.m2.json"]) copyFileSync(join(COMMITTED_SOURCE, f), join(sourceDir, f));
   transport = memoryTransport();
 });
 afterEach(() => {
@@ -136,9 +136,9 @@ describe("asset:register — proposal by default, explicit --apply", () => {
     expect(readFileSync(join(sourceDir, "scene.m0.json"), "utf8")).toBe(sceneBefore); // no assetRef added
 
     // The committed spatial generation is unchanged: registered ≠ referenced.
-    const source = { config: readJson(configPath()), scene: readJson(join(sourceDir, "scene.m0.json")), destinations: readJson(join(APP_ROOT, "../../packages/nrvna-manifest/generated/destinations.json")), assets: registry };
+    const source = { config: readJson(configPath()), scene: readJson(join(sourceDir, "scene.m0.json")), destinations: readJson(join(APP_ROOT, "../../packages/nrvna-manifest/generated/destinations.json")), assets: registry, layers: { city: readJson(join(sourceDir, "city-layer.m2.json")) } };
     expect(validateSpatialSource(source).ok).toBe(true);
-    const committed = { config: readJson(join(COMMITTED_SOURCE, "spatial-config.m0.json")), scene: readJson(join(COMMITTED_SOURCE, "scene.m0.json")), destinations: source.destinations };
+    const committed = { config: readJson(join(COMMITTED_SOURCE, "spatial-config.m0.json")), scene: readJson(join(COMMITTED_SOURCE, "scene.m0.json")), destinations: source.destinations, layers: source.layers };
     expect(generateSpatialArtifacts(source).files).toEqual(generateSpatialArtifacts(committed).files);
 
     // Re-running is idempotent.

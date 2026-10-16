@@ -364,6 +364,46 @@ export function composeHub() {
     }),
   );
 
+  // --- 11a. M2: the floating island. The Hub now hangs 140 m over Skyfall Plaza (city.mjs); a deck
+  //          5 cm below the basin datum wraps the M1 composition so the whole island is walkable
+  //          (the M1 floors sit on it), parapets keep the edges, and one gap on the south edge —
+  //          behind the arrival — is THE DROP: walk off the tongue and fall to the plaza below.
+  const DECK_TOP = DATUM - 0.05;
+  const ISLE = Object.freeze({ x0: -62, x1: 62, z0: -66, z1: 32 });
+  const DROP_HALF = 7;
+  const isleW = ISLE.x1 - ISLE.x0;
+  const isleD = ISLE.z1 - ISLE.z0;
+  items.push(box("hub-isle-deck", v(0, DECK_TOP - 0.75, (ISLE.z0 + ISLE.z1) / 2), [isleW, 1.5, isleD], { name: "Island deck", color: "#3d3a35", tag: S.route }));
+  const PH = 1.1; // parapet height above the deck
+  items.push(slab("hub-isle-parapet-n", 0, DECK_TOP, ISLE.z0 + 0.25, [isleW, PH, 0.5], { name: "Island parapet north", color: PALETTE.stone, tag: S.structure }));
+  items.push(slab("hub-isle-parapet-w", ISLE.x0 + 0.25, DECK_TOP, (ISLE.z0 + ISLE.z1) / 2, [0.5, PH, isleD], { name: "Island parapet west", color: PALETTE.stone, tag: S.structure }));
+  items.push(slab("hub-isle-parapet-e", ISLE.x1 - 0.25, DECK_TOP, (ISLE.z0 + ISLE.z1) / 2, [0.5, PH, isleD], { name: "Island parapet east", color: PALETTE.stone, tag: S.structure }));
+  const southLen = ISLE.x1 - DROP_HALF;
+  items.push(slab("hub-isle-parapet-sw", ISLE.x0 + southLen / 2, DECK_TOP, ISLE.z1 - 0.25, [southLen, PH, 0.5], { name: "Island parapet south-west", color: PALETTE.stone, tag: S.structure }));
+  items.push(slab("hub-isle-parapet-se", ISLE.x1 - southLen / 2, DECK_TOP, ISLE.z1 - 0.25, [southLen, PH, 0.5], { name: "Island parapet south-east", color: PALETTE.stone, tag: S.structure }));
+  // The Drop: a tongue past the island edge, an ember edge strip, a frame with the name.
+  items.push(box("hub-drop-tongue", v(0, DECK_TOP - 0.25, ISLE.z1 + 4), [DROP_HALF * 2, 0.5, 8], { name: "The Drop tongue", color: PALETTE.stoneDark, tag: S.route }));
+  items.push(
+    slab("hub-drop-edge", 0, DECK_TOP, ISLE.z1 + 7.85, [DROP_HALF * 2, 0.05, 0.3], {
+      name: "The Drop edge strip",
+      color: PALETTE.warmLight,
+      collider: "none",
+      castShadow: false,
+      plugins: [glow(PALETTE.ember, { intensity: 2.0, power: 1.3, speed: 0.7, pulse: 1 })],
+      tag: S.landmark,
+    }),
+  );
+  for (const sx of [-1, 1]) items.push(column(`hub-drop-post-${sx < 0 ? "w" : "e"}`, sx * (DROP_HALF + 0.6), DECK_TOP, ISLE.z1 - 0.5, 0.4, 6, { name: "The Drop frame post", color: PALETTE.stoneLight, segments: 16, tag: S.landmark }));
+  items.push(slab("hub-drop-lintel", 0, DECK_TOP + 6, ISLE.z1 - 0.5, [DROP_HALF * 2 + 2, 0.6, 0.9], { name: "The Drop lintel", color: PALETTE.stoneLight, tag: S.landmark }));
+  items.push(label("hub-drop-label", "THE DROP · SKYFALL PLAZA", v(0, DECK_TOP + 7.1, ISLE.z1 - 0.5), { scale: 0.8, name: "Label The Drop", color: PALETTE.warmLight, width: 1800, rotation: { x: 0, y: deg(180), z: 0 } }));
+  // Lamps along the island walk and benches at the east / west edges (the view down to the districts).
+  for (const [k, x, z] of [["sw", -40, 20], ["se", 40, 20], ["nw", -40, -54], ["ne", 40, -54]]) {
+    items.push(column(`hub-isle-lamp-${k}-post`, Number(x), DECK_TOP, Number(z), 0.12, 3.2, { name: `Island lamp ${k} post`, color: PALETTE.charcoal, segments: 8, collider: "none", tag: S.route }));
+    items.push(sphere(`hub-isle-lamp-${k}`, v(Number(x), DECK_TOP + 3.5, Number(z)), 0.35, { name: `Island lamp ${k}`, color: "#fff1cf", collider: "none", castShadow: false, plugins: [glow(PALETTE.ember, { intensity: 1.8, power: 1.4, speed: 0.5, pulse: 1 })], tag: S.route }));
+  }
+  items.push(slab("hub-isle-bench-w", ISLE.x0 + 3, DECK_TOP, -20, [0.9, 0.45, 3.2], { name: "Island bench west (over the Music District)", color: PALETTE.stoneLight, tag: S.route }));
+  items.push(slab("hub-isle-bench-e", ISLE.x1 - 3, DECK_TOP, -20, [0.9, 0.45, 3.2], { name: "Island bench east (over Fashion / Culture)", color: PALETTE.stoneLight, tag: S.route }));
+
   // --- 11b. Experience zones (invisible sensor volumes; ids are the zone sensors) ----------------
   // Sized from SIC `bounds` of the anchors (overlook deck x -20..-6 / z -39..-28 / top 8.5; Core
   // house interior x -4..4 / z -23.5..-14.5). Zones precede the portals so the portals stay last.

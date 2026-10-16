@@ -1,0 +1,2445 @@
+{
+  "schemaVersion": 1,
+  "worldId": "the-nrvnaverse",
+  "chunkKey": "city-plaza",
+  "components": {
+    "city-plaza-ground": {
+      "name": "city-plaza-ground",
+      "id": "city-plaza-ground",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 0,
+        "y": -1,
+        "z": 0
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 240,
+          "height": 2,
+          "depth": 240
+        },
+        "type": "box"
+      },
+      "color": "#000000",
+      "opacity": 1,
+      "display": false,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "city-plaza-ground",
+        "tag": "m2-city-ground"
+      }
+    },
+    "city-plaza-b11-11-01-t0": {
+      "name": "city-plaza-b11-11-01-t0",
+      "id": "city-plaza-b11-11-01-t0",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -77,
+        "y": 7.05,
+        "z": -52
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 15.8,
+          "height": 14.1,
+          "depth": 15.8
+        },
+        "type": "box"
+      },
+      "color": "#000000",
+      "opacity": 1,
+      "display": false,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "city-plaza-b11-11-01-t0",
+        "tag": "m2-city-collider"
+      }
+    },
+    "city-plaza-b11-11-02-t0": {
+      "name": "city-plaza-b11-11-02-t0",
+      "id": "city-plaza-b11-11-02-t0",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -77,
+        "y": 11.7,
+        "z": -27
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 16.8,
+          "height": 23.4,
+          "depth": 16.8
+        },
+        "type": "box"
+      },
+      "color": "#000000",
+      "opacity": 1,
+      "display": false,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "city-plaza-b11-11-02-t0",
+        "tag": "m2-city-collider"
+      }
+    },
+    "city-plaza-b11-11-10-t0": {
+      "name": "city-plaza-b11-11-10-t0",
+      "id": "city-plaza-b11-11-10-t0",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -52,
+        "y": 11.3,
+        "z": -77
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 17.8,
+          "height": 22.6,
+          "depth": 17.8
+        },
+        "type": "box"
+      },
+      "color": "#000000",
+      "opacity": 1,
+      "display": false,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "city-plaza-b11-11-10-t0",
+        "tag": "m2-city-collider"
+      }
+    },
+    "city-plaza-b11-11-20-t0": {
+      "name": "city-plaza-b11-11-20-t0",
+      "id": "city-plaza-b11-11-20-t0",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -27,
+        "y": 10.15,
+        "z": -77
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 15.2,
+          "height": 20.3,
+          "depth": 15.2
+        },
+        "type": "box"
+      },
+      "color": "#000000",
+      "opacity": 1,
+      "display": false,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "city-plaza-b11-11-20-t0",
+        "tag": "m2-city-collider"
+      }
+    },
+    "city-plaza-b11-12-00-t0": {
+      "name": "city-plaza-b11-12-00-t0",
+      "id": "city-plaza-b11-12-00-t0",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -77,
+        "y": 9.85,
+        "z": 27
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 18,
+          "height": 19.7,
+          "depth": 18
+        },
+        "type": "box"
+      },
+      "color": "#000000",
+      "opacity": 1,
+      "display": false,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "city-plaza-b11-12-00-t0",
+        "tag": "m2-city-collider"
+      }
+    },
+    "city-plaza-b11-12-01-t0": {
+      "name": "city-plaza-b11-12-01-t0",
+      "id": "city-plaza-b11-12-01-t0",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -77,
+        "y": 8.1,
+        "z": 52
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 17,
+          "height": 16.2,
+          "depth": 17
+        },
+        "type": "box"
+      },
+      "color": "#000000",
+      "opacity": 1,
+      "display": false,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "city-plaza-b11-12-01-t0",
+        "tag": "m2-city-collider"
+      }
+    },
+    "city-plaza-b11-12-02-t0": {
+      "name": "city-plaza-b11-12-02-t0",
+      "id": "city-plaza-b11-12-02-t0",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -77,
+        "y": 7.2,
+        "z": 77
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 16.6,
+          "height": 14.4,
+          "depth": 16.6
+        },
+        "type": "box"
+      },
+      "color": "#000000",
+      "opacity": 1,
+      "display": false,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "city-plaza-b11-12-02-t0",
+        "tag": "m2-city-collider"
+      }
+    },
+    "city-plaza-b11-12-12-t0": {
+      "name": "city-plaza-b11-12-12-t0",
+      "id": "city-plaza-b11-12-12-t0",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -52,
+        "y": 6.95,
+        "z": 77
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 17,
+          "height": 13.9,
+          "depth": 17
+        },
+        "type": "box"
+      },
+      "color": "#000000",
+      "opacity": 1,
+      "display": false,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "city-plaza-b11-12-12-t0",
+        "tag": "m2-city-collider"
+      }
+    },
+    "city-plaza-b11-12-22-t0": {
+      "name": "city-plaza-b11-12-22-t0",
+      "id": "city-plaza-b11-12-22-t0",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -27,
+        "y": 10.7,
+        "z": 77
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 16.8,
+          "height": 21.4,
+          "depth": 16.8
+        },
+        "type": "box"
+      },
+      "color": "#000000",
+      "opacity": 1,
+      "display": false,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "city-plaza-b11-12-22-t0",
+        "tag": "m2-city-collider"
+      }
+    },
+    "city-plaza-b12-11-00-t0": {
+      "name": "city-plaza-b12-11-00-t0",
+      "id": "city-plaza-b12-11-00-t0",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 27,
+        "y": 7.7,
+        "z": -77
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 16.6,
+          "height": 15.4,
+          "depth": 16.6
+        },
+        "type": "box"
+      },
+      "color": "#000000",
+      "opacity": 1,
+      "display": false,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "city-plaza-b12-11-00-t0",
+        "tag": "m2-city-collider"
+      }
+    },
+    "city-plaza-b12-11-10-t0": {
+      "name": "city-plaza-b12-11-10-t0",
+      "id": "city-plaza-b12-11-10-t0",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 52,
+        "y": 6.5,
+        "z": -77
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 18,
+          "height": 13,
+          "depth": 18
+        },
+        "type": "box"
+      },
+      "color": "#000000",
+      "opacity": 1,
+      "display": false,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "city-plaza-b12-11-10-t0",
+        "tag": "m2-city-collider"
+      }
+    },
+    "city-plaza-b12-11-20-t0": {
+      "name": "city-plaza-b12-11-20-t0",
+      "id": "city-plaza-b12-11-20-t0",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 77,
+        "y": 7.7,
+        "z": -77
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 16.6,
+          "height": 15.4,
+          "depth": 16.6
+        },
+        "type": "box"
+      },
+      "color": "#000000",
+      "opacity": 1,
+      "display": false,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "city-plaza-b12-11-20-t0",
+        "tag": "m2-city-collider"
+      }
+    },
+    "city-plaza-b12-11-21-t0": {
+      "name": "city-plaza-b12-11-21-t0",
+      "id": "city-plaza-b12-11-21-t0",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 77,
+        "y": 7.5,
+        "z": -52
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 15,
+          "height": 15,
+          "depth": 15
+        },
+        "type": "box"
+      },
+      "color": "#000000",
+      "opacity": 1,
+      "display": false,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "city-plaza-b12-11-21-t0",
+        "tag": "m2-city-collider"
+      }
+    },
+    "city-plaza-b12-11-22-t0": {
+      "name": "city-plaza-b12-11-22-t0",
+      "id": "city-plaza-b12-11-22-t0",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 77,
+        "y": 6.95,
+        "z": -27
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 15.6,
+          "height": 13.9,
+          "depth": 15.6
+        },
+        "type": "box"
+      },
+      "color": "#000000",
+      "opacity": 1,
+      "display": false,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "city-plaza-b12-11-22-t0",
+        "tag": "m2-city-collider"
+      }
+    },
+    "city-plaza-b12-12-02-t0": {
+      "name": "city-plaza-b12-12-02-t0",
+      "id": "city-plaza-b12-12-02-t0",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 27,
+        "y": 6.6,
+        "z": 77
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 18.8,
+          "height": 13.2,
+          "depth": 18.8
+        },
+        "type": "box"
+      },
+      "color": "#000000",
+      "opacity": 1,
+      "display": false,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "city-plaza-b12-12-02-t0",
+        "tag": "m2-city-collider"
+      }
+    },
+    "city-plaza-b12-12-12-t0": {
+      "name": "city-plaza-b12-12-12-t0",
+      "id": "city-plaza-b12-12-12-t0",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 52,
+        "y": 7.85,
+        "z": 77
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 16.8,
+          "height": 15.7,
+          "depth": 16.8
+        },
+        "type": "box"
+      },
+      "color": "#000000",
+      "opacity": 1,
+      "display": false,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "city-plaza-b12-12-12-t0",
+        "tag": "m2-city-collider"
+      }
+    },
+    "city-plaza-b12-12-20-t0": {
+      "name": "city-plaza-b12-12-20-t0",
+      "id": "city-plaza-b12-12-20-t0",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 77,
+        "y": 9.9,
+        "z": 27
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 14.4,
+          "height": 19.8,
+          "depth": 14.4
+        },
+        "type": "box"
+      },
+      "color": "#000000",
+      "opacity": 1,
+      "display": false,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "city-plaza-b12-12-20-t0",
+        "tag": "m2-city-collider"
+      }
+    },
+    "city-plaza-b12-12-21-t0": {
+      "name": "city-plaza-b12-12-21-t0",
+      "id": "city-plaza-b12-12-21-t0",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 77,
+        "y": 9.8,
+        "z": 52
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 16.6,
+          "height": 19.6,
+          "depth": 16.6
+        },
+        "type": "box"
+      },
+      "color": "#000000",
+      "opacity": 1,
+      "display": false,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "city-plaza-b12-12-21-t0",
+        "tag": "m2-city-collider"
+      }
+    },
+    "city-plaza-b12-12-22-t0": {
+      "name": "city-plaza-b12-12-22-t0",
+      "id": "city-plaza-b12-12-22-t0",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 77,
+        "y": 7.05,
+        "z": 77
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 15.2,
+          "height": 14.1,
+          "depth": 15.2
+        },
+        "type": "box"
+      },
+      "color": "#000000",
+      "opacity": 1,
+      "display": false,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "city-plaza-b12-12-22-t0",
+        "tag": "m2-city-collider"
+      }
+    },
+    "plaza-lift-pad": {
+      "name": "Sky lift pad",
+      "id": "plaza-lift-pad",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 0,
+        "y": 0.02,
+        "z": -37
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 4.2,
+          "radiusBottom": 4.2,
+          "height": 0.04,
+          "radialSegments": 40,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1,
+          "height": 1,
+          "depth": 1
+        },
+        "type": "cylinder"
+      },
+      "color": "#2a2a2e",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CYLINDER"
+      },
+      "script": {
+        "identifier": "plaza-lift-pad",
+        "tag": "m2-city-detail"
+      }
+    },
+    "plaza-lift-ring": {
+      "name": "Sky lift ring",
+      "id": "plaza-lift-ring",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 0,
+        "y": 0.07,
+        "z": -37
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 4.6,
+          "radiusBottom": 4.6,
+          "height": 0.04,
+          "radialSegments": 48,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1,
+          "height": 1,
+          "depth": 1
+        },
+        "type": "cylinder"
+      },
+      "color": "#ffd98a",
+      "opacity": 0.8,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "plugins": [
+        {
+          "id": "PulsePlugin",
+          "color": "#f5b24a",
+          "intensity": 0.5,
+          "speed": 0.5
+        }
+      ],
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CYLINDER"
+      },
+      "script": {
+        "identifier": "plaza-lift-ring",
+        "tag": "m2-city-detail"
+      }
+    },
+    "plaza-lift-post-n": {
+      "name": "Sky lift post n",
+      "id": "plaza-lift-post-n",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 0,
+        "y": 2.1,
+        "z": -42.6
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 0.25,
+          "radiusBottom": 0.25,
+          "height": 4.2,
+          "radialSegments": 10,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1,
+          "height": 1,
+          "depth": 1
+        },
+        "type": "cylinder"
+      },
+      "color": "#1c1f26",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CYLINDER"
+      },
+      "script": {
+        "identifier": "plaza-lift-post-n",
+        "tag": "m2-city-detail"
+      }
+    },
+    "plaza-lift-post-n-cap": {
+      "name": "Sky lift post n cap",
+      "id": "plaza-lift-post-n-cap",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 0,
+        "y": 4.35,
+        "z": -42.6
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 0.32,
+          "radiusBottom": 0.32,
+          "height": 0.3,
+          "radialSegments": 10,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1,
+          "height": 1,
+          "depth": 1
+        },
+        "type": "cylinder"
+      },
+      "color": "#ffd98a",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "plugins": [
+        {
+          "id": "FresnelGlowPlugin",
+          "color": "#f5b24a",
+          "intensity": 1.8,
+          "power": 1.4,
+          "speed": 0.6,
+          "pulse": 1
+        }
+      ],
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CYLINDER"
+      },
+      "script": {
+        "identifier": "plaza-lift-post-n-cap",
+        "tag": "m2-city-detail"
+      }
+    },
+    "plaza-lift-post-e": {
+      "name": "Sky lift post e",
+      "id": "plaza-lift-post-e",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 5.6,
+        "y": 2.1,
+        "z": -37
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 0.25,
+          "radiusBottom": 0.25,
+          "height": 4.2,
+          "radialSegments": 10,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1,
+          "height": 1,
+          "depth": 1
+        },
+        "type": "cylinder"
+      },
+      "color": "#1c1f26",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CYLINDER"
+      },
+      "script": {
+        "identifier": "plaza-lift-post-e",
+        "tag": "m2-city-detail"
+      }
+    },
+    "plaza-lift-post-e-cap": {
+      "name": "Sky lift post e cap",
+      "id": "plaza-lift-post-e-cap",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 5.6,
+        "y": 4.35,
+        "z": -37
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 0.32,
+          "radiusBottom": 0.32,
+          "height": 0.3,
+          "radialSegments": 10,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1,
+          "height": 1,
+          "depth": 1
+        },
+        "type": "cylinder"
+      },
+      "color": "#ffd98a",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "plugins": [
+        {
+          "id": "FresnelGlowPlugin",
+          "color": "#f5b24a",
+          "intensity": 1.8,
+          "power": 1.4,
+          "speed": 0.6,
+          "pulse": 1
+        }
+      ],
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CYLINDER"
+      },
+      "script": {
+        "identifier": "plaza-lift-post-e-cap",
+        "tag": "m2-city-detail"
+      }
+    },
+    "plaza-lift-post-s": {
+      "name": "Sky lift post s",
+      "id": "plaza-lift-post-s",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 0,
+        "y": 2.1,
+        "z": -31.4
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 0.25,
+          "radiusBottom": 0.25,
+          "height": 4.2,
+          "radialSegments": 10,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1,
+          "height": 1,
+          "depth": 1
+        },
+        "type": "cylinder"
+      },
+      "color": "#1c1f26",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CYLINDER"
+      },
+      "script": {
+        "identifier": "plaza-lift-post-s",
+        "tag": "m2-city-detail"
+      }
+    },
+    "plaza-lift-post-s-cap": {
+      "name": "Sky lift post s cap",
+      "id": "plaza-lift-post-s-cap",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 0,
+        "y": 4.35,
+        "z": -31.4
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 0.32,
+          "radiusBottom": 0.32,
+          "height": 0.3,
+          "radialSegments": 10,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1,
+          "height": 1,
+          "depth": 1
+        },
+        "type": "cylinder"
+      },
+      "color": "#ffd98a",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "plugins": [
+        {
+          "id": "FresnelGlowPlugin",
+          "color": "#f5b24a",
+          "intensity": 1.8,
+          "power": 1.4,
+          "speed": 0.6,
+          "pulse": 1
+        }
+      ],
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CYLINDER"
+      },
+      "script": {
+        "identifier": "plaza-lift-post-s-cap",
+        "tag": "m2-city-detail"
+      }
+    },
+    "plaza-lift-post-w": {
+      "name": "Sky lift post w",
+      "id": "plaza-lift-post-w",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -5.6,
+        "y": 2.1,
+        "z": -37
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 0.25,
+          "radiusBottom": 0.25,
+          "height": 4.2,
+          "radialSegments": 10,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1,
+          "height": 1,
+          "depth": 1
+        },
+        "type": "cylinder"
+      },
+      "color": "#1c1f26",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CYLINDER"
+      },
+      "script": {
+        "identifier": "plaza-lift-post-w",
+        "tag": "m2-city-detail"
+      }
+    },
+    "plaza-lift-post-w-cap": {
+      "name": "Sky lift post w cap",
+      "id": "plaza-lift-post-w-cap",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -5.6,
+        "y": 4.35,
+        "z": -37
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 0.32,
+          "radiusBottom": 0.32,
+          "height": 0.3,
+          "radialSegments": 10,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1,
+          "height": 1,
+          "depth": 1
+        },
+        "type": "cylinder"
+      },
+      "color": "#ffd98a",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "plugins": [
+        {
+          "id": "FresnelGlowPlugin",
+          "color": "#f5b24a",
+          "intensity": 1.8,
+          "power": 1.4,
+          "speed": 0.6,
+          "pulse": 1
+        }
+      ],
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CYLINDER"
+      },
+      "script": {
+        "identifier": "plaza-lift-post-w-cap",
+        "tag": "m2-city-detail"
+      }
+    },
+    "plaza-lift-label": {
+      "name": "Label sky lift",
+      "id": "plaza-lift-label",
+      "type": "text",
+      "kit": "cyber",
+      "text": "SKY LIFT · HUB",
+      "position": {
+        "x": 0,
+        "y": 6.2,
+        "z": -31.2
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1.1,
+        "y": 1.1,
+        "z": 1.1
+      },
+      "align": "center",
+      "font": "aeonik-bold",
+      "lineHeight": 60,
+      "textColor": "#ffd98a",
+      "textTransform": "none",
+      "width": 1400,
+      "opacity": 1
+    },
+    "plaza-landing-ring": {
+      "name": "Drop landing ring",
+      "id": "plaza-landing-ring",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 0,
+        "y": 0.015,
+        "z": 14
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 11,
+          "radiusBottom": 11,
+          "height": 0.03,
+          "radialSegments": 64,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1,
+          "height": 1,
+          "depth": 1
+        },
+        "type": "cylinder"
+      },
+      "color": "#6b5a3a",
+      "opacity": 0.9,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CYLINDER"
+      },
+      "script": {
+        "identifier": "plaza-landing-ring",
+        "tag": "m2-city-detail"
+      }
+    },
+    "plaza-landing-ring-lit": {
+      "name": "Drop landing ring (lit)",
+      "id": "plaza-landing-ring-lit",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 0,
+        "y": 0.05,
+        "z": 14
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 11.4,
+          "radiusBottom": 11.4,
+          "height": 0.03,
+          "radialSegments": 64,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 1,
+          "height": 1,
+          "depth": 1
+        },
+        "type": "cylinder"
+      },
+      "color": "#ffd98a",
+      "opacity": 0.55,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "plugins": [
+        {
+          "id": "FresnelGlowPlugin",
+          "color": "#f5b24a",
+          "intensity": 1.6,
+          "power": 1.4,
+          "speed": 0.8,
+          "pulse": 1
+        }
+      ],
+      "collider": {
+        "enabled": false,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CYLINDER"
+      },
+      "script": {
+        "identifier": "plaza-landing-ring-lit",
+        "tag": "m2-city-reactive"
+      }
+    },
+    "plaza-zone-landing": {
+      "name": "Zone Drop landing",
+      "id": "plaza-zone-landing",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 0,
+        "y": 2.5,
+        "z": 14
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 24,
+          "height": 5,
+          "depth": 24
+        },
+        "type": "box"
+      },
+      "color": "#000000",
+      "opacity": 0,
+      "display": false,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE",
+        "isSensor": true
+      },
+      "script": {
+        "identifier": "plaza-zone-landing",
+        "tag": "m2-city-zone"
+      }
+    },
+    "plaza-sign-music": {
+      "name": "Sign Music District",
+      "id": "plaza-sign-music",
+      "type": "text",
+      "kit": "cyber",
+      "text": "MUSIC DISTRICT",
+      "position": {
+        "x": -58,
+        "y": 5.5,
+        "z": 0
+      },
+      "rotation": {
+        "x": 0,
+        "y": 1.5708,
+        "z": 0
+      },
+      "scale": {
+        "x": 1.2,
+        "y": 1.2,
+        "z": 1.2
+      },
+      "align": "center",
+      "font": "aeonik-bold",
+      "lineHeight": 60,
+      "textColor": "#2fb8a6",
+      "textTransform": "none",
+      "width": 1400,
+      "opacity": 1
+    },
+    "plaza-sign-fashion": {
+      "name": "Sign Fashion / Culture",
+      "id": "plaza-sign-fashion",
+      "type": "text",
+      "kit": "cyber",
+      "text": "FASHION / CULTURE",
+      "position": {
+        "x": 58,
+        "y": 5.5,
+        "z": 0
+      },
+      "rotation": {
+        "x": 0,
+        "y": -1.5708,
+        "z": 0
+      },
+      "scale": {
+        "x": 1.2,
+        "y": 1.2,
+        "z": 1.2
+      },
+      "align": "center",
+      "font": "aeonik-bold",
+      "lineHeight": 60,
+      "textColor": "#d98c7a",
+      "textTransform": "none",
+      "width": 1600,
+      "opacity": 1
+    },
+    "plaza-sign-name": {
+      "name": "Sign Skyfall Plaza",
+      "id": "plaza-sign-name",
+      "type": "text",
+      "kit": "cyber",
+      "text": "SKYFALL PLAZA",
+      "position": {
+        "x": 0,
+        "y": 7.5,
+        "z": 58
+      },
+      "rotation": {
+        "x": 0,
+        "y": 3.1416,
+        "z": 0
+      },
+      "scale": {
+        "x": 1.6,
+        "y": 1.6,
+        "z": 1.6
+      },
+      "align": "center",
+      "font": "aeonik-bold",
+      "lineHeight": 60,
+      "textColor": "#ffd98a",
+      "textTransform": "none",
+      "width": 1600,
+      "opacity": 1
+    },
+    "plaza-sign-name-wall": {
+      "name": "Plaza name wall",
+      "id": "plaza-sign-name-wall",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 0,
+        "y": 3,
+        "z": 59.5
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 20,
+          "height": 6,
+          "depth": 1
+        },
+        "type": "box"
+      },
+      "color": "#6b6559",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "plaza-sign-name-wall",
+        "tag": "m2-city-detail"
+      }
+    },
+    "plaza-bench-w": {
+      "name": "Plaza bench w",
+      "id": "plaza-bench-w",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -16,
+        "y": 0.225,
+        "z": 14
+      },
+      "rotation": {
+        "x": 0,
+        "y": 1.5708,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 3.2,
+          "height": 0.45,
+          "depth": 0.9
+        },
+        "type": "box"
+      },
+      "color": "#c9bfae",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "plaza-bench-w",
+        "tag": "m2-city-detail"
+      }
+    },
+    "plaza-bench-e": {
+      "name": "Plaza bench e",
+      "id": "plaza-bench-e",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 16,
+        "y": 0.225,
+        "z": 14
+      },
+      "rotation": {
+        "x": 0,
+        "y": -1.5708,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 3.2,
+          "height": 0.45,
+          "depth": 0.9
+        },
+        "type": "box"
+      },
+      "color": "#c9bfae",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "plaza-bench-e",
+        "tag": "m2-city-detail"
+      }
+    },
+    "plaza-bench-sw": {
+      "name": "Plaza bench sw",
+      "id": "plaza-bench-sw",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": -11,
+        "y": 0.225,
+        "z": 27
+      },
+      "rotation": {
+        "x": 0,
+        "y": 1.5708,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 3.2,
+          "height": 0.45,
+          "depth": 0.9
+        },
+        "type": "box"
+      },
+      "color": "#c9bfae",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "plaza-bench-sw",
+        "tag": "m2-city-detail"
+      }
+    },
+    "plaza-bench-se": {
+      "name": "Plaza bench se",
+      "id": "plaza-bench-se",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 11,
+        "y": 0.225,
+        "z": 27
+      },
+      "rotation": {
+        "x": 0,
+        "y": -1.5708,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 3.2,
+          "height": 0.45,
+          "depth": 0.9
+        },
+        "type": "box"
+      },
+      "color": "#c9bfae",
+      "opacity": 1,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": true,
+      "receiveShadow": true,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE"
+      },
+      "script": {
+        "identifier": "plaza-bench-se",
+        "tag": "m2-city-detail"
+      }
+    },
+    "portal-plaza-hub": {
+      "name": "Portal Skyfall Plaza → Hub (sky lift)",
+      "id": "portal-plaza-hub",
+      "type": "mesh",
+      "kit": "cyber",
+      "position": {
+        "x": 0,
+        "y": 1.5,
+        "z": -37
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "geometry": {
+        "sphereParams": {
+          "radius": 1,
+          "widthSegments": 32,
+          "heightSegments": 32
+        },
+        "cylinderParams": {
+          "radiusTop": 1,
+          "radiusBottom": 1,
+          "height": 1,
+          "radialSegments": 32,
+          "heightSegments": 1,
+          "openEnded": false
+        },
+        "boxParams": {
+          "width": 5,
+          "height": 3,
+          "depth": 5
+        },
+        "type": "box"
+      },
+      "color": "#ffd98a",
+      "opacity": 0.18,
+      "display": true,
+      "renderMode": "default",
+      "wireframe": false,
+      "castShadow": false,
+      "receiveShadow": false,
+      "collider": {
+        "enabled": true,
+        "rigidbodyType": "FIXED",
+        "colliderType": "CUBE",
+        "isSensor": true
+      },
+      "script": {
+        "identifier": "portal-plaza-hub",
+        "tag": "m0-portal"
+      }
+    }
+  }
+}

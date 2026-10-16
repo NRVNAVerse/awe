@@ -9,7 +9,7 @@ import {
 } from "@oncyberio/engine";
 import { Mover, ThirdPersonCameraRig, createMoverAnimStateMachine } from "@oncyberio/engine/controls";
 import type { MoverAnimLocomotionState } from "@oncyberio/engine/controls";
-import { Quaternion, Vector3 } from "three";
+import { Quaternion, Vector3, type Object3D } from "three";
 import { GAMEPLAY_INPUTS } from "@/lib/input/gameplay-inputs";
 import { installInputDiagnostics } from "@/lib/input/input-diagnostics";
 import type { ChunkPayload } from "@/lib/spatial/chunk-payload";
@@ -161,6 +161,8 @@ export class AweSpatialRuntime implements ChunkRuntime, SensorRuntime, SceneStat
   private animStateMachine: ReturnType<typeof createMoverAnimStateMachine> | null = null;
   private controlsActive = false;
   private revealed = false;
+  /** M2 descent cap in metres per second, or null (normal falling). */
+  private fallSpeedLimit: number | null = null;
   /** The one disposal promise (`dispose()` is idempotent; the space is destroyed exactly once). */
   private disposal: Promise<void> | null = null;
 
@@ -396,6 +398,45 @@ export class AweSpatialRuntime implements ChunkRuntime, SensorRuntime, SceneStat
     return subscribePlayerExitSensor(host, componentId, player as Component3D, callback);
   }
 
+  /**
+   * M2 descent: cap the visitor's fall speed (metres per second) while falling from the Hub, or
+   * `null` to restore normal falling. The official Mover integrates `velocity.y` as a per-step
+   * displacement with an effective gravity of ≈108 m/s² (a 130 m drop lasts ≈1.5 s); the cap turns
+   * the Drop into a readable skydive. Applied in the fixed update before the Mover moves.
+   */
+  setFallSpeedLimit(metresPerSecond: number | null): void {
+    this.fallSpeedLimit = metresPerSecond !== null && metresPerSecond > 0 ? metresPerSecond : null;
+  }
+
+  /** True while the Mover reports the avatar on the ground (M2 descent bookkeeping). */
+  get isGrounded(): boolean {
+    return this.mover?.grounded ?? false;
+  }
+
+  /** The visitor's avatar position in world space (M2 streaming), or null before the runtime is ready. */
+  getVisitorPosition(): { x: number; y: number; z: number } | null {
+    const player = this.player as unknown as { position?: { x: number; y: number; z: number } } | null;
+    const p = player?.position;
+    return p ? { x: p.x, y: p.y, z: p.z } : null;
+  }
+
+  /**
+   * Attach an application-owned three.js object to the space (M2 far-field city layer) — the
+   * upstream pattern `space.add(object3D)` used by `examples/zombie-survival`. The object is removed
+   * by the returned function (idempotent) or with the space. Never a component: no physics, no data.
+   */
+  attachObject(object: Object3D): () => void {
+    const space = this.space;
+    if (!space) throw new Error("runtime is not ready");
+    space.add(object);
+    let attached = true;
+    return () => {
+      if (!attached) return;
+      attached = false;
+      object.removeFromParent();
+    };
+  }
+
   /** Diagnostics/tests: number of chunk batches this runtime currently holds. */
   get stagedBatchCount(): number {
     return this.batches.size;
@@ -482,6 +523,16 @@ export class AweSpatialRuntime implements ChunkRuntime, SensorRuntime, SceneStat
 
     if (this.inputs.Jump.wasJustPressed) {
       this.mover.startJump();
+    }
+
+    // M2 descent cap (per-step displacement units, see `setFallSpeedLimit`).
+    if (this.fallSpeedLimit !== null) {
+      const v = this.mover.velocity; // a copy; written back through the official setVelocity
+      const floor = -this.fallSpeedLimit * dt;
+      if (v.y < floor) {
+        v.y = floor;
+        this.mover.setVelocity(v);
+      }
     }
 
     this.mover.update(dt);

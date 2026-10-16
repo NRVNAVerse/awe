@@ -67,14 +67,24 @@ export function loadSpatialSource() {
   if (!scenePath.startsWith(SOURCE_DIR + sep)) throw new Error(`scene reference escapes the source directory: ${sceneName}`);
   const scene = existsSync(scenePath) ? readJson(scenePath) : null;
   const destinations = readJson(DESTINATIONS_FILE);
+  // M2 far-field layers: `config.layers[].source` names a composed JSON file next to the config.
+  /** @type {Record<string, unknown>} */
+  const layers = {};
+  const layerRefs = typeof config === "object" && config !== null && Array.isArray(/** @type {any} */ (config).layers) ? /** @type {any[]} */ (/** @type {any} */ (config).layers) : [];
+  for (const ref of layerRefs) {
+    if (typeof ref?.key !== "string" || typeof ref?.source !== "string") continue;
+    const layerPath = join(SOURCE_DIR, ref.source);
+    if (!layerPath.startsWith(SOURCE_DIR + sep)) throw new Error(`layer reference escapes the source directory: ${ref.source}`);
+    if (existsSync(layerPath)) layers[ref.key] = readJson(layerPath);
+  }
   // Optional asset registry (M1.0), named by the config next to it. A declared but missing file is
   // reported by validation (`missing-asset-registry`), never silently ignored.
   const registryName = typeof config === "object" && config !== null ? /** @type {any} */ (config).assetRegistry : undefined;
-  if (typeof registryName !== "string") return { config, scene, destinations };
+  if (typeof registryName !== "string") return { config, scene, destinations, layers };
   const registryPath = join(SOURCE_DIR, registryName);
   if (!registryPath.startsWith(SOURCE_DIR + sep)) throw new Error(`asset registry reference escapes the source directory: ${registryName}`);
   const assets = existsSync(registryPath) ? readAssetRegistry(registryPath) : null;
-  return { config, scene, destinations, assets };
+  return { config, scene, destinations, assets, layers };
 }
 
 /**
@@ -153,6 +163,10 @@ export function existingOutputCandidates(outputDir = OUTPUT_DIR) {
   const chunksDir = join(outputDir, OUTPUT.chunksDir);
   if (existsSync(chunksDir)) {
     for (const name of readdirSync(chunksDir)) if (name.endsWith(".json")) found.push(`${OUTPUT.chunksDir}/${name}`);
+  }
+  const layersDir = join(outputDir, OUTPUT.layersDir);
+  if (existsSync(layersDir)) {
+    for (const name of readdirSync(layersDir)) if (name.endsWith(".json")) found.push(`${OUTPUT.layersDir}/${name}`);
   }
   const spatialDir = dirname(join(outputDir, OUTPUT.globalSceneBase));
   const globalBase = OUTPUT.globalSceneBase.slice(OUTPUT.globalSceneBase.lastIndexOf("/") + 1);

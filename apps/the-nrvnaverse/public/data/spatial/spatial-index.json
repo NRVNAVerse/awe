@@ -1,22 +1,43 @@
 {
   "schemaVersion": 1,
   "worldId": "the-nrvnaverse",
-  "globalSceneUrl": "/data/spatial/global-scene.44588422df1e0e4ddfc45921fecc95e3.json",
+  "globalSceneUrl": "/data/spatial/global-scene.283e31d4a6781e15f3169e6a7bc00c51.json",
   "chunks": {
     "cannabis-21": {
-      "dataUrl": "/data/spatial/chunks/cannabis-21.47ef62cb39981c5a64bfe91a5dea4f41.json"
+      "dataUrl": "/data/spatial/chunks/cannabis-21.0f14e211d2f2a668bcb5e7a743daeb44.json"
+    },
+    "city-north": {
+      "dataUrl": "/data/spatial/chunks/city-north.99b65900a9193e8cf174a73418c2a02d.json"
+    },
+    "city-northeast": {
+      "dataUrl": "/data/spatial/chunks/city-northeast.cdd6f8f76835a5d6596bad078d5c3577.json"
+    },
+    "city-northwest": {
+      "dataUrl": "/data/spatial/chunks/city-northwest.770f2792b894855a000e0d9a2862a1e8.json"
+    },
+    "city-plaza": {
+      "dataUrl": "/data/spatial/chunks/city-plaza.5f48a0986f03d9d4728dfad1c007a9f9.json"
+    },
+    "city-south": {
+      "dataUrl": "/data/spatial/chunks/city-south.3c687e9510496bfd62af037a17592f95.json"
+    },
+    "city-southeast": {
+      "dataUrl": "/data/spatial/chunks/city-southeast.d49d4c99ba107d444c159a35e103facf.json"
+    },
+    "city-southwest": {
+      "dataUrl": "/data/spatial/chunks/city-southwest.f643a4ab8009b2ec2163fa5837bd531b.json"
     },
     "fashion-culture": {
-      "dataUrl": "/data/spatial/chunks/fashion-culture.ac45bb03e5e9102be36410be33a28f68.json"
+      "dataUrl": "/data/spatial/chunks/fashion-culture.ee4912d784256b3d461e75009de81653.json"
     },
     "hub": {
-      "dataUrl": "/data/spatial/chunks/hub.890f0437a8bc2ba397ccc3eab0d7eaaa.json"
+      "dataUrl": "/data/spatial/chunks/hub.f6a96a13c3d953654dc48d647b679709.json"
     },
     "music": {
-      "dataUrl": "/data/spatial/chunks/music.c1b3f4b0184998f6f98a95c3c8622386.json"
+      "dataUrl": "/data/spatial/chunks/music.49f687dcb0d38e50bf06729870e77239.json"
     },
     "music-club": {
-      "dataUrl": "/data/spatial/chunks/music-club.6619f34ae21c64cb29db18bbb458e1c6.json"
+      "dataUrl": "/data/spatial/chunks/music-club.eb954b27e3e160b1f1c1685c635ec27a.json"
     }
   },
   "destinations": {
@@ -24,8 +45,8 @@
       "chunkKey": "music",
       "spawn": {
         "position": {
-          "x": -70,
-          "y": 1,
+          "x": -200,
+          "y": 0.5,
           "z": -34
         },
         "yaw": 0
@@ -37,7 +58,7 @@
         "position": {
           "x": 0,
           "y": 1,
-          "z": -114
+          "z": -414
         },
         "yaw": 0
       }
@@ -47,8 +68,19 @@
       "spawn": {
         "position": {
           "x": 0,
+          "y": 141,
+          "z": -14
+        },
+        "yaw": 0
+      }
+    },
+    "dst_8w1j39h5e0ezrsjh": {
+      "chunkKey": "city-plaza",
+      "spawn": {
+        "position": {
+          "x": 0,
           "y": 1,
-          "z": 6
+          "z": 40
         },
         "yaw": 0
       }
@@ -57,8 +89,8 @@
       "chunkKey": "fashion-culture",
       "spawn": {
         "position": {
-          "x": 70,
-          "y": 1,
+          "x": 200,
+          "y": 0.5,
           "z": 6
         },
         "yaw": 0
@@ -68,8 +100,8 @@
       "chunkKey": "music",
       "spawn": {
         "position": {
-          "x": -70,
-          "y": 1,
+          "x": -200,
+          "y": 0.5,
           "z": 6
         },
         "yaw": 0
@@ -79,9 +111,9 @@
       "chunkKey": "music-club",
       "spawn": {
         "position": {
-          "x": -70,
-          "y": 1,
-          "z": 75.5
+          "x": -200,
+          "y": 0.5,
+          "z": 40.5
         },
         "yaw": 0
       }
@@ -90,8 +122,8 @@
       "chunkKey": "fashion-culture",
       "spawn": {
         "position": {
-          "x": 70,
-          "y": 2,
+          "x": 200,
+          "y": 1.5,
           "z": -36
         },
         "yaw": 0
@@ -103,7 +135,7 @@
         "position": {
           "x": 0,
           "y": 1,
-          "z": -154
+          "z": -454
         },
         "yaw": 0
       }
@@ -145,10 +177,17 @@
     "portal-music-hub": {
       "chunkKey": "music",
       "destinationId": "dst_7g19n1vm9ackw8a0"
+    },
+    "portal-plaza-hub": {
+      "chunkKey": "city-plaza",
+      "destinationId": "dst_7g19n1vm9ackw8a0"
     }
   },
   "experience": {
     "hidden": {
+      "city-plaza": [
+        "plaza-landing-ring-lit"
+      ],
       "fashion-culture": [
         "fashion-atelier-ring",
         "fashion-atelier-sigil-lit",
@@ -437,6 +476,20 @@
             "music-stack-2-band"
           ]
         }
+      },
+      "plaza-landing": {
+        "chunkKey": "city-plaza",
+        "sensorId": "plaza-zone-landing",
+        "enter": {
+          "show": [
+            "plaza-landing-ring-lit"
+          ]
+        },
+        "exit": {
+          "hide": [
+            "plaza-landing-ring-lit"
+          ]
+        }
       }
     },
     "arrivals": {
@@ -634,5 +687,32 @@
       "chunkKey": "music",
       "destinationId": "dst_gqq90k2404cy9nf0"
     }
+  },
+  "layers": {
+    "city": {
+      "dataUrl": "/data/spatial/layers/city.7c55e2f9c139306714331e00665c87c1.json"
+    }
+  },
+  "streaming": {
+    "cellSize": 200,
+    "margin": 4,
+    "cells": {
+      "-1,-1": "city-northwest",
+      "-1,0": "music",
+      "-1,1": "city-southwest",
+      "0,-1": "city-north",
+      "0,0": "city-plaza",
+      "0,1": "city-south",
+      "1,-1": "city-northeast",
+      "1,0": "fashion-culture",
+      "1,1": "city-southeast"
+    },
+    "releases": [
+      {
+        "fromChunkKey": "hub",
+        "belowY": 128
+      }
+    ],
+    "catchBelowY": -30
   }
 }
