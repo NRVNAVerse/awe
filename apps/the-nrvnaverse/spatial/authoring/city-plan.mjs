@@ -53,7 +53,7 @@ export const CITY = Object.freeze({
 
 /** Downtown (north, behind the Hub's spire) and the east cluster: skyline centres. */
 export const SKYLINE = Object.freeze([
-  { x: 0, z: -760, radius: 520, lift: 210 },
+  { x: 0, z: -560, radius: 440, lift: 330 },
   { x: 880, z: 120, radius: 330, lift: 120 },
   { x: -820, z: 420, radius: 300, lift: 90 },
 ]);
