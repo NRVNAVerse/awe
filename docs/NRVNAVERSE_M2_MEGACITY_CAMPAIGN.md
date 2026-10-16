@@ -63,24 +63,48 @@ _pending_
 4. **Hub ↔ city.** The Hub chunk is lifted to a measured elevation (§4). Walking off the Hub (the Drop) releases the visitor into the cell below by the same handoff; the return is a vertical **sky lift** portal (meaningful travel). The Hub's Music / Fashion gateways become lifts down to those districts.
 5. **Expansion seams.** New cells = new chunks keyed in the streaming grid; the Ring has gates to future cells; the far-field already shows the whole city.
 
-## 4. Hub elevation / orientation evaluation
+## 4. Hub elevation / orientation evaluation  [MEASURED 2026-10-15]
 
-_pending (measured step)_
+Method: one SIC scene per candidate elevation (the generated city's 1,032 building tiers within 650 m + target floors / beacons + an island keel box 116 × 12 × 96 m), `survey_visibility` (12 samples) from four Hub edge eyes and six street eyes. Scripts: `D:\AWE-Scratch\m2\elev\make2.mjs`, results `out2.json`.
+
+| Visible fraction (%) | 80 m | 110 m | **140 m** | 180 m | 220 m |
+|---|---|---|---|---|---|
+| west edge → Music floor / beacon | 85 / 100 | 97 / 100 | **100 / 100** | 100 / 100 | 100 / 100 |
+| east edge → Fashion floor / beacon | 89 / 100 | 97 / 100 | **99 / 100** | 100 / 100 | 100 / 100 |
+| south edge (the Drop) → plaza | 40 | 43 | **41** | 41 | 50 |
+| plaza / Music / Fashion spawns / north avenue → keel | 100 | 100 | **100** | 100 | 100 |
+| mid-block street SE / NW → keel | 0 / 0 | 0 / 0 | **8 / 0** | 32 / 0 | 66 / 0 |
+
+Decision: **140 m**. Districts fully readable from the gateway edges; the keel is a landmark from every plaza and avenue; mid-block streets keep the sky open but enclosed (the Hub appears as you reach an avenue — a reveal, not wallpaper); the downtown skyline (to 204 m) still rises behind the spire, so the Hub sits *inside* the city rather than above a map. Lower elevations lose district floors behind buildings; higher ones make the descent long and the street detail illegible from the deck. Orientation kept from M1 (spawn faces −Z: the Core house and spire with downtown behind; Music west, Fashion east; the Drop behind the arrival, over the plaza).
+
+The Drop's physics (measured in the browser): the official Mover integrates `velocity.y` as a per-step displacement (effective gravity ≈ 108 m/s²; `maxFallSpeed` 20 per step is not a practical cap) — a 128 m fall took ≈1.5 s. A runtime descent cap (official `Mover.setVelocity`) holds 22 m/s from 10 m above the release height until the visitor is grounded: **≈ 6 s from the Hub to the plaza**, steerable, landing on the plaza (or a rooftop in the cell, which has colliders).
 
 ## 5. Checkpoints
 
 | # | Checkpoint | SHA | State |
 |---|---|---|---|
-| 0 | Recovery, asset + rights assessment, architecture, this record | — | in progress |
+| 0 | Recovery, asset + rights assessment, architecture, this record | `98d74d0` | pushed |
+| 1 | **Hub over megacity**: city plan + composer, chunk origins (Hub y 140; Music / Fashion as city cells; Club on the Music cell; 21+ compound outside the Ring), 7 city-cell chunks + city kit on district cells, pipeline `layers` / `streaming` (gated chunks refused), far-field `CityLayer`, orchestrator handoff (`spawn: null`), `StreamingController`, descent cap, The City destination (`dst_8w1j39h5e0ezrsjh`), sky-lift pads | `84d5472` | pushed · tests 484 · manifests 61 · strict typecheck · spatial check · browser (dev, real input): the Drop end to end, west walk plaza → Music cell |
+| 1b | M2 tests: streaming controller (12), handoff / walked-into / streaming validation (9), world invariants (10) | `f788bde` | pushed · app tests **515** |
+| 1c | Production verification: `browser:perf` **PASSED** (desktop 108 draw calls / 85 k tris / 56 fps vsync-capped / JS heap 22 MB; mobile-emulated 100 / 83 k / 46 MB; Hub → Music → Hub by directory arrives; warm reload 0 wire bytes), `browser:touch` **PASSED** (Hub → 21+ `gateRequired`, **zero** cannabis requests), SIC composition pass (§6.1) | — | evidence in `D:\AWE-Scratch\m2\perf`, `\touch`, `\sic` |
 
-## 6. Continuation queue (ranked)
+## 6. Findings worth keeping
 
-1. Hub elevation evaluation (numbers + SIC) → city composer + layer artifact + pipeline support.
-2. Runtime: city layer renderer, streaming controller + orchestrator handoff, fall catcher; relocate Hub / Music / Club / Fashion / 21+ into the city plan; new cell chunks.
-3. Tests, typecheck, spatial check, headless walk (cell handoffs, the Drop), browser traversal, `browser:perf` / `browser:touch`.
+1. **SIC composition pass** (`static-scene.json`, 737 entities: 541 exact, 156 approximate, 30 markers, 0 unsupported): lift pads separated from the runway ramp (2.3 m), pylons (8.5 m), booth ramp (11.8 m), processional path (3.5 m); the Music lift sensor rests 5.5 mm into a collider-less floor ring (benign, M1 portals do the same); lift rings 81 % visible from the district spawns; from the plaza spawn the Hub deck, the Drop tongue, the lift label and both district signs are 100 % visible; the Drop frame 100 % from the Hub spawn. SIC still models hidden state-B geometry as present (M1 finding) — the plaza's landing-ring visibility is masked by its own lit state.
+2. **Ground overlap must exceed margin + staging walk.** First browser run: the cell ground overlapped 2 m, the handoff fires 4 m into the next cell and staging takes a few hundred ms, so a walker fell through to the safety terrain (y −3). Fixed with a 20 m overlap (`GROUND_OVERLAP`), pinned by a world-invariant test (≥ 16 m).
+3. **Draw calls went DOWN** versus M1 (163 → 108 desktop) while triangles went up (24 k → 85 k): the whole far field is ~20 merged draw calls; shadows are off on the layer.
+4. Engine `mesh` cannot GPU-instance; `batch` of meshes duplicates components. A city as components would be 1,000+ draw calls — the layer approach is the measured reason.
+5. Headless CDP gets no pointer lock (console `WrongDocumentError`, harmless); the probes rotate the camera through the dev handle.
+
+## 7. Continuation queue (ranked)
+
+1. ~~Elevation evaluation, city composer + layer + pipeline~~ done.
+2. ~~Runtime: layer, streaming, handoff, descent, relocation, cells~~ done.
+3. ~~Tests, typecheck, spatial check, browser traversal, perf / touch~~ done (headless Mover proof of seams is covered by real-input browser walks).
 4. Local-only audition of real models (scratch, gitignored, never committed).
-5. Tier 2: atmosphere / lighting, routes and rooftops, discovery details, transitions, mobile comfort, measured optimisation.
+5. Tier 2: atmosphere / lighting, facade variety, routes and rooftops, discovery details (a sigil in the city), transitions for the sky lift, mobile comfort, measured optimisation (layer JSON size 264 KB).
+6. Docs: world doc §17 (city truth incl. secrets), pipeline / runtime contract notes, handoff.
 
-## 7. Exact next action
+## 8. Exact next action
 
-Implement step 1 of the queue.
+Queue item 4 (local audition), then Tier 2.
