@@ -11,8 +11,8 @@ Read first: `docs/NRVNAVERSE_M2_MEGACITY_CAMPAIGN.md` (decisions, measurements, 
 
 ## 1. Commits, duration
 
-- Start `ecda29f` (M1 close). Checkpoints: `98d74d0` record · `84d5472` Hub over megacity (core) · `f788bde` tests · `952d1d7` record · `259468b` local audition · `619c8df` audition findings · `a8cb974` city visual pass · `f7064b6` sky-lift veil · `166785b` roof garden · `11bd0ee` Hub signs / return glow · `21c5595` docs · `777fd5b` skyline · `68c8eb7` traffic · `add4f15` keel · `440484e` plaza dressing · final: this commit (convergence docs, handoff). `main`, `nrvna/integration` untouched; nothing merged, nothing deployed.
-- Wall clock: 2026-10-15 22:40 → 2026-10-16 ≈ 00:25 PDT (≈ 1 h 45 min). Elapsed ≈ productive: no idle waiting; builds / probes ran while work continued where possible.
+- Start `ecda29f` (M1 close). Checkpoints: `98d74d0` record · `84d5472` Hub over megacity (core) · `f788bde` tests · `952d1d7` record · `259468b` local audition · `619c8df` audition findings · `a8cb974` city visual pass · `f7064b6` sky-lift veil · `166785b` roof garden · `11bd0ee` Hub signs / return glow · `21c5595` docs · `777fd5b` skyline · `68c8eb7` traffic · `add4f15` keel · `440484e` plaza dressing · `2cb2ea8` convergence docs · `b1d7750` district tints in the far field · final: this commit (convergence docs, handoff). `main`, `nrvna/integration` untouched; nothing merged, nothing deployed.
+- Wall clock: 2026-10-15 22:40 → 2026-10-16 ≈ 00:30 PDT (≈ 1 h 50 min). The campaign ended at a natural review boundary: the remaining queue is owner-gated (rights review, real-device pass, cleared audio) or would add surface without playtest feedback (Key OVERNIGHT_RUNS §14–15). Elapsed ≈ productive: no idle waiting; builds / probes ran while work continued where possible.
 
 ## 2. What is playable now
 
@@ -49,7 +49,8 @@ All committed art is procedural / primitive: the far-field city (generated build
 
 - App tests **520** (30+ files incl. new: streaming controller, handoff / walked-into / streaming validation, M2 world invariants, sky lift, local-audition route); manifests **61**; `tsc` + strict typecheck; `spatial:check` (16 files, within the raised 192 KiB / 160-component warning budgets); `compose --check`; manifests `check`.
 - **Production `browser:perf` PASSED** (headless Chrome, host GTX 1050): desktop **112 draw calls / 175 k frame triangles / 56.4 fps vsync-capped (p95 18.1 ms) / JS heap 43 MB**; mobile-emulated **104 / 173 k / 56.1 fps / 78 MB**; warm reload 0 wire bytes; travel Hub → Music → Hub arrives. (Pre-visual-pass: 108 / 85 k.) Layer artifact 279 KB raw / **76 KB gzip**; city chunks ≈ 2 KB gzip.
-- **`browser:touch`**: first run 1 failure (scenario A cycle 5: 0.41 m vs a 0.5 m threshold — the avatar slides against the Core house ahead of the spawn), immediate rerun **PASSED** (0.91 m). Both runs: Hub → 21+ `gateRequired` with **zero** cannabis requests. Recorded as a marginal probe, not a fix.
+- **Final run on the final code (`b1d7750`)**: `browser:perf` **PASSED** (desktop 112 / 175 k / 56.5 fps / heap 44 MB; mobile-emulated 104 / 173 k / 56.3 fps / 77 MB) and `browser:touch` **PASSED** (scenario A cycle 5: 0.8 m; zero cannabis requests).
+- **`browser:touch`** (earlier, same geometry): first run 1 failure (scenario A cycle 5: 0.41 m vs a 0.5 m threshold — the avatar slides against the Core house ahead of the spawn), immediate rerun **PASSED** (0.91 m). Both runs: Hub → 21+ `gateRequired` with **zero** cannabis requests. Recorded as a marginal probe, not a fix.
 - SIC: elevation study (5 elevations × 10 eyes), composition pass on the generated scene (lift pads, ramps, sightlines), world invariants as tests.
 - Hosted CI: **not run** — GitHub-hosted Actions capacity for NRVNAVerse is not to be expanded (Key guardrails); local verification above is the evidence. Not a failure, not a pass.
 

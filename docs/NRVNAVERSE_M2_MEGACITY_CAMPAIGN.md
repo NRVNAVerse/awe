@@ -104,6 +104,7 @@ The Drop's physics (measured in the browser): the official Mover integrates `vel
 | 2 | **Local-only audition**: dev route over `NRVNA_AUDITION_DIR` (404 in production; tested), overlay loader, city-building toggle; Megacity level converted + measured + optimised (4.2 MB); five Sketchfab rooms in-world (§2.3) | `259468b` `619c8df` | pushed · nothing from the vault in Git |
 | 3 | **Tier 2 visual / experience**: facade styles, storefront bays, street trees, zebra crossings, rooftop plant, aviation lights (`a8cb974`); sky-lift veil + lift posts on the diagonals (`f7064b6`); North Row roof garden + fourth sigil + Drop lintel memory (`166785b`); Hub edge signs + Drop return glow (`11bd0ee`); downtown behind the spire (`777fd5b`); traffic (`68c8eb7`); keel (`add4f15`); plaza dressing (`440484e`); docs world §17 / runtime §20 / pipeline §19 (`21c5595`) | see column | pushed · tests **520** · strict typecheck · spatial / compose check |
 | 4 | **Convergence** (2026-10-16 ≈ 00:20): production build; `browser:perf` **PASSED** — desktop **112 draw calls / 175 k frame triangles / 56.4 fps (vsync-capped) / p95 18.1 ms / JS heap 43 MB**; mobile-emulated **104 / 173 k / 56.1 fps / 78 MB**; Hub → Music → Hub arrives; warm reload 0 wire bytes. `browser:touch`: first run **FAILED 1 check** (A, cycle 5: avatar moved 0.41 m < 0.5 m while pressed against the Core house ahead of the spawn), immediate rerun **PASSED** (0.91 m; cycles show the avatar sliding along that wall — a marginal probe threshold, M1 recorded 1.3 m there); Hub → 21+ `gateRequired`, **zero** cannabis requests in both runs | this commit | evidence `D:AWE-Scratchm2perf-final`, `touch-final`, `touch-final2` |
+| 5 | District tints in the far field (`b1d7750`); **final probes on the final code**: `browser:perf` PASSED (desktop 112 / 175 k / 56.5 fps / 44 MB; mobile-emulated 104 / 173 k / 56.3 fps / 77 MB), `browser:touch` PASSED (cycle 5: 0.8 m; zero cannabis requests); handoff updated. Campaign ended ≈ 00:30 at a natural review boundary — the remaining queue is owner-gated or needs playtest feedback | this commit | evidence `perf-final3`, `touch-final3` |
 
 ## 6. Findings worth keeping
 
@@ -128,7 +129,7 @@ Browser evidence (dev server, real key input, `D:AWE-Scratchm2rowserm2-probe.mj
 
 Remaining queue (all optional, owner / reviewer may re-rank):
 
-1. District identity in the far field (teal / rose storefront and sign tints around the Music / Fashion plots).
+1. ~~District identity in the far field~~ done (`b1d7750`).
 2. Make the touch probe robust to geometry ahead of the spawn (start scenario A on open ground) — probe-only change, deliberately not made unreviewed.
 3. Rights review for the Sketchfab candidates (owner) → if cleared, register through the asset contract (human `reviewedBy`) and replace district shells by id; the 80s Warehouse is the strongest Club skin, the venue stage the strongest Grand Hall.
 4. A kit-based city needs its own layout (the 3DRT level’s towers pierce the Hub airspace) or per-object placement from `objects/` once entitlement is proven.
