@@ -47,9 +47,23 @@ Not a transcript: findings, decisions, checkpoints, queue, next action.
 
 Megacity ZIP (manifest inspected before extraction): 2,637 entries, **3.13 GB uncompressed** (1.69 GB is `megacityHD.unitypackage`, skipped). Extracted to scratch: `levels/` (three prebuilt cities — big / medium / simple — as `.blend` / FBX / OBJ, 2006–2011 era, plus their textures), `objects/FBX/` (≈290 single objects: skyscrapers 43, residential 51, commercial 31, historical 29, industrial 15, highways, props), two skyboxes, licence links. City-level measurements: §2.3 (filled in by the audition step).
 
-### 2.3 Megacity city levels (audition step)
+### 2.3 Megacity city levels and the local-only audition  [MEASURED 2026-10-15]
 
-_pending_
+**Megacity "big" level** (`levels/urban-level-01-big-night`): the 2011 `.blend` opens in Blender 5.1 (`--disable-autoexec`) but its legacy Blender-Internal materials lose their textures (0 textures, 1,487 draw calls, 0.1 × scale). The OBJ + MTL export of the same level is the usable source: **1,447 objects → one GLB of 39,239 triangles, 15 materials / draw calls, 17 textures ≤ 1024² (≈ 70 MB GPU estimate), 12.7 MB**, and **4.2 MB after the repo's AWE optimiser** (dedup / prune / weld / WebP 1024). In this kit `-n.jpg` is the *night* diffuse (lit windows), not a normal map. Scale: a kit lamppost is 8.8 units and a residential block 14 units tall → **metres**; the level is a **2.0 × 2.0 km city with towers to 235 m**. No colliders exist (1,447 separate objects could become box colliders). In-world (dev audition, `?audition=city`): loads in 228 ms; reads very well from the Hub; **but its central towers rise through the Hub's airspace (to 235 m at the centre)** — the level cannot be dropped in under the Hub as-is; a kit-based city would need its own layout (the procedural plan's height envelope already keeps the Ring human-scale) or per-building placement from `objects/` (≈ 290 single buildings / props).
+
+**Owner claim "largest textured city model can be optimized below 30 MB"**: verified — 4.2 MB optimised (geometry is light; the cost is textures).
+
+**Sketchfab candidates in-world** (dev audition, `?audition=lineup`, optimised with the repo's optimiser, WebP ≤ 1024²; visual only, no colliders):
+
+| Model | Optimised | In-world finding |
+|---|---|---|
+| 80s Warehouse | 10.8 → 4.8 MB, 74.7 k tris, 86 meshes | **strongest venue room** (club / warehouse night) — but embeds third-party artwork and a song lyric on its walls: rights review must cover embedded content, not only the CC BY model |
+| Venue stage for great events | 35.1 → 16.2 MB, 565 k tris, 30 meshes | **Grand Hall** quality (seating, screen, truss); decimation needed for mobile (565 k tris) |
+| Art Gallery (1) | 42.6 → 28.9 MB, 284 k tris | clean white gallery room with empty frames; heavy geometry for its size |
+| Metallic Showroom (1) | 13.6 → 9.8 MB at × 0.01 | the bounds are 24 × 1.3 × 18 m — a ceiling-grid "backrooms" tile, not a showroom shell; needs axis / content inspection before any use |
+| Brutalist venue (Vilnius) | 1.2 → 1.1 MB | a scale model (6 × 1.6 × 11 m) — works only as a sculpture / landmark prop |
+
+Audition files live in `D:\AWE-Scratch\m2\audition\serve` (`optimize-report.json`, two overlays); evidence shots `D:\AWE-Scratch\m2\shots\2x-aud-*.png`. Nothing from the vault entered the repository.
 
 ## 3. Spatial architecture decided (reversible, product layer; D-016 boundary kept)
 
