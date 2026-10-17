@@ -1,0 +1,2329 @@
+{
+ "blender_version": "5.1.2",
+ "collections": [
+  {
+   "children": [],
+   "custom_props": {},
+   "hide_render": false,
+   "name": "CITY",
+   "objects": [
+    "forecourt"
+   ]
+  },
+  {
+   "children": [],
+   "custom_props": {},
+   "hide_render": false,
+   "name": "DECORATION",
+   "objects": [
+    "bench-centre",
+    "gallery-one-desk",
+    "planter-north",
+    "planter-south",
+    "plinth-rotated"
+   ]
+  },
+  {
+   "children": [
+    "gallery-one"
+   ],
+   "custom_props": {},
+   "hide_render": false,
+   "name": "GALLERIES",
+   "objects": []
+  },
+  {
+   "children": [],
+   "custom_props": {},
+   "hide_render": false,
+   "name": "MARKERS",
+   "objects": [
+    "anchor:gallery-one:east-01",
+    "anchor:gallery-one:east-02",
+    "anchor:gallery-one:east-03",
+    "anchor:gallery-one:floor-01",
+    "anchor:gallery-one:floor-02",
+    "anchor:gallery-one:north-01",
+    "anchor:gallery-one:north-02",
+    "anchor:gallery-one:south-01",
+    "anchor:gallery-one:south-02",
+    "chunk:city-south",
+    "entrance:gallery-one",
+    "exit:gallery-one",
+    "gallery:gallery-one",
+    "interact:gallery-one-desk",
+    "spawn:gallery-one"
+   ]
+  },
+  {
+   "children": [],
+   "custom_props": {},
+   "hide_render": false,
+   "name": "VENUES",
+   "objects": []
+  },
+  {
+   "children": [],
+   "custom_props": {},
+   "hide_render": false,
+   "name": "gallery-one",
+   "objects": [
+    "gallery-one-floor",
+    "gallery-one-lintel",
+    "gallery-one-sign",
+    "gallery-one-wall-east",
+    "gallery-one-wall-north",
+    "gallery-one-wall-south",
+    "gallery-one-wall-west-n",
+    "gallery-one-wall-west-s"
+   ]
+  }
+ ],
+ "dependencies": [
+  {
+   "kind": "image",
+   "name": "concrete.png",
+   "path": "//textures/concrete.png"
+  },
+  {
+   "kind": "image",
+   "name": "floor-oak.png",
+   "path": "//textures/floor-oak.png"
+  },
+  {
+   "kind": "image",
+   "name": "paving.png",
+   "path": "//textures/paving.png"
+  },
+  {
+   "kind": "image",
+   "name": "plaster-a.png",
+   "path": "//textures/plaster-a.png"
+  },
+  {
+   "kind": "image",
+   "name": "plaster-b.png",
+   "path": "//textures/plaster-b.png"
+  }
+ ],
+ "file": {
+  "path": "gallery-one.blend"
+ },
+ "format": "sic.blender-export/0",
+ "frame_current": 1,
+ "objects": [
+  {
+   "collections": [
+    "MARKERS"
+   ],
+   "custom_props": {
+    "nrvna_max_height": 2.2,
+    "nrvna_max_width": 3
+   },
+   "dimensions": [
+    0,
+    0,
+    0
+   ],
+   "disabled_in_viewports": false,
+   "empty": {
+    "display_size": 1,
+    "display_type": "PLAIN_AXES"
+   },
+   "hide_render": false,
+   "hide_viewport": false,
+   "in_view_layer": true,
+   "instance_collection": null,
+   "instance_type": "NONE",
+   "instances": 0,
+   "matrix_world": [
+    [
+     -4.371138828673793e-8,
+     -1,
+     0,
+     61.95000076293945
+    ],
+    [
+     1,
+     -4.371138828673793e-8,
+     0,
+     -144
+    ],
+    [
+     0,
+     0,
+     1,
+     1.899999976158142
+    ],
+    [
+     0,
+     0,
+     0,
+     1
+    ]
+   ],
+   "name": "anchor:gallery-one:east-01",
+   "parent": null,
+   "parent_type": null,
+   "selected": false,
+   "type": "EMPTY",
+   "visible": true
+  },
+  {
+   "collections": [
+    "MARKERS"
+   ],
+   "custom_props": {
+    "nrvna_max_height": 2.2,
+    "nrvna_max_width": 3
+   },
+   "dimensions": [
+    0,
+    0,
+    0
+   ],
+   "disabled_in_viewports": false,
+   "empty": {
+    "display_size": 1,
+    "display_type": "PLAIN_AXES"
+   },
+   "hide_render": false,
+   "hide_viewport": false,
+   "in_view_layer": true,
+   "instance_collection": null,
+   "instance_type": "NONE",
+   "instances": 0,
+   "matrix_world": [
+    [
+     -4.371138828673793e-8,
+     -1,
+     0,
+     61.95000076293945
+    ],
+    [
+     1,
+     -4.371138828673793e-8,
+     0,
+     -150
+    ],
+    [
+     0,
+     0,
+     1,
+     1.899999976158142
+    ],
+    [
+     0,
+     0,
+     0,
+     1
+    ]
+   ],
+   "name": "anchor:gallery-one:east-02",
+   "parent": null,
+   "parent_type": null,
+   "selected": false,
+   "type": "EMPTY",
+   "visible": true
+  },
+  {
+   "collections": [
+    "MARKERS"
+   ],
+   "custom_props": {
+    "nrvna_max_height": 2.2,
+    "nrvna_max_width": 3
+   },
+   "dimensions": [
+    0,
+    0,
+    0
+   ],
+   "disabled_in_viewports": false,
+   "empty": {
+    "display_size": 1,
+    "display_type": "PLAIN_AXES"
+   },
+   "hide_render": false,
+   "hide_viewport": false,
+   "in_view_layer": true,
+   "instance_collection": null,
+   "instance_type": "NONE",
+   "instances": 0,
+   "matrix_world": [
+    [
+     -4.371138828673793e-8,
+     -1,
+     0,
+     61.95000076293945
+    ],
+    [
+     1,
+     -4.371138828673793e-8,
+     0,
+     -156
+    ],
+    [
+     0,
+     0,
+     1,
+     1.899999976158142
+    ],
+    [
+     0,
+     0,
+     0,
+     1
+    ]
+   ],
+   "name": "anchor:gallery-one:east-03",
+   "parent": null,
+   "parent_type": null,
+   "selected": false,
+   "type": "EMPTY",
+   "visible": true
+  },
+  {
+   "collections": [
+    "MARKERS"
+   ],
+   "custom_props": {
+    "nrvna_max_height": 2.6,
+    "nrvna_max_width": 1.6
+   },
+   "dimensions": [
+    0,
+    0,
+    0
+   ],
+   "disabled_in_viewports": false,
+   "empty": {
+    "display_size": 1,
+    "display_type": "PLAIN_AXES"
+   },
+   "hide_render": false,
+   "hide_viewport": false,
+   "in_view_layer": true,
+   "instance_collection": null,
+   "instance_type": "NONE",
+   "instances": 0,
+   "matrix_world": [
+    [
+     -4.371138828673793e-8,
+     -1,
+     0,
+     43
+    ],
+    [
+     1,
+     -4.371138828673793e-8,
+     0,
+     -150
+    ],
+    [
+     0,
+     0,
+     1,
+     0.10000000149011612
+    ],
+    [
+     0,
+     0,
+     0,
+     1
+    ]
+   ],
+   "name": "anchor:gallery-one:floor-01",
+   "parent": null,
+   "parent_type": null,
+   "selected": false,
+   "type": "EMPTY",
+   "visible": true
+  },
+  {
+   "collections": [
+    "MARKERS"
+   ],
+   "custom_props": {
+    "nrvna_max_height": 2.6,
+    "nrvna_max_width": 1.6
+   },
+   "dimensions": [
+    0,
+    0,
+    0
+   ],
+   "disabled_in_viewports": false,
+   "empty": {
+    "display_size": 1,
+    "display_type": "PLAIN_AXES"
+   },
+   "hide_render": false,
+   "hide_viewport": false,
+   "in_view_layer": true,
+   "instance_collection": null,
+   "instance_type": "NONE",
+   "instances": 0,
+   "matrix_world": [
+    [
+     -4.371138828673793e-8,
+     -1,
+     0,
+     54
+    ],
+    [
+     1,
+     -4.371138828673793e-8,
+     0,
+     -150
+    ],
+    [
+     0,
+     0,
+     1,
+     0.10000000149011612
+    ],
+    [
+     0,
+     0,
+     0,
+     1
+    ]
+   ],
+   "name": "anchor:gallery-one:floor-02",
+   "parent": null,
+   "parent_type": null,
+   "selected": false,
+   "type": "EMPTY",
+   "visible": true
+  },
+  {
+   "collections": [
+    "MARKERS"
+   ],
+   "custom_props": {
+    "nrvna_max_height": 2.4,
+    "nrvna_max_width": 4
+   },
+   "dimensions": [
+    0,
+    0,
+    0
+   ],
+   "disabled_in_viewports": false,
+   "empty": {
+    "display_size": 1,
+    "display_type": "PLAIN_AXES"
+   },
+   "hide_render": false,
+   "hide_viewport": false,
+   "in_view_layer": true,
+   "instance_collection": null,
+   "instance_type": "NONE",
+   "instances": 0,
+   "matrix_world": [
+    [
+     -1,
+     8.742277657347586e-8,
+     0,
+     41
+    ],
+    [
+     -8.742277657347586e-8,
+     -1,
+     0,
+     -140.0500030517578
+    ],
+    [
+     0,
+     0,
+     1,
+     1.899999976158142
+    ],
+    [
+     0,
+     0,
+     0,
+     1
+    ]
+   ],
+   "name": "anchor:gallery-one:north-01",
+   "parent": null,
+   "parent_type": null,
+   "selected": false,
+   "type": "EMPTY",
+   "visible": true
+  },
+  {
+   "collections": [
+    "MARKERS"
+   ],
+   "custom_props": {
+    "nrvna_max_height": 2.4,
+    "nrvna_max_width": 4
+   },
+   "dimensions": [
+    0,
+    0,
+    0
+   ],
+   "disabled_in_viewports": false,
+   "empty": {
+    "display_size": 1,
+    "display_type": "PLAIN_AXES"
+   },
+   "hide_render": false,
+   "hide_viewport": false,
+   "in_view_layer": true,
+   "instance_collection": null,
+   "instance_type": "NONE",
+   "instances": 0,
+   "matrix_world": [
+    [
+     -1,
+     8.742277657347586e-8,
+     0,
+     55
+    ],
+    [
+     -8.742277657347586e-8,
+     -1,
+     0,
+     -140.0500030517578
+    ],
+    [
+     0,
+     0,
+     1,
+     1.899999976158142
+    ],
+    [
+     0,
+     0,
+     0,
+     1
+    ]
+   ],
+   "name": "anchor:gallery-one:north-02",
+   "parent": null,
+   "parent_type": null,
+   "selected": false,
+   "type": "EMPTY",
+   "visible": true
+  },
+  {
+   "collections": [
+    "MARKERS"
+   ],
+   "custom_props": {
+    "nrvna_max_height": 2.4,
+    "nrvna_max_width": 4
+   },
+   "dimensions": [
+    0,
+    0,
+    0
+   ],
+   "disabled_in_viewports": false,
+   "empty": {
+    "display_size": 1,
+    "display_type": "PLAIN_AXES"
+   },
+   "hide_render": false,
+   "hide_viewport": false,
+   "in_view_layer": true,
+   "instance_collection": null,
+   "instance_type": "NONE",
+   "instances": 0,
+   "matrix_world": [
+    [
+     1,
+     0,
+     0,
+     41
+    ],
+    [
+     0,
+     1,
+     0,
+     -159.9499969482422
+    ],
+    [
+     0,
+     0,
+     1,
+     1.899999976158142
+    ],
+    [
+     0,
+     0,
+     0,
+     1
+    ]
+   ],
+   "name": "anchor:gallery-one:south-01",
+   "parent": null,
+   "parent_type": null,
+   "selected": false,
+   "type": "EMPTY",
+   "visible": true
+  },
+  {
+   "collections": [
+    "MARKERS"
+   ],
+   "custom_props": {
+    "nrvna_max_height": 2.4,
+    "nrvna_max_width": 4
+   },
+   "dimensions": [
+    0,
+    0,
+    0
+   ],
+   "disabled_in_viewports": false,
+   "empty": {
+    "display_size": 1,
+    "display_type": "PLAIN_AXES"
+   },
+   "hide_render": false,
+   "hide_viewport": false,
+   "in_view_layer": true,
+   "instance_collection": null,
+   "instance_type": "NONE",
+   "instances": 0,
+   "matrix_world": [
+    [
+     1,
+     0,
+     0,
+     55
+    ],
+    [
+     0,
+     1,
+     0,
+     -159.9499969482422
+    ],
+    [
+     0,
+     0,
+     1,
+     1.899999976158142
+    ],
+    [
+     0,
+     0,
+     0,
+     1
+    ]
+   ],
+   "name": "anchor:gallery-one:south-02",
+   "parent": null,
+   "parent_type": null,
+   "selected": false,
+   "type": "EMPTY",
+   "visible": true
+  },
+  {
+   "collections": [
+    "DECORATION"
+   ],
+   "custom_props": {},
+   "dimensions": [
+    3,
+    0.800000011920929,
+    0.44999998807907104
+   ],
+   "disabled_in_viewports": false,
+   "hide_render": false,
+   "hide_viewport": false,
+   "in_view_layer": true,
+   "instance_collection": null,
+   "instance_type": "NONE",
+   "instances": 0,
+   "materials": [
+    {
+     "blend_method": "HASHED",
+     "diffuse_alpha": 1,
+     "name": "bench_wood",
+     "principled": {
+      "alpha": 1,
+      "emission_color": [
+       1,
+       1,
+       1,
+       1
+      ],
+      "emission_strength": 0,
+      "transmission": 0
+     },
+     "surface_render_method": "DITHERED",
+     "textures": []
+    }
+   ],
+   "matrix_world": [
+    [
+     3,
+     0,
+     0,
+     48
+    ],
+    [
+     0,
+     0.800000011920929,
+     0,
+     -150
+    ],
+    [
+     0,
+     0,
+     0.44999998807907104,
+     0.32499998807907104
+    ],
+    [
+     0,
+     0,
+     0,
+     1
+    ]
+   ],
+   "mesh": {
+    "is_box": true,
+    "local_bbox": {
+     "max": [
+      0.5,
+      0.5,
+      0.5
+     ],
+     "min": [
+      -0.5,
+      -0.5,
+      -0.5
+     ]
+    },
+    "modifiers": [],
+    "polygons": 6,
+    "triangles": 12,
+    "vertices": 8
+   },
+   "name": "bench-centre",
+   "parent": null,
+   "parent_type": null,
+   "selected": false,
+   "type": "MESH",
+   "visible": true
+  },
+  {
+   "collections": [
+    "MARKERS"
+   ],
+   "custom_props": {},
+   "dimensions": [
+    0,
+    0,
+    0
+   ],
+   "disabled_in_viewports": false,
+   "empty": {
+    "display_size": 1,
+    "display_type": "CUBE"
+   },
+   "hide_render": false,
+   "hide_viewport": false,
+   "in_view_layer": true,
+   "instance_collection": null,
+   "instance_type": "NONE",
+   "instances": 0,
+   "matrix_world": [
+    [
+     100,
+     0,
+     0,
+     0
+    ],
+    [
+     0,
+     100,
+     0,
+     -200
+    ],
+    [
+     0,
+     0,
+     60,
+     60
+    ],
+    [
+     0,
+     0,
+     0,
+     1
+    ]
+   ],
+   "name": "chunk:city-south",
+   "parent": null,
+   "parent_type": null,
+   "selected": false,
+   "type": "EMPTY",
+   "visible": true
+  },
+  {
+   "collections": [
+    "MARKERS"
+   ],
+   "custom_props": {},
+   "dimensions": [
+    0,
+    0,
+    0
+   ],
+   "disabled_in_viewports": false,
+   "empty": {
+    "display_size": 1,
+    "display_type": "ARROWS"
+   },
+   "hide_render": false,
+   "hide_viewport": false,
+   "in_view_layer": true,
+   "instance_collection": null,
+   "instance_type": "NONE",
+   "instances": 0,
+   "matrix_world": [
+    [
+     -4.371138828673793e-8,
+     1,
+     0,
+     33.79999923706055
+    ],
+    [
+     -1,
+     -4.371138828673793e-8,
+     0,
+     -150
+    ],
+    [
+     0,
+     0,
+     1,
+     0.10000000149011612
+    ],
+    [
+     0,
+     0,
+     0,
+     1
+    ]
+   ],
+   "name": "entrance:gallery-one",
+   "parent": null,
+   "parent_type": null,
+   "selected": false,
+   "type": "EMPTY",
+   "visible": true
+  },
+  {
+   "collections": [
+    "MARKERS"
+   ],
+   "custom_props": {},
+   "dimensions": [
+    0,
+    0,
+    0
+   ],
+   "disabled_in_viewports": false,
+   "empty": {
+    "display_size": 1,
+    "display_type": "ARROWS"
+   },
+   "hide_render": false,
+   "hide_viewport": false,
+   "in_view_layer": true,
+   "instance_collection": null,
+   "instance_type": "NONE",
+   "instances": 0,
+   "matrix_world": [
+    [
+     -4.371138828673793e-8,
+     -1,
+     0,
+     33.79999923706055
+    ],
+    [
+     1,
+     -4.371138828673793e-8,
+     0,
+     -150
+    ],
+    [
+     0,
+     0,
+     1,
+     0.10000000149011612
+    ],
+    [
+     0,
+     0,
+     0,
+     1
+    ]
+   ],
+   "name": "exit:gallery-one",
+   "parent": null,
+   "parent_type": null,
+   "selected": false,
+   "type": "EMPTY",
+   "visible": true
+  },
+  {
+   "collections": [
+    "CITY"
+   ],
+   "custom_props": {},
+   "dimensions": [
+    16.600000381469727,
+    8,
+    0.10000000149011612
+   ],
+   "disabled_in_viewports": false,
+   "hide_render": false,
+   "hide_viewport": false,
+   "in_view_layer": true,
+   "instance_collection": null,
+   "instance_type": "NONE",
+   "instances": 0,
+   "materials": [
+    {
+     "blend_method": "HASHED",
+     "diffuse_alpha": 1,
+     "name": "paving_stone",
+     "principled": {
+      "alpha": 1,
+      "emission_color": [
+       1,
+       1,
+       1,
+       1
+      ],
+      "emission_strength": 0,
+      "transmission": 0
+     },
+     "surface_render_method": "DITHERED",
+     "textures": [
+      {
+       "height": 8,
+       "image": "paving.png",
+       "packed": false,
+       "path": "//textures/paving.png",
+       "source": "FILE",
+       "width": 8
+      }
+     ]
+    }
+   ],
+   "matrix_world": [
+    [
+     1,
+     0,
+     0,
+     25.299999237060547
+    ],
+    [
+     0,
+     1,
+     0,
+     -150
+    ],
+    [
+     0,
+     0,
+     1,
+     0.05000000074505806
+    ],
+    [
+     0,
+     0,
+     0,
+     1
+    ]
+   ],
+   "mesh": {
+    "is_box": true,
+    "local_bbox": {
+     "max": [
+      8.300000190734863,
+      4,
+      0.05000000074505806
+     ],
+     "min": [
+      -8.300000190734863,
+      -4,
+      -0.05000000074505806
+     ]
+    },
+    "modifiers": [],
+    "polygons": 6,
+    "triangles": 12,
+    "vertices": 8
+   },
+   "name": "forecourt",
+   "parent": null,
+   "parent_type": null,
+   "selected": false,
+   "type": "MESH",
+   "visible": true
+  },
+  {
+   "collections": [
+    "DECORATION"
+   ],
+   "custom_props": {},
+   "dimensions": [
+    2.4000000953674316,
+    0.800000011920929,
+    0.8999999761581421
+   ],
+   "disabled_in_viewports": false,
+   "hide_render": false,
+   "hide_viewport": false,
+   "in_view_layer": true,
+   "instance_collection": null,
+   "instance_type": "NONE",
+   "instances": 0,
+   "materials": [
+    {
+     "blend_method": "HASHED",
+     "diffuse_alpha": 1,
+     "name": "bench_wood",
+     "principled": {
+      "alpha": 1,
+      "emission_color": [
+       1,
+       1,
+       1,
+       1
+      ],
+      "emission_strength": 0,
+      "transmission": 0
+     },
+     "surface_render_method": "DITHERED",
+     "textures": []
+    }
+   ],
+   "matrix_world": [
+    [
+     1,
+     0,
+     0,
+     38
+    ],
+    [
+     0,
+     1,
+     0,
+     -142.1999969482422
+    ],
+    [
+     0,
+     0,
+     1,
+     0.550000011920929
+    ],
+    [
+     0,
+     0,
+     0,
+     1
+    ]
+   ],
+   "mesh": {
+    "is_box": true,
+    "local_bbox": {
+     "max": [
+      1.2000000476837158,
+      0.4000000059604645,
+      0.44999998807907104
+     ],
+     "min": [
+      -1.2000000476837158,
+      -0.4000000059604645,
+      -0.44999998807907104
+     ]
+    },
+    "modifiers": [],
+    "polygons": 6,
+    "triangles": 12,
+    "vertices": 8
+   },
+   "name": "gallery-one-desk",
+   "parent": null,
+   "parent_type": null,
+   "selected": false,
+   "type": "MESH",
+   "visible": true
+  },
+  {
+   "collections": [
+    "gallery-one"
+   ],
+   "custom_props": {
+    "nrvna_id": "gallery-one.floor"
+   },
+   "dimensions": [
+    28.799999237060547,
+    20.799999237060547,
+    0.10000000149011612
+   ],
+   "disabled_in_viewports": false,
+   "hide_render": false,
+   "hide_viewport": false,
+   "in_view_layer": true,
+   "instance_collection": null,
+   "instance_type": "NONE",
+   "instances": 0,
+   "materials": [
+    {
+     "blend_method": "HASHED",
+     "diffuse_alpha": 1,
+     "name": "gallery_floor",
+     "principled": {
+      "alpha": 1,
+      "emission_color": [
+       1,
+       1,
+       1,
+       1
+      ],
+      "emission_strength": 0,
+      "transmission": 0
+     },
+     "surface_render_method": "DITHERED",
+     "textures": [
+      {
+       "height": 8,
+       "image": "floor-oak.png",
+       "packed": false,
+       "path": "//textures/floor-oak.png",
+       "source": "FILE",
+       "width": 8
+      }
+     ]
+    }
+   ],
+   "matrix_world": [
+    [
+     1,
+     0,
+     0,
+     48
+    ],
+    [
+     0,
+     1,
+     0,
+     -150
+    ],
+    [
+     0,
+     0,
+     1,
+     0.05000000074505806
+    ],
+    [
+     0,
+     0,
+     0,
+     1
+    ]
+   ],
+   "mesh": {
+    "is_box": true,
+    "local_bbox": {
+     "max": [
+      14.399999618530273,
+      10.399999618530273,
+      0.05000000074505806
+     ],
+     "min": [
+      -14.399999618530273,
+      -10.399999618530273,
+      -0.05000000074505806
+     ]
+    },
+    "modifiers": [],
+    "polygons": 6,
+    "triangles": 12,
+    "vertices": 8
+   },
+   "name": "gallery-one-floor",
+   "parent": null,
+   "parent_type": null,
+   "selected": false,
+   "type": "MESH",
+   "visible": true
+  },
+  {
+   "collections": [
+    "gallery-one"
+   ],
+   "custom_props": {
+    "nrvna_id": "gallery-one.lintel"
+   },
+   "dimensions": [
+    0.4000000059604645,
+    4,
+    1.7999999523162842
+   ],
+   "disabled_in_viewports": false,
+   "hide_render": false,
+   "hide_viewport": false,
+   "in_view_layer": true,
+   "instance_collection": null,
+   "instance_type": "NONE",
+   "instances": 0,
+   "materials": [
+    {
+     "blend_method": "HASHED",
+     "diffuse_alpha": 1,
+     "name": "gallery_wall",
+     "principled": {
+      "alpha": 1,
+      "emission_color": [
+       1,
+       1,
+       1,
+       1
+      ],
+      "emission_strength": 0,
+      "transmission": 0
+     },
+     "surface_render_method": "DITHERED",
+     "textures": [
+      {
+       "height": 8,
+       "image": "plaster-a.png",
+       "packed": false,
+       "path": "//textures/plaster-a.png",
+       "source": "FILE",
+       "width": 8
+      }
+     ]
+    }
+   ],
+   "matrix_world": [
+    [
+     1,
+     0,
+     0,
+     33.79999923706055
+    ],
+    [
+     0,
+     1,
+     0,
+     -150
+    ],
+    [
+     0,
+     0,
+     1,
+     4.199999809265137
+    ],
+    [
+     0,
+     0,
+     0,
+     1
+    ]
+   ],
+   "mesh": {
+    "is_box": true,
+    "local_bbox": {
+     "max": [
+      0.20000000298023224,
+      2,
+      0.8999999761581421
+     ],
+     "min": [
+      -0.20000000298023224,
+      -2,
+      -0.8999999761581421
+     ]
+    },
+    "modifiers": [],
+    "polygons": 6,
+    "triangles": 12,
+    "vertices": 8
+   },
+   "name": "gallery-one-lintel",
+   "parent": null,
+   "parent_type": null,
+   "selected": false,
+   "type": "MESH",
+   "visible": true
+  },
+  {
+   "collections": [
+    "gallery-one"
+   ],
+   "custom_props": {
+    "nrvna_id": "gallery-one.sign"
+   },
+   "dimensions": [
+    0.30000001192092896,
+    3.5999999046325684,
+    1.2000000476837158
+   ],
+   "disabled_in_viewports": false,
+   "hide_render": false,
+   "hide_viewport": false,
+   "in_view_layer": true,
+   "instance_collection": null,
+   "instance_type": "NONE",
+   "instances": 0,
+   "materials": [
+    {
+     "blend_method": "HASHED",
+     "diffuse_alpha": 1,
+     "name": "sign_black",
+     "principled": {
+      "alpha": 1,
+      "emission_color": [
+       1,
+       1,
+       1,
+       1
+      ],
+      "emission_strength": 0,
+      "transmission": 0
+     },
+     "surface_render_method": "DITHERED",
+     "textures": []
+    }
+   ],
+   "matrix_world": [
+    [
+     1,
+     0,
+     0,
+     33.45000076293945
+    ],
+    [
+     0,
+     1,
+     0,
+     -150
+    ],
+    [
+     0,
+     0,
+     1,
+     4.199999809265137
+    ],
+    [
+     0,
+     0,
+     0,
+     1
+    ]
+   ],
+   "mesh": {
+    "is_box": true,
+    "local_bbox": {
+     "max": [
+      0.15000000596046448,
+      1.7999999523162842,
+      0.6000000238418579
+     ],
+     "min": [
+      -0.15000000596046448,
+      -1.7999999523162842,
+      -0.6000000238418579
+     ]
+    },
+    "modifiers": [],
+    "polygons": 6,
+    "triangles": 12,
+    "vertices": 8
+   },
+   "name": "gallery-one-sign",
+   "parent": null,
+   "parent_type": null,
+   "selected": false,
+   "type": "MESH",
+   "visible": true
+  },
+  {
+   "collections": [
+    "gallery-one"
+   ],
+   "custom_props": {
+    "nrvna_id": "gallery-one.wall-east"
+   },
+   "dimensions": [
+    0.4000000059604645,
+    20,
+    5
+   ],
+   "disabled_in_viewports": false,
+   "hide_render": false,
+   "hide_viewport": false,
+   "in_view_layer": true,
+   "instance_collection": null,
+   "instance_type": "NONE",
+   "instances": 0,
+   "materials": [
+    {
+     "blend_method": "HASHED",
+     "diffuse_alpha": 1,
+     "name": "gallery_wall",
+     "principled": {
+      "alpha": 1,
+      "emission_color": [
+       1,
+       1,
+       1,
+       1
+      ],
+      "emission_strength": 0,
+      "transmission": 0
+     },
+     "surface_render_method": "DITHERED",
+     "textures": [
+      {
+       "height": 8,
+       "image": "plaster-a.png",
+       "packed": false,
+       "path": "//textures/plaster-a.png",
+       "source": "FILE",
+       "width": 8
+      }
+     ]
+    }
+   ],
+   "matrix_world": [
+    [
+     1,
+     0,
+     0,
+     62.20000076293945
+    ],
+    [
+     0,
+     1,
+     0,
+     -150
+    ],
+    [
+     0,
+     0,
+     1,
+     2.5999999046325684
+    ],
+    [
+     0,
+     0,
+     0,
+     1
+    ]
+   ],
+   "mesh": {
+    "is_box": true,
+    "local_bbox": {
+     "max": [
+      0.20000000298023224,
+      10,
+      2.5
+     ],
+     "min": [
+      -0.20000000298023224,
+      -10,
+      -2.5
+     ]
+    },
+    "modifiers": [],
+    "polygons": 6,
+    "triangles": 12,
+    "vertices": 8
+   },
+   "name": "gallery-one-wall-east",
+   "parent": null,
+   "parent_type": null,
+   "selected": false,
+   "type": "MESH",
+   "visible": true
+  },
+  {
+   "collections": [
+    "gallery-one"
+   ],
+   "custom_props": {
+    "nrvna_id": "gallery-one.wall-north"
+   },
+   "dimensions": [
+    28.799999237060547,
+    0.4000000059604645,
+    5
+   ],
+   "disabled_in_viewports": false,
+   "hide_render": false,
+   "hide_viewport": false,
+   "in_view_layer": true,
+   "instance_collection": null,
+   "instance_type": "NONE",
+   "instances": 0,
+   "materials": [
+    {
+     "blend_method": "HASHED",
+     "diffuse_alpha": 1,
+     "name": "gallery_wall--warm",
+     "principled": {
+      "alpha": 1,
+      "emission_color": [
+       1,
+       1,
+       1,
+       1
+      ],
+      "emission_strength": 0,
+      "transmission": 0
+     },
+     "surface_render_method": "DITHERED",
+     "textures": [
+      {
+       "height": 8,
+       "image": "plaster-b.png",
+       "packed": false,
+       "path": "//textures/plaster-b.png",
+       "source": "FILE",
+       "width": 8
+      }
+     ]
+    }
+   ],
+   "matrix_world": [
+    [
+     1,
+     0,
+     0,
+     48
+    ],
+    [
+     0,
+     1,
+     0,
+     -139.8000030517578
+    ],
+    [
+     0,
+     0,
+     1,
+     2.5999999046325684
+    ],
+    [
+     0,
+     0,
+     0,
+     1
+    ]
+   ],
+   "mesh": {
+    "is_box": true,
+    "local_bbox": {
+     "max": [
+      14.399999618530273,
+      0.20000000298023224,
+      2.5
+     ],
+     "min": [
+      -14.399999618530273,
+      -0.20000000298023224,
+      -2.5
+     ]
+    },
+    "modifiers": [],
+    "polygons": 6,
+    "triangles": 12,
+    "vertices": 8
+   },
+   "name": "gallery-one-wall-north",
+   "parent": null,
+   "parent_type": null,
+   "selected": false,
+   "type": "MESH",
+   "visible": true
+  },
+  {
+   "collections": [
+    "gallery-one"
+   ],
+   "custom_props": {
+    "nrvna_id": "gallery-one.wall-south"
+   },
+   "dimensions": [
+    28.799999237060547,
+    0.4000000059604645,
+    5
+   ],
+   "disabled_in_viewports": false,
+   "hide_render": false,
+   "hide_viewport": false,
+   "in_view_layer": true,
+   "instance_collection": null,
+   "instance_type": "NONE",
+   "instances": 0,
+   "materials": [
+    {
+     "blend_method": "HASHED",
+     "diffuse_alpha": 1,
+     "name": "gallery_wall",
+     "principled": {
+      "alpha": 1,
+      "emission_color": [
+       1,
+       1,
+       1,
+       1
+      ],
+      "emission_strength": 0,
+      "transmission": 0
+     },
+     "surface_render_method": "DITHERED",
+     "textures": [
+      {
+       "height": 8,
+       "image": "plaster-a.png",
+       "packed": false,
+       "path": "//textures/plaster-a.png",
+       "source": "FILE",
+       "width": 8
+      }
+     ]
+    }
+   ],
+   "matrix_world": [
+    [
+     1,
+     0,
+     0,
+     48
+    ],
+    [
+     0,
+     1,
+     0,
+     -160.1999969482422
+    ],
+    [
+     0,
+     0,
+     1,
+     2.5999999046325684
+    ],
+    [
+     0,
+     0,
+     0,
+     1
+    ]
+   ],
+   "mesh": {
+    "is_box": true,
+    "local_bbox": {
+     "max": [
+      14.399999618530273,
+      0.20000000298023224,
+      2.5
+     ],
+     "min": [
+      -14.399999618530273,
+      -0.20000000298023224,
+      -2.5
+     ]
+    },
+    "modifiers": [],
+    "polygons": 6,
+    "triangles": 12,
+    "vertices": 8
+   },
+   "name": "gallery-one-wall-south",
+   "parent": null,
+   "parent_type": null,
+   "selected": false,
+   "type": "MESH",
+   "visible": true
+  },
+  {
+   "collections": [
+    "gallery-one"
+   ],
+   "custom_props": {
+    "nrvna_id": "gallery-one.wall-west-n"
+   },
+   "dimensions": [
+    0.4000000059604645,
+    8,
+    5
+   ],
+   "disabled_in_viewports": false,
+   "hide_render": false,
+   "hide_viewport": false,
+   "in_view_layer": true,
+   "instance_collection": null,
+   "instance_type": "NONE",
+   "instances": 0,
+   "materials": [
+    {
+     "blend_method": "HASHED",
+     "diffuse_alpha": 1,
+     "name": "gallery_wall",
+     "principled": {
+      "alpha": 1,
+      "emission_color": [
+       1,
+       1,
+       1,
+       1
+      ],
+      "emission_strength": 0,
+      "transmission": 0
+     },
+     "surface_render_method": "DITHERED",
+     "textures": [
+      {
+       "height": 8,
+       "image": "plaster-a.png",
+       "packed": false,
+       "path": "//textures/plaster-a.png",
+       "source": "FILE",
+       "width": 8
+      }
+     ]
+    }
+   ],
+   "matrix_world": [
+    [
+     1,
+     0,
+     0,
+     33.79999923706055
+    ],
+    [
+     0,
+     1,
+     0,
+     -144
+    ],
+    [
+     0,
+     0,
+     1,
+     2.5999999046325684
+    ],
+    [
+     0,
+     0,
+     0,
+     1
+    ]
+   ],
+   "mesh": {
+    "is_box": true,
+    "local_bbox": {
+     "max": [
+      0.20000000298023224,
+      4,
+      2.5
+     ],
+     "min": [
+      -0.20000000298023224,
+      -4,
+      -2.5
+     ]
+    },
+    "modifiers": [],
+    "polygons": 6,
+    "triangles": 12,
+    "vertices": 8
+   },
+   "name": "gallery-one-wall-west-n",
+   "parent": null,
+   "parent_type": null,
+   "selected": false,
+   "type": "MESH",
+   "visible": true
+  },
+  {
+   "collections": [
+    "gallery-one"
+   ],
+   "custom_props": {
+    "nrvna_id": "gallery-one.wall-west-s"
+   },
+   "dimensions": [
+    0.4000000059604645,
+    8,
+    5
+   ],
+   "disabled_in_viewports": false,
+   "hide_render": false,
+   "hide_viewport": false,
+   "in_view_layer": true,
+   "instance_collection": null,
+   "instance_type": "NONE",
+   "instances": 0,
+   "materials": [
+    {
+     "blend_method": "HASHED",
+     "diffuse_alpha": 1,
+     "name": "gallery_wall",
+     "principled": {
+      "alpha": 1,
+      "emission_color": [
+       1,
+       1,
+       1,
+       1
+      ],
+      "emission_strength": 0,
+      "transmission": 0
+     },
+     "surface_render_method": "DITHERED",
+     "textures": [
+      {
+       "height": 8,
+       "image": "plaster-a.png",
+       "packed": false,
+       "path": "//textures/plaster-a.png",
+       "source": "FILE",
+       "width": 8
+      }
+     ]
+    }
+   ],
+   "matrix_world": [
+    [
+     1,
+     0,
+     0,
+     33.79999923706055
+    ],
+    [
+     0,
+     1,
+     0,
+     -156
+    ],
+    [
+     0,
+     0,
+     1,
+     2.5999999046325684
+    ],
+    [
+     0,
+     0,
+     0,
+     1
+    ]
+   ],
+   "mesh": {
+    "is_box": true,
+    "local_bbox": {
+     "max": [
+      0.20000000298023224,
+      4,
+      2.5
+     ],
+     "min": [
+      -0.20000000298023224,
+      -4,
+      -2.5
+     ]
+    },
+    "modifiers": [],
+    "polygons": 6,
+    "triangles": 12,
+    "vertices": 8
+   },
+   "name": "gallery-one-wall-west-s",
+   "parent": null,
+   "parent_type": null,
+   "selected": false,
+   "type": "MESH",
+   "visible": true
+  },
+  {
+   "collections": [
+    "MARKERS"
+   ],
+   "custom_props": {},
+   "dimensions": [
+    0,
+    0,
+    0
+   ],
+   "disabled_in_viewports": false,
+   "empty": {
+    "display_size": 1,
+    "display_type": "CUBE"
+   },
+   "hide_render": false,
+   "hide_viewport": false,
+   "in_view_layer": true,
+   "instance_collection": null,
+   "instance_type": "NONE",
+   "instances": 0,
+   "matrix_world": [
+    [
+     14,
+     0,
+     0,
+     48
+    ],
+    [
+     0,
+     10,
+     0,
+     -150
+    ],
+    [
+     0,
+     0,
+     2.5,
+     2.5999999046325684
+    ],
+    [
+     0,
+     0,
+     0,
+     1
+    ]
+   ],
+   "name": "gallery:gallery-one",
+   "parent": null,
+   "parent_type": null,
+   "selected": false,
+   "type": "EMPTY",
+   "visible": true
+  },
+  {
+   "collections": [
+    "MARKERS"
+   ],
+   "custom_props": {
+    "nrvna_radius": 1.5
+   },
+   "dimensions": [
+    0,
+    0,
+    0
+   ],
+   "disabled_in_viewports": false,
+   "empty": {
+    "display_size": 1,
+    "display_type": "SPHERE"
+   },
+   "hide_render": false,
+   "hide_viewport": false,
+   "in_view_layer": true,
+   "instance_collection": null,
+   "instance_type": "NONE",
+   "instances": 0,
+   "matrix_world": [
+    [
+     1,
+     0,
+     0,
+     38
+    ],
+    [
+     0,
+     1,
+     0,
+     -143.60000610351562
+    ],
+    [
+     0,
+     0,
+     1,
+     0.10000000149011612
+    ],
+    [
+     0,
+     0,
+     0,
+     1
+    ]
+   ],
+   "name": "interact:gallery-one-desk",
+   "parent": null,
+   "parent_type": null,
+   "selected": false,
+   "type": "EMPTY",
+   "visible": true
+  },
+  {
+   "collections": [
+    "DECORATION"
+   ],
+   "custom_props": {},
+   "dimensions": [
+    1.2000000476837158,
+    1.2000000476837158,
+    0.8999999761581421
+   ],
+   "disabled_in_viewports": false,
+   "hide_render": false,
+   "hide_viewport": false,
+   "in_view_layer": true,
+   "instance_collection": null,
+   "instance_type": "NONE",
+   "instances": 0,
+   "materials": [
+    {
+     "blend_method": "HASHED",
+     "diffuse_alpha": 1,
+     "name": "planter_concrete",
+     "principled": {
+      "alpha": 1,
+      "emission_color": [
+       1,
+       1,
+       1,
+       1
+      ],
+      "emission_strength": 0,
+      "transmission": 0
+     },
+     "surface_render_method": "DITHERED",
+     "textures": [
+      {
+       "height": 8,
+       "image": "concrete.png",
+       "packed": false,
+       "path": "//textures/concrete.png",
+       "source": "FILE",
+       "width": 8
+      }
+     ]
+    }
+   ],
+   "matrix_world": [
+    [
+     1,
+     0,
+     0,
+     30
+    ],
+    [
+     0,
+     1,
+     0,
+     -145
+    ],
+    [
+     0,
+     0,
+     1,
+     0.550000011920929
+    ],
+    [
+     0,
+     0,
+     0,
+     1
+    ]
+   ],
+   "mesh": {
+    "is_box": false,
+    "local_bbox": {
+     "max": [
+      0.6000000238418579,
+      0.6000000238418579,
+      0.44999998807907104
+     ],
+     "min": [
+      -0.6000000238418579,
+      -0.6000000238418579,
+      -0.44999998807907104
+     ]
+    },
+    "modifiers": [],
+    "polygons": 26,
+    "triangles": 92,
+    "vertices": 48
+   },
+   "name": "planter-north",
+   "parent": null,
+   "parent_type": null,
+   "selected": false,
+   "type": "MESH",
+   "visible": true
+  },
+  {
+   "collections": [
+    "DECORATION"
+   ],
+   "custom_props": {},
+   "dimensions": [
+    1.2000000476837158,
+    1.2000000476837158,
+    0.8999999761581421
+   ],
+   "disabled_in_viewports": false,
+   "hide_render": false,
+   "hide_viewport": false,
+   "in_view_layer": true,
+   "instance_collection": null,
+   "instance_type": "NONE",
+   "instances": 0,
+   "materials": [
+    {
+     "blend_method": "HASHED",
+     "diffuse_alpha": 1,
+     "name": "planter_concrete",
+     "principled": {
+      "alpha": 1,
+      "emission_color": [
+       1,
+       1,
+       1,
+       1
+      ],
+      "emission_strength": 0,
+      "transmission": 0
+     },
+     "surface_render_method": "DITHERED",
+     "textures": [
+      {
+       "height": 8,
+       "image": "concrete.png",
+       "packed": false,
+       "path": "//textures/concrete.png",
+       "source": "FILE",
+       "width": 8
+      }
+     ]
+    }
+   ],
+   "matrix_world": [
+    [
+     1,
+     0,
+     0,
+     30
+    ],
+    [
+     0,
+     1,
+     0,
+     -155
+    ],
+    [
+     0,
+     0,
+     1,
+     0.550000011920929
+    ],
+    [
+     0,
+     0,
+     0,
+     1
+    ]
+   ],
+   "mesh": {
+    "is_box": false,
+    "local_bbox": {
+     "max": [
+      0.6000000238418579,
+      0.6000000238418579,
+      0.44999998807907104
+     ],
+     "min": [
+      -0.6000000238418579,
+      -0.6000000238418579,
+      -0.44999998807907104
+     ]
+    },
+    "modifiers": [],
+    "polygons": 26,
+    "triangles": 92,
+    "vertices": 48
+   },
+   "name": "planter-south",
+   "parent": null,
+   "parent_type": null,
+   "selected": false,
+   "type": "MESH",
+   "visible": true
+  },
+  {
+   "collections": [
+    "DECORATION"
+   ],
+   "custom_props": {},
+   "dimensions": [
+    0.800000011920929,
+    0.800000011920929,
+    0.800000011920929
+   ],
+   "disabled_in_viewports": false,
+   "hide_render": false,
+   "hide_viewport": false,
+   "in_view_layer": true,
+   "instance_collection": null,
+   "instance_type": "NONE",
+   "instances": 0,
+   "materials": [
+    {
+     "blend_method": "HASHED",
+     "diffuse_alpha": 1,
+     "name": "gallery_wall",
+     "principled": {
+      "alpha": 1,
+      "emission_color": [
+       1,
+       1,
+       1,
+       1
+      ],
+      "emission_strength": 0,
+      "transmission": 0
+     },
+     "surface_render_method": "DITHERED",
+     "textures": [
+      {
+       "height": 8,
+       "image": "plaster-a.png",
+       "packed": false,
+       "path": "//textures/plaster-a.png",
+       "source": "FILE",
+       "width": 8
+      }
+     ]
+    }
+   ],
+   "matrix_world": [
+    [
+     0.8660253882408142,
+     -0.5,
+     0,
+     58
+    ],
+    [
+     0.5,
+     0.8660253882408142,
+     0,
+     -144
+    ],
+    [
+     0,
+     0,
+     1,
+     0.5
+    ],
+    [
+     0,
+     0,
+     0,
+     1
+    ]
+   ],
+   "mesh": {
+    "is_box": true,
+    "local_bbox": {
+     "max": [
+      0.4000000059604645,
+      0.4000000059604645,
+      0.4000000059604645
+     ],
+     "min": [
+      -0.4000000059604645,
+      -0.4000000059604645,
+      -0.4000000059604645
+     ]
+    },
+    "modifiers": [],
+    "polygons": 6,
+    "triangles": 12,
+    "vertices": 8
+   },
+   "name": "plinth-rotated",
+   "parent": null,
+   "parent_type": null,
+   "selected": false,
+   "type": "MESH",
+   "visible": true
+  },
+  {
+   "collections": [
+    "MARKERS"
+   ],
+   "custom_props": {},
+   "dimensions": [
+    0,
+    0,
+    0
+   ],
+   "disabled_in_viewports": false,
+   "empty": {
+    "display_size": 1,
+    "display_type": "ARROWS"
+   },
+   "hide_render": false,
+   "hide_viewport": false,
+   "in_view_layer": true,
+   "instance_collection": null,
+   "instance_type": "NONE",
+   "instances": 0,
+   "matrix_world": [
+    [
+     -4.371138828673793e-8,
+     1,
+     0,
+     37
+    ],
+    [
+     -1,
+     -4.371138828673793e-8,
+     0,
+     -150
+    ],
+    [
+     0,
+     0,
+     1,
+     0.10000000149011612
+    ],
+    [
+     0,
+     0,
+     0,
+     1
+    ]
+   ],
+   "name": "spawn:gallery-one",
+   "parent": null,
+   "parent_type": null,
+   "selected": false,
+   "type": "EMPTY",
+   "visible": true
+  }
+ ],
+ "render": {
+  "pixel_aspect_x": 1,
+  "pixel_aspect_y": 1,
+  "resolution_x": 1920,
+  "resolution_y": 1080
+ },
+ "scene": "Scene",
+ "triangles_exported": 328,
+ "unit_settings": {
+  "length_unit": "METERS",
+  "scale_length": 1,
+  "system": "METRIC"
+ }
+}

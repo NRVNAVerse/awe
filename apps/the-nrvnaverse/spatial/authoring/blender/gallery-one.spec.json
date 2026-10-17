@@ -1,0 +1,56 @@
+{
+  "format": "nrvna.authoring-fixture-spec/1",
+  "note": "Synthetic, self-authored Blender authoring fixture for the M3 contract proof. Coordinates are the NRVNAVerse world frame (metres, +Y up, north = -Z); the builder converts them to Blender (Z up). The importer must recover every value. Gallery One stands on a reserved plot of the south city cell, entrance on its west facade facing avenue x = 0.",
+  "scene": "gallery-one",
+  "textures": {
+    "paving.png": [138, 132, 120],
+    "floor-oak.png": [176, 141, 99],
+    "plaster-a.png": [239, 237, 230],
+    "plaster-b.png": [241, 227, 207],
+    "concrete.png": [150, 150, 146]
+  },
+  "materials": {
+    "paving_stone": { "texture": "paving.png" },
+    "gallery_floor": { "texture": "floor-oak.png" },
+    "gallery_wall": { "texture": "plaster-a.png" },
+    "gallery_wall--warm": { "texture": "plaster-b.png" },
+    "bench_wood": { "color": [107, 74, 50] },
+    "sign_black": { "color": [29, 29, 31] },
+    "planter_concrete": { "texture": "concrete.png" }
+  },
+  "objects": [
+    { "name": "forecourt", "collection": "CITY", "shape": "box", "center": [25.3, 0.05, 150], "size": [16.6, 0.1, 8], "material": "paving_stone" },
+
+    { "name": "gallery-one-floor", "collection": "GALLERIES/gallery-one", "shape": "box", "center": [48, 0.05, 150], "size": [28.8, 0.1, 20.8], "material": "gallery_floor", "id": "gallery-one.floor" },
+    { "name": "gallery-one-wall-north", "collection": "GALLERIES/gallery-one", "shape": "box", "center": [48, 2.6, 139.8], "size": [28.8, 5, 0.4], "material": "gallery_wall--warm", "id": "gallery-one.wall-north" },
+    { "name": "gallery-one-wall-south", "collection": "GALLERIES/gallery-one", "shape": "box", "center": [48, 2.6, 160.2], "size": [28.8, 5, 0.4], "material": "gallery_wall", "id": "gallery-one.wall-south" },
+    { "name": "gallery-one-wall-east", "collection": "GALLERIES/gallery-one", "shape": "box", "center": [62.2, 2.6, 150], "size": [0.4, 5, 20], "material": "gallery_wall", "id": "gallery-one.wall-east" },
+    { "name": "gallery-one-wall-west-n", "collection": "GALLERIES/gallery-one", "shape": "box", "center": [33.8, 2.6, 144], "size": [0.4, 5, 8], "material": "gallery_wall", "id": "gallery-one.wall-west-n" },
+    { "name": "gallery-one-wall-west-s", "collection": "GALLERIES/gallery-one", "shape": "box", "center": [33.8, 2.6, 156], "size": [0.4, 5, 8], "material": "gallery_wall", "id": "gallery-one.wall-west-s" },
+    { "name": "gallery-one-lintel", "collection": "GALLERIES/gallery-one", "shape": "box", "center": [33.8, 4.2, 150], "size": [0.4, 1.8, 4], "material": "gallery_wall", "id": "gallery-one.lintel" },
+    { "name": "gallery-one-sign", "collection": "GALLERIES/gallery-one", "shape": "box", "center": [33.45, 4.2, 150], "size": [0.3, 1.2, 3.6], "material": "sign_black", "id": "gallery-one.sign" },
+
+    { "name": "gallery-one-desk", "collection": "DECORATION", "shape": "box", "center": [38, 0.55, 142.2], "size": [2.4, 0.9, 0.8], "material": "bench_wood" },
+    { "name": "bench-centre", "collection": "DECORATION", "shape": "box", "center": [48, 0.325, 150], "size": [3, 0.45, 0.8], "scale": [3, 0.45, 0.8], "material": "bench_wood" },
+    { "name": "plinth-rotated", "collection": "DECORATION", "shape": "box", "center": [58, 0.5, 144], "size": [0.8, 0.8, 0.8], "yaw_deg": 30, "material": "gallery_wall" },
+    { "name": "planter-north", "collection": "DECORATION", "shape": "cylinder", "center": [30, 0.55, 145], "radius": 0.6, "height": 0.9, "material": "planter_concrete" },
+    { "name": "planter-south", "collection": "DECORATION", "shape": "cylinder", "center": [30, 0.55, 155], "radius": 0.6, "height": 0.9, "material": "planter_concrete" }
+  ],
+  "markers": [
+    { "name": "spawn:gallery-one", "collection": "MARKERS", "display": "ARROWS", "at": [37, 0.1, 150], "yaw_deg": -90 },
+    { "name": "entrance:gallery-one", "collection": "MARKERS", "display": "ARROWS", "at": [33.8, 0.1, 150], "yaw_deg": -90 },
+    { "name": "exit:gallery-one", "collection": "MARKERS", "display": "ARROWS", "at": [33.8, 0.1, 150], "yaw_deg": 90 },
+    { "name": "gallery:gallery-one", "collection": "MARKERS", "display": "CUBE", "at": [48, 2.6, 150], "half": [14, 2.5, 10] },
+    { "name": "anchor:gallery-one:east-01", "collection": "MARKERS", "display": "PLAIN_AXES", "at": [61.95, 1.9, 144], "yaw_deg": 90, "props": { "nrvna_max_width": 3, "nrvna_max_height": 2.2 } },
+    { "name": "anchor:gallery-one:east-02", "collection": "MARKERS", "display": "PLAIN_AXES", "at": [61.95, 1.9, 150], "yaw_deg": 90, "props": { "nrvna_max_width": 3, "nrvna_max_height": 2.2 } },
+    { "name": "anchor:gallery-one:east-03", "collection": "MARKERS", "display": "PLAIN_AXES", "at": [61.95, 1.9, 156], "yaw_deg": 90, "props": { "nrvna_max_width": 3, "nrvna_max_height": 2.2 } },
+    { "name": "anchor:gallery-one:north-01", "collection": "MARKERS", "display": "PLAIN_AXES", "at": [41, 1.9, 140.05], "yaw_deg": 180, "props": { "nrvna_max_width": 4, "nrvna_max_height": 2.4 } },
+    { "name": "anchor:gallery-one:north-02", "collection": "MARKERS", "display": "PLAIN_AXES", "at": [55, 1.9, 140.05], "yaw_deg": 180, "props": { "nrvna_max_width": 4, "nrvna_max_height": 2.4 } },
+    { "name": "anchor:gallery-one:south-01", "collection": "MARKERS", "display": "PLAIN_AXES", "at": [41, 1.9, 159.95], "yaw_deg": 0, "props": { "nrvna_max_width": 4, "nrvna_max_height": 2.4 } },
+    { "name": "anchor:gallery-one:south-02", "collection": "MARKERS", "display": "PLAIN_AXES", "at": [55, 1.9, 159.95], "yaw_deg": 0, "props": { "nrvna_max_width": 4, "nrvna_max_height": 2.4 } },
+    { "name": "anchor:gallery-one:floor-01", "collection": "MARKERS", "display": "PLAIN_AXES", "at": [43, 0.1, 150], "yaw_deg": 90, "props": { "nrvna_max_width": 1.6, "nrvna_max_height": 2.6 } },
+    { "name": "anchor:gallery-one:floor-02", "collection": "MARKERS", "display": "PLAIN_AXES", "at": [54, 0.1, 150], "yaw_deg": 90, "props": { "nrvna_max_width": 1.6, "nrvna_max_height": 2.6 } },
+    { "name": "interact:gallery-one-desk", "collection": "MARKERS", "display": "SPHERE", "at": [38, 0.1, 143.6], "yaw_deg": 0, "props": { "nrvna_radius": 1.5 } },
+    { "name": "chunk:city-south", "collection": "MARKERS", "display": "CUBE", "at": [0, 60, 200], "half": [100, 60, 100] }
+  ]
+}

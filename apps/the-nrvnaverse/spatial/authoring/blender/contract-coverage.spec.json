@@ -1,0 +1,45 @@
+{
+  "format": "nrvna.authoring-fixture-spec/1",
+  "note": "Synthetic contract-coverage fixture: one valid example of every marker kind plus deliberately seeded defects. Never placed in the world; it exists so the importer's dry run can be shown to catch each problem. NRVNAVerse frame (metres, +Y up, north = -Z).",
+  "scene": "contract-coverage",
+  "textures": {
+    "plaster-a.png": [239, 237, 230]
+  },
+  "materials": {
+    "gallery_wall": { "texture": "plaster-a.png" },
+    "brick--red": { "texture": "missing-brick.png", "missing": true },
+    "plain_grey": { "color": [128, 128, 128] }
+  },
+  "objects": [
+    { "name": "ground", "collection": "CITY", "shape": "box", "center": [0, -0.05, 0], "size": [80, 0.1, 80], "material": "plain_grey" },
+    { "name": "overlap-a", "collection": "CITY", "shape": "box", "center": [20, 5, -20], "size": [10, 10, 10], "material": "plain_grey" },
+    { "name": "overlap-b", "collection": "CITY", "shape": "box", "center": [26, 5, -20], "size": [10, 10, 10], "material": "brick--red" },
+    { "name": "tower-cm", "collection": "CITY", "shape": "box", "center": [-25, 30, -25], "size": [0.2, 0.6, 0.2], "scale": [100, 100, 100], "material": "plain_grey" },
+    { "name": "giant-slab", "collection": "CITY", "shape": "box", "center": [0, -2, 0], "size": [3000, 0.5, 3000], "material": "plain_grey" },
+    { "name": "flat-thing", "collection": "DECORATION", "shape": "box", "center": [10, 0.5, 10], "size": [1, 1, 1], "scale": [1, 0, 1], "material": "plain_grey" },
+    { "name": "mirror-box", "collection": "DECORATION", "shape": "box", "center": [12, 0.5, 14], "size": [1, 1, 1], "scale": [-1, 1, 1], "material": "plain_grey" },
+    { "name": "lobby-wall", "collection": "VENUES", "shape": "box", "center": [0, 2.5, -10], "size": [12, 5, 0.4], "material": "gallery_wall" },
+    { "name": "lobby-wall-copy", "collection": "VENUES", "shape": "box", "center": [0, 2.5, 10], "size": [12, 5, 0.4], "material": "gallery_wall", "material_copy": true },
+    { "name": "stray", "collection": null, "shape": "box", "center": [-10, 0.5, 10], "size": [1, 1, 1], "material": "plain_grey" },
+    { "name": "entrance:lobby", "collection": "MARKERS", "shape": "box", "center": [0, 0.5, 4], "size": [1, 1, 1], "material": "plain_grey" }
+  ],
+  "markers": [
+    { "name": "spawn:lobby", "collection": "MARKERS", "display": "ARROWS", "at": [0, 0, 0], "yaw_deg": 0 },
+    { "name": "spawn:lobby", "collection": "MARKERS", "display": "ARROWS", "at": [2, 0, 0], "yaw_deg": 0 },
+    { "name": "spawn:in-wall", "collection": "MARKERS", "display": "ARROWS", "at": [0, 0, -10], "yaw_deg": 0 },
+    { "name": "spawn:tilted", "collection": "MARKERS", "display": "ARROWS", "at": [-4, 0, 0], "yaw_deg": 45, "pitch_deg": 20 },
+    { "name": "spawn:Lobby_Main", "collection": "MARKERS", "display": "ARROWS", "at": [4, 0, 0], "yaw_deg": 0 },
+    { "name": "spawn:roof", "collection": "CITY", "display": "ARROWS", "at": [-6, 0, 3], "yaw_deg": 0 },
+    { "name": "exit:lobby", "collection": "MARKERS", "display": "ARROWS", "at": [0, 0, 6], "yaw_deg": 180 },
+    { "name": "skylift:plaza", "collection": "MARKERS", "display": "CIRCLE", "at": [-15, 0, 15], "yaw_deg": 0, "props": { "nrvna_radius": 2.5 } },
+    { "name": "drop:edge", "collection": "MARKERS", "display": "ARROWS", "at": [0, 0, 30], "yaw_deg": 180 },
+    { "name": "portal:club-door", "collection": "MARKERS", "display": "CUBE", "at": [-20, 1.5, 0], "half": [1, 1.5, 0.5], "props": { "nrvna_destination": "dst_gqq90k2404cy9nf0" } },
+    { "name": "gallery:lobby", "collection": "MARKERS", "display": "CUBE", "at": [0, 2.5, 0], "half": [6, 2.5, 10] },
+    { "name": "anchor:lobby:north-01", "collection": "MARKERS", "display": "PLAIN_AXES", "at": [0, 1.8, -9.75], "yaw_deg": 180 },
+    { "name": "anchor:lobby:far-01", "collection": "MARKERS", "display": "PLAIN_AXES", "at": [30, 1.8, 30], "yaw_deg": 0 },
+    { "name": "anchor:nowhere:a-01", "collection": "MARKERS", "display": "PLAIN_AXES", "at": [1, 1.8, -9.75], "yaw_deg": 180 },
+    { "name": "interact:kiosk", "collection": "MARKERS", "display": "SPHERE", "at": [5, 0, 5], "yaw_deg": 0 },
+    { "name": "door:lobby", "collection": "MARKERS", "display": "ARROWS", "at": [0, 0, 8], "yaw_deg": 0 },
+    { "name": "chunk:coverage", "collection": "MARKERS", "display": "CUBE", "at": [0, 20, 0], "half": [40, 20, 40] }
+  ]
+}

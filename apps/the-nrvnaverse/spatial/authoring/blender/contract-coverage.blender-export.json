@@ -1,0 +1,2031 @@
+{
+ "blender_version": "5.1.2",
+ "collections": [
+  {
+   "children": [],
+   "custom_props": {},
+   "hide_render": false,
+   "name": "CITY",
+   "objects": [
+    "giant-slab",
+    "ground",
+    "overlap-a",
+    "overlap-b",
+    "spawn:roof",
+    "tower-cm"
+   ]
+  },
+  {
+   "children": [],
+   "custom_props": {},
+   "hide_render": false,
+   "name": "DECORATION",
+   "objects": [
+    "flat-thing",
+    "mirror-box"
+   ]
+  },
+  {
+   "children": [],
+   "custom_props": {},
+   "hide_render": false,
+   "name": "GALLERIES",
+   "objects": []
+  },
+  {
+   "children": [],
+   "custom_props": {},
+   "hide_render": false,
+   "name": "MARKERS",
+   "objects": [
+    "anchor:lobby:far-01",
+    "anchor:lobby:north-01",
+    "anchor:nowhere:a-01",
+    "chunk:coverage",
+    "door:lobby",
+    "drop:edge",
+    "entrance:lobby",
+    "exit:lobby",
+    "gallery:lobby",
+    "interact:kiosk",
+    "portal:club-door",
+    "skylift:plaza",
+    "spawn:Lobby_Main",
+    "spawn:in-wall",
+    "spawn:lobby",
+    "spawn:lobby.001",
+    "spawn:tilted"
+   ]
+  },
+  {
+   "children": [],
+   "custom_props": {},
+   "hide_render": false,
+   "name": "VENUES",
+   "objects": [
+    "lobby-wall",
+    "lobby-wall-copy"
+   ]
+  }
+ ],
+ "dependencies": [
+  {
+   "kind": "image",
+   "name": "missing-brick.png",
+   "path": "//textures/missing-brick.png"
+  },
+  {
+   "kind": "image",
+   "name": "plaster-a.png",
+   "path": "//textures/plaster-a.png"
+  }
+ ],
+ "file": {
+  "path": "contract-coverage.blend"
+ },
+ "format": "sic.blender-export/0",
+ "frame_current": 1,
+ "objects": [
+  {
+   "collections": [
+    "MARKERS"
+   ],
+   "custom_props": {},
+   "dimensions": [
+    0,
+    0,
+    0
+   ],
+   "disabled_in_viewports": false,
+   "empty": {
+    "display_size": 1,
+    "display_type": "PLAIN_AXES"
+   },
+   "hide_render": false,
+   "hide_viewport": false,
+   "in_view_layer": true,
+   "instance_collection": null,
+   "instance_type": "NONE",
+   "instances": 0,
+   "matrix_world": [
+    [
+     1,
+     0,
+     0,
+     30
+    ],
+    [
+     0,
+     1,
+     0,
+     -30
+    ],
+    [
+     0,
+     0,
+     1,
+     1.7999999523162842
+    ],
+    [
+     0,
+     0,
+     0,
+     1
+    ]
+   ],
+   "name": "anchor:lobby:far-01",
+   "parent": null,
+   "parent_type": null,
+   "selected": false,
+   "type": "EMPTY",
+   "visible": true
+  },
+  {
+   "collections": [
+    "MARKERS"
+   ],
+   "custom_props": {},
+   "dimensions": [
+    0,
+    0,
+    0
+   ],
+   "disabled_in_viewports": false,
+   "empty": {
+    "display_size": 1,
+    "display_type": "PLAIN_AXES"
+   },
+   "hide_render": false,
+   "hide_viewport": false,
+   "in_view_layer": true,
+   "instance_collection": null,
+   "instance_type": "NONE",
+   "instances": 0,
+   "matrix_world": [
+    [
+     -1,
+     8.742277657347586e-8,
+     0,
+     0
+    ],
+    [
+     -8.742277657347586e-8,
+     -1,
+     0,
+     9.75
+    ],
+    [
+     0,
+     0,
+     1,
+     1.7999999523162842
+    ],
+    [
+     0,
+     0,
+     0,
+     1
+    ]
+   ],
+   "name": "anchor:lobby:north-01",
+   "parent": null,
+   "parent_type": null,
+   "selected": false,
+   "type": "EMPTY",
+   "visible": true
+  },
+  {
+   "collections": [
+    "MARKERS"
+   ],
+   "custom_props": {},
+   "dimensions": [
+    0,
+    0,
+    0
+   ],
+   "disabled_in_viewports": false,
+   "empty": {
+    "display_size": 1,
+    "display_type": "PLAIN_AXES"
+   },
+   "hide_render": false,
+   "hide_viewport": false,
+   "in_view_layer": true,
+   "instance_collection": null,
+   "instance_type": "NONE",
+   "instances": 0,
+   "matrix_world": [
+    [
+     -1,
+     8.742277657347586e-8,
+     0,
+     1
+    ],
+    [
+     -8.742277657347586e-8,
+     -1,
+     0,
+     9.75
+    ],
+    [
+     0,
+     0,
+     1,
+     1.7999999523162842
+    ],
+    [
+     0,
+     0,
+     0,
+     1
+    ]
+   ],
+   "name": "anchor:nowhere:a-01",
+   "parent": null,
+   "parent_type": null,
+   "selected": false,
+   "type": "EMPTY",
+   "visible": true
+  },
+  {
+   "collections": [
+    "MARKERS"
+   ],
+   "custom_props": {},
+   "dimensions": [
+    0,
+    0,
+    0
+   ],
+   "disabled_in_viewports": false,
+   "empty": {
+    "display_size": 1,
+    "display_type": "CUBE"
+   },
+   "hide_render": false,
+   "hide_viewport": false,
+   "in_view_layer": true,
+   "instance_collection": null,
+   "instance_type": "NONE",
+   "instances": 0,
+   "matrix_world": [
+    [
+     40,
+     0,
+     0,
+     0
+    ],
+    [
+     0,
+     40,
+     0,
+     0
+    ],
+    [
+     0,
+     0,
+     20,
+     20
+    ],
+    [
+     0,
+     0,
+     0,
+     1
+    ]
+   ],
+   "name": "chunk:coverage",
+   "parent": null,
+   "parent_type": null,
+   "selected": false,
+   "type": "EMPTY",
+   "visible": true
+  },
+  {
+   "collections": [
+    "MARKERS"
+   ],
+   "custom_props": {},
+   "dimensions": [
+    0,
+    0,
+    0
+   ],
+   "disabled_in_viewports": false,
+   "empty": {
+    "display_size": 1,
+    "display_type": "ARROWS"
+   },
+   "hide_render": false,
+   "hide_viewport": false,
+   "in_view_layer": true,
+   "instance_collection": null,
+   "instance_type": "NONE",
+   "instances": 0,
+   "matrix_world": [
+    [
+     1,
+     0,
+     0,
+     0
+    ],
+    [
+     0,
+     1,
+     0,
+     -8
+    ],
+    [
+     0,
+     0,
+     1,
+     0
+    ],
+    [
+     0,
+     0,
+     0,
+     1
+    ]
+   ],
+   "name": "door:lobby",
+   "parent": null,
+   "parent_type": null,
+   "selected": false,
+   "type": "EMPTY",
+   "visible": true
+  },
+  {
+   "collections": [
+    "MARKERS"
+   ],
+   "custom_props": {},
+   "dimensions": [
+    0,
+    0,
+    0
+   ],
+   "disabled_in_viewports": false,
+   "empty": {
+    "display_size": 1,
+    "display_type": "ARROWS"
+   },
+   "hide_render": false,
+   "hide_viewport": false,
+   "in_view_layer": true,
+   "instance_collection": null,
+   "instance_type": "NONE",
+   "instances": 0,
+   "matrix_world": [
+    [
+     -1,
+     8.742277657347586e-8,
+     0,
+     0
+    ],
+    [
+     -8.742277657347586e-8,
+     -1,
+     0,
+     -30
+    ],
+    [
+     0,
+     0,
+     1,
+     0
+    ],
+    [
+     0,
+     0,
+     0,
+     1
+    ]
+   ],
+   "name": "drop:edge",
+   "parent": null,
+   "parent_type": null,
+   "selected": false,
+   "type": "EMPTY",
+   "visible": true
+  },
+  {
+   "collections": [
+    "MARKERS"
+   ],
+   "custom_props": {},
+   "dimensions": [
+    1,
+    1,
+    1
+   ],
+   "disabled_in_viewports": false,
+   "hide_render": false,
+   "hide_viewport": false,
+   "in_view_layer": true,
+   "instance_collection": null,
+   "instance_type": "NONE",
+   "instances": 0,
+   "materials": [
+    {
+     "blend_method": "HASHED",
+     "diffuse_alpha": 1,
+     "name": "plain_grey",
+     "principled": {
+      "alpha": 1,
+      "emission_color": [
+       1,
+       1,
+       1,
+       1
+      ],
+      "emission_strength": 0,
+      "transmission": 0
+     },
+     "surface_render_method": "DITHERED",
+     "textures": []
+    }
+   ],
+   "matrix_world": [
+    [
+     1,
+     0,
+     0,
+     0
+    ],
+    [
+     0,
+     1,
+     0,
+     -4
+    ],
+    [
+     0,
+     0,
+     1,
+     0.5
+    ],
+    [
+     0,
+     0,
+     0,
+     1
+    ]
+   ],
+   "mesh": {
+    "is_box": true,
+    "local_bbox": {
+     "max": [
+      0.5,
+      0.5,
+      0.5
+     ],
+     "min": [
+      -0.5,
+      -0.5,
+      -0.5
+     ]
+    },
+    "modifiers": [],
+    "polygons": 6,
+    "triangles": 12,
+    "vertices": 8
+   },
+   "name": "entrance:lobby",
+   "parent": null,
+   "parent_type": null,
+   "selected": false,
+   "type": "MESH",
+   "visible": true
+  },
+  {
+   "collections": [
+    "MARKERS"
+   ],
+   "custom_props": {},
+   "dimensions": [
+    0,
+    0,
+    0
+   ],
+   "disabled_in_viewports": false,
+   "empty": {
+    "display_size": 1,
+    "display_type": "ARROWS"
+   },
+   "hide_render": false,
+   "hide_viewport": false,
+   "in_view_layer": true,
+   "instance_collection": null,
+   "instance_type": "NONE",
+   "instances": 0,
+   "matrix_world": [
+    [
+     -1,
+     8.742277657347586e-8,
+     0,
+     0
+    ],
+    [
+     -8.742277657347586e-8,
+     -1,
+     0,
+     -6
+    ],
+    [
+     0,
+     0,
+     1,
+     0
+    ],
+    [
+     0,
+     0,
+     0,
+     1
+    ]
+   ],
+   "name": "exit:lobby",
+   "parent": null,
+   "parent_type": null,
+   "selected": false,
+   "type": "EMPTY",
+   "visible": true
+  },
+  {
+   "collections": [
+    "DECORATION"
+   ],
+   "custom_props": {},
+   "dimensions": [
+    1,
+    1,
+    0
+   ],
+   "disabled_in_viewports": false,
+   "hide_render": false,
+   "hide_viewport": false,
+   "in_view_layer": true,
+   "instance_collection": null,
+   "instance_type": "NONE",
+   "instances": 0,
+   "materials": [
+    {
+     "blend_method": "HASHED",
+     "diffuse_alpha": 1,
+     "name": "plain_grey",
+     "principled": {
+      "alpha": 1,
+      "emission_color": [
+       1,
+       1,
+       1,
+       1
+      ],
+      "emission_strength": 0,
+      "transmission": 0
+     },
+     "surface_render_method": "DITHERED",
+     "textures": []
+    }
+   ],
+   "matrix_world": [
+    [
+     1,
+     0,
+     0,
+     10
+    ],
+    [
+     0,
+     1,
+     0,
+     -10
+    ],
+    [
+     0,
+     0,
+     0,
+     0.5
+    ],
+    [
+     0,
+     0,
+     0,
+     1
+    ]
+   ],
+   "mesh": {
+    "is_box": true,
+    "local_bbox": {
+     "max": [
+      0.5,
+      0.5,
+      0.5
+     ],
+     "min": [
+      -0.5,
+      -0.5,
+      -0.5
+     ]
+    },
+    "modifiers": [],
+    "polygons": 6,
+    "triangles": 12,
+    "vertices": 8
+   },
+   "name": "flat-thing",
+   "parent": null,
+   "parent_type": null,
+   "selected": false,
+   "type": "MESH",
+   "visible": true
+  },
+  {
+   "collections": [
+    "MARKERS"
+   ],
+   "custom_props": {},
+   "dimensions": [
+    0,
+    0,
+    0
+   ],
+   "disabled_in_viewports": false,
+   "empty": {
+    "display_size": 1,
+    "display_type": "CUBE"
+   },
+   "hide_render": false,
+   "hide_viewport": false,
+   "in_view_layer": true,
+   "instance_collection": null,
+   "instance_type": "NONE",
+   "instances": 0,
+   "matrix_world": [
+    [
+     6,
+     0,
+     0,
+     0
+    ],
+    [
+     0,
+     10,
+     0,
+     0
+    ],
+    [
+     0,
+     0,
+     2.5,
+     2.5
+    ],
+    [
+     0,
+     0,
+     0,
+     1
+    ]
+   ],
+   "name": "gallery:lobby",
+   "parent": null,
+   "parent_type": null,
+   "selected": false,
+   "type": "EMPTY",
+   "visible": true
+  },
+  {
+   "collections": [
+    "CITY"
+   ],
+   "custom_props": {},
+   "dimensions": [
+    3000,
+    3000,
+    0.5
+   ],
+   "disabled_in_viewports": false,
+   "hide_render": false,
+   "hide_viewport": false,
+   "in_view_layer": true,
+   "instance_collection": null,
+   "instance_type": "NONE",
+   "instances": 0,
+   "materials": [
+    {
+     "blend_method": "HASHED",
+     "diffuse_alpha": 1,
+     "name": "plain_grey",
+     "principled": {
+      "alpha": 1,
+      "emission_color": [
+       1,
+       1,
+       1,
+       1
+      ],
+      "emission_strength": 0,
+      "transmission": 0
+     },
+     "surface_render_method": "DITHERED",
+     "textures": []
+    }
+   ],
+   "matrix_world": [
+    [
+     1,
+     0,
+     0,
+     0
+    ],
+    [
+     0,
+     1,
+     0,
+     0
+    ],
+    [
+     0,
+     0,
+     1,
+     -2
+    ],
+    [
+     0,
+     0,
+     0,
+     1
+    ]
+   ],
+   "mesh": {
+    "is_box": true,
+    "local_bbox": {
+     "max": [
+      1500,
+      1500,
+      0.25
+     ],
+     "min": [
+      -1500,
+      -1500,
+      -0.25
+     ]
+    },
+    "modifiers": [],
+    "polygons": 6,
+    "triangles": 12,
+    "vertices": 8
+   },
+   "name": "giant-slab",
+   "parent": null,
+   "parent_type": null,
+   "selected": false,
+   "type": "MESH",
+   "visible": true
+  },
+  {
+   "collections": [
+    "CITY"
+   ],
+   "custom_props": {},
+   "dimensions": [
+    80,
+    80,
+    0.10000000149011612
+   ],
+   "disabled_in_viewports": false,
+   "hide_render": false,
+   "hide_viewport": false,
+   "in_view_layer": true,
+   "instance_collection": null,
+   "instance_type": "NONE",
+   "instances": 0,
+   "materials": [
+    {
+     "blend_method": "HASHED",
+     "diffuse_alpha": 1,
+     "name": "plain_grey",
+     "principled": {
+      "alpha": 1,
+      "emission_color": [
+       1,
+       1,
+       1,
+       1
+      ],
+      "emission_strength": 0,
+      "transmission": 0
+     },
+     "surface_render_method": "DITHERED",
+     "textures": []
+    }
+   ],
+   "matrix_world": [
+    [
+     1,
+     0,
+     0,
+     0
+    ],
+    [
+     0,
+     1,
+     0,
+     0
+    ],
+    [
+     0,
+     0,
+     1,
+     -0.05000000074505806
+    ],
+    [
+     0,
+     0,
+     0,
+     1
+    ]
+   ],
+   "mesh": {
+    "is_box": true,
+    "local_bbox": {
+     "max": [
+      40,
+      40,
+      0.05000000074505806
+     ],
+     "min": [
+      -40,
+      -40,
+      -0.05000000074505806
+     ]
+    },
+    "modifiers": [],
+    "polygons": 6,
+    "triangles": 12,
+    "vertices": 8
+   },
+   "name": "ground",
+   "parent": null,
+   "parent_type": null,
+   "selected": false,
+   "type": "MESH",
+   "visible": true
+  },
+  {
+   "collections": [
+    "MARKERS"
+   ],
+   "custom_props": {},
+   "dimensions": [
+    0,
+    0,
+    0
+   ],
+   "disabled_in_viewports": false,
+   "empty": {
+    "display_size": 1,
+    "display_type": "SPHERE"
+   },
+   "hide_render": false,
+   "hide_viewport": false,
+   "in_view_layer": true,
+   "instance_collection": null,
+   "instance_type": "NONE",
+   "instances": 0,
+   "matrix_world": [
+    [
+     1,
+     0,
+     0,
+     5
+    ],
+    [
+     0,
+     1,
+     0,
+     -5
+    ],
+    [
+     0,
+     0,
+     1,
+     0
+    ],
+    [
+     0,
+     0,
+     0,
+     1
+    ]
+   ],
+   "name": "interact:kiosk",
+   "parent": null,
+   "parent_type": null,
+   "selected": false,
+   "type": "EMPTY",
+   "visible": true
+  },
+  {
+   "collections": [
+    "VENUES"
+   ],
+   "custom_props": {},
+   "dimensions": [
+    12,
+    0.4000000059604645,
+    5
+   ],
+   "disabled_in_viewports": false,
+   "hide_render": false,
+   "hide_viewport": false,
+   "in_view_layer": true,
+   "instance_collection": null,
+   "instance_type": "NONE",
+   "instances": 0,
+   "materials": [
+    {
+     "blend_method": "HASHED",
+     "diffuse_alpha": 1,
+     "name": "gallery_wall",
+     "principled": {
+      "alpha": 1,
+      "emission_color": [
+       1,
+       1,
+       1,
+       1
+      ],
+      "emission_strength": 0,
+      "transmission": 0
+     },
+     "surface_render_method": "DITHERED",
+     "textures": [
+      {
+       "height": 8,
+       "image": "plaster-a.png",
+       "packed": false,
+       "path": "//textures/plaster-a.png",
+       "source": "FILE",
+       "width": 8
+      }
+     ]
+    }
+   ],
+   "matrix_world": [
+    [
+     1,
+     0,
+     0,
+     0
+    ],
+    [
+     0,
+     1,
+     0,
+     10
+    ],
+    [
+     0,
+     0,
+     1,
+     2.5
+    ],
+    [
+     0,
+     0,
+     0,
+     1
+    ]
+   ],
+   "mesh": {
+    "is_box": true,
+    "local_bbox": {
+     "max": [
+      6,
+      0.20000000298023224,
+      2.5
+     ],
+     "min": [
+      -6,
+      -0.20000000298023224,
+      -2.5
+     ]
+    },
+    "modifiers": [],
+    "polygons": 6,
+    "triangles": 12,
+    "vertices": 8
+   },
+   "name": "lobby-wall",
+   "parent": null,
+   "parent_type": null,
+   "selected": false,
+   "type": "MESH",
+   "visible": true
+  },
+  {
+   "collections": [
+    "VENUES"
+   ],
+   "custom_props": {},
+   "dimensions": [
+    12,
+    0.4000000059604645,
+    5
+   ],
+   "disabled_in_viewports": false,
+   "hide_render": false,
+   "hide_viewport": false,
+   "in_view_layer": true,
+   "instance_collection": null,
+   "instance_type": "NONE",
+   "instances": 0,
+   "materials": [
+    {
+     "blend_method": "HASHED",
+     "diffuse_alpha": 1,
+     "name": "gallery_wall.001",
+     "principled": {
+      "alpha": 1,
+      "emission_color": [
+       1,
+       1,
+       1,
+       1
+      ],
+      "emission_strength": 0,
+      "transmission": 0
+     },
+     "surface_render_method": "DITHERED",
+     "textures": [
+      {
+       "height": 8,
+       "image": "plaster-a.png",
+       "packed": false,
+       "path": "//textures/plaster-a.png",
+       "source": "FILE",
+       "width": 8
+      }
+     ]
+    }
+   ],
+   "matrix_world": [
+    [
+     1,
+     0,
+     0,
+     0
+    ],
+    [
+     0,
+     1,
+     0,
+     -10
+    ],
+    [
+     0,
+     0,
+     1,
+     2.5
+    ],
+    [
+     0,
+     0,
+     0,
+     1
+    ]
+   ],
+   "mesh": {
+    "is_box": true,
+    "local_bbox": {
+     "max": [
+      6,
+      0.20000000298023224,
+      2.5
+     ],
+     "min": [
+      -6,
+      -0.20000000298023224,
+      -2.5
+     ]
+    },
+    "modifiers": [],
+    "polygons": 6,
+    "triangles": 12,
+    "vertices": 8
+   },
+   "name": "lobby-wall-copy",
+   "parent": null,
+   "parent_type": null,
+   "selected": false,
+   "type": "MESH",
+   "visible": true
+  },
+  {
+   "collections": [
+    "DECORATION"
+   ],
+   "custom_props": {},
+   "dimensions": [
+    1,
+    1,
+    1
+   ],
+   "disabled_in_viewports": false,
+   "hide_render": false,
+   "hide_viewport": false,
+   "in_view_layer": true,
+   "instance_collection": null,
+   "instance_type": "NONE",
+   "instances": 0,
+   "materials": [
+    {
+     "blend_method": "HASHED",
+     "diffuse_alpha": 1,
+     "name": "plain_grey",
+     "principled": {
+      "alpha": 1,
+      "emission_color": [
+       1,
+       1,
+       1,
+       1
+      ],
+      "emission_strength": 0,
+      "transmission": 0
+     },
+     "surface_render_method": "DITHERED",
+     "textures": []
+    }
+   ],
+   "matrix_world": [
+    [
+     -1,
+     0,
+     0,
+     12
+    ],
+    [
+     0,
+     1,
+     0,
+     -14
+    ],
+    [
+     0,
+     0,
+     1,
+     0.5
+    ],
+    [
+     0,
+     0,
+     0,
+     1
+    ]
+   ],
+   "mesh": {
+    "is_box": true,
+    "local_bbox": {
+     "max": [
+      0.5,
+      0.5,
+      0.5
+     ],
+     "min": [
+      -0.5,
+      -0.5,
+      -0.5
+     ]
+    },
+    "modifiers": [],
+    "polygons": 6,
+    "triangles": 12,
+    "vertices": 8
+   },
+   "name": "mirror-box",
+   "parent": null,
+   "parent_type": null,
+   "selected": false,
+   "type": "MESH",
+   "visible": true
+  },
+  {
+   "collections": [
+    "CITY"
+   ],
+   "custom_props": {},
+   "dimensions": [
+    10,
+    10,
+    10
+   ],
+   "disabled_in_viewports": false,
+   "hide_render": false,
+   "hide_viewport": false,
+   "in_view_layer": true,
+   "instance_collection": null,
+   "instance_type": "NONE",
+   "instances": 0,
+   "materials": [
+    {
+     "blend_method": "HASHED",
+     "diffuse_alpha": 1,
+     "name": "plain_grey",
+     "principled": {
+      "alpha": 1,
+      "emission_color": [
+       1,
+       1,
+       1,
+       1
+      ],
+      "emission_strength": 0,
+      "transmission": 0
+     },
+     "surface_render_method": "DITHERED",
+     "textures": []
+    }
+   ],
+   "matrix_world": [
+    [
+     1,
+     0,
+     0,
+     20
+    ],
+    [
+     0,
+     1,
+     0,
+     20
+    ],
+    [
+     0,
+     0,
+     1,
+     5
+    ],
+    [
+     0,
+     0,
+     0,
+     1
+    ]
+   ],
+   "mesh": {
+    "is_box": true,
+    "local_bbox": {
+     "max": [
+      5,
+      5,
+      5
+     ],
+     "min": [
+      -5,
+      -5,
+      -5
+     ]
+    },
+    "modifiers": [],
+    "polygons": 6,
+    "triangles": 12,
+    "vertices": 8
+   },
+   "name": "overlap-a",
+   "parent": null,
+   "parent_type": null,
+   "selected": false,
+   "type": "MESH",
+   "visible": true
+  },
+  {
+   "collections": [
+    "CITY"
+   ],
+   "custom_props": {},
+   "dimensions": [
+    10,
+    10,
+    10
+   ],
+   "disabled_in_viewports": false,
+   "hide_render": false,
+   "hide_viewport": false,
+   "in_view_layer": true,
+   "instance_collection": null,
+   "instance_type": "NONE",
+   "instances": 0,
+   "materials": [
+    {
+     "blend_method": "HASHED",
+     "diffuse_alpha": 1,
+     "name": "brick--red",
+     "principled": {
+      "alpha": 1,
+      "emission_color": [
+       1,
+       1,
+       1,
+       1
+      ],
+      "emission_strength": 0,
+      "transmission": 0
+     },
+     "surface_render_method": "DITHERED",
+     "textures": [
+      {
+       "height": 0,
+       "image": "missing-brick.png",
+       "packed": false,
+       "path": "//textures/missing-brick.png",
+       "source": "FILE",
+       "width": 0
+      }
+     ]
+    }
+   ],
+   "matrix_world": [
+    [
+     1,
+     0,
+     0,
+     26
+    ],
+    [
+     0,
+     1,
+     0,
+     20
+    ],
+    [
+     0,
+     0,
+     1,
+     5
+    ],
+    [
+     0,
+     0,
+     0,
+     1
+    ]
+   ],
+   "mesh": {
+    "is_box": true,
+    "local_bbox": {
+     "max": [
+      5,
+      5,
+      5
+     ],
+     "min": [
+      -5,
+      -5,
+      -5
+     ]
+    },
+    "modifiers": [],
+    "polygons": 6,
+    "triangles": 12,
+    "vertices": 8
+   },
+   "name": "overlap-b",
+   "parent": null,
+   "parent_type": null,
+   "selected": false,
+   "type": "MESH",
+   "visible": true
+  },
+  {
+   "collections": [
+    "MARKERS"
+   ],
+   "custom_props": {
+    "nrvna_destination": "dst_gqq90k2404cy9nf0"
+   },
+   "dimensions": [
+    0,
+    0,
+    0
+   ],
+   "disabled_in_viewports": false,
+   "empty": {
+    "display_size": 1,
+    "display_type": "CUBE"
+   },
+   "hide_render": false,
+   "hide_viewport": false,
+   "in_view_layer": true,
+   "instance_collection": null,
+   "instance_type": "NONE",
+   "instances": 0,
+   "matrix_world": [
+    [
+     1,
+     0,
+     0,
+     -20
+    ],
+    [
+     0,
+     0.5,
+     0,
+     0
+    ],
+    [
+     0,
+     0,
+     1.5,
+     1.5
+    ],
+    [
+     0,
+     0,
+     0,
+     1
+    ]
+   ],
+   "name": "portal:club-door",
+   "parent": null,
+   "parent_type": null,
+   "selected": false,
+   "type": "EMPTY",
+   "visible": true
+  },
+  {
+   "collections": [
+    "MARKERS"
+   ],
+   "custom_props": {
+    "nrvna_radius": 2.5
+   },
+   "dimensions": [
+    0,
+    0,
+    0
+   ],
+   "disabled_in_viewports": false,
+   "empty": {
+    "display_size": 1,
+    "display_type": "CIRCLE"
+   },
+   "hide_render": false,
+   "hide_viewport": false,
+   "in_view_layer": true,
+   "instance_collection": null,
+   "instance_type": "NONE",
+   "instances": 0,
+   "matrix_world": [
+    [
+     1,
+     0,
+     0,
+     -15
+    ],
+    [
+     0,
+     1,
+     0,
+     -15
+    ],
+    [
+     0,
+     0,
+     1,
+     0
+    ],
+    [
+     0,
+     0,
+     0,
+     1
+    ]
+   ],
+   "name": "skylift:plaza",
+   "parent": null,
+   "parent_type": null,
+   "selected": false,
+   "type": "EMPTY",
+   "visible": true
+  },
+  {
+   "collections": [
+    "MARKERS"
+   ],
+   "custom_props": {},
+   "dimensions": [
+    0,
+    0,
+    0
+   ],
+   "disabled_in_viewports": false,
+   "empty": {
+    "display_size": 1,
+    "display_type": "ARROWS"
+   },
+   "hide_render": false,
+   "hide_viewport": false,
+   "in_view_layer": true,
+   "instance_collection": null,
+   "instance_type": "NONE",
+   "instances": 0,
+   "matrix_world": [
+    [
+     1,
+     0,
+     0,
+     4
+    ],
+    [
+     0,
+     1,
+     0,
+     0
+    ],
+    [
+     0,
+     0,
+     1,
+     0
+    ],
+    [
+     0,
+     0,
+     0,
+     1
+    ]
+   ],
+   "name": "spawn:Lobby_Main",
+   "parent": null,
+   "parent_type": null,
+   "selected": false,
+   "type": "EMPTY",
+   "visible": true
+  },
+  {
+   "collections": [
+    "MARKERS"
+   ],
+   "custom_props": {},
+   "dimensions": [
+    0,
+    0,
+    0
+   ],
+   "disabled_in_viewports": false,
+   "empty": {
+    "display_size": 1,
+    "display_type": "ARROWS"
+   },
+   "hide_render": false,
+   "hide_viewport": false,
+   "in_view_layer": true,
+   "instance_collection": null,
+   "instance_type": "NONE",
+   "instances": 0,
+   "matrix_world": [
+    [
+     1,
+     0,
+     0,
+     0
+    ],
+    [
+     0,
+     1,
+     0,
+     10
+    ],
+    [
+     0,
+     0,
+     1,
+     0
+    ],
+    [
+     0,
+     0,
+     0,
+     1
+    ]
+   ],
+   "name": "spawn:in-wall",
+   "parent": null,
+   "parent_type": null,
+   "selected": false,
+   "type": "EMPTY",
+   "visible": true
+  },
+  {
+   "collections": [
+    "MARKERS"
+   ],
+   "custom_props": {},
+   "dimensions": [
+    0,
+    0,
+    0
+   ],
+   "disabled_in_viewports": false,
+   "empty": {
+    "display_size": 1,
+    "display_type": "ARROWS"
+   },
+   "hide_render": false,
+   "hide_viewport": false,
+   "in_view_layer": true,
+   "instance_collection": null,
+   "instance_type": "NONE",
+   "instances": 0,
+   "matrix_world": [
+    [
+     1,
+     0,
+     0,
+     0
+    ],
+    [
+     0,
+     1,
+     0,
+     0
+    ],
+    [
+     0,
+     0,
+     1,
+     0
+    ],
+    [
+     0,
+     0,
+     0,
+     1
+    ]
+   ],
+   "name": "spawn:lobby",
+   "parent": null,
+   "parent_type": null,
+   "selected": false,
+   "type": "EMPTY",
+   "visible": true
+  },
+  {
+   "collections": [
+    "MARKERS"
+   ],
+   "custom_props": {},
+   "dimensions": [
+    0,
+    0,
+    0
+   ],
+   "disabled_in_viewports": false,
+   "empty": {
+    "display_size": 1,
+    "display_type": "ARROWS"
+   },
+   "hide_render": false,
+   "hide_viewport": false,
+   "in_view_layer": true,
+   "instance_collection": null,
+   "instance_type": "NONE",
+   "instances": 0,
+   "matrix_world": [
+    [
+     1,
+     0,
+     0,
+     2
+    ],
+    [
+     0,
+     1,
+     0,
+     0
+    ],
+    [
+     0,
+     0,
+     1,
+     0
+    ],
+    [
+     0,
+     0,
+     0,
+     1
+    ]
+   ],
+   "name": "spawn:lobby.001",
+   "parent": null,
+   "parent_type": null,
+   "selected": false,
+   "type": "EMPTY",
+   "visible": true
+  },
+  {
+   "collections": [
+    "CITY"
+   ],
+   "custom_props": {},
+   "dimensions": [
+    0,
+    0,
+    0
+   ],
+   "disabled_in_viewports": false,
+   "empty": {
+    "display_size": 1,
+    "display_type": "ARROWS"
+   },
+   "hide_render": false,
+   "hide_viewport": false,
+   "in_view_layer": true,
+   "instance_collection": null,
+   "instance_type": "NONE",
+   "instances": 0,
+   "matrix_world": [
+    [
+     1,
+     0,
+     0,
+     -6
+    ],
+    [
+     0,
+     1,
+     0,
+     -3
+    ],
+    [
+     0,
+     0,
+     1,
+     0
+    ],
+    [
+     0,
+     0,
+     0,
+     1
+    ]
+   ],
+   "name": "spawn:roof",
+   "parent": null,
+   "parent_type": null,
+   "selected": false,
+   "type": "EMPTY",
+   "visible": true
+  },
+  {
+   "collections": [
+    "MARKERS"
+   ],
+   "custom_props": {},
+   "dimensions": [
+    0,
+    0,
+    0
+   ],
+   "disabled_in_viewports": false,
+   "empty": {
+    "display_size": 1,
+    "display_type": "ARROWS"
+   },
+   "hide_render": false,
+   "hide_viewport": false,
+   "in_view_layer": true,
+   "instance_collection": null,
+   "instance_type": "NONE",
+   "instances": 0,
+   "matrix_world": [
+    [
+     0.7071067690849304,
+     -0.6644630432128906,
+     0.2418447583913803,
+     -4
+    ],
+    [
+     0.7071067690849304,
+     0.6644629836082458,
+     -0.24184474349021912,
+     0
+    ],
+    [
+     0,
+     0.3420201241970062,
+     0.9396926164627075,
+     0
+    ],
+    [
+     0,
+     0,
+     0,
+     1
+    ]
+   ],
+   "name": "spawn:tilted",
+   "parent": null,
+   "parent_type": null,
+   "selected": false,
+   "type": "EMPTY",
+   "visible": true
+  },
+  {
+   "collections": [
+    "Scene Collection"
+   ],
+   "custom_props": {},
+   "dimensions": [
+    1,
+    1,
+    1
+   ],
+   "disabled_in_viewports": false,
+   "hide_render": false,
+   "hide_viewport": false,
+   "in_view_layer": true,
+   "instance_collection": null,
+   "instance_type": "NONE",
+   "instances": 0,
+   "materials": [
+    {
+     "blend_method": "HASHED",
+     "diffuse_alpha": 1,
+     "name": "plain_grey",
+     "principled": {
+      "alpha": 1,
+      "emission_color": [
+       1,
+       1,
+       1,
+       1
+      ],
+      "emission_strength": 0,
+      "transmission": 0
+     },
+     "surface_render_method": "DITHERED",
+     "textures": []
+    }
+   ],
+   "matrix_world": [
+    [
+     1,
+     0,
+     0,
+     -10
+    ],
+    [
+     0,
+     1,
+     0,
+     -10
+    ],
+    [
+     0,
+     0,
+     1,
+     0.5
+    ],
+    [
+     0,
+     0,
+     0,
+     1
+    ]
+   ],
+   "mesh": {
+    "is_box": true,
+    "local_bbox": {
+     "max": [
+      0.5,
+      0.5,
+      0.5
+     ],
+     "min": [
+      -0.5,
+      -0.5,
+      -0.5
+     ]
+    },
+    "modifiers": [],
+    "polygons": 6,
+    "triangles": 12,
+    "vertices": 8
+   },
+   "name": "stray",
+   "parent": null,
+   "parent_type": null,
+   "selected": false,
+   "type": "MESH",
+   "visible": true
+  },
+  {
+   "collections": [
+    "CITY"
+   ],
+   "custom_props": {},
+   "dimensions": [
+    0.20000000298023224,
+    0.20000000298023224,
+    0.6000000238418579
+   ],
+   "disabled_in_viewports": false,
+   "hide_render": false,
+   "hide_viewport": false,
+   "in_view_layer": true,
+   "instance_collection": null,
+   "instance_type": "NONE",
+   "instances": 0,
+   "materials": [
+    {
+     "blend_method": "HASHED",
+     "diffuse_alpha": 1,
+     "name": "plain_grey",
+     "principled": {
+      "alpha": 1,
+      "emission_color": [
+       1,
+       1,
+       1,
+       1
+      ],
+      "emission_strength": 0,
+      "transmission": 0
+     },
+     "surface_render_method": "DITHERED",
+     "textures": []
+    }
+   ],
+   "matrix_world": [
+    [
+     100,
+     0,
+     0,
+     -25
+    ],
+    [
+     0,
+     100,
+     0,
+     25
+    ],
+    [
+     0,
+     0,
+     100,
+     30
+    ],
+    [
+     0,
+     0,
+     0,
+     1
+    ]
+   ],
+   "mesh": {
+    "is_box": true,
+    "local_bbox": {
+     "max": [
+      0.0010000000474974513,
+      0.0010000000474974513,
+      0.003000000026077032
+     ],
+     "min": [
+      -0.0010000000474974513,
+      -0.0010000000474974513,
+      -0.003000000026077032
+     ]
+    },
+    "modifiers": [],
+    "polygons": 6,
+    "triangles": 12,
+    "vertices": 8
+   },
+   "name": "tower-cm",
+   "parent": null,
+   "parent_type": null,
+   "selected": false,
+   "type": "MESH",
+   "visible": true
+  }
+ ],
+ "render": {
+  "pixel_aspect_x": 1,
+  "pixel_aspect_y": 1,
+  "resolution_x": 1920,
+  "resolution_y": 1080
+ },
+ "scene": "Scene",
+ "triangles_exported": 132,
+ "unit_settings": {
+  "length_unit": "METERS",
+  "scale_length": 1,
+  "system": "METRIC"
+ }
+}
