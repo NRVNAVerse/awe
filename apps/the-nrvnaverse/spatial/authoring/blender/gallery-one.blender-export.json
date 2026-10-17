@@ -43,6 +43,7 @@
     "anchor:gallery-one:east-03",
     "anchor:gallery-one:floor-01",
     "anchor:gallery-one:floor-02",
+    "anchor:gallery-one:intro",
     "anchor:gallery-one:north-01",
     "anchor:gallery-one:north-02",
     "anchor:gallery-one:south-01",
@@ -391,6 +392,63 @@
     ]
    ],
    "name": "anchor:gallery-one:floor-02",
+   "parent": null,
+   "parent_type": null,
+   "selected": false,
+   "type": "EMPTY",
+   "visible": true
+  },
+  {
+   "collections": [
+    "MARKERS"
+   ],
+   "custom_props": {
+    "nrvna_max_height": 1.6,
+    "nrvna_max_width": 4
+   },
+   "dimensions": [
+    0,
+    0,
+    0
+   ],
+   "disabled_in_viewports": false,
+   "empty": {
+    "display_size": 1,
+    "display_type": "PLAIN_AXES"
+   },
+   "hide_render": false,
+   "hide_viewport": false,
+   "in_view_layer": true,
+   "instance_collection": null,
+   "instance_type": "NONE",
+   "instances": 0,
+   "matrix_world": [
+    [
+     -4.371138828673793e-8,
+     1,
+     0,
+     34.04999923706055
+    ],
+    [
+     -1,
+     -4.371138828673793e-8,
+     0,
+     -144.5
+    ],
+    [
+     0,
+     0,
+     1,
+     2.4000000953674316
+    ],
+    [
+     0,
+     0,
+     0,
+     1
+    ]
+   ],
+   "name": "anchor:gallery-one:intro",
    "parent": null,
    "parent_type": null,
    "selected": false,

@@ -33,6 +33,41 @@
     },
     {
       "categories": [
+        "art",
+        "gallery",
+        "venue"
+      ],
+      "commerceRefs": [],
+      "description": "M3 placeholder. A permanent gallery on South Row, a short walk south of Skyfall Plaza: one white room whose exhibitions change while the building, its entrance and its address stay put.",
+      "gate": null,
+      "id": "dst_3kacg0rqgyfnp7fm",
+      "kind": "venue",
+      "listing": "public",
+      "media": {
+        "heroUrl": null,
+        "thumbnailUrl": null
+      },
+      "name": "Gallery One",
+      "placeholder": true,
+      "primaryDistrict": {
+        "id": "dst_8w1j39h5e0ezrsjh",
+        "name": "The City",
+        "slug": "city"
+      },
+      "slug": "gallery-one",
+      "spatial": {
+        "deepLink": "https://worlds.nrvnaverse.com/?destination=dst_3kacg0rqgyfnp7fm&from=web&return=web",
+        "enterable": true
+      },
+      "tags": [
+        "m3",
+        "permanent-gallery"
+      ],
+      "updatedAt": "2026-10-16T00:00:00Z",
+      "webUrl": "https://www.nrvnaverse.com/worlds/gallery-one"
+    },
+    {
+      "categories": [
         "cannabis"
       ],
       "commerceRefs": [],

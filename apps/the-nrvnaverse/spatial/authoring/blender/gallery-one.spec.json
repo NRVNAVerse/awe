@@ -50,6 +50,7 @@
     { "name": "anchor:gallery-one:south-02", "collection": "MARKERS", "display": "PLAIN_AXES", "at": [55, 1.9, 159.95], "yaw_deg": 0, "props": { "nrvna_max_width": 4, "nrvna_max_height": 2.4 } },
     { "name": "anchor:gallery-one:floor-01", "collection": "MARKERS", "display": "PLAIN_AXES", "at": [43, 0.1, 150], "yaw_deg": 90, "props": { "nrvna_max_width": 1.6, "nrvna_max_height": 2.6 } },
     { "name": "anchor:gallery-one:floor-02", "collection": "MARKERS", "display": "PLAIN_AXES", "at": [54, 0.1, 150], "yaw_deg": 90, "props": { "nrvna_max_width": 1.6, "nrvna_max_height": 2.6 } },
+    { "name": "anchor:gallery-one:intro", "collection": "MARKERS", "display": "PLAIN_AXES", "at": [34.05, 2.4, 144.5], "yaw_deg": -90, "props": { "nrvna_max_width": 4, "nrvna_max_height": 1.6 } },
     { "name": "interact:gallery-one-desk", "collection": "MARKERS", "display": "SPHERE", "at": [38, 0.1, 143.6], "yaw_deg": 0, "props": { "nrvna_radius": 1.5 } },
     { "name": "chunk:city-south", "collection": "MARKERS", "display": "CUBE", "at": [0, 60, 200], "half": [100, 60, 100] }
   ]

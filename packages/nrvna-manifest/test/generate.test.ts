@@ -38,7 +38,7 @@ describe("generated views", () => {
     const seven = loadSeven();
     const views = generateViews(seven);
     const file = views["destinations.json"];
-    expect(file.destinations).toHaveLength(9);
+    expect(file.destinations).toHaveLength(10); // M3: + Gallery One
     expect(file.hubId).toBe(bySlug(seven, SLUGS.hub).id);
     for (const d of seven) {
       expect(file.index.bySlug[d.slug]).toBe(d.id);

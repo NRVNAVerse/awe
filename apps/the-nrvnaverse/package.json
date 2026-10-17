@@ -22,7 +22,8 @@
     "asset:place": "tsx scripts/asset-pipeline/cli.ts place",
     "browser:shots": "node scripts/browser/destination-shots.mjs",
     "authoring:inspect": "node scripts/authoring/cli.mjs inspect",
-    "authoring:fixture": "node scripts/authoring/cli.mjs fixture"
+    "authoring:fixture": "node scripts/authoring/cli.mjs fixture",
+    "gallery:assign": "node scripts/authoring/gallery-assign.mjs"
   },
   "dependencies": {
     "@dimforge/rapier3d": "0.11.2",

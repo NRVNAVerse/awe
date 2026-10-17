@@ -52,7 +52,29 @@
         "exploration"
       ],
       "description": "M2 placeholder. The streets beneath the floating Hub: Skyfall Plaza is where the Drop lands and the sky lift rises; the Music and Fashion / Culture districts are a walk away.",
-      "destinations": [],
+      "destinations": [
+        {
+          "categories": [
+            "art",
+            "gallery",
+            "venue"
+          ],
+          "description": "M3 placeholder. A permanent gallery on South Row, a short walk south of Skyfall Plaza: one white room whose exhibitions change while the building, its entrance and its address stay put.",
+          "gates": [],
+          "id": "dst_3kacg0rqgyfnp7fm",
+          "kind": "venue",
+          "minimumAge": null,
+          "name": "Gallery One",
+          "slug": "gallery-one",
+          "spatialUrl": "https://worlds.nrvnaverse.com/?destination=dst_3kacg0rqgyfnp7fm",
+          "tags": [
+            "m3",
+            "placeholder",
+            "permanent-gallery"
+          ],
+          "webUrl": "https://www.nrvnaverse.com/worlds/gallery-one"
+        }
+      ],
       "gates": [],
       "id": "dst_8w1j39h5e0ezrsjh",
       "kind": "district",

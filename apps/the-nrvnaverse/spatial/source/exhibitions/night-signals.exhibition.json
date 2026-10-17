@@ -1,0 +1,16 @@
+{
+  "format": "nrvna.exhibition/1",
+  "id": "exh_52vnk38ynvct0cct",
+  "slug": "night-signals",
+  "title": "Night Signals",
+  "subtitle": "Three light panels and two floor pieces",
+  "credit": "NRVNAVerse fixture exhibition: procedural placeholder works, no real artist or artwork",
+  "works": [
+    { "anchor": "intro", "kind": "wall-text", "title": "Night Signals", "text": "Three light panels and two floor pieces. A fixture exhibition: same room, same door, different show.", "size": [3.6, 1.2], "colors": ["#16161d"] },
+    { "anchor": "east-02", "kind": "signal", "title": "Signal, cyan", "size": [2.8, 2.0], "colors": ["#0f1020", "#5ef2d6"] },
+    { "anchor": "north-01", "kind": "signal", "title": "Signal, magenta", "size": [3.6, 2.2], "colors": ["#120d1f", "#ff4fd8"] },
+    { "anchor": "south-02", "kind": "signal", "title": "Signal, lime", "size": [3.6, 2.2], "colors": ["#0d1a12", "#c6ff4f"] },
+    { "anchor": "floor-01", "kind": "orb", "title": "Lantern", "size": [1.2, 1.8], "colors": ["#141414", "#ffd166"] },
+    { "anchor": "floor-02", "kind": "stack", "title": "Relay", "size": [1.4, 2.4], "colors": ["#1b1b2f", "#6c63ff", "#ff6584"] }
+  ]
+}

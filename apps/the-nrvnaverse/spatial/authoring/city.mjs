@@ -24,6 +24,7 @@
 import { box, slab, column, sphere, rampZ, rampX, label, glow, pulse, collect, v, deg, zone } from "./lib.mjs";
 import { CITY, FACADE_COLORS, planCity, r1, inWalkable } from "./city-plan.mjs";
 import { PALETTE, HUB_DESTINATION_ID } from "./hub.mjs";
+import { GALLERY_PLOTS } from "./gallery.mjs";
 
 /** Hub elevation (metres above the city ground) — measured choice, campaign record §4. */
 export const HUB_ELEVATION = 140;
@@ -51,10 +52,12 @@ export const PLOTS = Object.freeze({
   compound: /** @type {[number, number, number, number]} */ ([-30, -475, 30, -392]),
   // North Row's roof garden (an optional climb off the avenue north of the plaza).
   roof: /** @type {[number, number, number, number]} */ ([15, -188, 49, -146]),
+  // M3: permanent galleries reserve the ground plan of their Blender-authored shell (gallery.mjs).
+  ...GALLERY_PLOTS,
 });
 
 /** Plot paving colours (the far-field draws the plot ground; district floors sit on top). */
-const PLOT_COLORS = Object.freeze({ plaza: "#4a463f", music: "#23262d", club: "#1b1d23", fashion: "#8f8676", compound: "#1d1a14", roof: "#34363c" });
+const PLOT_COLORS = Object.freeze({ plaza: "#4a463f", music: "#23262d", club: "#1b1d23", fashion: "#8f8676", compound: "#1d1a14", roof: "#34363c", "gallery-one": "#6f6a60" });
 
 /** Walkable cells → chunk keys (the streaming grid). Cell (i, j) is centred on (i·CELL, j·CELL). */
 export const CITY_CELLS = Object.freeze([

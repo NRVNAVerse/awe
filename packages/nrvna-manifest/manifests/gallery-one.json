@@ -1,0 +1,62 @@
+{
+  "schemaVersion": 1,
+  "id": "dst_3kacg0rqgyfnp7fm",
+  "slug": "gallery-one",
+  "previousSlugs": [],
+  "kind": "venue",
+  "name": "Gallery One",
+  "owner": {
+    "name": "NRVNAVerse",
+    "organizationId": null,
+    "webUrl": "https://www.nrvnaverse.com/"
+  },
+  "primaryDistrictId": "dst_8w1j39h5e0ezrsjh",
+  "categories": [
+    "art",
+    "gallery",
+    "venue"
+  ],
+  "tags": [
+    "m3",
+    "placeholder",
+    "permanent-gallery"
+  ],
+  "relatedDestinationIds": [
+    "dst_8w1j39h5e0ezrsjh"
+  ],
+  "description": "M3 placeholder. A permanent gallery on South Row, a short walk south of Skyfall Plaza: one white room whose exhibitions change while the building, its entrance and its address stay put.",
+  "webUrl": "https://www.nrvnaverse.com/worlds/gallery-one",
+  "spatialDestination": {
+    "platform": "the-nrvnaverse",
+    "worldId": "the-nrvnaverse"
+  },
+  "media": {
+    "thumbnailUrl": null,
+    "heroUrl": null,
+    "logoUrl": null
+  },
+  "status": "active",
+  "ageRestriction": null,
+  "jurisdictions": {
+    "policy": "unrestricted",
+    "regions": [],
+    "note": null
+  },
+  "capabilities": [
+    "entertainment",
+    "education",
+    "events"
+  ],
+  "devices": [
+    "desktop",
+    "mobile",
+    "tablet"
+  ],
+  "commerceRefs": [],
+  "analyticsId": "dst_3kacg0rqgyfnp7fm",
+  "updatedAt": "2026-10-16T00:00:00Z",
+  "auth": {
+    "roles": []
+  },
+  "gates": []
+}

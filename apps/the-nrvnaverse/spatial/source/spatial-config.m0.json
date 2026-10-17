@@ -680,10 +680,8 @@
         "city-south-b11-14-20-t0",
         "city-south-b11-14-22-t0",
         "city-south-b12-13-00-t0",
-        "city-south-b12-13-01-t0",
         "city-south-b12-13-02-t0",
         "city-south-b12-13-10-t0",
-        "city-south-b12-13-11-t0",
         "city-south-b12-13-12-t0",
         "city-south-b12-13-12-t1",
         "city-south-b12-13-20-t0",
@@ -699,7 +697,54 @@
         "city-south-b12-14-20-t0",
         "city-south-b12-14-21-t0",
         "city-south-b12-14-22-t0",
-        "city-south-ring-s"
+        "city-south-ring-s",
+        "gallery-one-shell-bench-centre",
+        "gallery-one-shell-forecourt",
+        "gallery-one-shell-desk",
+        "gallery-one-shell-floor",
+        "gallery-one-shell-lintel",
+        "gallery-one-shell-sign",
+        "gallery-one-shell-wall-east",
+        "gallery-one-shell-wall-north",
+        "gallery-one-shell-wall-south",
+        "gallery-one-shell-wall-west-n",
+        "gallery-one-shell-wall-west-s",
+        "gallery-one-shell-plinth-rotated",
+        "gallery-one-shell-name",
+        "gallery-one-exh-chromatic-fields-intro-title",
+        "gallery-one-exh-chromatic-fields-intro-text",
+        "gallery-one-exh-chromatic-fields-east-01-frame",
+        "gallery-one-exh-chromatic-fields-east-01-ground",
+        "gallery-one-exh-chromatic-fields-east-01-field",
+        "gallery-one-exh-chromatic-fields-east-01-caption",
+        "gallery-one-exh-chromatic-fields-east-02-frame",
+        "gallery-one-exh-chromatic-fields-east-02-ground",
+        "gallery-one-exh-chromatic-fields-east-02-field",
+        "gallery-one-exh-chromatic-fields-east-02-caption",
+        "gallery-one-exh-chromatic-fields-east-03-frame",
+        "gallery-one-exh-chromatic-fields-east-03-ground",
+        "gallery-one-exh-chromatic-fields-east-03-field",
+        "gallery-one-exh-chromatic-fields-east-03-caption",
+        "gallery-one-exh-chromatic-fields-north-01-frame",
+        "gallery-one-exh-chromatic-fields-north-01-ground",
+        "gallery-one-exh-chromatic-fields-north-01-field",
+        "gallery-one-exh-chromatic-fields-north-01-caption",
+        "gallery-one-exh-chromatic-fields-north-02-frame",
+        "gallery-one-exh-chromatic-fields-north-02-ground",
+        "gallery-one-exh-chromatic-fields-north-02-field",
+        "gallery-one-exh-chromatic-fields-north-02-caption",
+        "gallery-one-exh-chromatic-fields-south-01-frame",
+        "gallery-one-exh-chromatic-fields-south-01-ground",
+        "gallery-one-exh-chromatic-fields-south-01-field",
+        "gallery-one-exh-chromatic-fields-south-01-caption",
+        "gallery-one-exh-chromatic-fields-south-02-frame",
+        "gallery-one-exh-chromatic-fields-south-02-ground",
+        "gallery-one-exh-chromatic-fields-south-02-field",
+        "gallery-one-exh-chromatic-fields-south-02-caption",
+        "gallery-one-exh-chromatic-fields-floor-01-column",
+        "gallery-one-exh-chromatic-fields-floor-01-caption",
+        "gallery-one-exh-chromatic-fields-floor-02-column",
+        "gallery-one-exh-chromatic-fields-floor-02-caption"
       ]
     },
     {
@@ -1008,6 +1053,18 @@
           "z": 40
         },
         "yaw": 0
+      }
+    },
+    {
+      "destinationId": "dst_3kacg0rqgyfnp7fm",
+      "chunkKey": "city-south",
+      "spawn": {
+        "position": {
+          "x": 37,
+          "y": 1,
+          "z": 150
+        },
+        "yaw": -1.571
       }
     }
   ],

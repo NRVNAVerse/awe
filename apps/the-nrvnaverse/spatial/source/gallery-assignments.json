@@ -1,0 +1,7 @@
+{
+  "format": "nrvna.gallery-assignments/1",
+  "note": "Which exhibition each permanent gallery shows. Local fixture assignment only (no event backend): change it with `pnpm --filter the-nrvnaverse gallery:assign <gallery> <exhibition>`, which recomposes and regenerates. The gallery's shell, entrance, placement and destination id never depend on this file.",
+  "assignments": {
+    "gallery-one": "exh_fztaq4wxq1q4pjt3"
+  }
+}

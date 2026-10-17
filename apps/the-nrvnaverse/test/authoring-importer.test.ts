@@ -150,7 +150,7 @@ describe("Gallery One â€” the authored scene round-trips exactly (Blender 5.1 â†
       if (m.half) expect(close(rec.volume.size, m.half.map((h: number) => 2 * h), 1e-4), m.name).toBe(true);
     }
     expect(manifest.galleries).toEqual([
-      expect.objectContaining({ slug: "gallery-one", spawn: "spawn:gallery-one", entrance: "entrance:gallery-one", exit: "exit:gallery-one", anchors: ["east-01", "east-02", "east-03", "floor-01", "floor-02", "north-01", "north-02", "south-01", "south-02"] }),
+      expect.objectContaining({ slug: "gallery-one", spawn: "spawn:gallery-one", entrance: "entrance:gallery-one", exit: "exit:gallery-one", anchors: ["east-01", "east-02", "east-03", "floor-01", "floor-02", "intro", "north-01", "north-02", "south-01", "south-02"] }),
     ]);
     expect(manifest.collections.MARKERS).toHaveLength(gallerySpec.markers.length);
   });
@@ -239,11 +239,11 @@ describe("units, identity and safety", () => {
     expect(importBlenderExport({ format: "sic.scene/0", objects: [] } as never)).toMatchObject({ manifest: null, findings: [{ code: "unsupported-source", level: "error" }] });
   });
 
-  it("the Gallery One SIC plan checks the spawn, the doorway and all nine anchor sightlines", () => {
+  it("the Gallery One SIC plan checks the spawn, the doorway and all ten anchor sightlines", () => {
     const plan = planSicChecks(importBlenderExport(galleryExport).manifest);
     const ids = plan.map((c) => c.id);
     for (const k of ["clearance:spawn:gallery-one", "clearance:entrance:gallery-one", "clearance:exit:gallery-one", "clearance:interact:gallery-one-desk", "ground:spawn:gallery-one"]) expect(ids).toContain(k);
-    expect(ids.filter((i) => i.startsWith("sightline:"))).toHaveLength(9);
+    expect(ids.filter((i) => i.startsWith("sightline:"))).toHaveLength(10);
     expect(ids.filter((i) => i.startsWith("intersects:"))).toEqual([]); // the shell is touching, never interpenetrating
   });
 

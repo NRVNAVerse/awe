@@ -1,0 +1,20 @@
+{
+  "format": "nrvna.exhibition/1",
+  "id": "exh_fztaq4wxq1q4pjt3",
+  "slug": "chromatic-fields",
+  "title": "Chromatic Fields",
+  "subtitle": "Seven colour fields and two columns",
+  "credit": "NRVNAVerse fixture exhibition: procedural placeholder works, no real artist or artwork",
+  "works": [
+    { "anchor": "intro", "kind": "wall-text", "title": "Chromatic Fields", "text": "Seven colour fields and two columns. A fixture exhibition: the room stays, the show changes.", "size": [3.6, 1.2], "colors": ["#2b2b2b"] },
+    { "anchor": "east-01", "kind": "canvas", "title": "Field I", "size": [2.4, 1.8], "colors": ["#e4572e", "#f3a712"] },
+    { "anchor": "east-02", "kind": "canvas", "title": "Field II", "size": [2.8, 2.0], "colors": ["#29335c", "#db2b39"] },
+    { "anchor": "east-03", "kind": "canvas", "title": "Field III", "size": [2.4, 1.8], "colors": ["#669bbc", "#f0ead2"] },
+    { "anchor": "north-01", "kind": "canvas", "title": "Field IV", "size": [3.6, 2.2], "colors": ["#2a9d8f", "#e9c46a"] },
+    { "anchor": "north-02", "kind": "canvas", "title": "Field V", "size": [3.0, 2.0], "colors": ["#264653", "#f4a261"] },
+    { "anchor": "south-01", "kind": "canvas", "title": "Field VI", "size": [3.0, 2.0], "colors": ["#8338ec", "#ffbe0b"] },
+    { "anchor": "south-02", "kind": "canvas", "title": "Field VII", "size": [3.6, 2.2], "colors": ["#3a86ff", "#fb5607"] },
+    { "anchor": "floor-01", "kind": "column", "title": "Column, warm", "size": [0.9, 2.4], "colors": ["#e76f51"] },
+    { "anchor": "floor-02", "kind": "column", "title": "Column, cool", "size": [0.9, 1.8], "colors": ["#2a9d8f"] }
+  ]
+}

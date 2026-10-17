@@ -28,6 +28,8 @@ import { composeFashion } from "./fashion.mjs";
 import { composeClub } from "./club.mjs";
 import { composeCannabis } from "./cannabis.mjs";
 import { CHUNK_ORIGINS, CITY_CELLS, CITY_CELL_CHUNKS, CITY_DESTINATION_ID, buildCityLayer, cellKit, composeCityCell, proxyOf, streamingConfig } from "./city.mjs";
+import { GALLERY_SPAWNS, galleryItemsFor, withoutExhibitions } from "./gallery.mjs";
+import { collect } from "./lib.mjs";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const sourceDir = join(here, "..", "source");
@@ -44,8 +46,24 @@ const COMPOSERS = {
   "fashion-culture": composeFashion,
   "music-club": composeClub,
   "cannabis-21": composeCannabis,
-  ...Object.fromEntries(CITY_CELL_CHUNKS.map((c) => [c.chunkKey, () => composeCityCell(c.chunkKey)])),
+  ...Object.fromEntries(CITY_CELL_CHUNKS.map((c) => [c.chunkKey, () => withGalleries(c.chunkKey, composeCityCell(c.chunkKey))])),
 };
+
+/**
+ * M3: a city cell plus the permanent galleries standing in it (shell + assigned exhibition), before
+ * any portal (portals stay last in every chunk).
+ * @param {string} chunkKey @param {{ components: Record<string, any> } & Record<string, any>} cell
+ */
+function withGalleries(chunkKey, cell) {
+  const gallery = collect(galleryItemsFor(chunkKey));
+  if (Object.keys(gallery).length === 0) return cell;
+  const entries = Object.entries(cell.components);
+  const firstPortal = entries.findIndex(([id]) => id.startsWith("portal-"));
+  const at = firstPortal < 0 ? entries.length : firstPortal;
+  for (const id of Object.keys(gallery)) if (id in cell.components) throw new Error(`gallery component "${id}" collides with the cell`);
+  const components = Object.fromEntries([...entries.slice(0, at), ...Object.entries(gallery), ...entries.slice(at)]);
+  return { ...cell, components, componentIds: Object.keys(components) };
+}
 
 /**
  * Spawns in each chunk's LOCAL authoring frame (M1 coordinates); `compose` writes the world spawn
@@ -62,6 +80,8 @@ const LOCAL_SPAWNS = Object.freeze({
   dst_gqq90k2404cy9nf0: { chunkKey: "music-club", position: { x: -70, y: 1, z: 75.5 } },
   // The City lands on Skyfall Plaza, south of the landing ring, facing the sky lift and the Hub.
   [CITY_DESTINATION_ID]: { chunkKey: "city-plaza", position: { x: 0, y: 1, z: 40 } },
+  // M3: permanent galleries arrive at their Blender spawn marker (world frame, authored yaw).
+  ...GALLERY_SPAWNS,
 });
 
 /** M2 global atmosphere: the city needs a deeper fog and a safety ground below the streets. */
@@ -181,7 +201,7 @@ export function compose() {
     placements.set(destinationId, {
       destinationId,
       chunkKey: local.chunkKey,
-      spawn: { position: { x: r3(local.position.x + o.x), y: r3(local.position.y + o.y), z: r3(local.position.z + o.z) }, yaw: prev?.spawn.yaw ?? 0 },
+      spawn: { position: { x: r3(local.position.x + o.x), y: r3(local.position.y + o.y), z: r3(local.position.z + o.z) }, yaw: "yaw" in local ? r3(/** @type {number} */ (local.yaw)) : prev?.spawn.yaw ?? 0 },
     });
   }
   config.placements = [...placements.values()];
@@ -203,7 +223,7 @@ export function compose() {
   const proxies = {};
   for (const key of Object.keys(composedByChunk).sort()) {
     if (key === "cannabis-21") continue;
-    const proxy = proxyOf(composedByChunk[key], hiddenByChunk.get(key) ?? new Set());
+    const proxy = proxyOf(withoutExhibitions(composedByChunk[key]), hiddenByChunk.get(key) ?? new Set());
     if (proxy.length > 0) proxies[key] = proxy;
   }
   const layerText = JSON.stringify(buildCityLayer({ proxies })) + "\n";

@@ -119,7 +119,8 @@ describe("M2 world — the floating Hub", () => {
 
 describe("M2 world — the far-field layer", () => {
   it("proxies every ungated composed chunk and never the gated compound", () => {
-    expect(Object.keys(layer.proxies).sort()).toEqual(["city-north", "city-plaza", "fashion-culture", "hub", "music", "music-club"]);
+    // M3: city-south gained visible geometry (Gallery One), so it is proxied too.
+    expect(Object.keys(layer.proxies).sort()).toEqual(["city-north", "city-plaza", "city-south", "fashion-culture", "hub", "music", "music-club"]);
     expect(layer.proxies).not.toHaveProperty("cannabis-21");
     // The compound shell is authored, not derived: its colour is not the gated chunk's platform colour.
     const gated = generatedChunks["cannabis-21"].components["platform-cannabis-21"] as { color: string };

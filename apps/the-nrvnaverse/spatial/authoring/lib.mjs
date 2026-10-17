@@ -205,12 +205,12 @@ export function label(id, text, position, opts = {}) {
   };
 }
 
-/** Fresnel rim glow (reads as a lit edge / halo on dark backgrounds). */
+/** Fresnel rim glow (reads as a lit edge / halo on dark backgrounds). @param {string} color */
 export function glow(color, { intensity = 1.2, power = 2, speed = 1, pulse = 0 } = {}) {
   return { id: "FresnelGlowPlugin", color, intensity, power, speed, pulse };
 }
 
-/** Slow brightness pulse. */
+/** Slow brightness pulse. @param {string} color */
 export function pulse(color, { intensity = 0.4, speed = 0.6 } = {}) {
   return { id: "PulsePlugin", color, intensity, speed };
 }
@@ -224,7 +224,7 @@ export function pulse(color, { intensity = 0.4, speed = 0.6 } = {}) {
  */
 export function liftPad(prefix, x, datum, z, opts) {
   const r = 2.8;
-  /** @type {Array<Record<string, unknown> & { id: string }>} */
+  /** @type {Array<Record<string, unknown>>} */
   const items = [];
   for (const [k, dx, dz] of [["nw", -1, -1], ["ne", 1, -1], ["sw", -1, 1], ["se", 1, 1]]) {
     items.push(column(`${prefix}-post-${k}`, x + Number(dx) * r * 0.72, datum, z + Number(dz) * r * 0.72, 0.16, 3.6, { name: `Sky lift post ${k}`, color: "#1c1f26", segments: 10, collider: "none", tag: opts.tag }));
@@ -248,7 +248,7 @@ export function liftPad(prefix, x, datum, z, opts) {
 
 /**
  * Collect builders into an ordered `{ id: data }` map, refusing duplicate ids.
- * @param {Array<Record<string, unknown> & { id: string }>} items
+ * @param {Array<Record<string, unknown>>} items
  */
 export function collect(items) {
   /** @type {Record<string, Record<string, unknown>>} */

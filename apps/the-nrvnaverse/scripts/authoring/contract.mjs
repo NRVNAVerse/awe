@@ -120,7 +120,17 @@ export function materialVariant(name) {
 /** Blender → NRVNAVerse point. @param {Vec3} p @returns {Vec3} */
 export const toWorld = (p) => [p[0], p[2], -p[1]];
 
-/** Round for stable, reviewable output (1e-6 m / rad). @param {number} v */
+/**
+ * Lengths are rounded to 0.1 mm: Blender stores float32, which resolves only ≈ 10 µm at city
+ * coordinates (33.8 is stored as 33.79999924), so finer digits are storage noise, not authoring.
+ * @param {number} v
+ */
+export const rl = (v) => {
+  const r = Math.round(v * 1e4) / 1e4;
+  return Object.is(r, -0) ? 0 : r;
+};
+
+/** Angles, quaternions and scale factors: 1e-6. @param {number} v */
 export const r6 = (v) => {
   const r = Math.round(v * 1e6) / 1e6;
   return Object.is(r, -0) ? 0 : r;

@@ -28,6 +28,7 @@ import {
   materialVariant,
   parseMarkerName,
   r6,
+  rl,
 } from "./contract.mjs";
 
 /** @typedef {import("./contract.mjs").Vec3} Vec3 */
@@ -69,8 +70,10 @@ import {
  * }} MarkerRecord
  */
 
-/** @param {Vec3} v */
-const rv = (v) => /** @type {Vec3} */ (v.map(r6));
+/** Lengths (positions, sizes, bounds). @param {Vec3} v */
+const rv = (v) => /** @type {Vec3} */ (v.map(rl));
+/** Unitless vectors (scale factors, Euler angles). @param {Vec3} v */
+const ru = (v) => /** @type {Vec3} */ (v.map(r6));
 
 /**
  * @param {Vec3} center @param {Vec3} half @param {[Vec3, Vec3, Vec3]} axes
@@ -206,9 +209,9 @@ export function importBlenderExport(source, options = {}) {
       if (kind.volume) {
         if (display !== "CUBE") add("error", "marker-volume-display", o.name, `a ${parsed.kind} marker is a volume: use the Cube empty display (found ${display})`);
         const half = /** @type {Vec3} */ (t.scale.map((s) => Math.abs(s) * (o.empty?.display_size ?? 1)));
-        volume = { center: rv(t.position), size: rv(/** @type {Vec3} */ (half.map((h) => 2 * h))), euler: rv(t.euler), bounds: orientedBounds(t.position, half, t.axes) };
+        volume = { center: rv(t.position), size: rv(/** @type {Vec3} */ (half.map((h) => 2 * h))), euler: ru(t.euler), bounds: orientedBounds(t.position, half, t.axes) };
       } else if (t.scale.some((s) => Math.abs(Math.abs(s) - 1) > 1e-6)) {
-        add("info", "marker-scale-ignored", o.name, "only a volume marker's scale means something; this one is used as a point", { scale: rv(t.scale) });
+        add("info", "marker-scale-ignored", o.name, "only a volume marker's scale means something; this one is used as a point", { scale: ru(t.scale) });
       }
       if (kind.facing && t.tiltDeg > LIMITS.markerTiltDeg) add("warning", "marker-tilted", o.name, `tilted ${t.tiltDeg.toFixed(1)}° off upright: only its yaw is used`, { tiltDeg: r6(t.tiltDeg) });
       for (const k of Object.keys(props)) if (!kind.props.includes(k)) add("info", "marker-prop-unused", o.name, `"${k}" is not read for ${parsed.kind} markers`);
@@ -257,7 +260,7 @@ export function importBlenderExport(source, options = {}) {
       const center = [t.position[0] + offset[0], t.position[1] + offset[1], t.position[2] + offset[2]];
       const half = /** @type {Vec3} */ (localHalf.map((h, i) => h * Math.abs(t.scale[i])));
       bounds = orientedBounds(center, half, t.axes);
-      if (o.mesh?.is_box) box = { center: rv(center), size: rv(/** @type {Vec3} */ (half.map((h) => 2 * h))), euler: rv(t.euler) };
+      if (o.mesh?.is_box) box = { center: rv(center), size: rv(/** @type {Vec3} */ (half.map((h) => 2 * h))), euler: ru(t.euler) };
       const dims = half.map((h) => 2 * h);
       if (dims.some((d) => !Number.isFinite(d))) add("error", "invalid-bounds", o.name, "non-finite bounds");
       else if (Math.max(...dims) > LIMITS.maxDimension) add("warning", "suspect-unit-size", o.name, `${Math.max(...dims).toFixed(1)} m across — larger than the whole far-field city; centimetre units exported as metres?`, { size: rv(/** @type {Vec3} */ (dims)) });
@@ -268,7 +271,7 @@ export function importBlenderExport(source, options = {}) {
       add("info", "unsupported-type", o.name, `${o.type} objects carry no geometry for the importer (cameras, lights: ignored)`);
     }
     const s = t.scale.map(Math.abs);
-    if (s.some((v) => v >= LIMITS.suspectScaleHigh || v <= LIMITS.suspectScaleLow)) add("warning", "suspect-unit-scale", o.name, `object scale ${rv(t.scale).join(" × ")}: a cm / mm import scaled into place? Apply the scale (Ctrl+A) after fixing the units`, { scale: rv(t.scale) });
+    if (s.some((v) => v >= LIMITS.suspectScaleHigh || v <= LIMITS.suspectScaleLow)) add("warning", "suspect-unit-scale", o.name, `object scale ${ru(t.scale).join(" × ")}: a cm / mm import scaled into place? Apply the scale (Ctrl+A) after fixing the units`, { scale: ru(t.scale) });
 
     /** @type {MaterialRecord[]} */
     const materials = (o.materials ?? []).map((m, slot) => {
@@ -290,7 +293,7 @@ export function importBlenderExport(source, options = {}) {
       type: o.type,
       collection,
       collectionPath,
-      transform: { position: rv(t.position), quaternion: /** @type {[number, number, number, number]} */ (t.quaternion.map(r6)), euler: rv(t.euler), scale: rv(t.scale), yaw: r6(t.yaw), mirrored: t.mirrored },
+      transform: { position: rv(t.position), quaternion: /** @type {[number, number, number, number]} */ (t.quaternion.map(r6)), euler: ru(t.euler), scale: ru(t.scale), yaw: r6(t.yaw), mirrored: t.mirrored },
       blenderMatrix: o.matrix_world,
       box,
       bounds,

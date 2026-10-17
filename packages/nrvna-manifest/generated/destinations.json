@@ -62,6 +62,69 @@
       "webUrl": "https://www.nrvnaverse.com/worlds/placeholder-artist"
     },
     {
+      "ageRestriction": null,
+      "analyticsId": "dst_3kacg0rqgyfnp7fm",
+      "auth": {
+        "roles": []
+      },
+      "capabilities": [
+        "entertainment",
+        "education",
+        "events"
+      ],
+      "categories": [
+        "art",
+        "gallery",
+        "venue"
+      ],
+      "commerceRefs": [],
+      "description": "M3 placeholder. A permanent gallery on South Row, a short walk south of Skyfall Plaza: one white room whose exhibitions change while the building, its entrance and its address stay put.",
+      "devices": [
+        "desktop",
+        "mobile",
+        "tablet"
+      ],
+      "gates": [],
+      "id": "dst_3kacg0rqgyfnp7fm",
+      "jurisdictions": {
+        "note": null,
+        "policy": "unrestricted",
+        "regions": []
+      },
+      "kind": "venue",
+      "media": {
+        "heroUrl": null,
+        "logoUrl": null,
+        "thumbnailUrl": null
+      },
+      "name": "Gallery One",
+      "owner": {
+        "name": "NRVNAVerse",
+        "organizationId": null,
+        "webUrl": "https://www.nrvnaverse.com/"
+      },
+      "previousSlugs": [],
+      "primaryDistrictId": "dst_8w1j39h5e0ezrsjh",
+      "relatedDestinationIds": [
+        "dst_8w1j39h5e0ezrsjh"
+      ],
+      "schemaVersion": 1,
+      "slug": "gallery-one",
+      "spatialDestination": {
+        "platform": "the-nrvnaverse",
+        "worldId": "the-nrvnaverse"
+      },
+      "spatialUrl": "https://worlds.nrvnaverse.com/?destination=dst_3kacg0rqgyfnp7fm",
+      "status": "active",
+      "tags": [
+        "m3",
+        "placeholder",
+        "permanent-gallery"
+      ],
+      "updatedAt": "2026-10-16T00:00:00Z",
+      "webUrl": "https://www.nrvnaverse.com/worlds/gallery-one"
+    },
+    {
       "ageRestriction": {
         "minimumAge": 21
       },
@@ -596,6 +659,7 @@
   "index": {
     "byAnalyticsId": {
       "dst_1qtfn9qjg9kf6jyd": "dst_1qtfn9qjg9kf6jyd",
+      "dst_3kacg0rqgyfnp7fm": "dst_3kacg0rqgyfnp7fm",
       "dst_441dtdafq3e3ehjn": "dst_441dtdafq3e3ehjn",
       "dst_7g19n1vm9ackw8a0": "dst_7g19n1vm9ackw8a0",
       "dst_8w1j39h5e0ezrsjh": "dst_8w1j39h5e0ezrsjh",
@@ -610,6 +674,7 @@
       "cannabis-21": "dst_441dtdafq3e3ehjn",
       "city": "dst_8w1j39h5e0ezrsjh",
       "fashion-culture": "dst_9c4wxtpec8awsx1q",
+      "gallery-one": "dst_3kacg0rqgyfnp7fm",
       "hub": "dst_7g19n1vm9ackw8a0",
       "music": "dst_gm3xs4a3tws7bgh3",
       "music-club": "dst_gqq90k2404cy9nf0",

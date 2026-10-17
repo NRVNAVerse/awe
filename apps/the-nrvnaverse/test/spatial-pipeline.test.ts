@@ -75,12 +75,12 @@ describe("spatial source — valid M0 input", () => {
     for (const k of EXPECTED_CHUNKS) expect(artifacts.chunkFiles[k]).toMatch(CONTENT_ADDRESSED_OUTPUT.chunk);
   });
 
-  it("places all nine active destination ids exactly once in the spatial index (M2: The City)", () => {
+  it("places all ten active destination ids exactly once in the spatial index (M2: The City; M3: Gallery One)", () => {
     const artifacts = generateSpatialArtifacts(source());
     const index = JSON.parse(artifacts.files[OUTPUT.spatialIndex]);
     const ids = Object.keys(index.destinations);
-    expect(ids.length).toBe(9);
-    expect(new Set(ids).size).toBe(9);
+    expect(ids.length).toBe(10);
+    expect(new Set(ids).size).toBe(10);
     expect(ids).toEqual(activeWorldDestinations);
     expect(artifacts.destinationIds).toEqual(activeWorldDestinations);
     for (const id of ids) expect(index.chunks[index.destinations[id].chunkKey]).toBeDefined();
@@ -303,7 +303,7 @@ describe("spatial generation — determinism and committed outputs", () => {
 describe("canonical destination manifests stay coordinate- and chunk-free", () => {
   it("neither the source manifests nor destinations.json carry physical placement", () => {
     const files = readdirSync(MANIFESTS_DIR).filter((n) => n.endsWith(".json"));
-    expect(files.length).toBe(9);
+    expect(files.length).toBe(10);
     for (const name of files) {
       const text = readFileSync(join(MANIFESTS_DIR, name), "utf8");
       expect(text, name).not.toMatch(/"(chunkKey|chunk|spawn|position|yaw|coordinates|placementRef)"/);

@@ -19,7 +19,7 @@
       "dataUrl": "/data/spatial/chunks/city-plaza.b9f4ac3908eef6bd5009b303ef1d86ca.json"
     },
     "city-south": {
-      "dataUrl": "/data/spatial/chunks/city-south.3c687e9510496bfd62af037a17592f95.json"
+      "dataUrl": "/data/spatial/chunks/city-south.343714271b9367ad6359ca24c8665e87.json"
     },
     "city-southeast": {
       "dataUrl": "/data/spatial/chunks/city-southeast.d49d4c99ba107d444c159a35e103facf.json"
@@ -50,6 +50,17 @@
           "z": -34
         },
         "yaw": 0
+      }
+    },
+    "dst_3kacg0rqgyfnp7fm": {
+      "chunkKey": "city-south",
+      "spawn": {
+        "position": {
+          "x": 37,
+          "y": 1,
+          "z": 150
+        },
+        "yaw": -1.571
       }
     },
     "dst_441dtdafq3e3ehjn": {
@@ -734,7 +745,7 @@
   },
   "layers": {
     "city": {
-      "dataUrl": "/data/spatial/layers/city.40a48bd60d3029346a1ed0f128dd6b5e.json"
+      "dataUrl": "/data/spatial/layers/city.f816e08bc631875e3df8241f7d3df749.json"
     }
   },
   "streaming": {
