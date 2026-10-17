@@ -20,7 +20,9 @@ Compact, restartable record for the M3 run on `feat/m3-blender-camera-foundation
 | D1 | SIC on the composed world → floor anchors staggered off the entrance axis + sightline regression test | `eb6d758` |
 | D2 | `pnpm browser:gallery` (desktop + phone) | `cb800c3` |
 | D3 | Walk-in naming fix (a venue never renames its city cell) + docs | `51df79a` |
-| D4 | Final production probes; pre-existing Hub-arrival fall measured on M3 and the M2 baseline; record / Landmark / handoff | this commit |
+| D4 | Final production probes; pre-existing Hub-arrival fall measured on M3 and the M2 baseline; record / Landmark / handoff | `f0f9bf3` |
+| E1 | Second session (same brief, re-run on the finished branch): independent re-verification of `f0f9bf3`; `compose --check` no longer reports a stale source on a Windows `core.autocrlf` checkout | `13113c0` |
+| E2 | Hub-arrival fall: 96 fresh loads, not reproduced; near-camera avatar: already handled by the engine (finding 11). Record / handoff corrected | this commit |
 
 ## 2. Findings worth keeping
 
@@ -33,7 +35,9 @@ Compact, restartable record for the M3 run on `feat/m3-blender-camera-foundation
 7. **SIC caught a composition flaw tests could not**: the centre east-wall work 0 % visible from the arrival eye behind a floor column on the entrance axis. Fixed at the authored anchors; a pure-geometry test keeps it fixed.
 8. **A venue placed in a streaming cell renamed the cell** (`homeDestinations` used the cell's first placement): fixed and covered by a unit test and the browser walk-in check.
 9. Navmesh `reachable` over the whole city needs `cell_size_m` ≥ 0.4 (SIC: 6,975 tiles at the default cell size > 4,096).
-10. **Pre-existing (M2) intermittent Hub-arrival fall**: on a fresh load the avatar sometimes drops through the 0.5 m deck slab within ≈ 0.3 s of `ready` and the release hands it to The City. Fresh-load repro (production, phone profile): M3 1 / 12 and 2 / 16; **M2 baseline `7a93c08` 2 / 12** — so not caused by M3. Frame dt is clamped to 0.1 s (not one huge step). Scratch repro: `D:\AWE-Scratch\m3	ools\hub-fall-repro.mjs`. Root cause open.
+10. **Pre-existing (M2) intermittent Hub-arrival fall**: on a fresh load the avatar sometimes drops through the 0.5 m deck slab within ≈ 0.3 s of `ready` and the release hands it to The City. Fresh-load repro (production, phone profile): M3 1 / 12 and 2 / 16; **M2 baseline `7a93c08` 2 / 12** — so not caused by M3. Frame dt is clamped to 0.1 s (not one huge step). Scratch repro: `D:\AWE-Scratch\m3\tools\hub-fall-repro.mjs`. Root cause open. **Second session (quiet machine, production build of `f0f9bf3`): 0 falls in 96 fresh Hub loads.** That is 16 with the same script, 46 with a per-frame trace (avatar y, body vs collider y, physics collider count; tabs closed, or 14 kept open), 12 at 6× and 8 at 20× CPU throttling (frames up to 2.3 s). The first session ran probes, builds, SIC and Blender in parallel. The fall seems to need that load, but frame hitches alone do not trigger it. Trace tool: `D:\AWE-Scratch\m3\tools\hub-fall-trace.mjs` (`RUNS`, `THROTTLE`, `KEEP`, `SETTLE`).
+11. **The engine already hides the avatar near the camera**: its VRM fragment shader dithers the avatar out when it is 1.5–2.0 m or less from the camera (`smoothstep(1.5, 2.0, dist)` + `discard`, `packages/engine/src/internal/pipeline/materials/vrm/shader/main.frag.glsl.ts`), and the camera's near plane is 0.5 m. Wheel-zoomed screenshots at 1.4 / 1.0 / 0.6 / 0.2 m show no avatar, only its shadow. The first session's "camera can enter the avatar near walls" limit (queue item 6) was a misreading, so no app change is needed. An app-level body-hide was written and unit-tested, then dropped as redundant.
+12. **`compose --check` compared raw text**: on a `core.autocrlf` checkout the committed CRLF source never equals composition's LF output, so the check always failed on Windows (`spatial:check` already normalised). Fixed in `13113c0`; a real assignment change still fails the check.
 
 ## 3. Verification (final numbers in `handoffs/current/reviewer.md` §4)
 
@@ -41,13 +45,13 @@ App tests (vitest), manifests (vitest), `tsc` + strict, `compose --check`, `spat
 
 ## 4. Continuation queue (owner / reviewer may re-rank)
 
-0. **Root-cause the intermittent Hub-arrival fall** (finding 10) in its own bounded task: per-frame trace of avatar y / grounded / colliders around reveal; candidates — collider availability vs the first Mover steps after `space.start()`, deck slab thickness vs per-step displacement. Make `browser:touch` check C start from a verified grounded avatar either way.
+0. **Hub-arrival fall** (finding 10): not reproducible on a quiet machine (0 / 96). If the owner sees it in a playtest, note what else the PC was doing. Then reproduce under load (parallel `next build` + probes) with `hub-fall-trace.mjs`. Candidates unchanged: collider availability vs the first Mover steps after `space.start()`, and deck slab thickness vs per-step displacement. Still worth making `browser:touch` check C start from a verified grounded avatar.
 1. **Owner playtest** of the camera (feel of mouse / touch sensitivity, first-person eye height 0.92 × avatar height, `V`), and of Gallery One.
 2. **Run the dry run on the owner's real Blender city** (read-only) and review the report together before anything is composed from it.
 3. Decide: should walking through a gallery's entrance mark the location as the gallery (an entrance zone), or should only directory travel / deep links do so (current)?
 4. Wire the recorded-but-unused marker kinds (`portal`, `skylift`, `drop`, `interact`, `chunk`) to runtime behaviour once real scenes use them.
 5. Real exhibition content through the asset contract (human `reviewedBy`) — images on canvases, sculptures as reviewed GLBs.
-6. Third-person near-wall comfort: when the orbit is pressed inside ~0.5 m of the head the camera can enter the avatar (the rig's `visible`-based look-at path makes hiding the avatar there unsafe; needs an engine-level option or an opacity approach).
+6. ~~Third-person near-wall comfort~~: closed. The engine already dithers the avatar out near the camera (finding 11).
 
 ## 5. Exact next action
 

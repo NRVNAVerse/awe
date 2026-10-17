@@ -11,7 +11,7 @@ Read first: `docs/NRVNAVERSE_M3_CAMPAIGN.md` (checkpoints, findings, queue). Own
 
 ## 1. Commits
 
-From `7a93c08` (M2 close): `5e2ce44` camera · `ae56a44` authoring contract + importer + dry run · `0afd9e5` Gallery One + exhibitions · `eb6d758` SIC-driven anchor fix · `cb800c3` gallery probe · `51df79a` walk-in naming fix + docs · final: this commit (record, Landmark, handoff). `main`, `nrvna/integration` untouched; nothing merged or deployed.
+From `7a93c08` (M2 close): `5e2ce44` camera · `ae56a44` authoring contract + importer + dry run · `0afd9e5` Gallery One + exhibitions · `eb6d758` SIC-driven anchor fix · `cb800c3` gallery probe · `51df79a` walk-in naming fix + docs · `f0f9bf3` record, Landmark, handoff · second session: `13113c0` `compose --check` CRLF fix · final: this commit (re-verification evidence, corrected limits). `main`, `nrvna/integration` untouched; nothing merged or deployed.
 
 ## 2. Camera controls — ready for owner testing
 
@@ -23,7 +23,7 @@ From `7a93c08` (M2 close): `5e2ce44` camera · `ae56a44` authoring contract + im
 | Persistence | browser `localStorage` (`nrvnaverse.camera.v1`): view and both sensitivities survive reloads and travel |
 | Unchanged | movement physics and speeds, jump, pointer lock (click canvas, Esc), joystick, Jump, directory, 21+ gate |
 
-Known limits: mouse sensitivity is unit-tested but cannot be measured headless (no pointer lock); in third person with the camera squeezed within ≈ 0.5 m of the head against a wall, the camera can enter the avatar (pre-existing rig behaviour; queue item 6).
+Known limits: mouse sensitivity is unit-tested but cannot be measured headless (no pointer lock). Near walls the third-person camera never shows the inside of the avatar: the engine's avatar shader dissolves the avatar within ≈ 1.5–2 m of the camera (verified in the second session; the earlier "camera can enter the avatar" note was wrong).
 
 ## 3. Blender importer — what it actually supports
 
@@ -59,12 +59,13 @@ Empties only, in `MARKERS`; facing = local +Y (green arrow), rotate about Z only
 | SIC — authoring dry runs | Gallery One: 0 errors / 0 warnings, 18 SIC questions; coverage fixture: every seeded defect reported (incl. spawn-in-wall −0.6 m clearance, 4 m interpenetration) |
 | SIC — composed world | every Gallery One work visible from the arrival eye; forecourt → door → arrival reachable (12.0 m); clearances fit; works 5–8 cm proud of their walls |
 | Hosted CI | not run (Key guardrails) — not a pass, not a failure |
+| **Second-session re-run** (2026-10-16 late, production build of `f0f9bf3`) | `tsc` + strict clean · **572** app / **61** manifest tests · `spatial:check` up to date · `compose --check` up to date (after `13113c0`; before it, a false "stale" on this autocrlf checkout) · `browser:camera` **PASSED** 41 · `browser:gallery` **PASSED** 17 · `browser:touch` **PASSED** 82 on the first run · `browser:perf` **PASSED** (desktop 113 calls / 175 k tris / 60 fps, p95 16.8 ms; mobile 105 / 173 k / 60 fps) · Hub-arrival fall **0 / 96** fresh loads |
 
 **Pre-existing intermittent defect found (not caused by M3):** on a fresh Hub load the avatar sometimes drops through the deck right after the world is revealed and the M2 release hands it to The City (lands on Skyfall Plaza). Measured with 12–16 fresh phone-profile loads of the production build: **M3 1 / 12 and 2 / 16, M2 baseline `7a93c08` 2 / 12**. The avatar holds the spawn height (y 141) through chunk loading and starts falling within ≈ 0.3 s of `ready`; frame dt is clamped to 0.1 s by the engine, so it is not one huge step. Root cause not established — queue item 1. It explains the touch probe's check-C failure above and M2's earlier "marginal" touch failures may share it.
 
 ## 7. Limitations and owner decisions
 
-0. **Hub arrival can (rarely) drop the visitor to the plaza** — pre-existing since M2, see §6; if it happens in a playtest, it is this, not the camera.
+0. **Hub arrival can (rarely) drop the visitor to the plaza** — pre-existing since M2, see §6; if it happens in a playtest, it is this, not the camera. Not reproduced in 96 fresh loads on a quiet machine (second session), so it probably needs a heavily loaded PC; note what else was running if you see it.
 1. New stable id **Gallery One** `dst_3kacg0rqgyfnp7fm` and its placement on South Row, its 28 × 20 m size and west door are autonomous, reversible layout choices (Governance rule 9) — owner review.
 2. Exhibitions are procedural placeholders; real art must go through the asset contract.
 3. Walking into Gallery One from the street does not set the location to Gallery One (only directory travel / deep links do) — a product choice for the owner (queue 3).
