@@ -60,8 +60,11 @@ describe("gameplay Look binding", () => {
       controlState.beginFixedUpdates(1);
       inputs.sample();
       inputs.update(1 / 60);
-      const look = inputs.Look.readValue();
+      const look = inputs.TouchLook.readValue();
+      const pointer = inputs.Look.readValue();
       controlState.endFixedUpdates();
+      // M3: the touch drag arrives on its own action, never on the mouse / gamepad one.
+      expect({ x: pointer.x, y: pointer.y }).toEqual({ x: 0, y: 0 });
       return { x: look.x, y: look.y };
     };
 
@@ -79,10 +82,16 @@ describe("gameplay Look binding", () => {
     }
   });
 
-  it("applies no processor to any Look binding", () => {
-    for (const binding of GAMEPLAY_INPUTS.Look.bindings) {
+  it("applies no processor to any look binding", () => {
+    for (const binding of [...GAMEPLAY_INPUTS.Look.bindings, ...GAMEPLAY_INPUTS.TouchLook.bindings]) {
       expect((binding as { processors?: unknown[] }).processors ?? []).toEqual([]);
     }
+  });
+
+  it("splits look by source so each sensitivity scales only its own device (M3)", () => {
+    expect(GAMEPLAY_INPUTS.Look.bindings.map((b) => (b as { type: string }).type)).not.toContain("touchDelta");
+    expect(GAMEPLAY_INPUTS.TouchLook.bindings.map((b) => (b as { type: string }).type)).toEqual(["touchDelta"]);
+    expect(GAMEPLAY_INPUTS.Look.bindings.some((b) => (b as { type: string }).type === "mouseDelta")).toBe(true);
   });
 });
 

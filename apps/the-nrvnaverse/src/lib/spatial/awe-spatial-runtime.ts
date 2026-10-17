@@ -7,9 +7,12 @@ import {
   AvatarComponent,
   createInputs,
 } from "@oncyberio/engine";
-import { Mover, ThirdPersonCameraRig, createMoverAnimStateMachine } from "@oncyberio/engine/controls";
+import { FirstPersonCameraRig, Mover, ThirdPersonCameraRig, createMoverAnimStateMachine } from "@oncyberio/engine/controls";
 import type { MoverAnimLocomotionState } from "@oncyberio/engine/controls";
-import { Quaternion, Vector3, type Object3D } from "three";
+import { Euler, Quaternion, Vector3, type Object3D } from "three";
+import { cameraPreferences } from "@/lib/camera/camera-preferences";
+import { CameraViewController, scaledLook } from "@/lib/camera/camera-view";
+import { installCameraDiagnostics } from "@/lib/camera/camera-diagnostics";
 import { GAMEPLAY_INPUTS } from "@/lib/input/gameplay-inputs";
 import { installInputDiagnostics } from "@/lib/input/input-diagnostics";
 import type { ChunkPayload } from "@/lib/spatial/chunk-payload";
@@ -137,6 +140,11 @@ async function settleEngineSession(engine: Engine): Promise<void> {
 
 const _spawnPosition = new Vector3();
 const _spawnQuaternion = new Quaternion();
+const _viewEuler = new Euler(0, 0, 0, "YXZ");
+const _viewDirection = new Vector3();
+
+/** First-person eye height as a fraction of the avatar's height (its `getDimensions().y` is the top of the head). */
+const EYE_HEIGHT_FRACTION = 0.92;
 
 export interface AweSpatialRuntimeInitOptions {
   /** The global scene JSON (`spatialIndex.globalSceneUrl`, same origin). Required: there is no default scene. */
@@ -157,6 +165,11 @@ export class AweSpatialRuntime implements ChunkRuntime, SensorRuntime, SceneStat
 
   private inputs: ReturnType<typeof createInputs<typeof GAMEPLAY_INPUTS>> | null = null;
   private cameraRig: ThirdPersonCameraRig | null = null;
+  /** M3 first-person rig; exactly one of the two rigs is active (`CameraViewController`). */
+  private eyeRig: FirstPersonCameraRig | null = null;
+  private cameraView: CameraViewController | null = null;
+  private unsubscribeCameraPreferences: (() => void) | null = null;
+  private uninstallCameraDiagnostics: (() => void) | null = null;
   private mover: Mover | null = null;
   private animStateMachine: ReturnType<typeof createMoverAnimStateMachine> | null = null;
   private controlsActive = false;
@@ -208,6 +221,10 @@ export class AweSpatialRuntime implements ChunkRuntime, SensorRuntime, SceneStat
     this.inputs = createInputs(GAMEPLAY_INPUTS);
     installInputDiagnostics();
 
+    // M3: the first-person rig is created BEFORE the orbit rig — each rig places the camera on
+    // construction, and the orbit's placement (behind the avatar) must be the one that stands.
+    this.eyeRig = new FirstPersonCameraRig({ camera: Camera.current, target: player });
+
     this.cameraRig = new ThirdPersonCameraRig({
       camera: Camera.current,
       target: player,
@@ -217,6 +234,37 @@ export class AweSpatialRuntime implements ChunkRuntime, SensorRuntime, SceneStat
       smoothing: 0.15,
       smoothMethod: "orbit",
     });
+
+    // M3: eye level, and the controller that keeps exactly one of the two rigs active. The
+    // visitor's stored view applies before the reveal, so the first frame is already right.
+    const eyeHeight = player.getDimensions?.().y;
+    if (eyeHeight && eyeHeight > 0) this.eyeRig.height = eyeHeight * EYE_HEIGHT_FRACTION;
+    this.cameraView = new CameraViewController(this.cameraRig, this.eyeRig, {
+      readCameraAngles: () => {
+        _viewEuler.setFromQuaternion(Camera.current.quaternion, "YXZ");
+        return { yaw: _viewEuler.y, pitch: _viewEuler.x };
+      },
+      moveCameraBack: (distance) => {
+        Camera.current.getWorldDirection(_viewDirection);
+        Camera.current.position.addScaledVector(_viewDirection, -distance);
+        // From the eye up to the orbit pivot (the top of the avatar, `height: 0` below).
+        const top = this.player?.getDimensions?.().y;
+        if (top && top > 0 && this.eyeRig) Camera.current.position.y += Math.max(0, top - this.eyeRig.height);
+        Camera.current.updateMatrixWorld();
+      },
+      readFramingYaw: () => {
+        // The orbit's reset puts the camera along the avatar's +Z, looking back along −Z:
+        // camera forward (−sin yaw, 0, −cos yaw) = −dir  ⇒  yaw = atan2(dir.x, dir.z).
+        this.player?.getWorldDirection(_viewDirection);
+        return Math.atan2(_viewDirection.x, _viewDirection.z);
+      },
+      setAvatarVisible: (visible) => {
+        if (this.player && this.player.visible !== visible) this.player.visible = visible;
+      },
+    });
+    this.cameraView.setView(cameraPreferences.load().view);
+    this.unsubscribeCameraPreferences = cameraPreferences.subscribe(() => this.cameraView?.setView(cameraPreferences.state.view));
+    this.uninstallCameraDiagnostics = installCameraDiagnostics(() => this.cameraSnapshot());
 
     this.mover = new Mover({
       body: player,
@@ -256,6 +304,9 @@ export class AweSpatialRuntime implements ChunkRuntime, SensorRuntime, SceneStat
     this.inputs.Jump.onPerformed(() => {
       this.mover?.startJump();
     });
+    this.inputs.ToggleView.onPerformed(() => {
+      cameraPreferences.toggleView();
+    });
 
     // Controls stay off until the world is revealed.
     this.setActive(false);
@@ -275,7 +326,7 @@ export class AweSpatialRuntime implements ChunkRuntime, SensorRuntime, SceneStat
     _spawnPosition.set(spawn.position.x, spawn.position.y, spawn.position.z);
     _spawnQuaternion.setFromAxisAngle(Y_AXIS, spawn.yaw);
     this.mover.teleport(_spawnPosition, _spawnQuaternion);
-    this.cameraRig?.reset();
+    this.cameraView?.reset();
   }
 
   /**
@@ -476,6 +527,13 @@ export class AweSpatialRuntime implements ChunkRuntime, SensorRuntime, SceneStat
     this.animStateMachine = null;
     this.mover?.dispose();
     this.mover = null;
+    this.unsubscribeCameraPreferences?.();
+    this.unsubscribeCameraPreferences = null;
+    this.uninstallCameraDiagnostics?.();
+    this.uninstallCameraDiagnostics = null;
+    this.cameraView = null;
+    this.eyeRig?.dispose();
+    this.eyeRig = null;
     this.cameraRig?.dispose();
     this.cameraRig = null;
     this.inputs?.dispose();
@@ -500,7 +558,7 @@ export class AweSpatialRuntime implements ChunkRuntime, SensorRuntime, SceneStat
       this.inputs?.disable();
       this.animStateMachine?.forceState("idle");
     }
-    if (this.cameraRig) this.cameraRig.active = val;
+    this.cameraView?.setActive(val);
     if (this.animStateMachine) this.animStateMachine.enabled = val;
   }
 
@@ -514,11 +572,12 @@ export class AweSpatialRuntime implements ChunkRuntime, SensorRuntime, SceneStat
     const isSprinting = this.inputs.Sprint.isPressed;
     const speed = isSprinting ? SPEED * SPRINT_BOOST : SPEED;
 
-    const lookDelta = this.inputs.Look.readValue();
+    // M3: per-source look sensitivity (1 = the pre-M3 feel), then the active rig of the current view.
+    const look = scaledLook({ pointer: this.inputs.Look.readValue(), touch: this.inputs.TouchLook.readValue() }, cameraPreferences.state);
     const zoomDelta = this.inputs.Zoom.readValue();
 
-    this.cameraRig?.rotate(lookDelta.x, lookDelta.y);
-    this.cameraRig?.zoom(zoomDelta * 0.1);
+    this.cameraView?.rotate(look.x, look.y);
+    this.cameraView?.zoom(zoomDelta * 0.1);
     this.mover.move(moveDir.x, moveDir.y, speed);
 
     if (this.inputs.Jump.wasJustPressed) {
@@ -538,6 +597,26 @@ export class AweSpatialRuntime implements ChunkRuntime, SensorRuntime, SceneStat
     this.mover.update(dt);
     this.animStateMachine?.update(dt);
   };
+
+  /** Read-only camera state for diagnostics and the browser probes (`window.__nrvnaverseCamera`). */
+  private cameraSnapshot() {
+    const camera = Camera.current;
+    const player = this.player as unknown as { position?: { x: number; y: number; z: number }; visible?: boolean } | null;
+    _viewEuler.setFromQuaternion(camera.quaternion, "YXZ");
+    const p = player?.position;
+    return {
+      view: this.cameraView?.view ?? null,
+      active: this.cameraView?.active ?? false,
+      avatarVisible: player?.visible ?? null,
+      orbitActive: this.cameraRig?.active ?? false,
+      eyeActive: this.eyeRig?.active ?? false,
+      orbitZoom: this.cameraRig?.currentZoom ?? null,
+      yaw: _viewEuler.y,
+      pitch: _viewEuler.x,
+      camera: { x: camera.position.x, y: camera.position.y, z: camera.position.z },
+      avatar: p ? { x: p.x, y: p.y, z: p.z } : null,
+    };
+  }
 
   private onSpaceDisposed = () => {
     this.controlsActive = false;

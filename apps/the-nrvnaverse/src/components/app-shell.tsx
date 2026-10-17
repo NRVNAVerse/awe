@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useStore } from "@/hooks/use-store";
 import { APP_IDENTITY } from "@/lib/app-identity";
 import { appStore, bootApp, disposeApp } from "@/lib/app-store";
+import { CameraSettings } from "@/components/camera-settings";
 import { useDebugMode } from "@/lib/debug-mode";
 import { isInitialLoading, isPlaced, isSettled } from "@/lib/app-state";
 import { useInteractionMode } from "@/lib/interaction-mode";
@@ -18,8 +19,8 @@ import { TouchJoystick } from "@/components/touch-joystick";
 import { TravelBanner } from "@/components/travel-banner";
 import { WebWindow } from "@/components/web-window";
 
-/** Desktop line — unchanged since Step 2A. */
-export const DESKTOP_INSTRUCTIONS = "WASD / arrows move · Shift sprint · Space jump · click canvas for mouse look, Esc to release";
+/** Desktop line — Step 2A, plus the M3 view key. */
+export const DESKTOP_INSTRUCTIONS = "WASD / arrows move · Shift sprint · Space jump · V first / third person · click canvas for mouse look, Esc to release";
 /** Touch line (2B.4C.2): the controls that actually exist on a coarse pointer. */
 export const TOUCH_INSTRUCTIONS = "Joystick to move · drag the world to look · Jump button to jump";
 
@@ -50,6 +51,9 @@ export function AppShell() {
   // `null` = no explicit choice yet → the mode default (closed on touch / narrow, open on desktop).
   const [panelChoice, setPanelChoice] = useState<boolean | null>(null);
   const panelOpen = panelChoice ?? !mode.mobile;
+  // M3 camera settings (closed by default). Like the open directory, it hides the touch controls.
+  const [cameraOpen, setCameraOpen] = useState(false);
+  const touchControls = !panelOpen && !cameraOpen;
 
   // Boot on mount, tear down on unmount. Both are idempotent and coordinate with each other in
   // the store (2B.4A): Strict Mode's simulated cleanup + re-setup adopts the in-flight boot
@@ -129,6 +133,7 @@ export function AppShell() {
               <p className="text-[11px] text-neutral-500" data-instructions={mode.touch ? "touch" : "desktop"}>
                 {mode.touch ? TOUCH_INSTRUCTIONS : DESKTOP_INSTRUCTIONS}
               </p>
+              <CameraSettings touch={mode.touch} open={cameraOpen} onOpenChange={setCameraOpen} />
             </header>
 
             {!panelOpen && (
@@ -188,8 +193,8 @@ export function AppShell() {
             </aside>
           )}
 
-          {settled && !panelOpen && <TouchJoystick />}
-          {settled && !panelOpen && <JumpButton />}
+          {settled && touchControls && <TouchJoystick />}
+          {settled && touchControls && <JumpButton />}
           {/* WEB↔SPATIAL threshold window (D-020): shown while the visitor stands in a threshold; hidden behind the open directory on phones. */}
           {settled && (!panelOpen || !mode.mobile) && <WebWindow index={state.loaded.index} />}
         </>

@@ -8,6 +8,10 @@ import { Custom, Gamepad, Interactions, Keyboard, Mouse, Touch } from "@oncyberi
  * `scaleVector2(-1)` the starter used to put on `Touch.delta()` compensated for a rig flip that only
  * happened on UA-detected mobile devices; with that flip gone from the engine, keeping the
  * compensation would invert touch look everywhere (post-M0 input hardening).
+ *
+ * M3: look is split by source — `Look` (mouse under pointer lock, gamepad right stick) and
+ * `TouchLook` (canvas drag) — so the visitor's two sensitivity settings scale them independently
+ * (`scaledLook`). `ToggleView` (V) switches first / third person.
  */
 export const GAMEPLAY_INPUTS = {
   Move: {
@@ -16,7 +20,11 @@ export const GAMEPLAY_INPUTS = {
   },
   Look: {
     type: "vector2" as const,
-    bindings: [Mouse.pointerLockDelta(), Touch.delta(), Gamepad.rightStick()],
+    bindings: [Mouse.pointerLockDelta(), Gamepad.rightStick()],
+  },
+  TouchLook: {
+    type: "vector2" as const,
+    bindings: [Touch.delta()],
   },
   Zoom: {
     type: "value" as const,
@@ -30,5 +38,10 @@ export const GAMEPLAY_INPUTS = {
   Sprint: {
     type: "button" as const,
     bindings: [Keyboard.button("ShiftLeft"), Keyboard.button("ShiftRight"), Gamepad.button("LB")],
+  },
+  ToggleView: {
+    type: "button" as const,
+    bindings: [Keyboard.button("KeyV")],
+    interactions: [Interactions.press()],
   },
 } as const;

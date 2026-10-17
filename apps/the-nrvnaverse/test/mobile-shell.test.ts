@@ -72,9 +72,10 @@ describe("mobile shell contract (source scan)", () => {
     expect(shell).toMatch(/panelChoice \?\? !mode\.mobile/);
   });
 
-  it("touch controls are not rendered while the directory is open (they cannot intercept links) and return when it closes", () => {
-    expect(shell).toMatch(/settled && !panelOpen && <TouchJoystick \/>/);
-    expect(shell).toMatch(/settled && !panelOpen && <JumpButton \/>/);
+  it("touch controls are not rendered while the directory or the camera settings are open (they cannot intercept links or sliders) and return when both close", () => {
+    expect(shell).toMatch(/const touchControls = !panelOpen && !cameraOpen;/);
+    expect(shell).toMatch(/settled && touchControls && <TouchJoystick \/>/);
+    expect(shell).toMatch(/settled && touchControls && <JumpButton \/>/);
   });
 
   it("the open directory carries its own close control and the closed state a top-right, safe-area-aware opener — neither in the joystick footprint", () => {
