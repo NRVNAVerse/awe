@@ -314,3 +314,17 @@ Spoiler-light hints: "follow the lights north of the plaza", "the frame over the
 ### 17.4 Art status
 
 Everything in the committed world is **procedural / primitive** — the far field is generated geometry with runtime canvas window textures; no binary art was added. Real candidates (Sketchfab CC BY 4.0 notices, 3DRT Megacity of unknown entitlement) were measured and auditioned **locally only** (campaign record §2); none is in Git, a build or a deploy.
+
+## 18. M3 — Gallery One: a permanent gallery whose show changes  [VERIFIED tests + SIC + browser, `feat/m3-blender-camera-foundation`]
+
+**Gallery One** (`dst_3kacg0rqgyfnp7fm`, kind `venue`, primary district The City) stands on **South Row** (cell `city-south`), a short walk south of Skyfall Plaza down avenue x = 0: a 28 × 20 m white room, 5 m walls, open to the sky, door on the **west** facade at (33.8, z 150) facing the avenue across a paved forecourt, the name GALLERY ONE above the door. You arrive inside at (37, 1, 150) facing **east**, the long axis of the room. Directory travel and deep links land there; walking in from the street works (the door is 4 m wide) but the location label stays South Row's.
+
+The building is the M3 **Blender authoring fixture** (synthetic, self-authored), placed exactly as authored; its exhibit anchors: three on the east wall, two north, two south, two on the floor (staggered off the entrance axis after SIC showed a column hiding the centre work), and an intro wall beside the door.
+
+| Exhibition | Id | On the anchors |
+|---|---|---|
+| **Chromatic Fields** (committed default) | `exh_fztaq4wxq1q4pjt3` | seven two-tone colour fields, two columns, intro text |
+| **Night Signals** | `exh_52vnk38ynvct0cct` | three dark panels with glowing bars, a glowing orb on a plinth, a twisted stack, intro text — four anchors left empty |
+
+Switch with `pnpm --filter the-nrvnaverse gallery:assign gallery-one night-signals` (then reload under `next dev`, or rebuild). All works are procedural placeholders: no real artist, artwork or image. SIC (composed world): every work visible from the arrival eye; forecourt → door → arrival navmesh-reachable (12.0 m); visitor clearance at the door and beside both floor works; works 5–8 cm proud of their walls, never intersecting.
+

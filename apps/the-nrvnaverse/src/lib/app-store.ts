@@ -27,6 +27,7 @@ import { ChunkOrchestrator } from "@/lib/spatial/chunk-orchestrator";
 import { PortalController, type PortalTrigger } from "@/lib/spatial/portal-controller";
 import { placementRefFor, registryFromSpatialIndex, type SpatialIndexFile } from "@/lib/spatial/spatial-index";
 import { StreamingController } from "@/lib/spatial/streaming-controller";
+import { homeDestinations } from "@/lib/spatial/home-destinations";
 import { beginSkyLift, liftDirection } from "@/lib/sky-lift";
 import type { CityLayer } from "@/lib/city/city-layer";
 import { FetchSpatialIndexSource, type SpatialIndexSource } from "@/lib/spatial/spatial-index-source";
@@ -465,25 +466,6 @@ function refreshDiagnostics(phase?: SpatialTravelPhase, destinationId?: string |
     lastHandoff: prev.lastHandoff,
     cityLayer: current?.cityLayer ? { drawCalls: current.cityLayer.stats.drawCalls, triangles: current.cityLayer.stats.triangles, buildings: current.cityLayer.stats.buildings, visibleProxies: current.cityLayer.visibleProxies.length } : null,
   }));
-}
-
-/**
- * M2: chunk key → the destination that names that place. A chunk with placed destinations is named
- * by its district (else its first placement, id order); a placement-less city cell is named by the
- * destination of the origin cell (The City / Skyfall Plaza).
- */
-function homeDestinations(index: SpatialIndexFile, byId: ReadonlyMap<string, { kind: string }>): Map<string, string> {
-  const out = new Map<string, string>();
-  const placed = Object.entries(index.destinations).sort(([a], [b]) => (a < b ? -1 : a > b ? 1 : 0));
-  for (const chunkKey of Object.keys(index.chunks)) {
-    const here = placed.filter(([, d]) => d.chunkKey === chunkKey).map(([id]) => id);
-    const district = here.find((id) => byId.get(id)?.kind === "district" || byId.get(id)?.kind === "hub");
-    if (district ?? here[0]) out.set(chunkKey, (district ?? here[0]) as string);
-  }
-  const origin = index.streaming?.cells["0,0"];
-  const fallback = origin ? out.get(origin) : undefined;
-  if (fallback) for (const chunkKey of Object.values(index.streaming?.cells ?? {})) if (!out.has(chunkKey)) out.set(chunkKey, fallback);
-  return out;
 }
 
 /** M2: chunks that serve any gated destination (manifest gate truth) — never streamed by proximity. */

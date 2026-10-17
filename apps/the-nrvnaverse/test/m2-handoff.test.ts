@@ -10,6 +10,7 @@ import { bootState, withData, withInitialDeepLink, withInitialPlacement, withWal
 import { validateSpatialSource, type SpatialSourceInput } from "../scripts/spatial/pipeline.mjs";
 import { generatedChunks, spatialIndexJson } from "./support/generated-spatial";
 import { FakeChunkRuntime } from "./support/fake-chunk-runtime";
+import { homeDestinations } from "@/lib/spatial/home-destinations";
 
 /** M2: position-preserving handoff (orchestrator), the walked-into location (state), streaming validation (pipeline). */
 
@@ -129,5 +130,22 @@ describe("spatial pipeline — streaming validation (M2)", () => {
     expect(codes(missing)).toEqual(["missing-layer-source"]);
     const wrong: SpatialSourceInput = { config, scene, destinations: data, layers: { city: { ...layers.city, key: "other" } } };
     expect(codes(wrong)).toEqual(["invalid-layer-source"]);
+  });
+});
+
+describe("walked-into naming (M2; M3: a venue in a city cell never renames the cell)", () => {
+  it("names streaming cells by their district, else The City — Gallery One does not rename South Row", () => {
+    const index = parseSpatialIndex(spatialIndexJson);
+    const data = destinationsJson as unknown as DestinationsFile;
+    const byId = new Map(data.destinations.map((d) => [d.id, d]));
+    const home = homeDestinations(index, byId);
+    const CITY = "dst_8w1j39h5e0ezrsjh";
+    expect(index.destinations["dst_3kacg0rqgyfnp7fm"].chunkKey).toBe("city-south"); // the gallery stands in the cell…
+    expect(home.get("city-south")).toBe(CITY); // …but walking into the cell still names The City
+    expect(home.get("city-plaza")).toBe(CITY);
+    expect(home.get("music")).toBe("dst_gm3xs4a3tws7bgh3"); // district cells keep their district
+    expect(home.get("fashion-culture")).toBe("dst_9c4wxtpec8awsx1q");
+    expect(home.get("music-club")).toBe("dst_gqq90k2404cy9nf0"); // a non-streamed room keeps its own name
+    for (const chunkKey of Object.values(index.streaming?.cells ?? {})) expect(byId.get(home.get(chunkKey)!)?.kind, chunkKey).toMatch(/^(district|hub)$/);
   });
 });

@@ -11,6 +11,8 @@
 //      authored spawn facing east; the ASSIGNED exhibition's components exist and no other exhibition's
 //      do; walking backward leaves through the door onto the forecourt and forward walks back in;
 //      V gives first person inside; no page errors.
+//      Out of the door, up the avenue into the plaza cell and back into South Row: the place stays
+//      "The City" (the gallery never renames its cell).
 //   M  phone (390×844, touch): the deep link lands in Gallery One; the joystick walks out through the door.
 import fs from "node:fs";
 import os from "node:os";
@@ -21,6 +23,7 @@ const PORT = Number(process.env.PORT ?? 3321);
 const CDP_PORT = Number(process.env.CDP_PORT ?? 9338);
 const OUT_DIR = process.env.OUT_DIR ?? path.join(os.tmpdir(), "nrvnaverse-browser-gallery");
 const GALLERY_ID = "dst_3kacg0rqgyfnp7fm";
+const CITY_ID = "dst_8w1j39h5e0ezrsjh";
 const MOBILE_UA = "Mozilla/5.0 (Linux; Android 14; Pixel 8) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Mobile Safari/537.36";
 /** Authored spawn marker (Blender fixture) and the doorway plane (west wall, x 33.6 – 34). */
 const SPAWN = { x: 37, z: 150 };
@@ -141,6 +144,25 @@ async function desktop(base) {
   await hold(cdp, "KeyV", "v", 86, 60);
   expect(C, "no page errors", cdp.errors.length === 0, cdp.errors.slice(0, 5));
   cdp.close();
+
+  // Walking between cells: out of the gallery, up the avenue into the plaza cell, back down into South
+  // Row (the gallery's cell). The place is The City throughout: a venue standing in a cell never
+  // renames the cell or rewrites the URL of a passer-by (the plaza's name wall blocks the south axis,
+  // so the route starts at the gallery door).
+  const W = "D-walk-in";
+  const city = await open(base, { w: 1280, h: 800, dpr: 1, mobile: false }, `?destination=${GALLERY_ID}`);
+  const where = async () => city.eval(`({ cam: ${CAM}, place: ${PLACE}, url: location.search })`);
+  await hold(city, "KeyS", "s", 83, 2000); // facing east: backward = west, out of the door to the avenue
+  await hold(city, "KeyA", "a", 65, 4200); // left = north, up the avenue past z 96 into the plaza cell
+  await sleep(1500);
+  const north = await where();
+  expect(W, "walked out and north into the plaza cell: The City", north.cam.avatar.z < 96 && north.place === CITY_ID, { avatar: north.cam.avatar, place: north.place });
+  await hold(city, "KeyD", "d", 68, 2600); // right = south, back past z 104 into South Row
+  await sleep(1500);
+  const south = await where();
+  expect(W, "back south into South Row (the gallery's cell): still The City, URL included", south.cam.avatar.z > 104 && south.place === CITY_ID && south.url.includes(CITY_ID) && !south.url.includes(GALLERY_ID), { avatar: south.cam.avatar, place: south.place, url: south.url });
+  expect(W, "no page errors", city.errors.length === 0, city.errors.slice(0, 5));
+  city.close();
 }
 
 /** @param {string} base */
