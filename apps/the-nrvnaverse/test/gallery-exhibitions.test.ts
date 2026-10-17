@@ -124,6 +124,27 @@ describe("exhibitions bind to anchors, not coordinates", () => {
     }
   });
 
+  it("no floor work stands between the arrival point and the centre of a wall work (SIC found it once: keep it fixed)", () => {
+    const spawn = GALLERY_SPAWNS[gallery.destinationId].position;
+    for (const ex of [chromatic, night]) {
+      const items = exhibitionComponents(gallery, ex) as Item[];
+      const floor = ex.works.filter((w) => ["column", "orb", "stack"].includes(w.kind)).map((w) => {
+        const a = manifest.markers.find((m: Item) => m.kind === "anchor" && m.slug === w.anchor);
+        // Footprint radius: a column's radius; a box's half-diagonal (orb plinth 0.7 × width, stack base = width).
+        const r = w.kind === "column" ? w.size[0] / 2 : (w.size[0] * (w.kind === "orb" ? 0.7 : 1) * Math.SQRT2) / 2;
+        return { x: a.position[0], z: a.position[2], r, id: w.anchor };
+      });
+      for (const g of items.filter((i) => String(i.id).endsWith("-ground"))) {
+        const [ax, az, bx, bz] = [spawn.x, spawn.z, g.position.x, g.position.z];
+        for (const f of floor) {
+          const t = Math.max(0, Math.min(1, ((f.x - ax) * (bx - ax) + (f.z - az) * (bz - az)) / ((bx - ax) ** 2 + (bz - az) ** 2)));
+          const d = Math.hypot(ax + t * (bx - ax) - f.x, az + t * (bz - az) - f.z);
+          expect(d, `${ex.slug}: ${f.id} blocks ${g.id}`).toBeGreaterThan(f.r);
+        }
+      }
+    }
+  });
+
   it("Night Signals uses a subset of the anchors; the unused ones stay empty", () => {
     const used = new Set(night.works.map((w) => w.anchor));
     expect(used.size).toBeLessThan(manifest.galleries[0].anchors.length);

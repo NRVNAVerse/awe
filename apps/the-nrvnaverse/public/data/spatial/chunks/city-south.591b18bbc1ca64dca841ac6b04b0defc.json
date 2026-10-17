@@ -4359,9 +4359,9 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": 43,
+        "x": 44,
         "y": 1.3,
-        "z": 150
+        "z": 145.5
       },
       "rotation": {
         "x": 0,
@@ -4418,9 +4418,9 @@
       "kit": "cyber",
       "text": "Column, warm",
       "position": {
-        "x": 42.1,
+        "x": 43.1,
         "y": 1,
-        "z": 150
+        "z": 145.5
       },
       "rotation": {
         "x": 0,
@@ -4446,9 +4446,9 @@
       "type": "mesh",
       "kit": "cyber",
       "position": {
-        "x": 54,
+        "x": 53,
         "y": 1,
-        "z": 150
+        "z": 154.5
       },
       "rotation": {
         "x": 0,
@@ -4505,9 +4505,9 @@
       "kit": "cyber",
       "text": "Column, cool",
       "position": {
-        "x": 53.1,
+        "x": 52.1,
         "y": 1,
-        "z": 150
+        "z": 154.5
       },
       "rotation": {
         "x": 0,

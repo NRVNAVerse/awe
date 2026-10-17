@@ -20,7 +20,7 @@ export function sicRoot() {
 }
 
 /** Tools the dry run may call (all `readOnlyHint`); anything else is refused client-side. */
-const READ_ONLY_TOOLS = new Set(["blender_scene", "clearance", "query_relation", "scene_summary", "inspect_object"]);
+const READ_ONLY_TOOLS = new Set(["blender_scene", "adapt_awe_scene", "clearance", "query_relation", "scene_summary", "inspect_object"]);
 
 /**
  * @param {string} root

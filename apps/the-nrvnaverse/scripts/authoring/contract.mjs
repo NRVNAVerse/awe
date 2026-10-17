@@ -41,7 +41,7 @@ export const MARKER_KINDS = Object.freeze({
   drop: { concept: "the Drop release edge (walk-off point, facing = direction of the jump)", volume: false, facing: true, display: "ARROWS", props: [] },
   portal: { concept: "trigger volume that travels to a stable destination id", volume: true, facing: false, display: "CUBE", props: ["nrvna_destination"] },
   gallery: { concept: "a gallery's interior volume; its slug is the gallery's authoring key", volume: true, facing: false, display: "CUBE", props: [] },
-  anchor: { concept: "exhibit anchor inside a gallery: centre of a work's front face (wall) or its base (floor), facing the viewer", volume: false, facing: true, display: "PLAIN_AXES", props: ["nrvna_max_width", "nrvna_max_height"] },
+  anchor: { concept: "exhibit anchor inside a gallery, facing the viewer: on (or a few cm proud of) a wall at the centre height of the work, which hangs in front of it; or on the floor, where the work stands on it", volume: false, facing: true, display: "PLAIN_AXES", props: ["nrvna_max_width", "nrvna_max_height"] },
   interact: { concept: "interaction point (kiosk, desk, screen): where the visitor stands, facing the thing", volume: false, facing: true, display: "SPHERE", props: ["nrvna_radius"] },
   chunk: { concept: "streaming chunk boundary volume; the slug is the chunk key", volume: true, facing: false, display: "CUBE", props: [] },
 });
