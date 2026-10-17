@@ -141,6 +141,7 @@ Implementation reality (code, Git) outranks stale prose in any document, includi
 | Authoritative physical scene / spatial config, validation, deterministic generation, chunk files, spatial index, portal bindings, content-addressed delivery and HTTP cache policy | [`NRVNAVERSE_SPATIAL_DATA_PIPELINE.md`](./NRVNAVERSE_SPATIAL_DATA_PIPELINE.md) |
 | Official AWE runtime mount, chunk orchestrator, gate-before-fetch, application state / URL contract, physical portals, lifecycle / shutdown hardening, instrumentation, browser validation | [`NRVNAVERSE_SPATIAL_RUNTIME.md`](./NRVNAVERSE_SPATIAL_RUNTIME.md) |
 | Venues, reusable stages, hosted-event direction, WEB↔SPATIAL contextual surfaces and cross-surface discovery | [`NRVNAVERSE_VENUES_EVENTS_WEB_SPATIAL.md`](./NRVNAVERSE_VENUES_EVENTS_WEB_SPATIAL.md) |
+| Blender authoring contract: collections, marker names, frames / units, the dry run, what reaches the world | [`NRVNAVERSE_BLENDER_AUTHORING.md`](./NRVNAVERSE_BLENDER_AUTHORING.md) |
 | Upstream AWE conventions, kebab-case rule, `/engine`, `/run-space`, `/game-prd` skills, examples | [`CLAUDE.md`](../CLAUDE.md) (upstream portion), `CONTRIBUTING.md`, `packages/tools/AGENT.md`, `.claude/skills/*` |
 | Generic AWE capability implementation and usage (multiplayer, space kit, behaviors, generators, scaffolding) | `TheCannaMan/awe` — its `README.md`, package READMEs, `.claude/skills/engine/references/*.md` |
 

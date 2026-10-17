@@ -121,6 +121,8 @@ Licensing, security, maintainability and data ownership matter as much as featur
 
 ## 6. Preserve distinct identities
 
+**M3 proof (galleries, VERIFIED on `feat/m3-blender-camera-foundation`):** Gallery One keeps the same separation for art — the *venue shell* (Blender-authored building with exhibit anchors, a stable destination id), the *exhibition* (fixture content bound to anchor names, its own `exh_` id) and the *assignment* (a local file; no event backend) are three sources; switching the assignment changes only the exhibition (pipeline doc §20, world doc §18).
+
 Keep these concepts separate:
 
 ```text
