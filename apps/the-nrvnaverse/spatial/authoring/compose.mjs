@@ -118,8 +118,10 @@ const serialize = (obj) => JSON.stringify(obj, null, 2) + "\n";
 export function compose() {
   const scene = JSON.parse(readFileSync(scenePath, "utf8"));
   const config = JSON.parse(readFileSync(configPath, "utf8"));
-  const sceneText = readFileSync(scenePath, "utf8");
-  const configText = readFileSync(configPath, "utf8");
+  // Line endings are normalised so a Git `core.autocrlf` checkout on Windows is not reported as
+  // stale (as in `spatial:check`); composition always writes LF.
+  const sceneText = normalizeEol(readFileSync(scenePath, "utf8"));
+  const configText = normalizeEol(readFileSync(configPath, "utf8"));
 
   /** destinationId → chunkKey, for assigning composed arrivals to their chunk. */
   const placementChunk = new Map(config.placements.map((p) => [p.destinationId, p.chunkKey]));
@@ -231,7 +233,7 @@ export function compose() {
   config.streaming = streamingConfig();
   let layerPrev = "";
   try {
-    layerPrev = readFileSync(layerPath, "utf8");
+    layerPrev = normalizeEol(readFileSync(layerPath, "utf8"));
   } catch {
     layerPrev = "";
   }
@@ -260,6 +262,11 @@ export function compose() {
       writeFileSync(layerPath, layerText);
     },
   };
+}
+
+/** @param {string} text */
+function normalizeEol(text) {
+  return text.replace(/\r\n/g, "\n");
 }
 
 if (process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1]) {
