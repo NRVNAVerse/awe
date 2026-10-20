@@ -68,7 +68,7 @@ Setup and the per-release checklist: `docs/NRVNAVERSE_STAGING_AND_RELEASE.md` §
 | Hosted CI (GitHub Actions, Linux) | **green** on `671ea46` — all 12 steps executed; it had failed on every push since M3 (`authoring-importer.test.ts:170`, Windows path on Linux; fixed) |
 | `browser:release` | **PASSED** — production default (57 checks), staging, local, indexable-production, `NRVNA_WEB_PAGES=0`, and through a header-counting proxy (`BASE_HEADER` on 254 / 254 own-origin requests) |
 | `browser:perf` | **PASSED** — desktop 113 calls / 175 k tris / 56 fps (p95 18.1 ms) / heap 46 MB; mobile 105 / 173 k / 56 fps / heap 59–78 MB across 4 runs (one 78 MB snapshot, others 59). **A/B vs the M3 head on this PC the same day: identical calls / triangles / fps; heap equal** (M3 recorded 60 fps on 2026-10-16 — machine state) |
-| `browser:touch`, `browser:camera`, `browser:gallery` | **PASSED** (see `D:\AWE-Scratch\m4\final\`) |
+| `browser:touch`, `browser:camera`, `browser:gallery` | **PASSED** — 82 / 41 / 17 checks on the final build (evidence `D:\AWE-Scratch\m4\final\`) |
 | Hub arrival | fault-injected 0 / 12 after vs 4 / 4 before; loaded 0 / 24 |
 | Not run / not possible | real iOS / Android devices; a hosted deployment; the WEB → world leg on staging (needs the WEB's own origin setting) |
 
