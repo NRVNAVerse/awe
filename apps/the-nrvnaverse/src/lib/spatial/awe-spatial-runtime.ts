@@ -20,6 +20,7 @@ import { createComponentBatch } from "@/lib/spatial/component-batch";
 import type { SpawnPoint } from "@/lib/spatial/placement-registry";
 import { subscribePlayerEnterSensor, subscribePlayerExitSensor, type SensorHost } from "@/lib/spatial/sensor-subscription";
 import type { ChunkBatch, ChunkRuntime, SceneStateRuntime, SensorRuntime } from "@/lib/spatial/spatial-runtime";
+import { settleTeleportInterpolation, type InterpolatedBody } from "@/lib/spatial/teleport-interpolation";
 
 /**
  * Official AWE runtime mount for THE NRVNAVerse (M0 Step 2A; chunk operations added in 2B.2;
@@ -326,6 +327,8 @@ export class AweSpatialRuntime implements ChunkRuntime, SensorRuntime, SceneStat
     _spawnPosition.set(spawn.position.x, spawn.position.y, spawn.position.z);
     _spawnQuaternion.setFromAxisAngle(Y_AXIS, spawn.yaw);
     this.mover.teleport(_spawnPosition, _spawnQuaternion);
+    // M4: no render interpolation from the pre-teleport pose (the Hub-arrival fall).
+    settleTeleportInterpolation((this.player as unknown as { rigidBody?: InterpolatedBody }).rigidBody);
     this.cameraView?.reset();
   }
 
