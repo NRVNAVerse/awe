@@ -13,7 +13,7 @@ Vocabulary: **VERIFIED** = seen in code / tests · **DOCS** = stated in repo doc
 ## 1. Where we are (VERIFIED unless marked)
 
 - **Spatial app** (`apps/the-nrvnaverse`): one Next.js page, client-only shell; 4 chunks (hub, music, fashion-culture, cannabis-21); 7 active destinations in `packages/nrvna-manifest/manifests/` including `placeholder-artist` (`kind: "artist"`, Music); 7 portals incl. Music → Artist. All geometry is placeholder (boxes / meshes / text) — **no runtime art**.
-- **Deep links**: `?destination=<id>[&from][&ref][&return=<id|web>]` (`packages/nrvna-manifest/src/deep-link.ts`); `return=web` resolves to the manifest `webUrl` (`https://www.nrvnaverse.com/worlds/<slug>`); travel writes the URL with `pushState`.
+- **Deep links**: `?destination=<id>[&from][&ref][&return=<id|web>]` (`packages/nrvna-manifest/src/deep-link.ts`); `return=web` resolves to the website **root**, `return=<id>` to that destination's `webUrl` (`/worlds/<slug>`) — corrected in M4, the earlier wording here did not match the code; travel writes the URL with `pushState` and (M4) keeps the resolved `return` token ([`NRVNAVERSE_DESTINATION_MANIFEST.md`](./NRVNAVERSE_DESTINATION_MANIFEST.md) §8.1).
 - **Mobile**: touch joystick + jump, `browser:touch` / `browser:perf` probes; one real-phone input sign-off (DOCS), no broad real-device validation.
 - **Launch shell**: DONE — diagnostics (prototype label, `phase:` readouts, raw errors, spatial panel) render only in dev builds or with `?debug=1`; visitors get product copy and a friendly error / retry state. Still missing: analytics / error reporting.
 - **Hosting readiness / CI**: DONE — fail-closed release build (`release:check`), `GET /api/health`, host configuration docs (docs/NRVNAVERSE_HOSTING.md); `.github/workflows/nrvnaverse-spatial.yml` has executed successfully on GitHub. **Nothing is deployed; no host is chosen; no `worlds.nrvnaverse.com` DNS.** The background-tab `LOAD_TIMEOUT` risk is **DOCS** (Landmark §13). **Resolved:** the `ws://localhost:2567` Colyseus URL exists only in `examples/multiplayer*` / `apps/ghostt`; the spatial app has no multiplayer (docs/NRVNAVERSE_HOSTING.md §4).
@@ -68,7 +68,7 @@ Draco / meshopt / KTX2 compression (decoder location open) · adaptive quality, 
 
 - **One source of truth**: destination manifests (stable `dst_` ids, D-004) → spatial generation **and** the web export.
 - **Web → world**: `https://worlds.nrvnaverse.com/?destination=<id>&from=web[&ref=<campaign>]`.
-- **World → web**: `return=web` → the destination's `webUrl` (a token, never an arbitrary URL); commerce is a redirect capability (`commerceRefs` → Wix product / collection URLs, D-007) — no checkout in the world.
+- **World → web**: `return=web` → the website root, `return=<id>` → that destination's `webUrl` (a token, never an arbitrary URL; M4: kept through in-world travel, origin per deployment profile); commerce is a redirect capability (`commerceRefs` → Wix product / collection URLs, D-007) — no checkout in the world.
 - **Later**: cross-origin gate / member continuity needs a token design (DOCS: DECISIONS D-003); shared `analyticsId` = destination id.
 
 ---

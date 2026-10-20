@@ -95,8 +95,25 @@ Determinism: no timestamps, stable id ordering, deep-sorted keys, fixed serializ
 `worlds.nrvnaverse.com/?destination=<stable-id>[&from=<token>][&ref=<code>][&return=<id|web>]`
 
 - Only these four parameters are read (`DEEP_LINK_PARAMS`). Everything else — including the experimental `?chunk=` — is ignored and reported as a non-fatal `ignored-param` issue.
-- `return` is a token, never a URL: a destination id resolves to that destination's manifest `webUrl` (public destinations only); `web` resolves to `https://www.nrvnaverse.com/`. Anything else is dropped with an `unsafe-return` issue, so `return` can never become an open redirect.
+- `return` is a token, never a URL: a destination id resolves to that destination's manifest `webUrl` (public destinations only); `web` resolves to the website root (`https://www.nrvnaverse.com/` in production). Anything else is dropped with an `unsafe-return` issue, so `return` can never become an open redirect.
 - Unknown / malformed / non-public destination → hub, with a non-fatal notice (`unknown-destination`, `invalid-destination`, `destination-not-public`).
+
+### 8.1 Return contract (M4)
+
+| Token | The way back goes to | Use it from |
+|---|---|---|
+| `return=web` | the website root (`/`) | site-wide entry points (header "Enter", home, about) — what the generated `web-destinations.json` deep links carry today |
+| `return=<public destination id>` | that destination's canonical page (`/worlds/<slug>`) | a destination's own page, so the visitor returns to the page they left |
+
+- **Kept through in-world travel.** Directory, portal, history and walk-in handoffs write `?destination=<new id>&from=spatial[&ref=…][&return=<token>]`; only a token that resolved survives (`DeepLinkEntry.returnToken`), so an unsafe value can never be re-emitted. Reload keeps it (it is in the URL); a new tab opened from a bare `?destination=` link does not.
+- **The world shows two links** (destination card): `<current place> on nrvnaverse.com` → the canonical page of where the visitor is now, and the way back (`Back to <page> on nrvnaverse.com`) → the `return` resolution. When both name the same page, only the way back is shown.
+- **Not promised:** exact avatar position on return. A browser Back from the website may restore the world from the back/forward cache (observed in Chrome); that is a browser behaviour, not an AWE persistence system. A reload or new tab starts at the destination's spawn.
+- **Website origin per deployment.** Every world → web URL (return, current page, web-context panels, the error page) is the canonical `webUrl` path moved onto the build's reviewed website origin (`rebaseWebUrl`; deployment profiles in `apps/the-nrvnaverse/src/lib/deployment/deployment-profile.ts`, [`NRVNAVERSE_HOSTING.md`](./NRVNAVERSE_HOSTING.md) §2). Production → `www.nrvnaverse.com`; staging → the staging website; local → `localhost:3000`. No visitor input chooses the origin.
+- **Proposed WEB follow-up (needs a WEB decision, not required for launch):** destination pages emit `return=<own id>` instead of `return=web`. The AWE side already supports it and keeps it through travel; the WEB's imported-data validator currently pins `&from=web&return=web` (`expectedDeepLink`), so the generated feed keeps `return=web` until the WEB accepts the change. A WEB staging build also needs its own build-time world origin (it follows `spatial.deepLink` verbatim, which names production).
+
+### 8.2 Unfinished presentation: `placeholder` and `preview` tags (M4)
+
+The v1 web export has one boolean for presentation state, `placeholder`. It is **true** when a manifest carries the internal tag `placeholder` (stand-in content) **or** `preview` (a playable, enterable preview whose final presentation is not approved — The Club since M4). Both tags are removed from the exported public `tags`. The flag **never** decides entry: `spatial.enterable` / `spatial.deepLink` depend only on gates and spatial presence (pinned by `test/web-destinations.test.ts`). The WEB already maps `placeholder: true` + enterable to "In development · Preview open". A distinct three-state field (`placeholder | preview | final`) would be a schema-v2 change on both sides; not needed now.
 
 ## 9. Application state (app)
 
