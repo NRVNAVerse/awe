@@ -54,7 +54,7 @@ describe("production build + runtime configuration", () => {
   it("app code reads no environment beyond NODE_ENV and the two inlined deployment constants (M4), and no NEXT_PUBLIC value", () => {
     // NRVNA_DEPLOYMENT / NRVNA_INDEXING are build-time constants written by next.config.ts `env`
     // (a reviewed profile NAME and 0/1) — never an origin or URL from the environment.
-    const files = ["src/lib/app-store.ts", "src/lib/app-state.ts", "src/lib/debug-mode.ts", "src/lib/perf.ts", "src/components/app-shell.tsx", "src/components/destination-view.tsx", "src/components/web-window.tsx", "src/lib/deployment/deployment-profile.ts", "src/lib/deployment/web-links.ts", "src/lib/deployment/http-policy.ts", "src/app/layout.tsx", "src/app/robots.ts", "src/app/web-context/[id]/page.tsx", "next.config.ts"];
+    const files = ["src/lib/app-store.ts", "src/lib/app-state.ts", "src/lib/debug-mode.ts", "src/lib/perf.ts", "src/components/app-shell.tsx", "src/components/destination-view.tsx", "src/components/web-window.tsx", "src/lib/deployment/deployment-profile.ts", "src/lib/deployment/web-links.ts", "src/lib/deployment/http-policy.ts", "src/app/layout.tsx", "src/app/robots.ts", "src/app/web-context/[id]/page.tsx", "src/app/api/health/route.ts", "next.config.ts"];
     for (const f of files) {
       const text = readFileSync(join(APP_ROOT, f), "utf8");
       for (const m of text.matchAll(/process\.env\.([A-Z0-9_]+)/g)) expect(["NODE_ENV", "NRVNA_DEPLOYMENT", "NRVNA_INDEXING"], f).toContain(m[1]);

@@ -9,7 +9,10 @@ import { releaseInfo } from "@/lib/release-info";
 export const dynamic = "force-dynamic";
 
 export function GET() {
-  return Response.json(releaseInfo(process.env, spatialIndex), {
+  // M4: the deployment profile and indexing decision are what this BUILD was made for (inlined by
+  // next.config.ts `env`), never whatever the runtime environment happens to say.
+  const env = { ...process.env, NRVNA_DEPLOYMENT: process.env.NRVNA_DEPLOYMENT, NRVNA_INDEXING: process.env.NRVNA_INDEXING };
+  return Response.json(releaseInfo(env, spatialIndex), {
     headers: { "Cache-Control": "no-store" },
   });
 }
