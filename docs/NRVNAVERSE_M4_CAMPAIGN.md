@@ -29,6 +29,7 @@ Compact, restartable record for the M4 run on `feat/m4-integration-hosting-readi
 | 6 | Portable Blender export OS-independent → hosted CI green again | `671ea46` |
 | 7 | Visitors never see milestone markers in descriptions | `e75a7ad` |
 | 8 | `browser:release` `BASE_HEADER` for login-protected staging | `462c64d` |
+| 9 | Campaign record; upstream candidate `contrib/rigidbody-teleport-interpolation` (`c6160e7`, engine fix + test, no PR); final verification; handoff | `fd61e25`, final commit |
 
 ## 2. Findings worth keeping
 
@@ -47,7 +48,7 @@ Compact, restartable record for the M4 run on `feat/m4-integration-hosting-readi
 
 ## 3. Verification (final numbers in `handoffs/current/reviewer.md`)
 
-App vitest 600+, manifest 65, `tsc` + strict, `spatial:check`, `generate:check`, release build; `browser:release` (default, staging, local, indexable-production, `NRVNA_WEB_PAGES=0`, through a header-counting proxy), `browser:perf` (+ A/B vs M3), `browser:touch`, `browser:camera`, `browser:gallery`; local origin round trip world(:3100) → web(:3000); fault-injected and loaded Hub arrivals; hosted CI green.
+App vitest 598, manifest 65, `tsc` + strict, `spatial:check`, `generate:check`, release build; `browser:release` (default, staging, local, indexable-production, `NRVNA_WEB_PAGES=0`, through a header-counting proxy), `browser:perf` (+ A/B vs M3), `browser:touch`, `browser:camera`, `browser:gallery`; local origin round trip world(:3100) → web(:3000); fault-injected and loaded Hub arrivals; hosted CI green.
 
 ## 4. Continuation queue
 
@@ -59,4 +60,4 @@ App vitest 600+, manifest 65, `tsc` + strict, `spatial:check`, `generate:check`,
 
 ## 5. Exact next action
 
-Final convergence: full `verify`, full probe suite on the final build, handoff (`handoffs/current/reviewer.md`, `handoffs/STATUS.md` → `NEXT: CHATGPT`).
+Done: final verification green (`verify` 598 + 65, all five browser probes on the final build), handoff written, `NEXT: CHATGPT`. Stop at this review boundary; continuation queue §4 needs owner / reviewer decisions.

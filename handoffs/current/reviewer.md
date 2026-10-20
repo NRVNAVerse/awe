@@ -1,115 +1,101 @@
-# Implementer Handoff — M3: camera controls, Blender authoring contract, permanent gallery
+# Implementer Handoff — M4: spatial integration, reliability, safety and hosting readiness
 
 ## Baton
 
 NEXT: CHATGPT
 LAST: CLAUDE
-STATE: AWAITING_REVIEW — **READY FOR OWNER PLAYTEST / REVIEW**
-BRANCH: `feat/m3-blender-camera-foundation` (pushed; working tree clean at the final commit)
+STATE: AWAITING_REVIEW — **READY FOR STAGING** (deployment-ready candidate, locally verified; nothing merged, deployed or configured)
+BRANCH: `feat/m4-integration-hosting-readiness` (pushed; working tree clean at the final commit). Also pushed: `contrib/rigidbody-teleport-interpolation` (upstream candidate, one engine commit on `main`; **no PR opened**)
 
-Read first: `docs/NRVNAVERSE_M3_CAMPAIGN.md` (checkpoints, findings, queue). Owner guide: `docs/NRVNAVERSE_BLENDER_AUTHORING.md`. Contracts: runtime §21 (camera), pipeline §20 (authoring import, galleries), world §18 (Gallery One). Landmark: new M3 checkpoint note (version unchanged). The M2 handoff that lived in this file is in Git history (`7a93c08`).
+Read first: `docs/NRVNAVERSE_M4_CAMPAIGN.md` (findings, checkpoints, queue). Decisions to take: `docs/NRVNAVERSE_HOSTING_DECISION.md` (D-022 PROPOSED), `docs/NRVNAVERSE_STAGING_AND_RELEASE.md` (D-023 PROPOSED), `docs/NRVNAVERSE_INTEGRATION_M1_M4.md`. Contracts: `docs/NRVNAVERSE_HOSTING.md`, manifest §8.1–8.2, runtime §22, pipeline §21. The M3 handoff that lived in this file is in Git history (`e1662b7`).
 
-## 1. Commits
+## 1. Integration state and outstanding owner approvals
 
-From `7a93c08` (M2 close): `5e2ce44` camera · `ae56a44` authoring contract + importer + dry run · `0afd9e5` Gallery One + exhibitions · `eb6d758` SIC-driven anchor fix · `cb800c3` gallery probe · `51df79a` walk-in naming fix + docs · `f0f9bf3` record, Landmark, handoff · second session: `13113c0` `compose --check` CRLF fix · final: this commit (re-verification evidence, corrected limits). `main`, `nrvna/integration` untouched; nothing merged or deployed.
+- **Ancestry (VERIFIED 2026-10-19):** `main 04a07c8` ⊂ `nrvna/integration 19562bc` ⊂ M1 `ecda29f` ⊂ M2 `7a93c08` ⊂ M3 `e1662b7` ⊂ M4 (this branch). One straight line; every step is a fast-forward. `main` and `nrvna/integration` untouched.
+- **Prepared, not executed:** exact staged fast-forward commands, preconditions, per-stop verification and rollback points — `docs/NRVNAVERSE_INTEGRATION_M1_M4.md`. A single fast-forward `19562bc → <M4 head>` is equivalent if the owner accepts M4 as a whole. Heads M1–M3 still contain the Hub-arrival fall (fixed only in M4).
+- **Provisional product rulings applied:** The Club `dst_gqq90k2404cy9nf0` keeps its id and is a **playable preview** (new internal `preview` tag → the web export's v1 `placeholder` flag; the WEB shows "In development · Preview open · Enter the preview"; entry never depends on the flag — tested). The City and Gallery One unchanged (ids, slugs, layout).
+- **Owner approvals outstanding:** (1) fast-forward `nrvna/integration` (each push); (2) hosting choice D-022 (Vercel Pro recommended) and account / billing; (3) release branch model D-023 (`nrvna/release`); (4) staging hostnames (`worlds-staging.` / `staging.nrvnaverse.com` PROPOSED) and the Wix DNS records; (5) production indexing (`NRVNA_ALLOW_INDEXING`); (6) launching before the WEB app (`NRVNA_WEB_PAGES=0`); (7) acceptance of the third-party runtime origins; (8) The Club's marquee text "THE CLUB — placeholder listening session" and the "Placeholder Artist / Brand" names are product copy — left as is.
 
-## 2. Camera controls — ready for owner testing
+## 2. Hub-arrival fall — investigation and evidence
 
-| What | How |
+**Root cause proven; fixed in the runtime.** The engine renders the PLAYER body at `lerp(previous, current, α)`. `teleport()` resets only the current pose; physics is inactive until `space.start()`, so after the hidden placement teleport the previous pose is still the boot pose (y = 0) while the current one is the deck spawn (y = 141). When the first live physics update is shorter than one fixed step (1/60 s), zero steps run, interpolation writes `lerp(0, 141, α)` into the avatar, and the Mover's ground-sync probe after `reset()` restores the body to that component position — below the 0.5 m deck; the M2 release then hands the visitor to The City.
+
+| Evidence | Result |
 |---|---|
-| Default | **Third person**, exactly the M2 rig (distance 5, collision on) and feel (sensitivity 1.0×) |
-| Switch | **`V`** (desktop) or the HUD button **"View: Third / First person"** (all devices). First person: eye at 0.92 × avatar height, avatar hidden, no zoom. Switching keeps the view direction; going back to third person eases out to your previous orbit distance |
-| Settings | HUD **"Camera settings"**: view radios; **Mouse look sensitivity** (shown when a mouse / trackpad exists) and **Touch look sensitivity** (touch screens), 0.2–3.0×; **Reset to defaults**; Escape or Done closes. While open: joystick / Jump are hidden and keys never move the avatar |
-| Persistence | browser `localStorage` (`nrvnaverse.camera.v1`): view and both sensitivities survive reloads and travel |
-| Unchanged | movement physics and speeds, jump, pointer lock (click canvas, Esc), joystick, Jump, directory, 21+ gate |
+| Fault injection: first physics update forced to 16 ms (an ordinary 60 Hz frame), production build, before the fix | **4 / 4 falls, y = 135.36** (= 0.96 × 141; the M3-recorded failure signature was 134.5–135.5 at `ready`) |
+| Same injection at 16 ms and 5 ms, after the fix | **0 / 12** (scratch tool) and 3 + 3 in every `browser:release` run (check A) |
+| Natural first live frame on this PC | 17–34 ms — right at the 16.7 ms threshold → intermittent, load- and display-dependent (90 / 120 Hz screens make short first frames likely) |
+| Bounded CPU load (4 of 8 threads at 80 %), 24 fresh loads each | M3 head: 0 / 24 falls but **24 / 24 loads in the hazardous state** (previous pose = stale boot pose); M4: 0 / 24 falls, **0 / 24** in that state |
+| Travel teleports while running | not affected (zero-step frame injected after a travel teleport: 3 / 3 exact — the character controller moves from the raw Rapier translation) |
+| Intentional Drop | unchanged (`browser:touch` / `browser:perf` pass; the Drop path is not a teleport) |
 
-Known limits: mouse sensitivity is unit-tested but cannot be measured headless (no pointer lock). Near walls the third-person camera never shows the inside of the avatar: the engine's avatar shader dissolves the avatar within ≈ 1.5–2 m of the camera (verified in the second session; the earlier "camera can enter the avatar" note was wrong).
+Not claimed fixed because it stopped reproducing: the natural fall was **not** reproduced under load on either head; the claim rests on the deterministic injection and the observed state. Fix: `src/lib/spatial/teleport-interpolation.ts` (`settleTeleportInterpolation`, the engine's own `_preInterpolate`, feature-checked) called in `placeVisitor` right after the official teleport. Engine-level fix prepared for upstream on `contrib/rigidbody-teleport-interpolation` (`c6160e7`: `_resetPosition` / `_resetQuaternion` also reset the previous pose; new engine test fails before / passes after; engine 127 tests + `engine:check` green). Residual risk: none known for placement; the app workaround stays harmless if the engine fix lands.
 
-## 3. Blender importer — what it actually supports
+## 3. Indexing and age-gate results
 
-- **Input**: any `.blend`, read through Spatial Intelligence Core's read-only bridge (SIC 0.4.0, verified on Blender 5.1.2). The `.blend` is never saved; its SHA-256 is checked before / after.
-- **Output** (dry run, outside the repo): `report.md` / `report.json` (findings), `manifest.json` (every object and marker as authored, in the NRVNAVerse frame), SIC's export.
-- **Preserved**: object names (+ optional `nrvna_id`), collection, position, rotation (quaternion, XYZ Euler, yaw), signed scale, raw Blender matrix, exact boxes, bounds, every material slot with variant (`<base>--<variant>`) and image textures.
-- **Detected**: missing textures, textures outside the project, Blender `.001` material copies, suspect units (cm / mm scale, absurd sizes), scene unit scale, zero / mirrored / sheared transforms, uncategorised objects, duplicate / malformed / non-Empty markers, unknown kinds, tilted markers, anchors outside or without their gallery — and with SIC: blocked spawns / doors / interaction points (capsule clearance), no ground under markers, anchor sightlines from the gallery spawn, interpenetrating geometry (exact).
-- **Into the world today**: exact-box objects as blockout components coloured by material name (Gallery One). Any other mesh waits for the asset contract (human `reviewedBy`). Instances, armatures, animation, cameras, lights: not read.
-- **Proof**: synthetic fixtures built by real Blender from committed specs (`gallery-one` round-trips to 0.1 mm; `contract-coverage`'s seeded defects are all reported). No owner scene, vault model or binary in Git.
+- `/web-context/<gated id>` (WEB v0.5 finding) is **gone**: panels exist only for public, ungated destinations (gated ids 404; the in-world window never opens for them; no threshold points at a gated id — tested). Panels are `noindex, nofollow`, canonical = the website page.
+- **No accidental indexing:** every build is `noindex` (X-Robots-Tag on every response, `Disallow: /`, page meta) unless `NRVNA_DEPLOYMENT=production` **and** `NRVNA_ALLOW_INDEXING=true`; even then `/web-context`, `/api`, `/data`, `/assets` are never indexed. Verified for production-default, staging, local and indexable-production builds on a real server.
+- **21+ boundary unchanged:** Hub → 21+ (deep link) refused at the Hub with **zero** requests for the gated chunk or panel (both gated ids, every `browser:release` run; `browser:touch` touch path likewise). New canonical rule `media-in-gated-chunk`: a gated chunk may carry no media by URL (no image / model / audio / video address, `data:` / `blob:` payloads) — the static gated file can only describe placeholder geometry and text. The gated chunk file itself remains publicly retrievable by direct URL (known limitation since M0 — not authorization).
+- **Security headers / CSP** on every response; **zero CSP violations** in real desktop and phone loads. The CSP surfaced an undocumented engine fetch of GPU benchmark tables from `unpkg.com` (allowed for `connect-src` only).
 
-## 4. Marker naming (exact)
+## 4. WEB ↔ WORLD return contract
 
-Empties only, in `MARKERS`; facing = local +Y (green arrow), rotate about Z only; volumes = Cube empty (size = display size × scale).
+- `return` (only a token that resolved: `web` or a public destination id) is now **kept through in-world travel and walk-in handoffs** (`?destination=<id>&from=spatial[&ref][&return]`); unsafe tokens and URLs are dropped (no open redirect — probed).
+- The card shows `<current place> on nrvnaverse.com` and the way back (`Back to <page> on nrvnaverse.com`), de-duplicated. Exact avatar position on return is **not** promised (back/forward cache only — contract doc corrected; roadmap's `return=web` wording corrected to "site root").
+- **Allowlisted preview origins:** reviewed deployment profiles (`production` / `staging` / `local`) pair the world origin with the website origin; chosen at build time by `NRVNA_DEPLOYMENT` (unknown → build error); no URL or origin from env or visitor. Local round trip (world `NRVNA_DEPLOYMENT=local` on :3100 → scratch WEB build on :3000): way back lands on `http://localhost:3000/worlds/music`, return kept through travel, web-context panel on the local web, **zero requests to production hosts**. Staging build: every link on `https://staging.nrvnaverse.com`.
+- **WEB-side follow-ups (WEB repo's decision):** a build-time world origin for its staging (it follows `spatial.deepLink`, which names production); optionally `return=<own id>` on destination pages (AWE supports it; the WEB's `expectedDeepLink` pins `return=web`, so the feed keeps `return=web`).
+- **Live-site finding:** `www.nrvnaverse.com/worlds/<slug>` is 404 on the Wix site. A world launched before the WEB app builds with `NRVNA_WEB_PAGES=0` (all world → web links to the root); `CHECK_WEB_LINKS=1` in the production smoke proves it.
 
-`spawn:<slug>` · `entrance:<slug>` · `exit:<slug>` · `skylift:<slug>` · `drop:<slug>` · `portal:<slug>` (+ `nrvna_destination`) · `gallery:<gallery>` · `anchor:<gallery>:<anchor>` (+ `nrvna_max_width`, `nrvna_max_height`) · `interact:<slug>` (+ `nrvna_radius`) · `chunk:<chunk-key>`. Slugs lowercase kebab-case. Units Metric / Meters / scale 1.0; Blender origin = world origin (Skyfall Plaza centre, street level); Blender +Y = north; a Blender Z rotation θ = world yaw θ. Wired to runtime today: spawn, exit, gallery, anchor; the rest are parsed, validated and recorded (PLANNED wiring).
+## 5. Recommended staging / production architecture
 
-## 5. Gallery fixture — what it demonstrates
+Vercel Pro, one team for world + WEB; production `worlds.nrvnaverse.com` from a fast-forward-only `nrvna/release`; staging `worlds-staging.nrvnaverse.com` from `nrvna/integration`, login-protected; feature branches get protected previews; DNS stays at Wix (CNAME / TXT only). Wix cannot host the app (checked). Fallback $0: Cloudflare Pages static export (needs the bounded changes in the decision record §5; staging only on `*.pages.dev`). Normal vs high-risk change paths and the release checklist: `docs/NRVNAVERSE_STAGING_AND_RELEASE.md`.
 
-**Gallery One** (`dst_3kacg0rqgyfnp7fm`, venue in The City) on South Row, door on the west facade facing avenue x = 0. Shell = the Blender fixture placed as authored; exhibitions bind to anchor names; the assignment is a separate file. **Chromatic Fields** (default, ten anchors) ↔ **Night Signals** (six anchors). A switch regenerates exactly the `city-south` chunk — building, door, arrival point (37, 1, 150 facing east), destination id, far-field layer and every other chunk byte-identical (tested). SIC on the composed world: every work visible from the arrival eye, door → arrival reachable, clearances fit, works never intersect walls. Walking down South Row keeps the location "The City" (fixed in this run: the gallery used to rename its cell).
+## 6. Costs and operational requirements
 
-## 6. Test evidence
+≈ **$20 / month** (one Vercel Pro seat, both projects; 1 TB transfer included — a cold visit is ≈ 3.96 MB on the wire). $0: DNS (Wix), TLS, CI (public repo), R2 until real art. Operations: no secrets on the app host; three build-time switches (`NRVNA_DEPLOYMENT`, `NRVNA_ALLOW_INDEXING`, `NRVNA_WEB_PAGES`); `/api/health` reports deployment / indexing / web pages / release SHA; hosted build ≈ 1 min (CI job 57 s). Uncertainties (decision record §6): Vercel monorepo + Corepack pin, viewer seats, Pages commercial terms, R2 custom domain needs Cloudflare DNS.
+
+## 7. Deployment and rollback (once authorized)
+
+Setup and the per-release checklist: `docs/NRVNAVERSE_STAGING_AND_RELEASE.md` §3 / §5. Promote = `git push origin <accepted sha>:nrvna/release` (fast-forward only) or the host's "promote" of the exact staging deployment. Smoke = `BASE_URL=https://worlds.nrvnaverse.com EXPECT_DEPLOYMENT=production EXPECT_WEB_PAGES=<0|1> CHECK_WEB_LINKS=1 pnpm --filter the-nrvnaverse browser:release` (staging: add `BASE_HEADER` with the host's automation bypass). Rollback = the host's Instant Rollback (seconds), then `git revert` on integration and re-promote; content-addressed data makes old / new builds coexist.
+
+## 8. Local verification evidence (final head)
 
 | Check | Result |
 |---|---|
-| App tests (vitest) | **572 passed** (38 files; 21 camera, 17 authoring importer, 13 gallery, 1 walk-in naming new) |
-| Manifests (vitest) / `generate:check` | **61 passed** / up to date |
-| `tsc` + strict typecheck | clean |
-| `compose --check` / `spatial:check` | up to date / 16 files within the warning budgets |
-| `browser:camera` (production) | **PASSED** — 41 checks, desktop 1280×800 + phone 390×844 (real CDP keys / touches; touch 2.0× turns 2.0× as far as 1.0×) |
-| `browser:gallery` (production) | **PASSED** — 17 checks: directory travel Hub → Gallery One, authored arrival / facing, only the assigned exhibition present, out through the door and back in (keys + joystick), out → plaza cell → back into South Row stays The City |
-| `browser:perf` (production) | **PASSED** — desktop **113 draw calls / 175 k triangles / 60 fps (p95 16.8 ms) / heap 46 MB**; mobile-emulated **105 / 173 k / 60 fps / 39 MB** (M2: 112 / 104 — +1 = South Row's new far-field proxy); Hub → Music → Hub arrives; warm reload served from cache |
-| `browser:touch` (production) | first run **FAILED 1 check** (C: the avatar was already falling off the Hub when the page opened — see below), immediate rerun **PASSED** (Hub → 21+ `gateRequired`, zero cannabis requests in both runs) |
-| SIC — authoring dry runs | Gallery One: 0 errors / 0 warnings, 18 SIC questions; coverage fixture: every seeded defect reported (incl. spawn-in-wall −0.6 m clearance, 4 m interpenetration) |
-| SIC — composed world | every Gallery One work visible from the arrival eye; forecourt → door → arrival reachable (12.0 m); clearances fit; works 5–8 cm proud of their walls |
-| Hosted CI | not run (Key guardrails) — not a pass, not a failure |
-| **Second-session re-run** (2026-10-16 late, production build of `f0f9bf3`) | `tsc` + strict clean · **572** app / **61** manifest tests · `spatial:check` up to date · `compose --check` up to date (after `13113c0`; before it, a false "stale" on this autocrlf checkout) · `browser:camera` **PASSED** 41 · `browser:gallery` **PASSED** 17 · `browser:touch` **PASSED** 82 on the first run · `browser:perf` **PASSED** (desktop 113 calls / 175 k tris / 60 fps, p95 16.8 ms; mobile 105 / 173 k / 60 fps) · Hub-arrival fall **0 / 96** fresh loads |
+| App tests (vitest) | **598 passed** (41 files; 572 at the M3 base) |
+| Manifest tests | **65 passed** (61 at base) |
+| `tsc` + strict, `spatial:check`, `generate:check`, `compose --check`, release build | pass (`pnpm --filter the-nrvnaverse verify`, 1 m 12 s warm) |
+| Hosted CI (GitHub Actions, Linux) | **green** on `671ea46` — all 12 steps executed; it had failed on every push since M3 (`authoring-importer.test.ts:170`, Windows path on Linux; fixed) |
+| `browser:release` | **PASSED** — production default (57 checks), staging, local, indexable-production, `NRVNA_WEB_PAGES=0`, and through a header-counting proxy (`BASE_HEADER` on 254 / 254 own-origin requests) |
+| `browser:perf` | **PASSED** — desktop 113 calls / 175 k tris / 56 fps (p95 18.1 ms) / heap 46 MB; mobile 105 / 173 k / 56 fps / heap 59–78 MB across 4 runs (one 78 MB snapshot, others 59). **A/B vs the M3 head on this PC the same day: identical calls / triangles / fps; heap equal** (M3 recorded 60 fps on 2026-10-16 — machine state) |
+| `browser:touch`, `browser:camera`, `browser:gallery` | **PASSED** (see `D:\AWE-Scratch\m4\final\`) |
+| Hub arrival | fault-injected 0 / 12 after vs 4 / 4 before; loaded 0 / 24 |
+| Not run / not possible | real iOS / Android devices; a hosted deployment; the WEB → world leg on staging (needs the WEB's own origin setting) |
 
-**Pre-existing intermittent defect found (not caused by M3):** on a fresh Hub load the avatar sometimes drops through the deck right after the world is revealed and the M2 release hands it to The City (lands on Skyfall Plaza). Measured with 12–16 fresh phone-profile loads of the production build: **M3 1 / 12 and 2 / 16, M2 baseline `7a93c08` 2 / 12**. The avatar holds the spawn height (y 141) through chunk loading and starts falling within ≈ 0.3 s of `ready`; frame dt is clamped to 0.1 s by the engine, so it is not one huge step. Root cause not established — queue item 1. It explains the touch probe's check-C failure above and M2's earlier "marginal" touch failures may share it.
+Recorded failures during the run (all explained): the first `browser:release` caught the `/:path*` root-matching gap and the unpkg CSP block (fixed); the local round trip caught the health identity bug (fixed); in the final pass, 4 subprocess-spawning tests timed out at 5 s in the full parallel suite immediately after a branch switch had rewritten every app file (isolated: 0.5–0.75 s; warm full rerun 598 / 598) and two probes correctly refused the then-stale build (rerun green).
 
-## 7. Limitations and owner decisions
+## 9. Owner actions to get the world live
 
-0. **Hub arrival can (rarely) drop the visitor to the plaza** — pre-existing since M2, see §6; if it happens in a playtest, it is this, not the camera. Not reproduced in 96 fresh loads on a quiet machine (second session), so it probably needs a heavily loaded PC; note what else was running if you see it.
-1. New stable id **Gallery One** `dst_3kacg0rqgyfnp7fm` and its placement on South Row, its 28 × 20 m size and west door are autonomous, reversible layout choices (Governance rule 9) — owner review.
-2. Exhibitions are procedural placeholders; real art must go through the asset contract.
-3. Walking into Gallery One from the street does not set the location to Gallery One (only directory travel / deep links do) — a product choice for the owner (queue 3).
-4. The importer has not yet seen the owner's real city; expect new findings on a large scene (instancing, modifiers, materials without palette entries).
-5. `skylift`, `drop`, `portal`, `interact`, `chunk` markers are recorded, not wired.
-6. Hosted CI not run (Key guardrails); local verification above is the evidence.
+1. Accept M4 (or the staged sequence) and authorize the fast-forward of `nrvna/integration`.
+2. Decide D-022 (host) and D-023 (release branch); create the host team (Vercel Pro) and import `NRVNAVerse/awe` per the staging doc §3.
+3. Set env: Preview `NRVNA_DEPLOYMENT=staging`; Production `NRVNA_DEPLOYMENT=production`, `NRVNA_WEB_PAGES=0` (until the WEB app serves `www`), `NRVNA_ALLOW_INDEXING=true` only if the world should be indexed.
+4. In Wix DNS: CNAME `worlds-staging` and `worlds` to the values the host shows (+ TXT if asked).
+5. Play on staging on a real iPhone and Android phone (Hub arrival, the Drop, a portal, The Club, Gallery One); run the staging smoke.
+6. Create `nrvna/release` at the accepted commit → production deploys; run the production smoke with `CHECK_WEB_LINKS=1`.
+7. Decide whether to keep or self-host the third-party runtime assets before a broad announcement.
 
-## 8. Playtest (Windows PowerShell 5.1)
+## 10. Blockers, uncertainties, remaining risks
 
-```powershell
-D:
-Set-Location D:\AWE\awe
-git status
-git fetch origin
-git checkout feat/m3-blender-camera-foundation
-git pull --ff-only origin feat/m3-blender-camera-foundation
-pnpm install --frozen-lockfile
-pnpm --filter the-nrvnaverse build
-pnpm --filter the-nrvnaverse start
-# browser: http://localhost:3000/                                         Hub — press V, open "Camera settings"
-#          http://localhost:3000/?destination=dst_3kacg0rqgyfnp7fm        Gallery One (Chromatic Fields)
-```
+- **Blockers for public launch:** owner approvals and setup above; real-device validation (all mobile evidence is emulated).
+- Third-party runtime origins (`cdn.oncyber.xyz`, `cyber.mypinata.cloud`, `unpkg.com`) can break the world if they change or go down.
+- The gated chunk file is still publicly retrievable by direct URL (placeholder geometry and text only; now enforced to carry no media).
+- Prerendered HTML is `s-maxage=31536000`: correct on Vercel, re-check on any other CDN.
+- R2 / `assets.nrvnaverse.com` needs the zone on Cloudflare — no production art exists yet.
+- Subprocess-spawning tests have a 5 s timeout that a cold machine can exceed (seen once right after a checkout); not changed.
+- Vercel specifics (Corepack pin, protection bypass, seats) are UNVERIFIED until an account exists.
 
-Switch the exhibition (then rebuild, or use `pnpm --filter the-nrvnaverse dev` and just reload):
+## Release recommendation
 
-```powershell
-Set-Location D:\AWE\awe
-pnpm --filter the-nrvnaverse gallery:assign gallery-one night-signals
-pnpm --filter the-nrvnaverse build
-pnpm --filter the-nrvnaverse start
-# back to the committed default:
-pnpm --filter the-nrvnaverse gallery:assign gallery-one chromatic-fields
-git status   # should be clean again
-```
+**READY FOR STAGING.** Code, data, headers, indexing, gate, return contract and the Hub-arrival fix are verified locally and in hosted CI; the hosting and workflow decisions are written down with costs. **Not yet ready for public launch**: that needs the owner approvals and setup in §9 and one evidence step only staging can provide (real-device pass + hosted smoke). Nothing technical found in M4 blocks staging.
 
-Dry-run your own Blender scene (read-only; report goes to %TEMP%\nrvnaverse-authoring\<name>):
-
-```powershell
-Set-Location D:\AWE\awe
-pnpm --filter the-nrvnaverse authoring:inspect "D:\path\to\your-city.blend"
-```
-
-Probes: `pnpm --filter the-nrvnaverse browser:camera`, `browser:gallery`, `browser:touch`, `browser:perf` (after a build).
-
-## 9. Next
-
-Recommended: owner playtest (camera feel, Gallery One); then a dry run of the owner's real Blender city reviewed together before anything is composed from it. Do not merge; do not deploy.
+Operator command: say "handoff" in the ChatGPT planning/review conversation.
