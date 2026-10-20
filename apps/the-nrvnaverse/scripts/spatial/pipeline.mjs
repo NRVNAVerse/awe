@@ -197,6 +197,25 @@ function isRecord(value) {
 }
 
 /**
+ * M4: a string that addresses media by URL — a URL scheme that can fetch or embed bytes, a
+ * protocol-relative URL, or a path ending in a media file extension.
+ */
+export const GATED_MEDIA_URL = /^\s*(?:(?:https?|data|blob|ipfs|ipns|wss?|ftp|file):|\/\/)|\.(?:glb|gltf|vrm|fbx|obj|usdz|png|jpe?g|webp|gif|avif|svg|ktx2|basis|hdr|exr|mp4|webm|mov|m3u8|mp3|ogg|wav|m4a|aac|flac)(?:[?#]|\s*$)/i;
+
+/**
+ * Every string value inside a JSON value, with its dotted path.
+ * @param {unknown} value
+ * @param {string} path
+ * @returns {Array<[string, string]>}
+ */
+function stringLeaves(value, path) {
+  if (typeof value === "string") return [[path, value]];
+  if (Array.isArray(value)) return value.flatMap((v, i) => stringLeaves(v, `${path}[${i}]`));
+  if (isRecord(value)) return Object.entries(value).flatMap(([k, v]) => stringLeaves(v, `${path}.${k}`));
+  return [];
+}
+
+/**
  * @param {unknown} value
  * @returns {value is string}
  */
@@ -566,6 +585,20 @@ export function validateSpatialSource(input) {
     const gatedIds = gatedChunks.get(owner.slice("chunk:".length));
     if (gatedIds) {
       fail("asset-in-gated-chunk", `scene.components.${componentId}.assetRef`, `"${componentId}" carries an assetRef in ${owner}, which serves gated destination(s) ${gatedIds.join(", ")}; gated chunk data is not access-controlled, so runtime assets are never delivered there`);
+    }
+  }
+  // M4: nor any media addressed by URL (an image / model / audio / video address, a data: or blob:
+  // payload) — the same leak without an assetRef. A gated chunk file is public by direct URL, so it may
+  // only describe placeholder geometry and text. Text that merely contains a colon is fine.
+  for (const [componentId, component] of Object.entries(sceneComponents)) {
+    const owner = owners.get(componentId);
+    if (owner === undefined || !owner.startsWith("chunk:")) continue;
+    const gatedIds = gatedChunks.get(owner.slice("chunk:".length));
+    if (!gatedIds) continue;
+    for (const [path, value] of stringLeaves(component, `scene.components.${componentId}`)) {
+      if (GATED_MEDIA_URL.test(value)) {
+        fail("media-in-gated-chunk", path, `"${componentId}" in ${owner}, which serves gated destination(s) ${gatedIds.join(", ")}, names media by URL ("${value.slice(0, 80)}"); gated chunk data is not access-controlled, so it carries no media`);
+      }
     }
   }
 

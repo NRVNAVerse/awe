@@ -19,7 +19,7 @@ Goal: the owner can update galleries, stages, worlds and editorial data often, w
 
 The origin pairs are the reviewed allowlist in `apps/the-nrvnaverse/src/lib/deployment/deployment-profile.ts`. If the staging hostnames end up different, change them there in one reviewed commit — never through an environment variable or URL.
 
-**Website pages.** The production profile sends world → web links to the site root while `www.nrvnaverse.com/worlds/<slug>` does not exist (the live Wix site, 404 on 2026-10-19): `webDestinationPages: false`. Flip it to `true` in the same release that cuts the WEB app over to `www`.
+**Website pages.** While `www.nrvnaverse.com/worlds/<slug>` does not exist (the live Wix site returns 404 — checked 2026-10-19), build production with `NRVNA_WEB_PAGES=0`: every world → web link then goes to the site root instead of a dead page. Remove it (or set `1`) in the release that cuts the WEB app over to `www`; `CHECK_WEB_LINKS=1` in the production smoke proves either state.
 
 ## 2. Branches and promotion (PROPOSED addition to the Governance branch model)
 
@@ -41,7 +41,7 @@ feat/<topic> ──review──► nrvna/integration ──(auto)──► STAGI
 1. **Host account / team** (Vercel Pro, §HOSTING_DECISION). Import `NRVNAVerse/awe`. Root directory: `apps/the-nrvnaverse` (the workspace root holds `pnpm-lock.yaml`; confirm in the first build log that install ran at the root with pnpm 10.10.0 — set `ENABLE_EXPERIMENTAL_COREPACK=1` so Corepack pins it, D-014). Install: `pnpm install --frozen-lockfile`. Build: `pnpm build` (= `release:check && next build`). Framework: Next.js. Node: 22.x or 24.x.
 2. **Production branch** = `nrvna/release`. Create the branch at the accepted commit (§5) only when the owner authorizes the first production deploy.
 3. **Environment variables** (no secrets exist):
-   - Production: `NRVNA_DEPLOYMENT=production`; `NRVNA_ALLOW_INDEXING=true` only if the owner wants search engines to index the world's entry page (otherwise leave unset — the world is still public, just not indexed).
+   - Production: `NRVNA_DEPLOYMENT=production`; `NRVNA_WEB_PAGES=0` until the WEB app serves `www` (see §1); `NRVNA_ALLOW_INDEXING=true` only if the owner wants search engines to index the world's entry page (otherwise leave unset — the world is still public, just not indexed).
    - Preview (all branches): `NRVNA_DEPLOYMENT=staging`. Never set `NRVNA_ALLOW_INDEXING` here (it would be ignored anyway: staging is never indexable).
    - `NRVNA_RELEASE_ID` is optional: the host's commit SHA (`VERCEL_GIT_COMMIT_SHA` / `CF_PAGES_COMMIT_SHA`) is reported by `/api/health` automatically.
 4. **Domains**: add `worlds.nrvnaverse.com` to the production environment and `worlds-staging.nrvnaverse.com` to the `nrvna/integration` branch; the host shows the CNAME (and possibly a TXT) record to create.
@@ -64,7 +64,7 @@ feat/<topic> ──review──► nrvna/integration ──(auto)──► STAGI
 1. Commit is on `nrvna/integration`, CI green, staging shows it (`/api/health.release` = SHA).
 2. Owner accepted it on staging (high-risk: real-device walk done).
 3. Promote: `git fetch origin; git push origin <sha>:nrvna/release` (refused if not a fast-forward — that is the safety).
-4. Smoke production (no login needed): `BASE_URL=https://worlds.nrvnaverse.com EXPECT_DEPLOYMENT=production EXPECT_INDEXING=<0|1> pnpm --filter the-nrvnaverse browser:release` — headers, robots, CSP, the 21+ gate (zero gated requests), return links, fault-injected Hub arrivals, phone profile. Plus `curl -s https://worlds.nrvnaverse.com/api/health`.
+4. Smoke production (no login needed): `BASE_URL=https://worlds.nrvnaverse.com EXPECT_DEPLOYMENT=production EXPECT_INDEXING=<0|1> EXPECT_WEB_PAGES=<1|0> CHECK_WEB_LINKS=1 pnpm --filter the-nrvnaverse browser:release` — headers, robots, CSP, the 21+ gate (zero gated requests), return links, fault-injected Hub arrivals, phone profile. Plus `curl -s https://worlds.nrvnaverse.com/api/health`.
 5. Record SHA, time and the probe result in the handoff / Landmark checkpoint.
 
 ## 6. Rollback

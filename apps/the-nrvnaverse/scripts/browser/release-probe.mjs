@@ -6,7 +6,10 @@
 //
 // BASE_URL reuses a running server (a hosted preview included — then the HTTP checks describe that
 // host); EXPECT_DEPLOYMENT (default `production`) / EXPECT_INDEXING (default `0`) say what that
-// build should be. RUNS (default 3) fault-injected Hub loads per frame length. Results go to OUT_DIR.
+// build should be; EXPECT_WEB_PAGES=0 for a build made with NRVNA_WEB_PAGES=0 (links to the website
+// root). CHECK_WEB_LINKS=1 also fetches every world → web link the world shows and fails on any
+// status ≥ 400 — run it against production before a launch (it reads the live website).
+// RUNS (default 3) fault-injected Hub loads per frame length. Results go to OUT_DIR.
 // Exit 0 = passed, 1 = a check failed, 2 = environment missing.
 //
 //   H  HTTP: security headers + CSP on every surface; X-Robots-Tag / robots.txt / page robots meta
@@ -32,6 +35,8 @@ const RUNS = Number(process.env.RUNS ?? 3);
 const OUT_DIR = process.env.OUT_DIR ?? path.join(os.tmpdir(), "nrvnaverse-browser-release");
 const EXPECT_DEPLOYMENT = process.env.EXPECT_DEPLOYMENT ?? "production";
 const EXPECT_INDEXING = process.env.EXPECT_INDEXING === "1";
+const EXPECT_WEB_PAGES = process.env.EXPECT_WEB_PAGES !== "0";
+const CHECK_WEB_LINKS = process.env.CHECK_WEB_LINKS === "1";
 const MOBILE_UA = "Mozilla/5.0 (Linux; Android 14; Pixel 8) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Mobile Safari/537.36";
 /** The reviewed profile table, read as text so this probe has no TS dependency. */
 const PROFILES = Object.fromEntries(
@@ -46,7 +51,9 @@ const HUB = bySlug["hub"];
 const MUSIC = bySlug["music"];
 const CLUB = bySlug["music-club"];
 const GATED = destinations.filter((/** @type {any} */ d) => d.gates.length > 0);
-const rebase = (/** @type {string} */ url) => (url.startsWith("https://www.nrvnaverse.com/") ? PROFILE.webOrigin + url.slice("https://www.nrvnaverse.com".length) : url);
+const rebase = (/** @type {string} */ url) => (!EXPECT_WEB_PAGES ? `${PROFILE.webOrigin}/` : url.startsWith("https://www.nrvnaverse.com/") ? PROFILE.webOrigin + url.slice("https://www.nrvnaverse.com".length) : url);
+/** Every world → web link seen during the run (CHECK_WEB_LINKS). @type {Set<string>} */
+const seenWebLinks = new Set();
 
 const results = /** @type {{ startedAt: string, finishedAt?: string, base?: string, external?: boolean, build?: unknown, deployment: string, checks: Record<string, Array<{ label: string, ok: boolean, detail?: unknown }>>, failures: string[] }} */ ({
   startedAt: new Date().toISOString(),
@@ -120,7 +127,8 @@ async function httpChecks(base) {
   const canonical = /<link rel="canonical" href="([^"]+)"/.exec(html)?.[1] ?? null;
   expect("H", "entry page canonical is the deployment's world origin", (canonical === PROFILE.worldOrigin || canonical === `${PROFILE.worldOrigin}/`), canonical);
   const panel = await (await fetch(base + `/web-context/${MUSIC.id}`)).text();
-  expect("H", "web-context panel: noindex, canonical = the web page on the deployment's website origin", /<meta name="robots" content="noindex, nofollow"/.test(panel) && panel.includes(`<link rel="canonical" href="${rebase(MUSIC.webUrl)}"`), /<link rel="canonical" href="([^"]+)"/.exec(panel)?.[1]);
+  const panelCanonical = /<link rel="canonical" href="([^"]+)"/.exec(panel)?.[1] ?? null;
+  expect("H", "web-context panel: noindex, canonical = the web page on the deployment's website origin (none without web pages)", /<meta name="robots" content="noindex, nofollow"/.test(panel) && panelCanonical === (EXPECT_WEB_PAGES ? rebase(MUSIC.webUrl) : null), panelCanonical);
   expect("H", "web-context panel links the deployment's website, never another origin", panel.includes(`href="${rebase(MUSIC.webUrl)}"`) && (PROFILE.webOrigin === "https://www.nrvnaverse.com" || !panel.includes("https://www.nrvnaverse.com/worlds")), null);
   for (const d of GATED) {
     const res = await fetch(base + `/web-context/${d.id}`);
@@ -133,7 +141,7 @@ async function httpChecks(base) {
   const layer = Object.values(index.layers ?? {})[0];
   if (layer) expect("H", "cache: city layer immutable", (await fetch(base + /** @type {any} */ (layer).dataUrl)).headers.get("cache-control") === "public, max-age=31536000, immutable", null);
   const health = await (await fetch(base + "/api/health")).json();
-  expect("H", "/api/health names the deployment and indexing decision", health.status === "ok" && health.deployment === EXPECT_DEPLOYMENT && health.indexing === EXPECT_INDEXING, { deployment: health.deployment, indexing: health.indexing, release: health.release });
+  expect("H", "/api/health names the deployment, indexing decision and web-pages flag", health.status === "ok" && health.deployment === EXPECT_DEPLOYMENT && health.indexing === EXPECT_INDEXING && health.webPages === EXPECT_WEB_PAGES, { deployment: health.deployment, indexing: health.indexing, webPages: health.webPages, release: health.release });
   return index;
 }
 
@@ -196,7 +204,9 @@ async function main() {
       await load(cdp, server.base, `?destination=${MUSIC.id}&from=web&return=${MUSIC.id}`);
       await sleep(1000);
       const links = () => cdp.eval(`({ current: document.querySelector('[data-web-link="current"]')?.getAttribute("href") ?? null, back: document.querySelector('[data-web-link="return"]')?.getAttribute("href") ?? null, backText: document.querySelector('[data-web-link="return"]')?.textContent ?? null })`);
+      const collect = async () => { for (const h of await cdp.eval(`[...document.querySelectorAll("a[href^='http']")].map((a) => a.href)`)) if (h.startsWith(PROFILE.webOrigin)) seenWebLinks.add(h); };
       const atMusic = await links();
+      await collect();
       expect("R", "at the return destination: one way back, to its canonical page on the deployment's website", atMusic.back === rebase(MUSIC.webUrl) && atMusic.current === null, atMusic);
       await cdp.eval(`document.querySelector('a[href="?destination=${CLUB.id}"]').click(), true`);
       await waitFor(cdp, `${PLACE} === "${CLUB.id}"`, { label: "Club arrival" });
@@ -204,7 +214,8 @@ async function main() {
       const url = new URL(await cdp.eval("location.href"));
       expect("R", "travel keeps return=<id> in the URL (and from=spatial)", url.searchParams.get("return") === MUSIC.id && url.searchParams.get("from") === "spatial" && url.searchParams.get("destination") === CLUB.id, url.search);
       const atClub = await links();
-      expect("R", "after travel: the current-place link is The Club's page, the way back is still Music's", atClub.current === rebase(CLUB.webUrl) && atClub.back === rebase(MUSIC.webUrl), atClub);
+      await collect();
+      expect("R", "after travel: the current-place link is The Club's page, the way back is still Music's (one root link without web pages)", atClub.current === (EXPECT_WEB_PAGES ? rebase(CLUB.webUrl) : null) && atClub.back === rebase(MUSIC.webUrl), atClub);
       await cdp.send("Page.navigate", { url: server.base + `/?destination=${HUB.id}&from=web&return=dst_0000000000000000` });
       await waitFor(cdp, SETTLED);
       expect("R", "an unresolvable return token gives no way-back link", (await links()).back === null, await links());
@@ -213,6 +224,16 @@ async function main() {
       const evil = await links();
       expect("R", "a URL as return token is refused (no open redirect)", evil.back === null && !JSON.stringify(evil).includes("evil"), evil);
       cdp.close();
+    }
+
+    if (CHECK_WEB_LINKS) {
+      for (const href of seenWebLinks) {
+        let status = 0;
+        try {
+          status = (await fetch(href, { redirect: "follow" })).status;
+        } catch {}
+        expect("R", `world → web link resolves: ${href}`, status > 0 && status < 400, status);
+      }
     }
 
     // A — Hub arrival under the fault injection.

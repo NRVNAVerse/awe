@@ -101,10 +101,12 @@ const nextConfig: NextConfig = {
   compiler,
   headers: responseHeaders,
   // Build-time constants for the bundle: the profile NAME (resolved through the same reviewed table
-  // at runtime) and whether this build is indexable. No origin or URL comes from the environment.
+  // at runtime), whether this build is indexable and whether the website serves destination pages.
+  // No origin or URL comes from the environment.
   env: {
     NRVNA_DEPLOYMENT: deployment.name,
     NRVNA_INDEXING: deployment.indexing ? "1" : "0",
+    NRVNA_WEB_PAGES: deployment.webPages ? "1" : "0",
   },
   poweredByHeader: false,
 };

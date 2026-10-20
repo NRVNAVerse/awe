@@ -1,5 +1,5 @@
 import type { DeepLinkEntry, Destination, DestinationIndex } from "@nrvnaverse/manifest";
-import { returnLabel, webUrlOf } from "@/lib/deployment/web-links";
+import { currentPageLabel, returnLabel, webUrlOf } from "@/lib/deployment/web-links";
 
 interface DestinationViewProps {
   destination: Destination;
@@ -40,7 +40,7 @@ export function DestinationView({ destination, entry, index, debug = false }: De
       <div className="mt-3 flex flex-wrap gap-x-4 gap-y-1 text-sm">
         {(!back || back.href !== pageUrl) && (
           <a className="underline" href={pageUrl} data-web-link="current">
-            {destination.name} on nrvnaverse.com
+            {currentPageLabel(destination)}
           </a>
         )}
         {back && (

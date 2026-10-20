@@ -109,3 +109,41 @@ describe("gated delivery invariant — validateSpatialSource", () => {
     expect(codes(withArtIn(target, newlyGated))).toEqual(["asset-in-gated-chunk", ...(isStreamingCell ? ["streaming-gated-chunk"] : [])]);
   });
 });
+
+describe("gated delivery invariant — no media by URL in a gated chunk (M4)", () => {
+  const { config, destinations } = committed();
+  const { gated, ungated } = chunksByGate(config, destinations.destinations);
+
+  /** A copy of the committed source with one hand-inserted component carrying `fields`. */
+  function withComponentIn(chunkKey: string, fields: Record<string, unknown>): SpatialSourceInput {
+    const base = committed();
+    const cfg = structuredClone(base.config);
+    const scene = structuredClone(base.scene);
+    const componentId = "hand-edited-media";
+    scene.components[componentId] = { name: "Hand-edited media", id: componentId, type: "image", kit: "cyber", position: { x: 0, y: 1, z: -4 }, rotation: { x: 0, y: 0, z: 0 }, scale: { x: 1, y: 1, z: 1 }, ...fields };
+    cfg.chunks.find((c) => c.key === chunkKey)!.componentIds.push(componentId);
+    return { config: cfg, scene, destinations: base.destinations, layers: base.layers };
+  }
+
+  it("the committed gated chunks carry no media by URL", () => {
+    expect(codes(committed() as unknown as SpatialSourceInput)).not.toContain("media-in-gated-chunk");
+  });
+
+  it("an image / model / video URL, a data: payload or a nested media path in a gated chunk fails; text with a colon does not", () => {
+    const leaks: Record<string, unknown>[] = [
+      { image: "https://cdn.example.com/art/poster.png" },
+      { url: "//cdn.example.com/model.glb" },
+      { video: { src: "/assets/art/clip.mp4" } },
+      { image: "data:image/png;base64,iVBORw0KGgo=" },
+      { sources: ["ipfs://bafy…/x"] },
+    ];
+    for (const key of gated) {
+      for (const fields of leaks) expect(codes(withComponentIn(key, fields)), `${key} ${JSON.stringify(fields)}`).toContain("media-in-gated-chunk");
+      expect(codes(withComponentIn(key, { text: "Note: 21+ only — entry refused at the gate" })), key).not.toContain("media-in-gated-chunk");
+    }
+  });
+
+  it("ungated chunks are unaffected by this rule", () => {
+    for (const key of ungated) expect(codes(withComponentIn(key, { image: "https://cdn.example.com/art/poster.png" })), key).not.toContain("media-in-gated-chunk");
+  });
+});

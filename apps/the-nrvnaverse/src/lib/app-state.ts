@@ -8,7 +8,7 @@ import {
   type SpatialPlacement,
   type TravelResult,
 } from "@nrvnaverse/manifest";
-import { webRoot } from "@/lib/deployment/web-links";
+import { webRoot, withWebPages } from "@/lib/deployment/web-links";
 
 /**
  * Application state model for THE NRVNAVerse.
@@ -177,7 +177,7 @@ export function withInitialDeepLink(state: AppState, search: string | URLSearchP
   if (state.phase !== "resolvingDestination") {
     return errorState(`cannot resolve the initial destination in phase "${state.phase}"`, state.notices);
   }
-  const entry = resolveDeepLink(state.loaded.index, search, { webRoot: webRoot() });
+  const entry = withWebPages(resolveDeepLink(state.loaded.index, search, { webRoot: webRoot() }));
   return {
     phase: "loadingGlobals",
     loaded: state.loaded,
@@ -318,7 +318,7 @@ export function withWalkedInto(state: AppState, destination: Destination, placem
 /** Re-resolve the deep-link entry (after the URL changed) without moving anyone. */
 export function withEntry(state: AppState, search: string | URLSearchParams | URL): AppState {
   if (!isSettled(state)) return state;
-  const entry = resolveDeepLink(state.loaded.index, search, { webRoot: webRoot() });
+  const entry = withWebPages(resolveDeepLink(state.loaded.index, search, { webRoot: webRoot() }));
   return { ...state, entry, notices: [...state.notices, ...noticesFor(entry)] };
 }
 

@@ -48,7 +48,7 @@ describe("deployment profiles (the reviewed origin allowlist)", () => {
   });
 
   it("is chosen at build time by NRVNA_DEPLOYMENT; unset = production; an unknown name fails the build", () => {
-    expect(resolveDeployment({})).toEqual({ name: "production", worldOrigin: "https://worlds.nrvnaverse.com", webOrigin: "https://www.nrvnaverse.com", indexing: false });
+    expect(resolveDeployment({})).toEqual({ name: "production", worldOrigin: "https://worlds.nrvnaverse.com", webOrigin: "https://www.nrvnaverse.com", indexing: false, webPages: true });
     expect(resolveDeployment({ NRVNA_DEPLOYMENT: " staging " }).name).toBe("staging");
     expect(resolveDeployment({ NRVNA_DEPLOYMENT: "local" }).webOrigin).toBe("http://localhost:3000");
     for (const bad of ["prod", "Production", "https://evil.example", "preview", "staging;production"]) {
@@ -61,6 +61,36 @@ describe("deployment profiles (the reviewed origin allowlist)", () => {
     expect(resolveDeployment({ NRVNA_ALLOW_INDEXING: "true" }).indexing).toBe(true);
     for (const env of [{}, { NRVNA_ALLOW_INDEXING: "1" }, { NRVNA_ALLOW_INDEXING: "TRUE" }, { NRVNA_DEPLOYMENT: "staging", NRVNA_ALLOW_INDEXING: "true" }, { NRVNA_DEPLOYMENT: "local", NRVNA_ALLOW_INDEXING: "true" }]) {
       expect(resolveDeployment(env).indexing, JSON.stringify(env)).toBe(false);
+    }
+  });
+
+  it("NRVNA_WEB_PAGES: unset / 1 = the website serves destination pages; 0 = it does not yet; anything else fails the build", () => {
+    expect(resolveDeployment({}).webPages).toBe(true);
+    expect(resolveDeployment({ NRVNA_WEB_PAGES: "1" }).webPages).toBe(true);
+    expect(resolveDeployment({ NRVNA_WEB_PAGES: " 0 " }).webPages).toBe(false);
+    for (const bad of ["false", "no", "root", "https://evil.example"]) expect(() => resolveDeployment({ NRVNA_WEB_PAGES: bad }), bad).toThrow(/NRVNA_WEB_PAGES must be 0 or 1/);
+  });
+
+  it("without destination pages every world → web link is the website root (no dead /worlds/<slug> link); the return token is kept", async () => {
+    const { webUrlOf, withWebPages, returnLabel, currentPageLabel } = await import("@/lib/deployment/web-links");
+    const music = data.destinations.find((d) => d.slug === "music")!;
+    const index = { byId, bySlug: new Map(), byPreviousSlug: new Map(), hub: data.destinations.find((d) => d.slug === "hub")! } as unknown as Parameters<typeof resolveDeepLink>[0];
+    const entry = resolveDeepLink(index, `?destination=${music.id}&return=${music.id}`);
+    const before = process.env.NRVNA_WEB_PAGES;
+    try {
+      process.env.NRVNA_WEB_PAGES = "1";
+      expect(webUrlOf(music)).toBe(music.webUrl);
+      expect(withWebPages(entry).returnUrl).toBe(music.webUrl);
+      expect(returnLabel(index, music.id)).toBe("Back to Music District on nrvnaverse.com");
+      process.env.NRVNA_WEB_PAGES = "0";
+      expect(webUrlOf(music)).toBe("https://www.nrvnaverse.com/");
+      expect(withWebPages(entry)).toMatchObject({ returnUrl: "https://www.nrvnaverse.com/", returnToken: music.id });
+      expect(returnLabel(index, music.id)).toBe("Back to nrvnaverse.com");
+      expect(currentPageLabel(music)).toBe("More on nrvnaverse.com");
+      expect(withWebPages({ ...entry, returnUrl: null, returnToken: null }).returnUrl).toBeNull();
+    } finally {
+      if (before === undefined) delete process.env.NRVNA_WEB_PAGES;
+      else process.env.NRVNA_WEB_PAGES = before;
     }
   });
 

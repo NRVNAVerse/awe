@@ -28,6 +28,8 @@ export interface ReleaseInfo {
   deployment: DeploymentName;
   /** Whether this build may be indexed by search engines. */
   indexing: boolean;
+  /** Whether this build links to per-destination website pages (false → the website root). */
+  webPages: boolean;
   /** From `NRVNA_RELEASE_ID`, or null when unset / not a plain identifier. */
   release: string | null;
   manifestSchemaVersion: number;
@@ -50,6 +52,7 @@ export function releaseInfo(env: Record<string, string | undefined>, index: Spat
     environment: nodeEnv,
     deployment: deploymentByName(env.NRVNA_DEPLOYMENT).name,
     indexing: env.NRVNA_INDEXING === "1",
+    webPages: env.NRVNA_WEB_PAGES !== "0",
     release: releaseRaw && RELEASE_ID_PATTERN.test(releaseRaw) ? releaseRaw : null,
     manifestSchemaVersion: DESTINATION_SCHEMA_VERSION,
     spatial: {

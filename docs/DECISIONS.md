@@ -154,3 +154,17 @@ Decisions D-001 through D-012 were accepted during the NRVNAVerse planning sessi
 - **Decision:** WEB and SPATIAL may participate in the same optional discovery/gameplay loop, including hidden web pages discoverable through spatial clues, spatial secrets revealed through website clues, and challenges that move between both surfaces. Obscurity must never be used as security.
 - **Rationale:** Cross-surface discovery can make the website part of THE NRVNAVerse experience rather than merely its marketing surface. However, an unlinked or hard-to-find URL provides no meaningful protection.
 - **Implications:** Hidden/unlinked/unindexed pages may contain harmless optional game, lore, media or discovery content. Sensitive, restricted or age-gated material still requires the real auth/gate system. Search indexing and discoverability are product choices, not access-control mechanisms.
+
+## D-022 — Hosting for THE NRVNAVerse: one managed Next.js platform, DNS stays at Wix
+
+- **Status:** Proposed (2026-10-19, M4) — awaiting owner decision
+- **Decision (proposed):** Host the world (`apps/the-nrvnaverse`) on Vercel Pro, in one team that will also host the WEB app; production at `worlds.nrvnaverse.com`, a login-protected staging at `worlds-staging.nrvnaverse.com`; `nrvnaverse.com` DNS stays on Wix, which only gains CNAME (and possibly TXT) records. Fallback at $0: Cloudflare Pages with a static export (needs the bounded changes in `NRVNAVERSE_HOSTING_DECISION.md` §5).
+- **Rationale:** Wix cannot host the app; Vercel Hobby forbids commercial use; Vercel Pro needs no application change (headers, health route, deployment profiles work as built and probed), gives free preview protection, stable staging domains, promotion and instant rollback, and is already the WEB's recommended host, so one ≈ $20 / month seat covers both. Static hosts would require restructuring two routes and moving headers to `_headers`.
+- **Implications:** Owner creates the account / projects / DNS records (Governance rule 8). R2 on `assets.nrvnaverse.com` needs the zone on Cloudflare — decided with the first production art, not now. Detail: `NRVNAVERSE_HOSTING_DECISION.md`.
+
+## D-023 — Release environments and a fast-forward-only release branch
+
+- **Status:** Proposed (2026-10-19, M4) — awaiting owner / reviewer decision (extends the Governance branch model)
+- **Decision (proposed):** `nrvna/integration` deploys automatically to staging; a new protected branch `nrvna/release` deploys to production and only ever fast-forwards to a commit already on `nrvna/integration` that was accepted on staging. `main` stays the pristine upstream mirror and is never a deploy branch. Each build is one of the reviewed deployment profiles (`production` / `staging` / `local`, `apps/the-nrvnaverse/src/lib/deployment/deployment-profile.ts`): the profile pairs the world origin with the website origin; no URL or origin comes from the environment or the visitor.
+- **Rationale:** Frequent owner updates need one repeatable path from a tested commit to production with an instant way back, without making `nrvna/integration` itself the production branch (it receives reviewed but not yet owner-accepted work) and without touching `main`.
+- **Implications:** Normal (content / data) vs high-risk (runtime / world / platform) change paths and the release checklist are in `NRVNAVERSE_STAGING_AND_RELEASE.md`. Governance's branch table gains `nrvna/release` once accepted.

@@ -1,9 +1,10 @@
 import destinationsJson from "@nrvnaverse/manifest/generated/destinations.json";
-import { buildDeepLinkQuery, createDestinationIndex, rebaseWebUrl, type DestinationsFile } from "@nrvnaverse/manifest";
+import { buildDeepLinkQuery, createDestinationIndex, type DestinationsFile } from "@nrvnaverse/manifest";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { APP_IDENTITY } from "@/lib/app-identity";
 import { currentDeployment } from "@/lib/deployment/deployment-profile";
+import { webPagesAvailable, webUrlOf } from "@/lib/deployment/web-links";
 import { hasWebContext, webContextIds } from "@/lib/web/web-context-policy";
 
 /**
@@ -43,7 +44,7 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
   const destination = index.byId.get(id);
   return {
     robots: { index: false, follow: false },
-    alternates: destination && hasWebContext(destination) ? { canonical: rebaseWebUrl(destination.webUrl, deployment.webOrigin) } : undefined,
+    alternates: destination && hasWebContext(destination) && webPagesAvailable() ? { canonical: webUrlOf(destination) } : undefined,
   };
 }
 
@@ -53,7 +54,7 @@ export default async function WebContextPage({ params }: { params: Promise<{ id:
   if (!destination || !hasWebContext(destination)) notFound();
   const district = destination.primaryDistrictId ? index.byId.get(destination.primaryDistrictId) : null;
   const spatialUrl = `${deployment.worldOrigin}/${buildDeepLinkQuery(destination.id, { from: "web" })}`;
-  const webUrl = rebaseWebUrl(destination.webUrl, deployment.webOrigin);
+  const webUrl = webUrlOf(destination);
 
   return (
     <main className="min-h-screen bg-neutral-950 px-5 py-5 text-neutral-100" data-web-context={destination.id}>

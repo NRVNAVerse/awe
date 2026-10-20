@@ -11,7 +11,7 @@ export const dynamic = "force-dynamic";
 export function GET() {
   // M4: the deployment profile and indexing decision are what this BUILD was made for (inlined by
   // next.config.ts `env`), never whatever the runtime environment happens to say.
-  const env = { ...process.env, NRVNA_DEPLOYMENT: process.env.NRVNA_DEPLOYMENT, NRVNA_INDEXING: process.env.NRVNA_INDEXING };
+  const env = { ...process.env, NRVNA_DEPLOYMENT: process.env.NRVNA_DEPLOYMENT, NRVNA_INDEXING: process.env.NRVNA_INDEXING, NRVNA_WEB_PAGES: process.env.NRVNA_WEB_PAGES };
   return Response.json(releaseInfo(env, spatialIndex), {
     headers: { "Cache-Control": "no-store" },
   });

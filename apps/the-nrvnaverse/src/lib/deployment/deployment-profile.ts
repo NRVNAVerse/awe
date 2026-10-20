@@ -16,6 +16,11 @@
  * - The client bundle receives only the profile NAME (inlined by `next.config.ts`), and resolves it
  *   through this same table, falling back to `production` for anything else.
  *
+ * Website destination pages (`NRVNA_WEB_PAGES`, build time): `1` / unset — the website serves
+ * `/worlds/<slug>` (the WEB app; the contract's target state); `0` — it does not yet (the live
+ * www.nrvnaverse.com is still the Wix site, where those paths are 404 — checked 2026-10-19), so every
+ * world → web link goes to the website root instead of a dead page. It never changes an origin.
+ *
  * The staging origins are PROPOSED names (`staging.` / `worlds-staging.` under nrvnaverse.com):
  * they exist only once the owner creates them (Governance rule 8). `local` pairs the two apps'
  * default local ports (the WEB app on :3000, the world on :3100 — docs/WORLD_HARNESS.md in WEB).
@@ -48,6 +53,8 @@ export interface DeploymentProfile {
   webOrigin: string;
   /** Whether this build may be indexed by search engines. */
   indexing: boolean;
+  /** Whether the website serves the per-destination pages (`/worlds/<slug>`); false → links go to its root. */
+  webPages: boolean;
 }
 
 export const DEFAULT_DEPLOYMENT: DeploymentName = "production";
@@ -67,11 +74,16 @@ export function resolveDeployment(env: Record<string, string | undefined>): Depl
     throw new Error(`NRVNA_DEPLOYMENT must be one of ${Object.keys(DEPLOYMENT_PROFILES).join(", ")} (got "${raw}")`);
   }
   const profile = DEPLOYMENT_PROFILES[name];
+  const pages = env.NRVNA_WEB_PAGES?.trim();
+  if (pages !== undefined && pages !== "" && pages !== "0" && pages !== "1") {
+    throw new Error(`NRVNA_WEB_PAGES must be 0 or 1 (got "${env.NRVNA_WEB_PAGES}")`);
+  }
   return {
     name,
     worldOrigin: profile.worldOrigin,
     webOrigin: profile.webOrigin,
     indexing: profile.indexable && env.NRVNA_ALLOW_INDEXING === "true",
+    webPages: pages !== "0",
   };
 }
 
@@ -80,13 +92,13 @@ export function resolveDeployment(env: Record<string, string | undefined>): Depl
  * is not a known name resolves to the canonical production pairing. Indexing is a build/HTTP-layer
  * concern and is not decided here.
  */
-export function deploymentByName(name: string | undefined): Omit<DeploymentProfile, "indexing"> {
+export function deploymentByName(name: string | undefined): Omit<DeploymentProfile, "indexing" | "webPages"> {
   const key: DeploymentName = isDeploymentName(name) ? name : DEFAULT_DEPLOYMENT;
   const profile = DEPLOYMENT_PROFILES[key];
   return { name: key, worldOrigin: profile.worldOrigin, webOrigin: profile.webOrigin };
 }
 
 /** The profile this bundle was built for (`NRVNA_DEPLOYMENT` is inlined at build time by `next.config.ts`). */
-export function currentDeployment(): Omit<DeploymentProfile, "indexing"> {
+export function currentDeployment(): Omit<DeploymentProfile, "indexing" | "webPages"> {
   return deploymentByName(process.env.NRVNA_DEPLOYMENT);
 }
