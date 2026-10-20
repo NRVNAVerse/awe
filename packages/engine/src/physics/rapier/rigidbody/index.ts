@@ -76,16 +76,23 @@ export class RapierRigidBody implements RigidBody {
     this._initQuat.copy(this._rbQuaternion);
   }
 
+  // A reset (construction, teleport, a direct set on a non-kinematic body) is a discontinuity:
+  // the previous pose is reset too, so render interpolation before the next fixed step can never
+  // blend from the old pose (e.g. a teleport made while the simulation is stopped, followed by a
+  // first frame shorter than one fixed step, used to render — and let callers read back — a point
+  // between the old and the new position).
   private _resetPosition(pos: Vector3) {
     //
     this._rbPosition.copy(pos);
     this._currentRbPosition.copy(pos);
+    this._prevRbPosition.copy(pos);
   }
 
   private _resetQuaternion(quat: Quaternion) {
     //
     this._rbQuaternion.copy(quat);
     this._currentRbQuaternion.copy(quat);
+    this._prevRbQuaternion.copy(quat);
   }
 
   private _createRigidBody() {
