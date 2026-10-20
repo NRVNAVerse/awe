@@ -496,7 +496,7 @@ async function handoffToChunk(current: AppRun, chunkKey: string, reason: "walk" 
   if (home && "current" in state) {
     const placement = { destinationId: home.id, platform: state.placement.platform, worldId: state.placement.worldId, placementRef: placementRefFor(chunkKey) };
     appStore.update(withWalkedInto(state, home, placement));
-    const query = buildDeepLinkQuery(home.id, { from: "spatial", ref: state.entry.ref ?? undefined });
+    const query = buildDeepLinkQuery(home.id, { from: "spatial", ref: state.entry.ref ?? undefined, return: state.entry.returnToken ?? undefined });
     if (window.location.search !== query) window.history.replaceState(null, "", `${window.location.pathname}${query}`);
     appStore.update(withEntry(appStore.state, window.location.search));
   }
@@ -541,7 +541,7 @@ export async function travelToDestination(destinationId: string, options: Travel
   appStore.update(withTravelResult(appStore.state, result, now() - startedAt));
 
   if (result.status === "arrived" && options.updateUrl !== false) {
-    const query = buildDeepLinkQuery(target.id, { from: "spatial", ref: state.entry.ref ?? undefined });
+    const query = buildDeepLinkQuery(target.id, { from: "spatial", ref: state.entry.ref ?? undefined, return: state.entry.returnToken ?? undefined });
     if (window.location.search !== query) {
       window.history.pushState(null, "", `${window.location.pathname}${query}`);
     }

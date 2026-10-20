@@ -229,7 +229,7 @@
         "thumbnailUrl": null
       },
       "name": "The Club",
-      "placeholder": false,
+      "placeholder": true,
       "primaryDistrict": {
         "id": "dst_gm3xs4a3tws7bgh3",
         "name": "Music District",
@@ -245,7 +245,7 @@
         "venue-room",
         "intimate"
       ],
-      "updatedAt": "2026-10-15T00:00:00Z",
+      "updatedAt": "2026-10-19T00:00:00Z",
       "webUrl": "https://www.nrvnaverse.com/worlds/music-club"
     },
     {

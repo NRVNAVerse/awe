@@ -20,7 +20,7 @@ describe("/api/health", () => {
     expect(res.status).toBe(200);
     expect(res.headers.get("cache-control")).toBe("no-store");
     const body = await res.json();
-    expect(Object.keys(body).sort()).toEqual(["app", "environment", "manifestSchemaVersion", "release", "spatial", "status"]);
+    expect(Object.keys(body).sort()).toEqual(["app", "deployment", "environment", "indexing", "manifestSchemaVersion", "release", "spatial", "status"]);
     expect(body).toMatchObject({ status: "ok", app: "the-nrvnaverse", manifestSchemaVersion: 1, spatial: { worldId: "the-nrvnaverse", indexSchemaVersion: 1 } });
     expect(body.spatial.globalSceneVersion).toMatch(/^[0-9a-f]{32}$/);
     expect(INDEX.globalSceneUrl).toContain(body.spatial.globalSceneVersion);
@@ -51,13 +51,24 @@ describe("production build + runtime configuration", () => {
     expect(pkg.scripts["release:check"]).toBe("node scripts/spatial/cli.mjs check && tsx ../../packages/nrvna-manifest/src/node/cli.ts check");
   });
 
-  it("app code reads no environment beyond NODE_ENV outside the server-only health route, and no NEXT_PUBLIC value", () => {
-    const files = ["src/lib/app-store.ts", "src/lib/debug-mode.ts", "src/lib/perf.ts", "src/components/app-shell.tsx", "next.config.ts"];
+  it("app code reads no environment beyond NODE_ENV and the two inlined deployment constants (M4), and no NEXT_PUBLIC value", () => {
+    // NRVNA_DEPLOYMENT / NRVNA_INDEXING are build-time constants written by next.config.ts `env`
+    // (a reviewed profile NAME and 0/1) — never an origin or URL from the environment.
+    const files = ["src/lib/app-store.ts", "src/lib/app-state.ts", "src/lib/debug-mode.ts", "src/lib/perf.ts", "src/components/app-shell.tsx", "src/components/destination-view.tsx", "src/components/web-window.tsx", "src/lib/deployment/deployment-profile.ts", "src/lib/deployment/web-links.ts", "src/lib/deployment/http-policy.ts", "src/app/layout.tsx", "src/app/robots.ts", "src/app/web-context/[id]/page.tsx", "next.config.ts"];
     for (const f of files) {
       const text = readFileSync(join(APP_ROOT, f), "utf8");
-      for (const m of text.matchAll(/process\.env\.([A-Z0-9_]+)/g)) expect(m[1], f).toBe("NODE_ENV");
+      for (const m of text.matchAll(/process\.env\.([A-Z0-9_]+)/g)) expect(["NODE_ENV", "NRVNA_DEPLOYMENT", "NRVNA_INDEXING"], f).toContain(m[1]);
       expect(text, f).not.toMatch(/NEXT_PUBLIC_/);
     }
+    const config = readFileSync(join(APP_ROOT, "next.config.ts"), "utf8");
+    expect(config).toMatch(/resolveDeployment\(process\.env\)/); // the only other read: through the reviewed profile table
+  });
+
+  it("next.config.ts inlines exactly the deployment profile name and the indexing decision", async () => {
+    const { default: config, deployment } = await import("../next.config");
+    expect(config.env).toEqual({ NRVNA_DEPLOYMENT: deployment.name, NRVNA_INDEXING: deployment.indexing ? "1" : "0" });
+    expect(deployment).toMatchObject({ name: "production", indexing: false }); // the test environment sets neither variable
+    expect(config.poweredByHeader).toBe(false);
   });
 
   it("has no multiplayer / localhost endpoint in the shipped app (first live does not need multiplayer)", () => {

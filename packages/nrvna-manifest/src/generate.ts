@@ -82,7 +82,11 @@ export interface WebDestination {
   categories: string[];
   /** Public tags (internal milestone markers such as `m0` / `placeholder` removed). */
   tags: string[];
-  /** Placeholder content: the web should label it "coming soon", not present it as finished. */
+  /**
+   * Not finished: placeholder content, or (M4) a playable preview (`preview` tag) — the web should
+   * label it "in development" / "preview", not present it as finished. It NEVER decides whether the
+   * destination can be entered: that is `spatial.enterable` alone (gates and spatial presence).
+   */
   placeholder: boolean;
   listing: "public" | "age-gated";
   gate: { kinds: GateKind[]; minimumAge: number | null } | null;
@@ -105,8 +109,13 @@ export interface GeneratedViews {
 
 export const GENERATED_FILE_NAMES = ["destinations.json", "directory.json", "web-destinations.json"] as const;
 
-/** Tags that mark engineering milestones, not web-facing taxonomy. */
-const INTERNAL_TAGS = new Set(["m0", "placeholder"]);
+/**
+ * Tags that mark engineering / presentation state, not web-facing taxonomy. `placeholder` = stand-in
+ * content; `preview` (M4) = a playable, enterable preview whose final presentation is not approved
+ * yet. Both are exported as the single v1 `placeholder` flag (schema v1 has no other field for it).
+ */
+export const UNFINISHED_TAGS = ["placeholder", "preview"] as const;
+const INTERNAL_TAGS = new Set<string>(["m0", ...UNFINISHED_TAGS]);
 
 function toWebDestination(d: Destination, byId: Map<string, Destination>): WebDestination {
   const gated = d.gates.length > 0;
@@ -120,7 +129,7 @@ function toWebDestination(d: Destination, byId: Map<string, Destination>): WebDe
     primaryDistrict: district ? { id: district.id, slug: district.slug, name: district.name } : null,
     categories: [...d.categories],
     tags: d.tags.filter((t) => !INTERNAL_TAGS.has(t)),
-    placeholder: d.tags.includes("placeholder"),
+    placeholder: UNFINISHED_TAGS.some((t) => d.tags.includes(t)),
     listing: gated ? "age-gated" : "public",
     gate: gated ? { kinds: d.gates.map((g) => g.kind), minimumAge: d.ageRestriction?.minimumAge ?? null } : null,
     webUrl: d.webUrl,

@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useStore } from "@/hooks/use-store";
 import { APP_IDENTITY } from "@/lib/app-identity";
+import { webRoot } from "@/lib/deployment/web-links";
 import { appStore, bootApp, disposeApp } from "@/lib/app-store";
 import { CameraSettings } from "@/components/camera-settings";
 import { useDebugMode } from "@/lib/debug-mode";
@@ -106,7 +107,7 @@ export function AppShell() {
               <button type="button" className="rounded border border-red-700 px-3 py-1.5 touch-manipulation hover:bg-red-900/40" onClick={() => window.location.reload()}>
                 Try again
               </button>
-              <a className="underline" href={APP_IDENTITY.webRoot}>
+              <a className="underline" href={webRoot()}>
                 Return to {APP_IDENTITY.ecosystem}
               </a>
             </div>

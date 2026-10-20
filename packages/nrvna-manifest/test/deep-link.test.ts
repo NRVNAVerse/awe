@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { buildDeepLinkQuery, parseDeepLink, resolveDeepLink, resolveReturnUrl } from "../src/deep-link";
+import { buildDeepLinkQuery, parseDeepLink, rebaseWebUrl, resolveDeepLink, resolveReturnUrl } from "../src/deep-link";
 import { createDestinationIndex } from "../src/resolve";
 import { NRVNAVERSE_WEB_ROOT } from "../src/schema";
 import { SLUGS, bySlug, loadSeven } from "./support/helpers";
@@ -59,6 +59,36 @@ describe("return resolution", () => {
     expect(resolveReturnUrl(index, null)).toBeNull();
     expect(resolveReturnUrl(index, "dst_0000000000000000")).toBeNull();
     expect(resolveReturnUrl(index, "https://evil.example/")).toBeNull();
+  });
+
+  it("M4: rebases return URLs onto a reviewed website root, keeping the canonical path", () => {
+    const seven = loadSeven();
+    const index = createDestinationIndex(seven);
+    const music = bySlug(seven, SLUGS.music);
+    expect(music.webUrl.startsWith(NRVNAVERSE_WEB_ROOT)).toBe(true);
+    const path = music.webUrl.slice(NRVNAVERSE_WEB_ROOT.length);
+    for (const root of ["https://staging.nrvnaverse.com", "https://staging.nrvnaverse.com/"]) {
+      expect(resolveReturnUrl(index, "web", root)).toBe("https://staging.nrvnaverse.com/");
+      expect(resolveReturnUrl(index, music.id, root)).toBe(`https://staging.nrvnaverse.com/${path}`);
+    }
+    // The canonical root is the identity; a URL outside it is never rewritten.
+    expect(rebaseWebUrl(music.webUrl)).toBe(music.webUrl);
+    expect(rebaseWebUrl("https://partner.example/page", "https://staging.nrvnaverse.com")).toBe("https://partner.example/page");
+    expect(rebaseWebUrl("https://www.nrvnaverse.com.evil.example/x", "https://staging.nrvnaverse.com")).toBe("https://www.nrvnaverse.com.evil.example/x");
+  });
+
+  it("M4: resolveDeepLink carries the resolved return token (never an unresolved one) and honours the website root", () => {
+    const seven = loadSeven();
+    const index = createDestinationIndex(seven);
+    const music = bySlug(seven, SLUGS.music);
+    const hub = bySlug(seven, SLUGS.hub);
+    const entry = resolveDeepLink(index, `?destination=${hub.id}&from=web&return=${music.id}`, { webRoot: "http://localhost:3000" });
+    expect(entry.returnToken).toBe(music.id);
+    expect(entry.returnUrl).toBe(`http://localhost:3000/${music.webUrl.slice(NRVNAVERSE_WEB_ROOT.length)}`);
+    expect(resolveDeepLink(index, `?destination=${hub.id}&return=web`).returnToken).toBe("web");
+    expect(resolveDeepLink(index, `?destination=${hub.id}&return=dst_0000000000000000`).returnToken).toBeNull();
+    expect(resolveDeepLink(index, `?destination=${hub.id}&return=https%3A%2F%2Fevil.example%2F`).returnToken).toBeNull();
+    expect(resolveDeepLink(index, `?destination=${hub.id}`).returnToken).toBeNull();
   });
 
   it("does not resolve return to a non-public destination", () => {

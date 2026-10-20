@@ -2,7 +2,7 @@ import { createRequire } from "node:module";
 import { describe, expect, it } from "vitest";
 import spatialIndexJson from "../public/data/spatial/spatial-index.json";
 import { CONTENT_ADDRESSED_OUTPUT, CONTENT_VERSION_PATTERN, DATA_URL_PREFIX, contentVersion } from "../scripts/spatial/pipeline.mjs";
-import nextConfig, { SPATIAL_CONTENT_VERSION, SPATIAL_IMMUTABLE_CACHE_CONTROL, SPATIAL_INDEX_CACHE_CONTROL, deliveryHeaders, spatialDataHeaders } from "../next.config";
+import nextConfig, { SPATIAL_CONTENT_VERSION, SPATIAL_IMMUTABLE_CACHE_CONTROL, SPATIAL_INDEX_CACHE_CONTROL, deliveryHeaders, responseHeaders, spatialDataHeaders } from "../next.config";
 
 /**
  * M0 Step 2B.4B.2 — HTTP cache policy for the generated spatial data (`next.config.ts`).
@@ -42,15 +42,18 @@ const HEX32 = "0123456789abcdef0123456789abcdef";
 const artifactUrls = [spatialIndexJson.globalSceneUrl, ...Object.values(spatialIndexJson.chunks).map((c) => c.dataUrl)];
 
 describe("next.config.ts — spatial data cache policy", () => {
-  it("is wired into the exported config and declares exactly three rules, none conditioned on a query", async () => {
-    // M1.0: the config serves the spatial rules plus the content-addressed runtime-art rule.
-    expect(nextConfig.headers).toBe(deliveryHeaders);
-    expect((await deliveryHeaders()).slice(0, 3)).toEqual(await spatialDataHeaders());
+  it("is wired into the exported config and declares exactly four rules, none conditioned on a query", async () => {
+    // M1.0: the config serves the spatial rules plus the content-addressed runtime-art rule;
+    // M4: followed by the deployment's security / indexing headers (test/http-policy.test.ts).
+    expect(nextConfig.headers).toBe(responseHeaders);
+    expect((await responseHeaders()).slice(0, (await deliveryHeaders()).length)).toEqual(await deliveryHeaders());
+    expect((await deliveryHeaders()).slice(0, 4)).toEqual(await spatialDataHeaders());
     const rules = await spatialDataHeaders();
     expect(rules.map((r) => r.source)).toEqual([
       "/data/spatial/spatial-index.json",
       "/data/spatial/global-scene.:version([0-9a-f]{32}).json",
       "/data/spatial/chunks/:chunk([a-z0-9-]+).:version([0-9a-f]{32}).json",
+      "/data/spatial/layers/:layer([a-z0-9-]+).:version([0-9a-f]{32}).json",
     ]);
     for (const rule of rules) {
       expect(rule.headers.map((h) => h.key)).toEqual(["Cache-Control"]);
@@ -64,9 +67,9 @@ describe("next.config.ts — spatial data cache policy", () => {
   });
 
   it("keys the immutable rules on exactly the pipeline's content-version shape (32 lowercase hex chars) embedded in the file name", async () => {
-    const [indexRule, globalRule, chunkRule] = await spatialDataHeaders();
+    const [indexRule, globalRule, chunkRule, layerRule] = await spatialDataHeaders();
     expect(indexRule.headers).toEqual([{ key: "Cache-Control", value: SPATIAL_INDEX_CACHE_CONTROL }]);
-    for (const rule of [globalRule, chunkRule]) expect(rule.headers).toEqual([{ key: "Cache-Control", value: SPATIAL_IMMUTABLE_CACHE_CONTROL }]);
+    for (const rule of [globalRule, chunkRule, layerRule]) expect(rule.headers).toEqual([{ key: "Cache-Control", value: SPATIAL_IMMUTABLE_CACHE_CONTROL }]);
     // The config's token shape IS the pipeline's token shape, and the rule sources are the pipeline's file-name shapes under /data.
     expect(new RegExp(`^${SPATIAL_CONTENT_VERSION}$`).source).toBe(CONTENT_VERSION_PATTERN.source);
     expect(new RegExp(`^${SPATIAL_CONTENT_VERSION}$`).test(contentVersion("anything"))).toBe(true);
@@ -76,12 +79,16 @@ describe("next.config.ts — spatial data cache policy", () => {
     expect(CONTENT_ADDRESSED_OUTPUT.chunk.test(chunkName)).toBe(true);
     expect(await cacheControlFor(`${DATA_URL_PREFIX}/${globalName}`)).toEqual([SPATIAL_IMMUTABLE_CACHE_CONTROL]);
     expect(await cacheControlFor(`${DATA_URL_PREFIX}/${chunkName}`)).toEqual([SPATIAL_IMMUTABLE_CACHE_CONTROL]);
+    const layerName = `spatial/layers/city.${HEX32}.json`;
+    expect(CONTENT_ADDRESSED_OUTPUT.layer.test(layerName)).toBe(true);
+    expect(await cacheControlFor(`${DATA_URL_PREFIX}/${layerName}`)).toEqual([SPATIAL_IMMUTABLE_CACHE_CONTROL]);
+    expect(await cacheControlFor(`${DATA_URL_PREFIX}/spatial/layers/city.json`)).toEqual([]);
   });
 
-  it("serves the committed content-addressed global scene and chunk URLs as immutable", async () => {
+  it("serves the committed content-addressed global scene, chunk and layer URLs as immutable", async () => {
     expect(artifactUrls).toHaveLength(13); // M2: global scene + 12 chunks
-    for (const url of artifactUrls) {
-      expect(url).toMatch(/^\/data\/spatial\/(global-scene|chunks\/[a-z0-9-]+)\.[0-9a-f]{32}\.json$/);
+    for (const url of [...artifactUrls, ...Object.values(spatialIndexJson.layers).map((l) => l.dataUrl)]) {
+      expect(url).toMatch(/^\/data\/spatial\/(global-scene|chunks\/[a-z0-9-]+|layers\/[a-z0-9-]+)\.[0-9a-f]{32}\.json$/);
       expect(url).not.toContain("?");
       expect(await cacheControlFor(url), url).toEqual([SPATIAL_IMMUTABLE_CACHE_CONTROL]);
     }

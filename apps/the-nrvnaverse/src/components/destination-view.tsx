@@ -1,4 +1,5 @@
-import type { DeepLinkEntry, Destination, DestinationIndex } from "@nrvnaverse/manifest";
+import type { DeepLinkEntry, Destination, DestinationIndex } from "@nrvnaverse/manifest";
+import { returnLabel, webUrlOf } from "@/lib/deployment/web-links";
 
 interface DestinationViewProps {
   destination: Destination;
@@ -13,9 +14,15 @@ interface DestinationViewProps {
  * restriction in plain words and links to the web; the manifest-level detail (ids, slug,
  * capabilities, entry params) is diagnostics only. Gates are displayed and refused at the spatial
  * boundary, not verified (M0 Step 2A).
+ *
+ * M4 return contract: two links to the website, both canonical pages on this build's website origin —
+ * the page of the place the visitor is in now, and the way back the deep link asked for (`return`,
+ * kept through in-world travel). When both name the same page only the way back is shown.
  */
 export function DestinationView({ destination, entry, index, debug = false }: DestinationViewProps) {
   const district = destination.primaryDistrictId ? index.byId.get(destination.primaryDistrictId) : null;
+  const pageUrl = webUrlOf(destination);
+  const back = entry.returnUrl ? { href: entry.returnUrl, label: returnLabel(index, entry.returnToken) ?? "Back to nrvnaverse.com" } : null;
 
   return (
     <section className="rounded border border-neutral-800 bg-neutral-900 p-4">
@@ -31,12 +38,14 @@ export function DestinationView({ destination, entry, index, debug = false }: De
         </p>
       )}
       <div className="mt-3 flex flex-wrap gap-x-4 gap-y-1 text-sm">
-        <a className="underline" href={destination.webUrl}>
-          More on nrvnaverse.com
-        </a>
-        {entry.returnUrl && (
-          <a className="underline" href={entry.returnUrl}>
-            Back to where you came from
+        {(!back || back.href !== pageUrl) && (
+          <a className="underline" href={pageUrl} data-web-link="current">
+            {destination.name} on nrvnaverse.com
+          </a>
+        )}
+        {back && (
+          <a className="underline" href={back.href} data-web-link="return">
+            {back.label}
           </a>
         )}
       </div>
@@ -67,8 +76,8 @@ export function DestinationView({ destination, entry, index, debug = false }: De
         </dd>
         <dt className="text-neutral-500">web</dt>
         <dd className="min-w-0 break-words">
-          <a className="underline" href={destination.webUrl}>
-            {destination.webUrl}
+          <a className="underline" href={pageUrl}>
+            {pageUrl}
           </a>
         </dd>
         {entry.from && (

@@ -3,7 +3,9 @@
 import type { DestinationIndex } from "@nrvnaverse/manifest";
 import { useStore } from "@/hooks/use-store";
 import { dismissWebContext, webContextPath, webContextStore } from "@/lib/web/web-context-store";
-import { currentThresholds } from "@/lib/app-store";
+import { currentThresholds } from "@/lib/app-store";
+import { webUrlOf } from "@/lib/deployment/web-links";
+import { hasWebContext } from "@/lib/web/web-context-policy";
 
 /**
  * WEB↔SPATIAL web window (M1 experience campaign, D-020): while the visitor stands in a threshold,
@@ -18,7 +20,8 @@ export function WebWindow({ index }: { index: DestinationIndex }) {
   const state = useStore(webContextStore);
   if (!state.destinationId) return null;
   const destination = index.byId.get(state.destinationId);
-  if (!destination) return null;
+  // M4: no panel (and no request for one) for a destination without a web context (gated / not public).
+  if (!destination || !hasWebContext(destination)) return null;
   const district = destination.primaryDistrictId ? index.byId.get(destination.primaryDistrictId) : null;
   const onDismiss = () => dismissWebContext(currentThresholds()?.current?.componentId ?? null);
 
@@ -52,7 +55,7 @@ export function WebWindow({ index }: { index: DestinationIndex }) {
       />
       <footer className="flex items-center justify-between gap-3 border-t border-neutral-800 px-4 py-2 text-xs text-neutral-400">
         <span>Step out of the threshold to close.</span>
-        <a className="underline hover:text-white" href={destination.webUrl} target="_blank" rel="noopener noreferrer" data-web-window-canonical>
+        <a className="underline hover:text-white" href={webUrlOf(destination)} target="_blank" rel="noopener noreferrer" data-web-window-canonical>
           Open on nrvnaverse.com ↗
         </a>
       </footer>

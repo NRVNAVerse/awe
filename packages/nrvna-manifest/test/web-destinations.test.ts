@@ -47,6 +47,24 @@ describe("web destinations export", () => {
     expect(JSON.stringify(web)).not.toMatch(/"auth"|"analyticsId"|"jurisdictions"|"organizationId"|"capabilities"/);
   });
 
+  it("M4: The Club is a playable preview — unfinished for the web, still enterable, id and slug unchanged", () => {
+    const club = bySlug.get("music-club")!;
+    expect(club.id).toBe("dst_gqq90k2404cy9nf0");
+    expect(club.placeholder).toBe(true);
+    expect(club.tags).not.toContain("preview");
+    expect(club.spatial).toEqual({ enterable: true, deepLink: `https://worlds.nrvnaverse.com/?destination=${club.id}&from=web&return=web` });
+  });
+
+  it("M4: the unfinished flag never decides entry — the same manifest with or without placeholder / preview tags is equally enterable", () => {
+    const manifests = structuredClone(loadSourceManifests().manifests) as Array<Record<string, unknown> & { tags: string[] }>;
+    for (const m of manifests) m.tags = m.tags.filter((t) => t !== "placeholder" && t !== "preview");
+    const finished = new Map(generateViews(manifests)["web-destinations.json"].destinations.map((d) => [d.slug, d]));
+    for (const d of web.destinations) {
+      expect(finished.get(d.slug)!.placeholder, d.slug).toBe(false);
+      expect(finished.get(d.slug)!.spatial, d.slug).toEqual(d.spatial);
+    }
+  });
+
   it("excludes non-active destinations", () => {
     const manifests = structuredClone(loadSourceManifests().manifests) as Record<string, unknown>[];
     const target = manifests.find((m) => m.slug === "placeholder-fashion-culture-brand")!;

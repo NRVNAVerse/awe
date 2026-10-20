@@ -1,10 +1,23 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import { APP_IDENTITY } from "@/lib/app-identity";
+import { currentDeployment } from "@/lib/deployment/deployment-profile";
 
+const deployment = currentDeployment();
+const indexing = process.env.NRVNA_INDEXING === "1";
+
+/**
+ * M4: page metadata follows the deployment (docs/NRVNAVERSE_HOSTING.md §6.2). Every page names the
+ * world's own origin as its base and the entry page as canonical (deep-link queries are views of the
+ * same page); `noindex, nofollow` unless this build is the indexable production build. The
+ * `X-Robots-Tag` header carries the same decision for non-HTML responses.
+ */
 export const metadata: Metadata = {
   title: APP_IDENTITY.name,
   description: `${APP_IDENTITY.name} — the spatial interface of the ${APP_IDENTITY.ecosystem} ecosystem.`,
+  metadataBase: new URL(deployment.worldOrigin),
+  alternates: { canonical: "/" },
+  robots: indexing ? { index: true, follow: true } : { index: false, follow: false },
 };
 
 /**

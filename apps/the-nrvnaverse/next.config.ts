@@ -1,4 +1,6 @@
 import type { NextConfig } from "next";
+import { resolveDeployment } from "./src/lib/deployment/deployment-profile";
+import { deploymentHeaderRules } from "./src/lib/deployment/http-policy";
 
 const compiler: NextConfig["compiler"] =
   process.env.NODE_ENV === "production"
@@ -47,6 +49,11 @@ export async function spatialDataHeaders(): Promise<HeaderRule[]> {
       source: `/data/spatial/chunks/:chunk([a-z0-9-]+).:version(${SPATIAL_CONTENT_VERSION}).json`,
       headers: [{ key: "Cache-Control", value: SPATIAL_IMMUTABLE_CACHE_CONTROL }],
     },
+    {
+      // M2 far-field layers (`CONTENT_ADDRESSED_OUTPUT.layer`), content-addressed like the chunks (M4).
+      source: `/data/spatial/layers/:layer([a-z0-9-]+).:version(${SPATIAL_CONTENT_VERSION}).json`,
+      headers: [{ key: "Cache-Control", value: SPATIAL_IMMUTABLE_CACHE_CONTROL }],
+    },
   ];
 }
 
@@ -76,11 +83,30 @@ export async function deliveryHeaders(): Promise<HeaderRule[]> {
   return [...(await spatialDataHeaders()), ...(await runtimeAssetHeaders())];
 }
 
+/**
+ * The deployment this build is for (M4, `src/lib/deployment/deployment-profile.ts`): chosen by
+ * `NRVNA_DEPLOYMENT` from the reviewed profile table (unknown names fail the build here); indexing
+ * only with `NRVNA_ALLOW_INDEXING=true` on a profile that allows it.
+ */
+export const deployment = resolveDeployment(process.env);
+
+/** Delivery (cache) rules plus the deployment's security and indexing headers. */
+export async function responseHeaders(): Promise<HeaderRule[]> {
+  return [...(await deliveryHeaders()), ...deploymentHeaderRules(deployment, { development: process.env.NODE_ENV !== "production" })];
+}
+
 const nextConfig: NextConfig = {
   transpilePackages: ["@nrvnaverse/manifest", "@oncyberio/engine", "@oncyberio/engine-edit"],
   serverExternalPackages: ["draco3dgltf", "sharp"],
   compiler,
-  headers: deliveryHeaders,
+  headers: responseHeaders,
+  // Build-time constants for the bundle: the profile NAME (resolved through the same reviewed table
+  // at runtime) and whether this build is indexable. No origin or URL comes from the environment.
+  env: {
+    NRVNA_DEPLOYMENT: deployment.name,
+    NRVNA_INDEXING: deployment.indexing ? "1" : "0",
+  },
+  poweredByHeader: false,
 };
 
 export default nextConfig;

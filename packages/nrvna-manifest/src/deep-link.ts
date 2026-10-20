@@ -96,36 +96,59 @@ export function parseDeepLink(input: string | URLSearchParams | URL): ParsedDeep
 }
 
 /**
- * Resolve the `return` token to a concrete https URL using manifest data only.
+ * Move a canonical web URL (`https://www.nrvnaverse.com/…`) onto another website root with the same
+ * path (M4: a staging world links to the staging website). The root is NOT visitor input: callers
+ * pass a reviewed, allow-listed origin from their deployment configuration. URLs outside the
+ * canonical web root (an owner's own site, an external page) are returned unchanged.
+ */
+export function rebaseWebUrl(url: string, webRoot: string = NRVNAVERSE_WEB_ROOT): string {
+  const root = webRoot.endsWith("/") ? webRoot : `${webRoot}/`;
+  if (root === NRVNAVERSE_WEB_ROOT || !url.startsWith(NRVNAVERSE_WEB_ROOT)) return url;
+  return root + url.slice(NRVNAVERSE_WEB_ROOT.length);
+}
+
+/**
+ * Resolve the `return` token to a concrete URL using manifest data only: `web` → the web root,
+ * a public destination id → that destination's canonical page (rebased onto `webRoot`).
  * Returns null when the token is absent, unknown, or points at a non-public destination.
  */
 export function resolveReturnUrl(index: DestinationIndex, token: string | null, webRoot: string = NRVNAVERSE_WEB_ROOT): string | null {
   if (token === null) return null;
-  if (token === RETURN_WEB_TOKEN) return webRoot;
+  if (token === RETURN_WEB_TOKEN) return webRoot.endsWith("/") ? webRoot : `${webRoot}/`;
   if (!isDestinationId(token)) return null;
   const destination = index.byId.get(token);
   if (!destination || !isPublicStatus(destination.status)) return null;
-  return destination.webUrl;
+  return rebaseWebUrl(destination.webUrl, webRoot);
 }
 
 export interface DeepLinkEntry {
   resolution: DestinationResolution;
   from: string | null;
   ref: string | null;
+  /**
+   * The `return` token that resolved (`web` or a public destination id), or null. Carried through
+   * in-world travel so the way back to the website survives moving around (M4).
+   */
+  returnToken: string | null;
   /** Concrete return URL resolved through manifest data, or null. */
   returnUrl: string | null;
   issues: DeepLinkIssue[];
 }
 
+export interface ResolveDeepLinkOptions {
+  /** Website root for return URLs (a reviewed deployment origin; default the canonical web root). */
+  webRoot?: string;
+}
+
 /** One-shot: parse the query, resolve the destination (hub fallback) and the return URL. */
-export function resolveDeepLink(index: DestinationIndex, input: string | URLSearchParams | URL): DeepLinkEntry {
+export function resolveDeepLink(index: DestinationIndex, input: string | URLSearchParams | URL, options: ResolveDeepLinkOptions = {}): DeepLinkEntry {
   const { params, issues } = parseDeepLink(input);
   const resolution = resolveDestination(index, params.destination);
-  const returnUrl = resolveReturnUrl(index, params.return);
+  const returnUrl = resolveReturnUrl(index, params.return, options.webRoot);
   if (params.return !== null && returnUrl === null) {
     issues.push({ code: "unsafe-return", param: "return", message: "return token does not resolve to a public destination" });
   }
-  return { resolution, from: params.from, ref: params.ref, returnUrl, issues };
+  return { resolution, from: params.from, ref: params.ref, returnToken: returnUrl === null ? null : params.return, returnUrl, issues };
 }
 
 /** Build a canonical spatial deep-link query for a destination. */
