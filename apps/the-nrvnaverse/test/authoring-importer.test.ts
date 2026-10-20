@@ -169,6 +169,10 @@ describe("Gallery One — the authored scene round-trips exactly (Blender 5.1 �
     const again = portableExport({ ...galleryExport, file: { path: "D:\\work\\gallery-one.blend" }, dependencies: [{ kind: "image", name: "a.png", path: "D:\\work\\textures\\a.png" }, { kind: "image", name: "b.png", path: "E:\\library\\b.png" }] });
     expect(again.file.path).toBe("gallery-one.blend");
     expect(again.dependencies.map((d: { path: string }) => d.path)).toEqual(["//textures/a.png", "b.png"]);
+    // M4: the same on any OS — a POSIX export is made portable the same way (CI runs on Linux).
+    const posix = portableExport({ ...galleryExport, file: { path: "/home/owner/work/gallery-one.blend" }, dependencies: [{ kind: "image", name: "a.png", path: "/home/owner/work/textures/a.png" }, { kind: "image", name: "b.png", path: "/srv/library/b.png" }] });
+    expect(posix.file.path).toBe("gallery-one.blend");
+    expect(posix.dependencies.map((d: { path: string }) => d.path)).toEqual(["//textures/a.png", "b.png"]);
   });
 });
 
