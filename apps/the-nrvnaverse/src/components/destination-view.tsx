@@ -1,5 +1,6 @@
 import type { DeepLinkEntry, Destination, DestinationIndex } from "@nrvnaverse/manifest";
 import { currentPageLabel, returnLabel, webUrlOf } from "@/lib/deployment/web-links";
+import { presentDescription } from "@/lib/present-description";
 
 interface DestinationViewProps {
   destination: Destination;
@@ -31,7 +32,7 @@ export function DestinationView({ destination, entry, index, debug = false }: De
         {district && district.id !== destination.id ? ` · ${district.name}` : ""}
       </p>
       <h2 className="text-xl font-semibold">{destination.name}</h2>
-      <p className="mt-1 text-sm text-neutral-300">{destination.description}</p>
+      <p className="mt-1 text-sm text-neutral-300">{presentDescription(destination.description)}</p>
       {destination.gates.length > 0 && (
         <p className="mt-2 text-sm text-amber-300" data-visitor-gate>
           Access to this destination is restricted and not available in the world yet.

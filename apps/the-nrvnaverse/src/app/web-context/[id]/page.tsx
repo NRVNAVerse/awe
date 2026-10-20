@@ -6,6 +6,7 @@ import { APP_IDENTITY } from "@/lib/app-identity";
 import { currentDeployment } from "@/lib/deployment/deployment-profile";
 import { webPagesAvailable, webUrlOf } from "@/lib/deployment/web-links";
 import { hasWebContext, webContextIds } from "@/lib/web/web-context-policy";
+import { presentDescription } from "@/lib/present-description";
 
 /**
  * Web-context surface (M1 experience campaign, D-020): the canonical WEB context of one destination,
@@ -63,7 +64,7 @@ export default async function WebContextPage({ params }: { params: Promise<{ id:
         {district && district.id !== destination.id ? ` · ${district.name}` : ""}
       </p>
       <h1 className="mt-1 text-2xl font-bold tracking-tight">{destination.name}</h1>
-      <p className="mt-2 max-w-prose text-sm leading-relaxed text-neutral-300">{destination.description}</p>
+      <p className="mt-2 max-w-prose text-sm leading-relaxed text-neutral-300">{presentDescription(destination.description)}</p>
       {destination.categories.length > 0 && (
         <p className="mt-2 text-xs text-neutral-500">{destination.categories.join(" · ")}</p>
       )}
