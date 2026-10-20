@@ -9,6 +9,9 @@
 // build should be; EXPECT_WEB_PAGES=0 for a build made with NRVNA_WEB_PAGES=0 (links to the website
 // root). CHECK_WEB_LINKS=1 also fetches every world → web link the world shows and fails on any
 // status ≥ 400 — run it against production before a launch (it reads the live website).
+// BASE_HEADER="Name: value" is sent ONLY to the probed origin (browser and HTTP checks), never to a
+// third-party origin and never written to the results — e.g. a host's deployment-protection bypass
+// for automation, so a login-protected staging deployment can be smoked.
 // RUNS (default 3) fault-injected Hub loads per frame length. Results go to OUT_DIR.
 // Exit 0 = passed, 1 = a check failed, 2 = environment missing.
 //
@@ -37,6 +40,20 @@ const EXPECT_DEPLOYMENT = process.env.EXPECT_DEPLOYMENT ?? "production";
 const EXPECT_INDEXING = process.env.EXPECT_INDEXING === "1";
 const EXPECT_WEB_PAGES = process.env.EXPECT_WEB_PAGES !== "0";
 const CHECK_WEB_LINKS = process.env.CHECK_WEB_LINKS === "1";
+const BASE_HEADER = (() => {
+  const raw = process.env.BASE_HEADER;
+  if (!raw) return null;
+  const i = raw.indexOf(":");
+  if (i <= 0 || !raw.slice(i + 1).trim()) {
+    console.error('BASE_HEADER must be "Name: value"');
+    process.exit(2);
+  }
+  return { name: raw.slice(0, i).trim(), value: raw.slice(i + 1).trim() };
+})();
+/** Origin of the server under test (set in main). */
+let BASE_ORIGIN = "";
+/** `fetch` that adds BASE_HEADER only for the server under test. @param {string} url @param {RequestInit} [init] */
+const get = (url, init) => (BASE_HEADER && new URL(url).origin === BASE_ORIGIN ? fetch(url, { ...init, headers: { ...(/** @type {Record<string, string>} */ (init?.headers) ?? {}), [BASE_HEADER.name]: BASE_HEADER.value } }) : fetch(url, init));
 const MOBILE_UA = "Mozilla/5.0 (Linux; Android 14; Pixel 8) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Mobile Safari/537.36";
 /** The reviewed profile table, read as text so this probe has no TS dependency. */
 const PROFILES = Object.fromEntries(
@@ -91,6 +108,15 @@ async function open(profile, scripts = []) {
   if (profile.mobile) await cdp.send("Emulation.setTouchEmulationEnabled", { enabled: true, maxTouchPoints: 5 });
   await cdp.send("Emulation.setDeviceMetricsOverride", { width: profile.w, height: profile.h, deviceScaleFactor: profile.dpr, mobile: profile.mobile });
   for (const source of [CSP_RECORDER, ...scripts]) await cdp.send("Page.addScriptToEvaluateOnNewDocument", { source });
+  if (BASE_HEADER) {
+    const header = BASE_HEADER;
+    await cdp.send("Fetch.enable", { patterns: [{ urlPattern: `${BASE_ORIGIN}/*`, requestStage: "Request" }] });
+    cdp.on("Fetch.requestPaused", (/** @type {any} */ p) => {
+      const headers = Object.entries(p.request.headers).map(([name, value]) => ({ name, value: String(value) }));
+      headers.push({ name: header.name, value: header.value });
+      cdp.send("Fetch.continueRequest", { requestId: p.requestId, headers }).catch(() => {});
+    });
+  }
   /** @type {string[]} */
   const requests = [];
   cdp.on("Network.requestWillBeSent", (/** @type {any} */ p) => requests.push(p.request.url));
@@ -110,7 +136,7 @@ const PHONE = { w: 390, h: 844, dpr: 3, mobile: true, ua: MOBILE_UA };
 async function httpChecks(base) {
   const surfaces = ["/", `/?destination=${MUSIC.id}&from=web&return=web`, "/robots.txt", "/api/health", "/api/destinations", `/web-context/${MUSIC.id}`, "/data/spatial/spatial-index.json"];
   for (const p of surfaces) {
-    const res = await fetch(base + p);
+    const res = await get(base + p);
     const h = res.headers;
     expect("H", `${p} → 200`, res.status === 200, res.status);
     expect("H", `${p} security headers`, h.get("x-content-type-options") === "nosniff" && h.get("x-frame-options") === "SAMEORIGIN" && h.get("referrer-policy") === "strict-origin-when-cross-origin" && /frame-ancestors 'self'/.test(h.get("content-security-policy") ?? "") && !/'unsafe-eval'/.test(h.get("content-security-policy") ?? ""), { csp: (h.get("content-security-policy") ?? "").slice(0, 80) });
@@ -119,28 +145,28 @@ async function httpChecks(base) {
     expect("H", `${p} X-Robots-Tag`, EXPECT_INDEXING && !neverIndexed ? robots === null : robots === "noindex, nofollow", robots);
     expect("H", `${p} no x-powered-by`, h.get("x-powered-by") === null, h.get("x-powered-by"));
   }
-  const robotsTxt = await (await fetch(base + "/robots.txt")).text();
+  const robotsTxt = await (await get(base + "/robots.txt")).text();
   expect("H", "robots.txt matches the indexing decision", EXPECT_INDEXING ? /Allow: \/\n/.test(robotsTxt) && /Disallow: \/web-context\//.test(robotsTxt) : /Disallow: \/\s*$/m.test(robotsTxt) && !/Allow:/.test(robotsTxt), robotsTxt.trim());
-  const html = await (await fetch(base + "/")).text();
+  const html = await (await get(base + "/")).text();
   const meta = /<meta name="robots" content="([^"]+)"/.exec(html)?.[1] ?? null;
   expect("H", "entry page robots meta", EXPECT_INDEXING ? meta === "index, follow" : meta === "noindex, nofollow", meta);
   const canonical = /<link rel="canonical" href="([^"]+)"/.exec(html)?.[1] ?? null;
   expect("H", "entry page canonical is the deployment's world origin", (canonical === PROFILE.worldOrigin || canonical === `${PROFILE.worldOrigin}/`), canonical);
-  const panel = await (await fetch(base + `/web-context/${MUSIC.id}`)).text();
+  const panel = await (await get(base + `/web-context/${MUSIC.id}`)).text();
   const panelCanonical = /<link rel="canonical" href="([^"]+)"/.exec(panel)?.[1] ?? null;
   expect("H", "web-context panel: noindex, canonical = the web page on the deployment's website origin (none without web pages)", /<meta name="robots" content="noindex, nofollow"/.test(panel) && panelCanonical === (EXPECT_WEB_PAGES ? rebase(MUSIC.webUrl) : null), panelCanonical);
   expect("H", "web-context panel links the deployment's website, never another origin", panel.includes(`href="${rebase(MUSIC.webUrl)}"`) && (PROFILE.webOrigin === "https://www.nrvnaverse.com" || !panel.includes("https://www.nrvnaverse.com/worlds")), null);
   for (const d of GATED) {
-    const res = await fetch(base + `/web-context/${d.id}`);
+    const res = await get(base + `/web-context/${d.id}`);
     const text = await res.text();
     expect("H", `gated ${d.slug}: no web-context panel (404)`, res.status === 404 && !text.includes(d.description), res.status);
   }
-  const index = await (await fetch(base + "/data/spatial/spatial-index.json")).json();
-  const chunk = await fetch(base + index.chunks.hub.dataUrl);
-  expect("H", "cache: version root revalidated, chunk immutable", (await fetch(base + "/data/spatial/spatial-index.json")).headers.get("cache-control") === "public, max-age=0, must-revalidate" && chunk.headers.get("cache-control") === "public, max-age=31536000, immutable", chunk.headers.get("cache-control"));
+  const index = await (await get(base + "/data/spatial/spatial-index.json")).json();
+  const chunk = await get(base + index.chunks.hub.dataUrl);
+  expect("H", "cache: version root revalidated, chunk immutable", (await get(base + "/data/spatial/spatial-index.json")).headers.get("cache-control") === "public, max-age=0, must-revalidate" && chunk.headers.get("cache-control") === "public, max-age=31536000, immutable", chunk.headers.get("cache-control"));
   const layer = Object.values(index.layers ?? {})[0];
-  if (layer) expect("H", "cache: city layer immutable", (await fetch(base + /** @type {any} */ (layer).dataUrl)).headers.get("cache-control") === "public, max-age=31536000, immutable", null);
-  const health = await (await fetch(base + "/api/health")).json();
+  if (layer) expect("H", "cache: city layer immutable", (await get(base + /** @type {any} */ (layer).dataUrl)).headers.get("cache-control") === "public, max-age=31536000, immutable", null);
+  const health = await (await get(base + "/api/health")).json();
   expect("H", "/api/health names the deployment, indexing decision and web-pages flag", health.status === "ok" && health.deployment === EXPECT_DEPLOYMENT && health.indexing === EXPECT_INDEXING && health.webPages === EXPECT_WEB_PAGES, { deployment: health.deployment, indexing: health.indexing, webPages: health.webPages, release: health.release });
   return index;
 }
@@ -162,6 +188,7 @@ async function main() {
   }
   const server = await startServer(PORT);
   results.base = server.base;
+  BASE_ORIGIN = new URL(server.base).origin;
   results.external = server.external;
   if (!server.external) {
     results.build = buildFreshness();

@@ -128,7 +128,7 @@ Every page names the build's world origin as `metadataBase` and the entry page a
 3. `BASE_URL=<base> pnpm --filter the-nrvnaverse browser:perf` (desktop + mobile emulation).
 4. Real-device pass (iOS Safari, Android Chrome) before public announcement.
 
-A host's login protection (staging, previews) blocks the headless probes; smoke those by hand while logged in (§STAGING_AND_RELEASE 4).
+A host's login protection (staging, previews) blocks the headless probes unless the host offers an automation bypass header: pass it as `BASE_HEADER="Name: value"` — sent only to the probed origin (verified through a counting proxy: 254 / 254 own-origin requests carried it), never to third-party origins, never written to the results.
 
 ---
 
